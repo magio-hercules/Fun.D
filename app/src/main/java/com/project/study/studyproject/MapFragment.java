@@ -4,9 +4,16 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+
+import com.nhn.android.maps.NMapContext;
+import com.nhn.android.maps.NMapController;
+import com.nhn.android.maps.NMapView;
 
 
 /**
@@ -28,6 +35,11 @@ public class MapFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private NMapContext mMapContext;
+    private NMapView mapView;
+    private NMapController mapController;
+    private static final String CLIENT_ID = "ykIR0n5VuX9TlqNLdjgo";// 애플리케이션 클라이언트 아이디 값
 
     public MapFragment() {
         // Required empty public constructor
@@ -58,6 +70,10 @@ public class MapFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        mMapContext =  new NMapContext(super.getActivity());
+        mMapContext.onCreate();
+
     }
 
     @Override
@@ -104,5 +120,48 @@ public class MapFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mapView = (NMapView)getView().findViewById(R.id.mapView);
+        mapView.setClientId(CLIENT_ID);// 클라이언트 아이디 설정
+        mMapContext.setupMapView(mapView);
+
+        mapController = mapView.getMapController();
+        mapController.setZoomEnabled(true);
+        mapController.setPanEnabled(true);
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        mMapContext.onStart();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mMapContext.onResume();
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapContext.onPause();
+    }
+    @Override
+    public void onStop() {
+        mMapContext.onStop();
+        super.onStop();
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+    }
+    @Override
+    public void onDestroy() {
+        mMapContext.onDestroy();
+        super.onDestroy();
     }
 }
