@@ -7,6 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 
 /**
@@ -64,7 +67,37 @@ public class GalleryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gallery, container, false);
+        View view = inflater.inflate(R.layout.fragment_gallery, container, false);
+
+        String[] values = new String[] { "https://upload.tgd.kr/20180408/d9c7de9bedccc5b390a358ebd481bbba.gif.mp4", "http://cdn.ppomppu.co.kr/zboard/data3/2018/0907/1536320470_6876_8eab53f5d2f198568ab1798161fd94dd.gif",
+                "https://cdn.clien.net/web/api/file/F01/7436239/2276532e4f1cad.mp4"};
+
+        final ListView listView = view.findViewById(R.id.listView);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.row_gallery, R.id.label, values);
+
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String item = (String) listView.getItemAtPosition(i);
+
+                Bundle args = new Bundle();
+
+                args.putString("url",item);
+
+                GalleryDialogFragment galleryDialogFragment = new GalleryDialogFragment();
+
+                galleryDialogFragment.setArguments(args);
+
+                galleryDialogFragment.show(getActivity().getSupportFragmentManager(),"dialog");
+
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
