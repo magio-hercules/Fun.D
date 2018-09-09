@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
+import util.NonSwipeViewPager;
+
 public class MainActivity extends AppCompatActivity
                             implements Memo1Fragment.OnFragmentInteractionListener,
                                          Memo2Fragment.OnFragmentInteractionListener,
@@ -14,7 +16,8 @@ public class MainActivity extends AppCompatActivity
                                          MapFragment.OnFragmentInteractionListener {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+//    private ViewPager viewPager;
+    private NonSwipeViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,8 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         // Initializing ViewPager
-        viewPager = (ViewPager) findViewById(R.id.pager);
+//        viewPager = (ViewPager) findViewById(R.id.pager);
+        viewPager = (NonSwipeViewPager) findViewById(R.id.pager);
 
         // Creating TabPagerAdapter adapter
         TabPagerAdapter pagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());

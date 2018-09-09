@@ -73,7 +73,6 @@ public class MapFragment extends Fragment {
 
         mMapContext =  new NMapContext(super.getActivity());
         mMapContext.onCreate();
-
     }
 
     @Override
@@ -81,6 +80,24 @@ public class MapFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_map, container, false);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mapView = (NMapView)getView().findViewById(R.id.mapView);
+        mapView.setClientId(CLIENT_ID);// 클라이언트 아이디 설정
+        mapView.setClickable(true);
+        mapView.setEnabled(true);
+        mapView.setFocusable(true);
+        mapView.setFocusableInTouchMode(true);
+        mapView.requestFocus();
+
+        mMapContext.setupMapView(mapView);
+
+        mapController = mapView.getMapController();
+        mapController.setZoomEnabled(true);
+        mapController.setPanEnabled(true);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -124,17 +141,6 @@ public class MapFragment extends Fragment {
 
 
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mapView = (NMapView)getView().findViewById(R.id.mapView);
-        mapView.setClientId(CLIENT_ID);// 클라이언트 아이디 설정
-        mMapContext.setupMapView(mapView);
-
-        mapController = mapView.getMapController();
-        mapController.setZoomEnabled(true);
-        mapController.setPanEnabled(true);
-    }
     @Override
     public void onStart(){
         super.onStart();
