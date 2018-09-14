@@ -1,8 +1,13 @@
-package com.project.study.studyproject;
+package com.project.study.studyproject.util;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.project.study.studyproject.GalleryFragment;
+import com.project.study.studyproject.Memo1Fragment;
+import com.project.study.studyproject.Memo2Fragment;
+import com.project.study.studyproject.map.MapFragment;
 
 public class TabPagerAdapter extends FragmentStatePagerAdapter {
 

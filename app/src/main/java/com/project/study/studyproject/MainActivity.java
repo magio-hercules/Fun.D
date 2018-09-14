@@ -2,12 +2,13 @@ package com.project.study.studyproject;
 
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 
-import util.NonSwipeViewPager;
+import com.project.study.studyproject.map.MapFragment;
+
+import com.project.study.studyproject.util.NonSwipeViewPager;
+import com.project.study.studyproject.util.TabPagerAdapter;
 
 public class MainActivity extends AppCompatActivity
                             implements Memo1Fragment.OnFragmentInteractionListener,

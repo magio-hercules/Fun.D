@@ -29,7 +29,7 @@
         <!--android:id="@+id/pager"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent" />-->
-    <util.NonSwipeViewPager
+    <com.project.study.studyproject.util.NonSwipeViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
