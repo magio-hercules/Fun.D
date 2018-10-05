@@ -45,7 +45,6 @@ public class Memo2Fragment extends Fragment {
     public static Memo2Fragment newInstance(String param1, String param2) {
         Memo2Fragment fragment = new Memo2Fragment();
         Bundle args = new Bundle();
-        
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
