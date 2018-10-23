@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapActivity;
@@ -24,7 +26,15 @@ import com.nhn.android.maps.overlay.NMapPOIdata;
 import com.nhn.android.maps.overlay.NMapPOIitem;
 import com.nhn.android.mapviewer.overlay.NMapOverlayManager;
 import com.nhn.android.mapviewer.overlay.NMapPOIdataOverlay;
+import com.project.study.studyproject.DataModel.DataModel_Map;
+import com.project.study.studyproject.DbHandler;
+import com.project.study.studyproject.Dictionary;
 import com.project.study.studyproject.R;
+import com.project.study.studyproject.util.DBHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -77,6 +87,19 @@ public class MapFragment extends Fragment {
 
     private NMapPOIdataOverlay mFloatingPOIdataOverlay;
     private NMapPOIitem mFloatingPOIitem;
+
+    // For Markers
+    private static final String DB_NAME = "DB_MAP";
+    private static final String TABLE_NAME = "map_marker";
+    private static final String CREATE_QUERY = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(`id_marker`	BIGINT(11)	NOT NULL	PRIMARY KEY DEFAULT AUTOINCREMENT, " +
+//                                                "`id_marker_type`	BIGINT(11)	NOT NULL	DEFAULT AUTOINCREMENT, " +
+//                                                "`id_detail_info`	BIGINT(11)	NOT NULL	DEFAULT AUTOINCREMENT, " +
+                                                "`name`	VARCHAR(128)	NOT NULL, " +
+                                                "`lat`	VARCHAR(64)	NOT NULL," +
+                                                "`lng`	VARCHAR(64)	NOT NULL," +
+                                                "`date`	DATETIME	NOT NULL)";
+//    DBHelper db;
+    private ArrayList<DataModel_Map> markerArrayList = new ArrayList<>();
 
 
     public MapFragment() {
@@ -140,6 +163,16 @@ public class MapFragment extends Fragment {
             }
         });
 
+//        db = new DBHelper(getActivity(), DB_NAME, TABLE_NAME, CREATE_QUERY);
+
+        initMap(v);
+
+        LoadMarkers();
+
+        initList(v);
+
+
+
         return v;
     }
 
@@ -147,7 +180,7 @@ public class MapFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        initMap();
+//        initMap();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -250,6 +283,10 @@ public class MapFragment extends Fragment {
 
         saveInstanceState();
 
+//        if (db != null) {
+//            db.close();
+//        }
+
         super.onDestroy();
     }
 
@@ -259,8 +296,10 @@ public class MapFragment extends Fragment {
         super.onDestroyOptionsMenu();
     }
 
-    private void initMap() {
-        mapView = (NMapView)getView().findViewById(R.id.mapView);
+    private void initMap(View view) {
+//        mapView = (NMapView)getView().findViewById(R.id.mapView);
+        mapView = (NMapView)view.findViewById(R.id.mapView);
+
         if (mapView == null) {
             throw new IllegalArgumentException("NMapFragment dose not have an instance of NMapView.");
         }
@@ -340,7 +379,9 @@ public class MapFragment extends Fragment {
         // Markers for POI item
         int markerId = NMapPOIflagType.PIN;
 
-        mapController.setMapCenter(127.066865, 37.265692);
+        if (mapController != null) {
+            mapController.setMapCenter(127.066865, 37.265692);
+        }
 
         // set POI data
         NMapPOIdata poiData = new NMapPOIdata(2, mMapViewerResourceProvider);
@@ -540,6 +581,14 @@ public class MapFragment extends Fragment {
                     mFloatingPOIitem.setTitle(placeMark.toString());
                 }
                 mFloatingPOIdataOverlay.selectPOIitemBy(mFloatingPOIitem.getId(), false);
+
+                NGeoPoint point = mFloatingPOIitem.getPoint();
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                String getTime = sdf.format(date);
+
+                AddMarker(placeMark.toString(), ""+point.getLatitude(), ""+point.getLongitude(), getTime);
             }
         }
     };
@@ -557,6 +606,134 @@ public class MapFragment extends Fragment {
             mMapContext.findPlacemarkAtLocation(point.longitude, point.latitude);
 
             item.setTitle(null);
+
+            Double lat = point.getLatitude();
+            Double lng = point.getLongitude();
+
+//            AddMarker("Test", lat.toString(), lng.toString(), "1111");
         }
     };
+
+    private void initList(View view) {
+        ListView listview ;
+        ListViewAdapter adapter;
+
+        // Adapter 생성
+        adapter = new ListViewAdapter() ;
+
+        // 리스트뷰 참조 및 Adapter달기
+        listview = (ListView)view.findViewById(R.id.map_listview);
+        listview.setAdapter(adapter);
+
+//        // 첫 번째 아이템 추가.
+//        adapter.addItem("1", "Box", "Account Box Black 36dp") ;
+//        // 두 번째 아이템 추가.
+//        adapter.addItem("2", "Circle", "Account Circle Black 36dp") ;
+//        // 세 번째 아이템 추가.
+//        adapter.addItem("3", "Ind", "Assignment Ind Black 36dp") ;
+        DataModel_Map data;
+        for (int i = 0; i < markerArrayList.size(); i++) {
+            data = markerArrayList.get(i);
+
+            adapter.addItem(""+data.getIdMarker(), data.getName(), data.getDate());
+        }
+
+        // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView parent, View v, int position, long id) {
+                // get item
+                ListViewItem item = (ListViewItem) parent.getItemAtPosition(position) ;
+
+                String strId = item.getId() ;
+                String strName = item.getName() ;
+                String strDate = item.getDate() ;
+
+                Log.d(LOG_TAG, "onItemClick: id(" + strId + "), name(" + strName + "), date(" + strDate + ")");
+            }
+        }) ;
+
+    }
+
+
+    private void LoadMarkers() {
+        markerArrayList.clear();
+
+        DBHelper db = new DBHelper(getActivity(), DB_NAME, TABLE_NAME, CREATE_QUERY);
+        final ArrayList<DataModel_Map> dataList = db.getAllDatas();
+        db.close();
+
+        if (dataList.size() > 0) {
+            //loop through contents
+            for (int i = 0; i < dataList.size(); i++) {
+                Log.d(LOG_TAG, "" + dataList.get(i).getIdMarker());
+                Log.d(LOG_TAG, dataList.get(i).getName());
+                Log.d(LOG_TAG, dataList.get(i).getLat());
+                Log.d(LOG_TAG, dataList.get(i).getLng());
+                Log.d(LOG_TAG, dataList.get(i).getDate());
+
+                //add data to list used in adapter
+                markerArrayList.add(dataList.get(i));
+            }
+        }
+
+        ShowMarkers();
+    }
+
+    private void AddMarker(String name, String lat, String lng, String date) {
+        DBHelper db = new DBHelper(getActivity(), DB_NAME, TABLE_NAME, CREATE_QUERY);
+        DataModel_Map data = new DataModel_Map(name, lat, lng, date);
+        db.addData(data);
+        db.close();
+//        Toast.makeText(mContext, "AddMarker", Toast.LENGTH_SHORT).show();
+
+        Log.d(LOG_TAG, "AddMarker success");
+    }
+
+
+    private void ShowMarkers() {
+        // Markers for POI item
+        int markerId = NMapPOIflagType.PIN;
+
+        if (mapController != null) {
+            mapController.setMapCenter(127.066865, 37.265692);
+        }
+
+        // set POI data
+        int markerCount = markerArrayList.size();
+        NMapPOIdata poiData = new NMapPOIdata(markerCount, mMapViewerResourceProvider);
+        poiData.beginPOIdata(markerCount);
+
+        // show all markers
+        if (false) {
+            NMapPOIitem item = poiData.addPOIitem(127.066865, 37.265692, "우리집", markerId, 0);
+            item.setRightAccessory(true, NMapPOIflagType.CLICKABLE_ARROW);
+            poiData.addPOIitem(127.0698865, 37.263692, "영흥공원", markerId, 0);
+        } else {
+            NMapPOIitem item = null;
+            DataModel_Map data;
+            for (int i = 0; i < markerArrayList.size(); i++) {
+                data = markerArrayList.get(i);
+//                item = poiData.addPOIitem(Double.parseDouble(data.getLat()), Double.parseDouble(data.getLng()),
+                item = poiData.addPOIitem(Double.parseDouble(data.getLng()), Double.parseDouble(data.getLat()),
+                        data.getName(), markerId, data.getIdMarker());
+                item.setRightAccessory(true, NMapPOIflagType.CLICKABLE_ARROW);
+                Log.d(LOG_TAG, "showMarkers !!!");
+            }
+        }
+
+        poiData.endPOIdata();
+
+        // create POI data overlay
+        NMapPOIdataOverlay poiDataOverlay = mOverlayManager.createPOIdataOverlay(poiData, null);
+
+        // set event listener to the overlay
+        poiDataOverlay.setOnStateChangeListener(onPOIdataStateChangeListener);
+
+        // select an item
+        poiDataOverlay.selectPOIitem(0, true);
+
+        // show all POI data
+        //poiDataOverlay.showAllPOIdata(0);
+    }
 }
