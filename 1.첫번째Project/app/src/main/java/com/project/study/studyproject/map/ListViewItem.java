@@ -1,9 +1,12 @@
 package com.project.study.studyproject.map;
 
+import android.view.View;
+
 public class ListViewItem {
     private String id;
     private String name;
     private String date;
+    public View.OnClickListener clickListener;
 
     public String getId() {
         return id;
@@ -27,5 +30,13 @@ public class ListViewItem {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public View.OnClickListener getClickListener() {
+        return clickListener;
+    }
+
+    public void setClickListener(View.OnClickListener clickListener) {
+        this.clickListener = clickListener;
     }
 }

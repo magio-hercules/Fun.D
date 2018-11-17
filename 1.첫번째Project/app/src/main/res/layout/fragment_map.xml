@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btn_floating_marker"
-            android:text="플로팅 마커 표시"/>
+            android:text="마커 추가"/>
 
     </LinearLayout>
 

@@ -16,7 +16,7 @@ public class DBHelper extends SQLiteOpenHelper {
 //    private static final String DATABASE_NAME = "CSY";//name of the database
 //    private static final String TABLE_NAME = "NOTES";//name for the table
 
-    private static final String KEY_ID = "key";
+    private static final String KEY_ID = "id_marker";
     private static final String KEY_NAME = "name";
     private static final String KEY_LAT = "lat";
     private static final String KEY_LNG = "lng";
@@ -94,7 +94,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return arrayList;
     }
 
-    public void addData(DataModel_Map data) {
+    public long addData(DataModel_Map data) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, data.getName());
@@ -103,9 +103,9 @@ public class DBHelper extends SQLiteOpenHelper {
         values.put(KEY_DATE, data.getDate());
 
         if (data.getName().equals("")){   //공란일 경우 pass
-
+            return -1;
         }else
-            db.insert(this.table_name, null, values);
+            return db.insert(this.table_name, null, values);
     }
 
 //    public void editRow(Dictionary dictionary, int key) {
@@ -120,10 +120,10 @@ public class DBHelper extends SQLiteOpenHelper {
 //    }
 //
 
-//
-//    public void deleteRow(int key) {    //code to delete a row from the table
-//        SQLiteDatabase db = this.getWritableDatabase();
-//        db.delete(this.table_name, KEY_ID + " = '" + key + "'", new String[]{});
-//        db.close();
-//    }
+
+    public void deleteData(String id) {    //code to delete a row from the table
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(this.table_name, KEY_ID + " = '" + id + "'", new String[]{});
+        db.close();
+    }
 }

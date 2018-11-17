@@ -47,7 +47,7 @@ import static android.content.Context.MODE_PRIVATE;
  * Use the {@link MapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MapFragment extends Fragment {
+public class MapFragment extends Fragment implements View.OnClickListener {
     private static final String LOG_TAG = "[MAP]";
     private static final boolean DEBUG = true;
 
@@ -79,6 +79,7 @@ public class MapFragment extends Fragment {
     private static final String CLIENT_ID = "ykIR0n5VuX9TlqNLdjgo";// 애플리케이션 클라이언트 아이디 값
 
     Button btnMarker, btnFloatingMarker;
+//    Button btnDelete;
 
     private SharedPreferences mPreferences;
 
@@ -100,6 +101,10 @@ public class MapFragment extends Fragment {
                                                 "`date`	DATETIME	NOT NULL)";
 //    DBHelper db;
     private ArrayList<DataModel_Map> markerArrayList = new ArrayList<>();
+
+    ListView listview;
+    ListViewAdapter adapter;
+    private String curSelectId;
 
 
     public MapFragment() {
@@ -147,11 +152,14 @@ public class MapFragment extends Fragment {
         btnMarker = (Button)v.findViewById(R.id.btn_marker);
         btnFloatingMarker = (Button)v.findViewById(R.id.btn_floating_marker);
 
+//        btnDelete = (Button)v.findViewById(R.id.map_button_delete);
+
         btnMarker.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mOverlayManager.clearOverlays();
-                testPOIdataOverlay();
+//                testPOIdataOverlay();
+                LoadMarkers();
             }
         });
 
@@ -163,6 +171,13 @@ public class MapFragment extends Fragment {
             }
         });
 
+//        btnDelete.setOnClickListener(new Button.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                DeleteMarker(curSelectId);
+//            }
+//        });
+
 //        db = new DBHelper(getActivity(), DB_NAME, TABLE_NAME, CREATE_QUERY);
 
         initMap(v);
@@ -170,7 +185,6 @@ public class MapFragment extends Fragment {
         LoadMarkers();
 
         initList(v);
-
 
 
         return v;
@@ -181,6 +195,26 @@ public class MapFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 //        initMap();
+    }
+
+    @Override
+    public void onClick(View v) {
+        View oParentView = (View)v.getParent(); // 부모의 View를 가져온다. 즉, 아이템 View임.
+//        Button btnDelete = (Button) oParentView.findViewById(R.id.map_button_delete);
+        int position = (int) oParentView.getTag();
+
+        DeleteMarker(position);
+
+        Log.d(LOG_TAG, "onClick: position(" + position + ")");
+
+//        AlertDialog.Builder oDialog = new AlertDialog.Builder(this,
+//                android.R.style.Theme_DeviceDefault_Light_Dialog);
+//
+//        String strMsg = "선택한 아이템의 position 은 "+position+" 입니다.\nTitle 텍스트 :" + oTextTitle.getText();
+//        oDialog.setMessage(strMsg)
+//                .setPositiveButton("확인", null)
+//                .setCancelable(false) // 백버튼으로 팝업창이 닫히지 않도록 한다.
+//                .show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -615,9 +649,6 @@ public class MapFragment extends Fragment {
     };
 
     private void initList(View view) {
-        ListView listview ;
-        ListViewAdapter adapter;
-
         // Adapter 생성
         adapter = new ListViewAdapter() ;
 
@@ -635,7 +666,7 @@ public class MapFragment extends Fragment {
         for (int i = 0; i < markerArrayList.size(); i++) {
             data = markerArrayList.get(i);
 
-            adapter.addItem(""+data.getIdMarker(), data.getName(), data.getDate());
+            adapter.addItem(""+data.getIdMarker(), data.getName(), data.getDate(), this);
         }
 
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
@@ -648,6 +679,10 @@ public class MapFragment extends Fragment {
                 String strId = item.getId() ;
                 String strName = item.getName() ;
                 String strDate = item.getDate() ;
+
+                curSelectId = strId;
+
+                Toast.makeText(mContext, "onItemClick (" + strId + ")", Toast.LENGTH_SHORT).show();
 
                 Log.d(LOG_TAG, "onItemClick: id(" + strId + "), name(" + strName + "), date(" + strDate + ")");
             }
@@ -683,11 +718,29 @@ public class MapFragment extends Fragment {
     private void AddMarker(String name, String lat, String lng, String date) {
         DBHelper db = new DBHelper(getActivity(), DB_NAME, TABLE_NAME, CREATE_QUERY);
         DataModel_Map data = new DataModel_Map(name, lat, lng, date);
-        db.addData(data);
+        long newId = db.addData(data);
         db.close();
 //        Toast.makeText(mContext, "AddMarker", Toast.LENGTH_SHORT).show();
 
+        adapter.addItem("" + newId, data.getName(), data.getDate(), this);
         Log.d(LOG_TAG, "AddMarker success");
+    }
+
+    public void DeleteMarker(int position) {
+        int id = markerArrayList.get(position).getIdMarker();
+        markerArrayList.remove(position);
+
+        adapter.deleteItem("" + id);
+
+        DBHelper db = new DBHelper(getActivity(), DB_NAME, TABLE_NAME, CREATE_QUERY);
+//        DataModel_Map data = new DataModel_Map(name, lat, lng, date);
+        db.deleteData(""+id);
+        db.close();
+
+        adapter.deleteItem(""+id);
+
+        Toast.makeText(mContext, "DeleteMarker (" + id + ")", Toast.LENGTH_SHORT).show();
+        Log.d(LOG_TAG, "DeleteMarker success");
     }
 
 

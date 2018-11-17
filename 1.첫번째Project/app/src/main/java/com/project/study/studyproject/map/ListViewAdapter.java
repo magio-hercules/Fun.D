@@ -1,10 +1,13 @@
 package com.project.study.studyproject.map;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.project.study.studyproject.R;
@@ -12,6 +15,8 @@ import com.project.study.studyproject.R;
 import java.util.ArrayList;
 
 public class ListViewAdapter extends BaseAdapter {
+    private static final String LOG_TAG = "[MAP]";
+
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
     private ArrayList<ListViewItem> listViewItemList = new ArrayList<ListViewItem>() ;
 
@@ -42,6 +47,7 @@ public class ListViewAdapter extends BaseAdapter {
         TextView idTextView = (TextView) convertView.findViewById(R.id.textView_id);
         TextView nameTextView = (TextView) convertView.findViewById(R.id.textView_name);
         TextView dateTextView = (TextView) convertView.findViewById(R.id.textView_date);
+        Button btnDelete = (Button) convertView.findViewById(R.id.map_button_delete);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
         ListViewItem listViewItem = listViewItemList.get(position);
@@ -50,7 +56,13 @@ public class ListViewAdapter extends BaseAdapter {
         idTextView.setText(listViewItem.getId());
         nameTextView.setText(listViewItem.getName());
         dateTextView.setText(listViewItem.getDate());
+        btnDelete.setOnClickListener(listViewItem.getClickListener());
 
+//        Button btnCall = (Button) convertView.findViewById(R.id.map_button_delete);
+//        btnCall.setTag(position);
+//        btnCall.setOnClickListener(mOnClickListener);
+
+        convertView.setTag(position);
         return convertView;
     }
 
@@ -67,13 +79,43 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     // 아이템 데이터 추가를 위한 함수. 개발자가 원하는대로 작성 가능.
-    public void addItem(String id, String name, String date) {
+    public void addItem(String id, String name, String date, View.OnClickListener listener) {
         ListViewItem item = new ListViewItem();
 
         item.setId(id);
         item.setName(name);
         item.setDate(date);
+        item.setClickListener(listener);
 
         listViewItemList.add(item);
+        Log.d(LOG_TAG, "ListViewAdapater addItem success");
+
+        notifyDataSetChanged();
     }
+
+    public void deleteItem(String id) {
+        int count = listViewItemList.size();
+        for (int i = 0; i < count; i++) {
+            ListViewItem item = listViewItemList.get(i);
+            if (id.equals(item.getId())) {
+                listViewItemList.remove(i);
+                notifyDataSetChanged();
+
+                Log.d(LOG_TAG, "ListViewAdapater deleteItem success");
+                break;
+            }
+        }
+    }
+
+//    Button.OnClickListener mOnClickListener = new  Button.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            int position = Integer.parseInt( (v.getTag().toString()) );
+////            System.out.println("contactList.get(position).getPhoneNumber()  :   " + contactList.get(position).getPhoneNumber());
+//            Log.d(LOG_TAG, "delete onItemClick: id(" + position + ")");
+//
+//        }
+//    };
+
+
 }
