@@ -13,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id = "@+id/tv_counting"
+        android:id = "@+id/tv_count"
         android:textSize="30sp"
         android:text = "D - 80"
         />
@@ -21,7 +21,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id = "@+id/tv_date"
+        android:id = "@+id/tv_day"
         android:text = "2019.2.16"
         />
 
