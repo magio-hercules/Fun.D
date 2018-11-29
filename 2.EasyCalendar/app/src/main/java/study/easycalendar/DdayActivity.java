@@ -120,9 +120,9 @@ public class DdayActivity extends AppCompatActivity {
     private void testDday()
     {
 
-        ddayList.add(new Dday("고등어","20190101"));
-        ddayList.add(new Dday("미꾸라지","20190215"));
-        ddayList.add(new Dday("갈치","20190330"));
+        ddayList.add(new Dday("고등어","20190101", -769226,null));
+        ddayList.add(new Dday("미꾸라지","20190215", -26624, null));
+        ddayList.add(new Dday("갈치","20190330",-3285959, null));
 
         rvDday.setAdapter(adapter);
     }
@@ -130,9 +130,9 @@ public class DdayActivity extends AppCompatActivity {
     private void testCounting()
     {
 
-        ddayList.add(new Dday("오징어","20180101"));
-        ddayList.add(new Dday("꼴뚜기","20180215"));
-        ddayList.add(new Dday("랍스터","20180330"));
+        ddayList.add(new Dday("오징어","20180101",-14575885, null));
+        ddayList.add(new Dday("꼴뚜기","20180215",-769226,null));
+        ddayList.add(new Dday("랍스터","20180330",-26624, null));
 
         rvCounting.setAdapter(adapter);
     }

@@ -40,7 +40,10 @@
             android:name=".DdayActivity"
             android:label="Calendar"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".DdayEditActivity"></activity>
+        <activity
+            android:name=".DdayEditActivity"
+            android:label="Calendar"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

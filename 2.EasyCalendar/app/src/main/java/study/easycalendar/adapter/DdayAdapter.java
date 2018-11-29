@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -22,6 +23,7 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.DdayViewHolder
     class DdayViewHolder extends RecyclerView.ViewHolder {
 
         public TextView tvTitle, tvDay, tvCount;
+        public LinearLayout itemLayout;
 
         DdayViewHolder (View itemView) {
 
@@ -30,6 +32,10 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.DdayViewHolder
             tvCount    = itemView.findViewById(R.id.tv_count);
             tvDay      = itemView.findViewById(R.id.tv_day);
             tvTitle    = itemView.findViewById(R.id.tv_title);
+
+            itemLayout = itemView.findViewById(R.id.layout_item);
+
+
 
         }
 
@@ -62,13 +68,15 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.DdayViewHolder
         }
         else
         {
-            holder.tvCount.setText("D + "+ Math.abs(days));
+            holder.tvCount.setText("+ "+ Math.abs(days));
 
         }
 
 
         holder.tvDay.setText(dday.getDay());
         holder.tvTitle.setText(dday.getTitle());
+
+        holder.itemLayout.setBackgroundColor(dday.getColor());
 
     }
 

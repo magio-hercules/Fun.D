@@ -7,6 +7,27 @@
     android:orientation="vertical"
     tools:context=".DdayEditActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/iv_back"
+            android:src="@mipmap/ic_launcher"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id = "@+id/iv_ok"
+            android:src="@mipmap/ic_launcher"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,6 +39,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:id = "@+id/layout_item"
             android:orientation="vertical"
             android:gravity="center"
             android:background="@android:color/holo_orange_dark"
@@ -27,20 +49,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tv_count"
                 android:text = "D - 1"
                 android:textSize = "30sp"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
                 />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/tv_day"
                 android:text = "2018.11.29"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
                 />
 
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/et_title"
                 android:hint="D-Day 이름을 적어주세요."
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
                 />
 
         </LinearLayout>

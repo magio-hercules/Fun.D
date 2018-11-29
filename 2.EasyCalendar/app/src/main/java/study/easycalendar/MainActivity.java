@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity
             intent = new Intent(getApplicationContext(), DdayActivity.class);
             startActivity(intent);
 
-            Toast.makeText(getApplicationContext(), "D-day 화면 보여주기", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "D-day 화면 보여주기", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_share) {
             Toast.makeText(getApplicationContext(), "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
         }

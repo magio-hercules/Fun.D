@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="150dp"
+    android:id = "@+id/layout_item"
     android:orientation="vertical"
     android:gravity="center"
     android:layout_margin="5dp"
@@ -16,6 +17,8 @@
         android:id = "@+id/tv_count"
         android:textSize="30sp"
         android:text = "D - 80"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         />
 
     <TextView
@@ -23,6 +26,8 @@
         android:layout_height="wrap_content"
         android:id = "@+id/tv_day"
         android:text = "2019.2.16"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         />
 
     <TextView
@@ -31,6 +36,8 @@
         android:id = "@+id/tv_title"
         android:textSize="20sp"
         android:text = "송사리"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         />
 
 </LinearLayout>
