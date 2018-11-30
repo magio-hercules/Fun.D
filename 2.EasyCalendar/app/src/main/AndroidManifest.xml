@@ -44,7 +44,7 @@
             android:name=".DdayEditActivity"
             android:label="Calendar"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".list.ListActivity"></activity>
+        <activity android:name=".list.ListActivity" />
     </application>
 
 </manifest>
