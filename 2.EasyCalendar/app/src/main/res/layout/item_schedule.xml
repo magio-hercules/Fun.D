@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/item_schedule"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testid"
+            app:layout_constraintEnd_toStartOf="@+id/title"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testtitle"
+            app:layout_constraintEnd_toStartOf="@+id/memo"
+            app:layout_constraintStart_toEndOf="@+id/id" />
+
+        <TextView
+            android:id="@+id/memo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testmemo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/title" />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
