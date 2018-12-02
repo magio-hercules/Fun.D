@@ -43,8 +43,7 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
         binding.schedule.setLayoutManager(new LinearLayoutManager(this));
         binding.schedule.setAdapter(calendarAdapter);
         binding.calendar.setOnDateChangedListener(scheduleViewModel);
-
-
+        scheduleViewModel.getSchedules(LocalDate.now()).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
 
     }
 
