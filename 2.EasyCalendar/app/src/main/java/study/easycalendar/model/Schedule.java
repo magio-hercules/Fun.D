@@ -12,17 +12,17 @@ public class Schedule {
     @PrimaryKey(autoGenerate = true)
     public int id;
 
-    public LocalDate localDate;
+    public LocalDate date;
 
-    public LocalTime localTime;
+    public LocalTime time;
 
     public String title;
 
     public String memo;
 
-    public Schedule(LocalDate localDate, LocalTime localTime, String title, String memo) {
-        this.localDate = localDate;
-        this.localTime = localTime;
+    public Schedule(LocalDate date, LocalTime time, String title, String memo) {
+        this.date = date;
+        this.time = time;
         this.title = title;
         this.memo = memo;
     }
@@ -51,19 +51,19 @@ public class Schedule {
         this.memo = memo;
     }
 
-    public LocalDate getLocalDate() {
-        return localDate;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setLocalDate(LocalDate localDate) {
-        this.localDate = localDate;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
-    public LocalTime getLocalTime() {
-        return localTime;
+    public LocalTime getTime() {
+        return time;
     }
 
-    public void setLocalTime(LocalTime localTime) {
-        this.localTime = localTime;
+    public void setTime(LocalTime time) {
+        this.time = time;
     }
 }

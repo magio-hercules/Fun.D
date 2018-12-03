@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{scheduleViewModel::testDataInsert}"
-            android:text="test data insert"
+            android:text="data insert"
             app:layout_constraintEnd_toStartOf="@+id/selectQuery"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,9 +33,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{scheduleViewModel::testGetData}"
-            android:text="test data select"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="data select"
+            app:layout_constraintEnd_toStartOf="@+id/goToTest"
             app:layout_constraintStart_toEndOf="@+id/insertQuery"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/goToTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{scheduleViewModel::goToTest}"
+            android:text="go to test"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/selectQuery"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.prolificinteractive.materialcalendarview.MaterialCalendarView

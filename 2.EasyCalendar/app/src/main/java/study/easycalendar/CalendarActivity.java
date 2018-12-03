@@ -19,9 +19,15 @@ import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import org.threeten.bp.LocalDate;
 
+import java.util.List;
+
 import study.easycalendar.adapter.CalendarAdapter;
 import study.easycalendar.databinding.ContentCalendarBinding;
+import study.easycalendar.model.Schedule;
 import study.easycalendar.model.ScheduleViewModel;
+import study.easycalendar.model.local.DatabaseHandler;
+
+import static study.easycalendar.model.local.DatabaseHandler.getInstance;
 
 public class CalendarActivity extends AppCompatActivity implements ScheduleViewModel.ScheduleNavigator {
 
@@ -50,7 +56,7 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
     @Override
     protected void onResume() {
         super.onResume();
-        scheduleViewModel.getAllSchedules().observe(this,schedules -> {
+        scheduleViewModel.getAllSchedules().observe(this, schedules -> {
             scheduleViewModel.setData(schedules);
             binding.calendar.addDecorator(scheduleViewModel);
         });

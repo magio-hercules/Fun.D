@@ -5,10 +5,8 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.v7.util.DiffUtil;
 import android.util.Log;
 import android.view.View;
-import android.widget.CalendarView;
 
 import com.annimon.stream.Stream;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
@@ -25,8 +23,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import study.easycalendar.TestActivity;
 import study.easycalendar.model.local.AppDatabase;
 import study.easycalendar.model.local.ScheduleDao;
+
+import static study.easycalendar.App.getApplicationInstance;
 
 public class ScheduleViewModel extends AndroidViewModel implements OnDateSelectedListener, DayViewDecorator {
 
@@ -52,7 +53,7 @@ public class ScheduleViewModel extends AndroidViewModel implements OnDateSelecte
 
     public void setData(List<Schedule> newSchedules) {
         schedules = Stream.of(newSchedules)
-                .map(Schedule::getLocalDate)
+                .map(Schedule::getDate)
                 .toList();
     }
 
@@ -72,6 +73,10 @@ public class ScheduleViewModel extends AndroidViewModel implements OnDateSelecte
         executorService.execute(() -> {
             Log.d("lsc", "데이타 with No LiveData " + scheduleDao.getSchedulesList().size());
         });
+    }
+
+    public void goToTest(View v) {
+        TestActivity.start(getApplicationInstance());
     }
 
     @Override

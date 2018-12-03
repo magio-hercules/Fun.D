@@ -39,10 +39,13 @@ public class DatabaseHandler {
     }
 
 
+    public List<Schedule> getSchedulesList() {
+        return scheduleDao.getSchedulesList();
+    }
+
     public void insertSchedule(Schedule schedule) {
         new InsertScheduleAsync(scheduleDao).execute(schedule);
     }
-
 
     private static class InsertScheduleAsync extends AsyncTask<Schedule, Void, Void> {
 
@@ -58,6 +61,8 @@ public class DatabaseHandler {
             return null;
         }
     }
+
+
 
 }
 

@@ -46,6 +46,8 @@
             android:label="Calendar"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".list.ListActivity" />
+
+        <activity android:name=".TestActivity"/>
     </application>
 
 </manifest>
