@@ -1,10 +1,11 @@
-package study.easycalendar.list;
+package study.easycalendar;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.view.View;
+import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -12,24 +13,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import study.easycalendar.CalendarActivity;
-import study.easycalendar.DdayActivity;
-import study.easycalendar.DetailActivity;
-import study.easycalendar.R;
+import study.easycalendar.list.ListActivity;
 
-public class ListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class DetailActivity extends AppCompatActivity
+            implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-
+        setContentView(R.layout.activity_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -37,7 +33,7 @@ public class ListActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "일정 추가 기능", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "저장 기능 추가하기", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -92,16 +88,16 @@ public class ListActivity extends AppCompatActivity
         Intent intent;
 
         if (id == R.id.nav_calendar) {
-            intent = new Intent(ListActivity.this, CalendarActivity.class);
+            intent = new Intent(DetailActivity.this, CalendarActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_schedule) {
-            intent = new Intent(ListActivity.this, ListActivity.class);
+            intent = new Intent(DetailActivity.this, ListActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_dday) {
-            intent = new Intent(ListActivity.this, DdayActivity.class);
+            intent = new Intent(DetailActivity.this, DdayActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
-            Toast.makeText(ListActivity.this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
+            Toast.makeText(DetailActivity.this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
         }
 
         drawer.closeDrawer(GravityCompat.START);

@@ -12,7 +12,6 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         Intent intent = new Intent(this, MainActivity.class);
-        intent.putExtra("state", "launch");
         startActivity(intent);
         finish();
     }

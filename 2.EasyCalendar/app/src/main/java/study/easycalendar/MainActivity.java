@@ -15,14 +15,22 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import study.easycalendar.list.ListActivity;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    public static final String TAG = "Main";
+
+    DrawerLayout drawer;
+    NavigationView navigationView;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -31,22 +39,24 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "일정 추가 기능 구현필요", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                startActivity(intent);
             }
         });
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -85,25 +95,18 @@ public class MainActivity extends AppCompatActivity
         Intent intent;
 
         if (id == R.id.nav_calendar) {
-            intent = new Intent(getApplicationContext(), CalendarActivity.class);
+            intent = new Intent(MainActivity.this, CalendarActivity.class);
             startActivity(intent);
-
-            Toast.makeText(getApplicationContext(), "캘린더 화면 보여주기", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_schedule) {
-            intent = new Intent(getApplicationContext(), ScheduleActivity.class);
+            intent = new Intent(MainActivity.this, ListActivity.class);
             startActivity(intent);
-
-            Toast.makeText(getApplicationContext(), "일정 리스트 화면 보여주기", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_dday) {
-            intent = new Intent(getApplicationContext(), DdayActivity.class);
+            intent = new Intent(MainActivity.this, DdayActivity.class);
             startActivity(intent);
-
-            //Toast.makeText(getApplicationContext(), "D-day 화면 보여주기", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_share) {
-            Toast.makeText(getApplicationContext(), "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
