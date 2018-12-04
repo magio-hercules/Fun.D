@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "50dd0670e962d27ead664c31bd9e27a7",
+    "identityHash": "a388534b8cc3e1d7b7268317cbe716b0",
     "entities": [
       {
         "tableName": "Schedule",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `localDate` INTEGER, `localTime` INTEGER, `title` TEXT, `memo` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `date` INTEGER, `time` INTEGER, `title` TEXT, `memo` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -15,14 +15,14 @@
             "notNull": true
           },
           {
-            "fieldPath": "localDate",
-            "columnName": "localDate",
+            "fieldPath": "date",
+            "columnName": "date",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "localTime",
-            "columnName": "localTime",
+            "fieldPath": "time",
+            "columnName": "time",
             "affinity": "INTEGER",
             "notNull": false
           },
@@ -51,7 +51,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"50dd0670e962d27ead664c31bd9e27a7\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a388534b8cc3e1d7b7268317cbe716b0\")"
     ]
   }
 }

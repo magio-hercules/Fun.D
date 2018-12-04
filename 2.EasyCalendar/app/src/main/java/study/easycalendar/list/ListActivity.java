@@ -2,28 +2,40 @@ package study.easycalendar.list;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import study.easycalendar.CalendarActivity;
 import study.easycalendar.DdayActivity;
-import study.easycalendar.DetailActivity;
 import study.easycalendar.R;
+import study.easycalendar.adapter.ListAdapter;
+import study.easycalendar.model.Schedule;
+import study.easycalendar.model.local.AppDatabase;
+import study.easycalendar.model.local.DatabaseHandler;
+import study.easycalendar.model.local.ScheduleDao;
 
 public class ListActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawer;
+    private RecyclerView recyclerView;
+    private ScheduleDao dao;
+    private ArrayList<Schedule> arrayList;
+    private ListAdapter adapter;
+    private List<Schedule> scheduleListFromDB = new ArrayList<Schedule>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,15 +45,6 @@ public class ListActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "일정 추가 기능", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -50,6 +53,11 @@ public class ListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        recyclerView = (RecyclerView) findViewById(R.id.schedule_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        dao = AppDatabase.getInstance(this).scheduleDao();
     }
 
     @Override
@@ -64,9 +72,42 @@ public class ListActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.list_menu, menu);
         return true;
     }
+
+    private void loadNotes() {
+        arrayList = new ArrayList<>();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                scheduleListFromDB = DatabaseHandler.getInstance().getSchedulesList();
+                arrayList.addAll(scheduleListFromDB);
+
+                for (int i = 0; i < arrayList.size(); i++) {
+                    Log.d("arrayList111", arrayList.get(i).getTitle() + "," + arrayList.get(i).getMemo());
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                    }
+                });
+            }
+        }).start();
+
+        adapter = new ListAdapter(this, arrayList);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadNotes();
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
