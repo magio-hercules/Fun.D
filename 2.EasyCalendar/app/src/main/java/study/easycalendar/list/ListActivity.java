@@ -1,9 +1,11 @@
 package study.easycalendar.list;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -56,6 +59,7 @@ public class ListActivity extends AppCompatActivity
 
         recyclerView = (RecyclerView) findViewById(R.id.schedule_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addItemDecoration(new MyItemDecoration());
 
         dao = AppDatabase.getInstance(this).scheduleDao();
     }
@@ -108,6 +112,22 @@ public class ListActivity extends AppCompatActivity
         loadNotes();
     }
 
+    class MyItemDecoration extends RecyclerView.ItemDecoration{
+        @Override
+        //항목하나하나당 한번씩 호출되서, 항목 하나하나를 다양하게 구현
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            super.getItemOffsets(outRect, view, parent, state);
+
+            int index=parent.getChildAdapterPosition(view)+3;
+//            if(index % 3==0)
+//                outRect.set(20,20,20,60);
+//            else
+                outRect.set(20,20,20,20);
+
+            view.setBackgroundColor(0xFFECE9E9);
+            ViewCompat.setElevation(view,20.0f);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
