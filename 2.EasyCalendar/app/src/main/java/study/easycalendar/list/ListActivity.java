@@ -5,7 +5,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -121,10 +120,12 @@ public class ListActivity extends AppCompatActivity
 //            if(index % 3==0)
 //                outRect.set(20,20,20,60);
 //            else
-                outRect.set(20,20,20,20);
+                outRect.set(8,8,8,8);
 
-            view.setBackgroundColor(0xFFECE9E9);
-            ViewCompat.setElevation(view,20.0f);
+              view.setBackgroundColor(0xFFFFE2ED);
+//            view.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+
+//            ViewCompat.setElevation(view,20.0f);
         }
     }
 
