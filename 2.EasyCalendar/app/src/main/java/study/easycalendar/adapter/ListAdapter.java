@@ -38,7 +38,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         holder.title.setText(schedule.getTitle());
         holder.memo.setText(schedule.getMemo());
         holder.date.setText(schedule.getDate().toString());
-
+        holder.day.setText(schedule.getDate().toString().substring(9, 10)+"일");
     }
 
     @Override
@@ -52,13 +52,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
     // findViewByID 기능
     class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView title, memo, date;
+        public TextView title, memo, date, day;
 
         public MyViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.title);
             memo = view.findViewById(R.id.memo);
             date = view.findViewById(R.id.date);
+            day = view.findViewById(R.id.day);
         }
     }
 }
