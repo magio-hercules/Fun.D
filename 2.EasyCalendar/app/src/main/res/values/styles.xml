@@ -16,9 +16,8 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="List.AppBarOverlay" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">#f99028</item>
-        <item name="colorPrimaryDark">#080707</item>
-        <item name="colorAccent">#000000</item>
+        <item name="colorPrimary">#fefefe</item>
+
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

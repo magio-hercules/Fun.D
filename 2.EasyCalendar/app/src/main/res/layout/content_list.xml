@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".DetailActivity"
-    tools:showIn="@layout/app_bar_list">
+    tools:showIn="@layout/app_bar_list"
+    android:padding="10dp">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/schedule_list"

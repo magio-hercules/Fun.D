@@ -7,5 +7,6 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_detail">Detail</string>
+    <string name="list">일정리스트</string>
 
 </resources>

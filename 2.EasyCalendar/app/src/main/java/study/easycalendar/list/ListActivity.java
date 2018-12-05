@@ -87,10 +87,6 @@ public class ListActivity extends AppCompatActivity
                 scheduleListFromDB = DatabaseHandler.getInstance().getSchedulesList();
                 arrayList.addAll(scheduleListFromDB);
 
-//                for (int i = 0; i < arrayList.size(); i++) {
-//                    Log.d("arrayList111", arrayList.get(i).getTitle() + "," + arrayList.get(i).getMemo());
-//                }
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -110,22 +106,11 @@ public class ListActivity extends AppCompatActivity
         loadNotes();
     }
 
-    class MyItemDecoration extends RecyclerView.ItemDecoration{
+    class MyItemDecoration extends RecyclerView.ItemDecoration {
         @Override
         //항목하나하나당 한번씩 호출되서, 항목 하나하나를 다양하게 구현
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
             super.getItemOffsets(outRect, view, parent, state);
-
-            int index=parent.getChildAdapterPosition(view)+3;
-//            if(index % 3==0)
-//                outRect.set(20,20,20,60);
-//            else
-                outRect.set(8,8,8,8);
-
-              view.setBackgroundColor(0xFFFFE2ED);
-//            view.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-
-//            ViewCompat.setElevation(view,20.0f);
         }
     }
 

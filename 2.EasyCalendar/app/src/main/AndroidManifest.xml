@@ -47,7 +47,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".list.ListActivity"
-            android:label="List"
+            android:label="@string/list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TestActivity"/>
     </application>

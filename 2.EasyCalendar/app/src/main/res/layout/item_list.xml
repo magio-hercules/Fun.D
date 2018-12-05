@@ -6,76 +6,88 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="horizontal"
-    android:padding="10dp">
+    android:padding="1dp">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="15dp"
-            android:layout_height="45dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_item_list" />
-
-        <TextView
-            android:id="@+id/day"
-            android:layout_width="90dp"
-            android:layout_height="42dp"
-            android:textColor="#f7990a"
-            android:textSize="16dp"
-            android:gravity="center_horizontal|center_vertical" />
+        android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="246dp"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="5dp"
-                    android:lines="1"
-                    android:text="title"
-                    android:layout_weight="1"
-                    android:textColor="#8d3246"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/memo"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:lineSpacingExtra="5dp"
-                    android:lines="1"
-                    android:layout_weight="2"
-                    android:text="memo"
-                    android:textColor="#8d3246"
-                    android:textSize="16dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="55dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/image_item_list" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="#faeeee">
+
                 <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/day"
+                    android:layout_width="90dp"
+                    android:layout_height="54dp"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:textColor="#e99009"
+                    android:textSize="18dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
-                    android:text="일자"
-                    android:textSize="12dp" />
+                    android:orientation="vertical"
+                    android:padding="7dp">
+
+                    <LinearLayout
+                        android:layout_width="246dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:lineSpacingExtra="6dp"
+                            android:lines="1"
+                            android:text="title"
+                            android:textColor="#616d3a"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/memo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="2"
+                            android:lineSpacingExtra="6dp"
+                            android:lines="1"
+                            android:text="memo"
+                            android:textColor="#616d3a"
+                            android:textSize="16dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:text="일자"
+                            android:textSize="12dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>
