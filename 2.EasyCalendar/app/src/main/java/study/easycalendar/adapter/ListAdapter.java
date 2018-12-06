@@ -22,6 +22,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         this.arrayList = arrayList;
     }
 
+//    @Override
+//    public int getItemViewType(int position) {
+//        return super.getItemViewType(position);
+//        return arrayList.get(position).get
+//    }
+
     // ViewGroup 인 parent 클래스에서 context 를 받고, inflate 하여 새로운 View 객체를 생성하고, 뷰홀더를 생성한다
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

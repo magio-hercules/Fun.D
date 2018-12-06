@@ -13,10 +13,4 @@
         android:icon="@drawable/ic_menu_schedule"
         app:showAsAction="always" />
 
-    <item
-        android:id="@+id/menu_search"
-        android:visible="true"
-        android:icon="@drawable/ic_menu_search"
-        app:showAsAction="always" />
-
 </menu>

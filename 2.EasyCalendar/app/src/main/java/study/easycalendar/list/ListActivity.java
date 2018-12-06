@@ -60,6 +60,7 @@ public class ListActivity extends AppCompatActivity
         recyclerView.addItemDecoration(new MyItemDecoration());
 
         dao = AppDatabase.getInstance(this).scheduleDao();
+
     }
 
     @Override
