@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>없음</item>
+        <item>기념일</item>
+        <item>미팅</item>
+        <item>약속</item>
+        <item>메모</item>
+        <item>기타</item>
+    </string-array>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notification">
+        <item>없음</item>
+        <item>10분 전</item>
+        <item>30분 전</item>
+        <item>1시간 전</item>
+        <item>1일 전</item>
+        <item>7일 전</item>
+    </string-array>
+</resources>
