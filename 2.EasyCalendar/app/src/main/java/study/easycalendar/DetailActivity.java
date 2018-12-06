@@ -1,6 +1,7 @@
 package study.easycalendar;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,22 +17,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
+
 import java.util.Calendar;
 
 import study.easycalendar.list.ListActivity;
+import study.easycalendar.model.Schedule;
+import study.easycalendar.model.local.DatabaseHandler;
 
 public class DetailActivity extends AppCompatActivity
             implements NavigationView.OnNavigationItemSelectedListener {
-    public static final String TAG = "Detail";
+    public static final String TAG = "[easy][Detail]";
+
+    EditText edit_title;
+    EditText edit_memo;
 
     Spinner spinner_category;
     Spinner spinner_repeat;
     Spinner spinner_notification;
+
+    CheckBox checkBox_dday;
 
     DrawerLayout drawer;
 
@@ -58,6 +71,7 @@ public class DetailActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "저장 기능 추가하기", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                InsertSchdule();
             }
         });
 
@@ -69,6 +83,11 @@ public class DetailActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        edit_title = (EditText) findViewById(R.id.edit_title);
+        edit_memo = (EditText) findViewById(R.id.edit_memo);
+
+        checkBox_dday = (CheckBox) findViewById(R.id.checkBox_dday);
 
         initSpinner();
         initDateTime();
@@ -142,8 +161,7 @@ public class DetailActivity extends AppCompatActivity
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(),
-                        parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(parent.getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -156,8 +174,7 @@ public class DetailActivity extends AppCompatActivity
         spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(),
-                               parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(parent.getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -170,8 +187,7 @@ public class DetailActivity extends AppCompatActivity
         spinner_notification.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(parent.getContext(),
-                        parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
+//                Toast.makeText(parent.getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
@@ -190,5 +206,53 @@ public class DetailActivity extends AppCompatActivity
         int sec = calendar.get(calendar.SECOND);
 
         Log.d(TAG, "현재 시간 (" + hour + "시 " + min + "분 " + sec + "초)");
+    }
+
+    private void InsertSchdule() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int startHour, startMinute, endHour, endMinute;
+                if(Build.VERSION.SDK_INT < 23){
+                    startHour = picker_start_time.getCurrentHour();
+                    startMinute = picker_start_time.getCurrentMinute();
+                    endHour = picker_end_time.getCurrentHour();
+                    endMinute = picker_end_time.getCurrentMinute();
+                } else{
+                    startHour = picker_start_time.getHour();
+                    startMinute = picker_start_time.getMinute();
+                    endHour = picker_end_time.getHour();
+                    endMinute = picker_end_time.getMinute();
+                }
+
+                LocalDate startDate = LocalDate.of(picker_start_date.getYear(), picker_start_date.getMonth(), picker_start_date.getDayOfMonth());
+                LocalTime startTime = LocalTime.of(startHour, startMinute);
+                LocalDate endDate = LocalDate.of(picker_end_date.getYear(), picker_end_date.getMonth(), picker_end_date.getDayOfMonth());
+                LocalTime endTime = LocalTime.of(endHour, endMinute);
+
+                String title = edit_title.getText().toString();
+                String memo = edit_memo.getText().toString();
+
+                boolean bDday = checkBox_dday.isChecked();
+
+                String category = spinner_category.getSelectedItem().toString();
+                String notification = spinner_notification.getSelectedItem().toString();
+                String repeat = spinner_repeat.getSelectedItem().toString();
+
+                Schedule s = new Schedule(LocalDate.now(), LocalTime.now(), title, memo);
+
+                DatabaseHandler.getInstance().insertSchedule(s);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "InsertSchdule Complete");
+                        Log.d(TAG, "InsertSchdule 저장 Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " +
+                                title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
+
+//                        Toast.makeText(DetailActivity.this, "INSERT COMPLETE", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).start();
     }
 }
