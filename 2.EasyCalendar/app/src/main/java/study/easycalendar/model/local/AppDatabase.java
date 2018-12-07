@@ -10,11 +10,9 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
 import org.threeten.bp.LocalTime;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executors;
 
@@ -29,16 +27,30 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ScheduleDao scheduleDao();
 
     private final static List<Schedule> TEST_SCHEDULES = Arrays.asList(
-            new Schedule(LocalDate.of(2018, 12, 1), LocalTime.now(), "12월 1일", "메모입니다."),
-            new Schedule(LocalDate.of(2018, 12, 1), LocalTime.now(), "12월 1일", "두번째 메모."),
-            new Schedule(LocalDate.of(2018, 12, 3), LocalTime.now(), "12월 3일", "가나다라마바사."),
-            new Schedule(LocalDate.of(2018, 12, 3), LocalTime.now(), "12월 3일", "아자차카타파하."),
-            new Schedule(LocalDate.of(2018, 12, 5), LocalTime.now(), "12월 5일", "ABCDEFG"),
-            new Schedule(LocalDate.of(2018, 12, 5), LocalTime.now(), "12월 5일", "HIJKLMN"),
-            new Schedule(LocalDate.of(2018, 12, 5), LocalTime.now(), "12월 5일", "OPQRSTU"),
-            new Schedule(LocalDate.of(2018, 12, 5), LocalTime.now(), "12월 5일", "VWXYZ"),
-            new Schedule(LocalDate.of(2018, 12, 7), LocalTime.now(), "12월 7일", "아야어여오요."),
-            new Schedule(LocalDate.of(2018, 12, 7), LocalTime.now(), "12월 7일", "으이.")
+            new Schedule(
+                    LocalDate.of(2018, 12, 1),
+                    LocalTime.now(),
+                    LocalDate.of(2018, 12, 1),
+                    LocalTime.now(),
+                    "12월 1일",
+                    "메모입니다.",
+                    "category1",
+                    "notification1",
+                    "repeat1",
+                    false),
+
+            new Schedule(
+                    LocalDate.of(2018, 12, 3),
+                    LocalTime.now(),
+                    LocalDate.of(2018, 12, 3),
+                    LocalTime.now(),
+                    "12월 3일",
+                    "메모입니다..",
+                    "category2",
+                    "notification2",
+                    "repeat2",
+                    false)
+
     );
 
     public static AppDatabase getInstance(Context context) {

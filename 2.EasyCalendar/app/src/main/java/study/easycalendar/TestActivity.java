@@ -10,9 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalTime;
-
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -72,7 +69,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        DatabaseHandler.getInstance().insertSchedule(new Schedule(LocalDate.now(), LocalTime.now(), "테스트 제목", "테스트 내용"));
+//                        DatabaseHandler.getInstance().insertSchedule(new Schedule(LocalDate.now(), LocalTime.now(), "테스트 제목", "테스트 내용"));
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

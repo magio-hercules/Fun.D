@@ -17,7 +17,6 @@ import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalTime;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -53,7 +52,7 @@ public class ScheduleViewModel extends AndroidViewModel implements OnDateSelecte
 
     public void setData(List<Schedule> newSchedules) {
         schedules = Stream.of(newSchedules)
-                .map(Schedule::getDate)
+                .map(Schedule::getStartDate)
                 .toList();
     }
 
@@ -66,7 +65,7 @@ public class ScheduleViewModel extends AndroidViewModel implements OnDateSelecte
     }
 
     public void testDataInsert(View v) {
-        executorService.execute(() -> scheduleDao.insertSchedule(new Schedule(LocalDate.now(), LocalTime.now(), "test", "test")));
+//        executorService.execute(() -> scheduleDao.insertSchedule(new Schedule(LocalDate.now(), LocalTime.now(), "test", "test")));
     }
 
     public void testGetData(View v) {

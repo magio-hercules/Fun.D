@@ -21,10 +21,10 @@ public interface ScheduleDao {
     @Query("SELECT * FROM Schedule")
     List<Schedule> getSchedulesList();
 
-    @Query("SELECT * FROM Schedule WHERE date =:localDate")
+    @Query("SELECT * FROM Schedule WHERE startDate =:localDate")
     LiveData<List<Schedule>> getSchedulesOnSelectedDate(LocalDate localDate);
 
-    @Query("SELECT * FROM Schedule WHERE date =:localDate")
+    @Query("SELECT * FROM Schedule WHERE startDate =:localDate")
     List<Schedule> getSchedulesOnSelectedDateList(LocalDate localDate);
 
     @Insert

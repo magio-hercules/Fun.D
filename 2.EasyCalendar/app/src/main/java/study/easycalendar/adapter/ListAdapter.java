@@ -43,8 +43,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
 
         holder.title.setText(schedule.getTitle());
         holder.memo.setText(schedule.getMemo());
-        holder.date.setText(schedule.getDate().toString());
-        holder.day.setText(schedule.getDate().toString().substring(9, 10)+"일");
+        holder.date.setText(schedule.getStartDate().toString());
+        holder.day.setText(schedule.getStartDate().toString().substring(9, 10)+"일");
     }
 
     @Override
@@ -64,7 +64,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             super(view);
             title = view.findViewById(R.id.title);
             memo = view.findViewById(R.id.memo);
-            date = view.findViewById(R.id.date);
+            date = view.findViewById(R.id.startDate);
             day = view.findViewById(R.id.day);
         }
     }

@@ -239,7 +239,8 @@ public class DetailActivity extends AppCompatActivity
                 String notification = spinner_notification.getSelectedItem().toString();
                 String repeat = spinner_repeat.getSelectedItem().toString();
 
-                Schedule s = new Schedule(LocalDate.now(), LocalTime.now(), title, memo);
+//                Schedule s = new Schedule(LocalDate.now(), LocalTime.now(), title, memo);
+                Schedule s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
 
                 DatabaseHandler.getInstance().insertSchedule(s);
                 runOnUiThread(new Runnable() {
