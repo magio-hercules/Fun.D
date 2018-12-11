@@ -34,7 +34,7 @@ import study.easycalendar.model.Schedule;
 import study.easycalendar.model.local.DatabaseHandler;
 
 public class DetailActivity extends AppCompatActivity
-            implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "[easy][Detail]";
 
     EditText edit_title;
@@ -69,9 +69,11 @@ public class DetailActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "저장 기능 추가하기", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                InsertSchdule();
+                if (edit_title.getText().equals("")) {
+                    Toast.makeText(getApplicationContext(), "일정 타이틀을 입력하세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    InsertSchdule(view);
+                }
             }
         });
 
@@ -201,14 +203,17 @@ public class DetailActivity extends AppCompatActivity
         picker_end_time = (TimePicker) findViewById(R.id.picker_end_time);
 
         calendar = Calendar.getInstance();
+        int year = picker_start_date.getYear();
+        int month = picker_start_date.getMonth() + 1;
+        int day = picker_start_date.getDayOfMonth();
         int hour = calendar.get(calendar.HOUR_OF_DAY);
         int min = calendar.get(calendar.MINUTE);
         int sec = calendar.get(calendar.SECOND);
 
-        Log.d(TAG, "현재 시간 (" + hour + "시 " + min + "분 " + sec + "초)");
+        Log.d(TAG, "현재 시간 (" + year + "년 " + month + "월 " + day + "일 " + hour + "시 " + min + "분 " + sec + "초)");
     }
 
-    private void InsertSchdule() {
+    private void InsertSchdule(View view) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -225,9 +230,9 @@ public class DetailActivity extends AppCompatActivity
                     endMinute = picker_end_time.getMinute();
                 }
 
-                LocalDate startDate = LocalDate.of(picker_start_date.getYear(), picker_start_date.getMonth(), picker_start_date.getDayOfMonth());
+                LocalDate startDate = LocalDate.of(picker_start_date.getYear(), picker_start_date.getMonth() + 1, picker_start_date.getDayOfMonth());
                 LocalTime startTime = LocalTime.of(startHour, startMinute);
-                LocalDate endDate = LocalDate.of(picker_end_date.getYear(), picker_end_date.getMonth(), picker_end_date.getDayOfMonth());
+                LocalDate endDate = LocalDate.of(picker_end_date.getYear(), picker_end_date.getMonth() + 1, picker_end_date.getDayOfMonth());
                 LocalTime endTime = LocalTime.of(endHour, endMinute);
 
                 String title = edit_title.getText().toString();
@@ -246,8 +251,8 @@ public class DetailActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.d(TAG, "InsertSchdule Complete");
-                        Log.d(TAG, "InsertSchdule 저장 Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " +
+                        Snackbar.make(view, "저장 완료", Snackbar.LENGTH_LONG) .setAction("Action", null).show();
+                        Log.d(TAG, "InsertSchdule Complete : Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " +
                                 title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
 
 //                        Toast.makeText(DetailActivity.this, "INSERT COMPLETE", Toast.LENGTH_SHORT).show();
