@@ -99,7 +99,7 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
         binding.drawerLayout.closeDrawer(GravityCompat.START);
         startActivity(intent);
         overridePendingTransition(0, 0);
-        finish();
+//        finish();
         return true;
     }
 }
