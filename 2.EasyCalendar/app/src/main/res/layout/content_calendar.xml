@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -18,35 +17,21 @@
         tools:context=".CalendarActivity"
         tools:showIn="@layout/app_bar_main">
 
-        <Button
-            android:id="@+id/insertQuery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{scheduleViewModel::testDataInsert}"
-            android:text="data insert"
-            app:layout_constraintEnd_toStartOf="@+id/selectQuery"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <android.support.design.widget.AppBarLayout
 
-        <Button
-            android:id="@+id/selectQuery"
-            android:layout_width="wrap_content"
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{scheduleViewModel::testGetData}"
-            android:text="data select"
-            app:layout_constraintEnd_toStartOf="@+id/goToTest"
-            app:layout_constraintStart_toEndOf="@+id/insertQuery"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:theme="@style/AppTheme.AppBarOverlay">
 
-        <Button
-            android:id="@+id/goToTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{scheduleViewModel::goToTest}"
-            android:text="go to test"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/selectQuery"
-            app:layout_constraintTop_toTopOf="parent" />
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+        </android.support.design.widget.AppBarLayout>
 
         <com.prolificinteractive.materialcalendarview.MaterialCalendarView
             android:id="@+id/calendar"
@@ -55,18 +40,56 @@
             app:layout_constraintBottom_toTopOf="@+id/schedule"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/insertQuery" />
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/schedule"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/insertQuery"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendar"
             tools:listitem="@layout/item_schedule" />
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fab_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_add" />
+
+        <Button
+            android:id="@+id/insertQuery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{scheduleViewModel::testDataInsert}"
+            android:text="data insert"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/selectQuery"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/selectQuery"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{scheduleViewModel::testGetData}"
+            android:text="data select"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/goToTest"
+            app:layout_constraintStart_toEndOf="@+id/insertQuery" />
+
+        <Button
+            android:id="@+id/goToTest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{scheduleViewModel::goToTest}"
+            android:text="go to test"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/selectQuery" />
 
     </android.support.constraint.ConstraintLayout>
 

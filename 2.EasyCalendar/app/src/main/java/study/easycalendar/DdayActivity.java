@@ -2,6 +2,7 @@ package study.easycalendar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -203,27 +204,28 @@ public class DdayActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Intent intent;
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent = null;
 
-        if (id == R.id.nav_calendar) {
-            intent = new Intent(DdayActivity.this, CalendarActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_schedule) {
-            intent = new Intent(DdayActivity.this, ListActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_dday) {
-            intent = new Intent(DdayActivity.this, DdayActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_share) {
-            Toast.makeText(DdayActivity.this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.nav_calendar:
+                intent = new Intent(this, CalendarActivity.class);
+                break;
+            case R.id.nav_schedule:
+                intent = new Intent(this, ListActivity.class);
+                break;
+            case R.id.nav_dday:
+                intent = new Intent(this, DdayActivity.class);
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
+                break;
         }
-
         drawer.closeDrawer(GravityCompat.START);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
         return true;
     }
 

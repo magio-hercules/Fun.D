@@ -40,6 +40,18 @@ public abstract class AppDatabase extends RoomDatabase {
                     false),
 
             new Schedule(
+                    LocalDate.of(2018, 12, 1),
+                    LocalTime.of(10,10,10),
+                    LocalDate.of(2018, 12, 1),
+                    LocalTime.now(),
+                    "12월 1일",
+                    "메모입니다.112",
+                    "category122",
+                    "notification122",
+                    "repeat1",
+                    false),
+
+            new Schedule(
                     LocalDate.of(2018, 12, 3),
                     LocalTime.now(),
                     LocalDate.of(2018, 12, 3),
@@ -49,7 +61,19 @@ public abstract class AppDatabase extends RoomDatabase {
                     "category2",
                     "notification2",
                     "repeat2",
+                    false),
+            new Schedule(
+                    LocalDate.of(2018, 12, 3),
+                    LocalTime.of(1,1,1),
+                    LocalDate.of(2018, 12, 3),
+                    LocalTime.of(2,2,2),
+                    "12월 3일",
+                    "메모입니다..",
+                    "category2",
+                    "notification2",
+                    "repeat2",
                     false)
+
 
     );
 

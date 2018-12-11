@@ -66,7 +66,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
         void bind(final Schedule schedule) {
             if (schedule != null) {
-                binding.id.setText(AppUtil.getStringByLocalTime(schedule.getStartTime(), "HH:mm:ss"));
+                binding.startDate.setText(AppUtil.getStringByLocalTime(schedule.getStartTime(), "HH:mm:ss"));
                 binding.title.setText(schedule.getTitle());
                 binding.memo.setText(schedule.getMemo());
             }

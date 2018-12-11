@@ -1,37 +1,35 @@
 package study.easycalendar;
 
-import android.arch.lifecycle.LiveData;
+
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.DayViewDecorator;
-import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import org.threeten.bp.LocalDate;
 
-import java.util.List;
-
 import study.easycalendar.adapter.CalendarAdapter;
-import study.easycalendar.databinding.ContentCalendarBinding;
-import study.easycalendar.model.Schedule;
+import study.easycalendar.databinding.ActivityCalendarBinding;
+import study.easycalendar.list.ListActivity;
 import study.easycalendar.model.ScheduleViewModel;
-import study.easycalendar.model.local.DatabaseHandler;
 
-import static study.easycalendar.model.local.DatabaseHandler.getInstance;
+public class CalendarActivity extends AppCompatActivity implements ScheduleViewModel.ScheduleNavigator, NavigationView.OnNavigationItemSelectedListener {
 
-public class CalendarActivity extends AppCompatActivity implements ScheduleViewModel.ScheduleNavigator {
-
-    private ContentCalendarBinding binding;
+    private ActivityCalendarBinding binding;
     private CalendarAdapter calendarAdapter;
     private ScheduleViewModel scheduleViewModel;
 
@@ -39,18 +37,22 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = DataBindingUtil.setContentView(this, R.layout.content_calendar);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_calendar);
         scheduleViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
         binding.setScheduleViewModel(scheduleViewModel);
         scheduleViewModel.setNavigator(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        calendarAdapter = new CalendarAdapter();
-        binding.schedule.setLayoutManager(new LinearLayoutManager(this));
-        binding.schedule.setAdapter(calendarAdapter);
-        binding.calendar.setOnDateChangedListener(scheduleViewModel);
-        scheduleViewModel.getSchedules(LocalDate.now()).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
 
+        setSupportActionBar(binding.contentCalendar.toolbar);
+        calendarAdapter = new CalendarAdapter();
+        binding.contentCalendar.schedule.setLayoutManager(new LinearLayoutManager(this));
+        binding.contentCalendar.schedule.setAdapter(calendarAdapter);
+        binding.contentCalendar.calendar.setOnDateChangedListener(scheduleViewModel);
+        scheduleViewModel.getSchedules(LocalDate.now()).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.contentCalendar.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        binding.drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+        binding.navView.setNavigationItemSelectedListener(this);
+        binding.contentCalendar.fab.setOnClickListener(v -> startActivity(new Intent(this, DetailActivity.class)));
     }
 
     @Override
@@ -58,12 +60,46 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
         super.onResume();
         scheduleViewModel.getAllSchedules().observe(this, schedules -> {
             scheduleViewModel.setData(schedules);
-            binding.calendar.addDecorator(scheduleViewModel);
+            binding.contentCalendar.calendar.addDecorator(scheduleViewModel);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
     public void onSelectedDayChange(LocalDate selectedDate) {
         scheduleViewModel.getSchedules(selectedDate).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Intent intent = null;
+
+        switch (item.getItemId()) {
+            case R.id.nav_calendar:
+                intent = new Intent(this, CalendarActivity.class);
+                break;
+            case R.id.nav_schedule:
+                intent = new Intent(this, ListActivity.class);
+                break;
+            case R.id.nav_dday:
+                intent = new Intent(this, DdayActivity.class);
+                break;
+            case R.id.nav_share:
+                Toast.makeText(this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
+                break;
+        }
+        binding.drawerLayout.closeDrawer(GravityCompat.START);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+        return true;
     }
 }
