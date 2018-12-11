@@ -2,7 +2,7 @@
 <resources>
     <string-array name="repeat">
         <item>없음</item>
-        <item>매일</item>
+        <!--<item>매일</item>-->
         <item>매주</item>
         <item>매월</item>
         <item>매년</item>

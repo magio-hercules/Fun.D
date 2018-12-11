@@ -47,6 +47,10 @@ public class DatabaseHandler {
         new InsertScheduleAsync(scheduleDao).execute(schedule);
     }
 
+    public void insertScheduleList(List<Schedule> scheduleList) {
+        new InsertScheduleListAsync(scheduleDao).execute(scheduleList);
+    }
+
     private static class InsertScheduleAsync extends AsyncTask<Schedule, Void, Void> {
 
         private ScheduleDao managerDaoAsync;
@@ -62,7 +66,20 @@ public class DatabaseHandler {
         }
     }
 
+    private static class InsertScheduleListAsync extends AsyncTask<List<Schedule>, Void, Void> {
 
+        private ScheduleDao managerDaoAsync;
+
+        InsertScheduleListAsync(ScheduleDao managerDao) {
+            managerDaoAsync = managerDao;
+        }
+
+        @Override
+        protected Void doInBackground(List<Schedule>... managerResponses) {
+            managerDaoAsync.insertTestSchedules(managerResponses[0]);
+            return null;
+        }
+    }
 
 }
 

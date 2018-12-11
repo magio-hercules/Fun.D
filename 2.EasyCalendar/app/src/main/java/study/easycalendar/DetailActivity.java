@@ -27,7 +27,9 @@ import android.widget.Toast;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import study.easycalendar.list.ListActivity;
 import study.easycalendar.model.Schedule;
@@ -69,10 +71,32 @@ public class DetailActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edit_title.getText().equals("")) {
+                Log.d(TAG, edit_title.getText().toString());
+
+                if (edit_title.getText().toString().equals("")) {
                     Toast.makeText(getApplicationContext(), "일정 타이틀을 입력하세요.", Toast.LENGTH_SHORT).show();
                 } else {
-                    InsertSchdule(view);
+                    int repeat = 0;
+                    switch (spinner_repeat.getSelectedItem().toString()) {
+//                        case "매일":
+//                        repeat = 1;
+//                            break;
+                        case "매주":
+                            repeat = 2;
+                            break;
+                        case "매월":
+                            repeat = 3;
+                            break;
+                        case "매년":
+                            repeat = 4;
+                            break;
+                    }
+
+                    if (repeat == 0) {
+                        InsertSchdule(view);
+                    } else {
+                        InsertSchduleList(view, repeat);
+                    }
                 }
             }
         });
@@ -214,6 +238,7 @@ public class DetailActivity extends AppCompatActivity
     }
 
     private void InsertSchdule(View view) {
+        Log.d(TAG, "InsertSchdule");
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -256,9 +281,104 @@ public class DetailActivity extends AppCompatActivity
                                 title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
 
 //                        Toast.makeText(DetailActivity.this, "INSERT COMPLETE", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 });
             }
         }).start();
     }
+
+    private void InsertSchduleList(View view, int repeatType) {
+        Log.d(TAG, "InsertSchduleList" +
+                "");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int startHour, startMinute, endHour, endMinute;
+                if(Build.VERSION.SDK_INT < 23){
+                    startHour = picker_start_time.getCurrentHour();
+                    startMinute = picker_start_time.getCurrentMinute();
+                    endHour = picker_end_time.getCurrentHour();
+                    endMinute = picker_end_time.getCurrentMinute();
+                } else{
+                    startHour = picker_start_time.getHour();
+                    startMinute = picker_start_time.getMinute();
+                    endHour = picker_end_time.getHour();
+                    endMinute = picker_end_time.getMinute();
+                }
+
+                LocalDate startDate = LocalDate.of(picker_start_date.getYear(), picker_start_date.getMonth() + 1, picker_start_date.getDayOfMonth());
+                LocalTime startTime = LocalTime.of(startHour, startMinute);
+                LocalDate endDate = LocalDate.of(picker_end_date.getYear(), picker_end_date.getMonth() + 1, picker_end_date.getDayOfMonth());
+                LocalTime endTime = LocalTime.of(endHour, endMinute);
+
+                String title = edit_title.getText().toString();
+                String memo = edit_memo.getText().toString();
+
+                boolean bDday = checkBox_dday.isChecked();
+
+                String category = spinner_category.getSelectedItem().toString();
+                String notification = spinner_notification.getSelectedItem().toString();
+                String repeat = spinner_repeat.getSelectedItem().toString();
+
+                List<Schedule> list = new ArrayList<Schedule>();
+                Schedule s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+                list.add(s);
+
+                int s_year, s_month, s_day;
+                // 매일, 매주, 매월, 매년
+                /*if (repeatType == 1) {
+
+                } else*/ if (repeatType == 2) { // 매주
+                    s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+
+                } else if (repeatType == 3) { // 매월
+                    s_year = picker_start_date.getYear();
+                    s_month = picker_start_date.getMonth() + 1;
+                    s_day = picker_start_date.getDayOfMonth();
+                    for (int i = 0; i < 12; i++) {
+                        s_month += 1;
+                        if (s_month > 12) {
+                            s_month -= 12;
+                            s_year += 1;
+                        }
+                        startDate = LocalDate.of(s_year, s_month, s_day);
+                        s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+
+                        Log.d(TAG, "Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " + title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
+                        list.add(s);
+                    }
+                } else if (repeatType == 4) { // 매년
+                    s_year = picker_start_date.getYear();
+                    s_month = picker_start_date.getMonth() + 1;
+                    s_day = picker_start_date.getDayOfMonth();
+                    for (int i = 0; i < 12; i++) {
+                        s_year += 1;
+
+                        startDate = LocalDate.of(s_year, s_month, s_day);
+                        s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+
+                        Log.d(TAG, "Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " + title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
+                        list.add(s);
+                    }
+                }
+
+                //                DatabaseHandler.getInstance().insertSchedule(s);
+                DatabaseHandler.getInstance().insertScheduleList(list);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Snackbar.make(view, "저장 완료", Snackbar.LENGTH_LONG) .setAction("Action", null).show();
+//                        Log.d(TAG, "InsertSchdule Complete : Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " +
+//                                title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
+
+//                        Toast.makeText(DetailActivity.this, "INSERT COMPLETE", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+                });
+            }
+        }).start();
+    }
+
+
 }
