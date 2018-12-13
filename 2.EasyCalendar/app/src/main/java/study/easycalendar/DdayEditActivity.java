@@ -20,12 +20,18 @@ import android.widget.Toast;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import study.easycalendar.model.Schedule;
+import study.easycalendar.model.local.DatabaseHandler;
 
 public class DdayEditActivity extends AppCompatActivity implements ColorPickerDialogListener
 {
@@ -140,7 +146,33 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
                     return;
                 }
 
-                Toast.makeText(getApplicationContext(), "D-Day 생성 완료", Toast.LENGTH_SHORT).show();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Schedule schedule = new Schedule(LocalDate.now()
+                                , LocalTime.now()
+                                , LocalDate.now()
+                                , LocalTime.now()
+                                , etTitle.getText().toString()
+                                , ""
+                                , ""
+                                , ""
+                                , ""
+                                , true
+                        );
+
+                        DatabaseHandler.getInstance().insertSchedule(schedule);
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(DdayEditActivity.this, "D-Day 생성 완료", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
+                    }
+                }).start();
 
                 finish();
 
