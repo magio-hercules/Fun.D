@@ -44,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         holder.title.setText(schedule.getTitle());
         holder.memo.setText(schedule.getMemo());
         holder.date.setText(schedule.getStartDate().toString());
-        holder.day.setText(schedule.getStartDate().toString().substring(9, 10)+"일");
+        holder.day.setText(schedule.getStartDate().toString().substring(8, 10)+"일");
     }
 
     @Override
