@@ -18,9 +18,11 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -57,8 +59,8 @@ public class DetailActivity extends AppCompatActivity
     TimePicker picker_start_time;
     TimePicker picker_end_time;
 
-
-
+    DatePicker picker_dday_date;
+    TextView text_dday_date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,10 +115,9 @@ public class DetailActivity extends AppCompatActivity
         edit_title = (EditText) findViewById(R.id.edit_title);
         edit_memo = (EditText) findViewById(R.id.edit_memo);
 
-        checkBox_dday = (CheckBox) findViewById(R.id.checkBox_dday);
-
         initSpinner();
         initDateTime();
+        initDday();
     }
 
     @Override
@@ -237,6 +238,29 @@ public class DetailActivity extends AppCompatActivity
         Log.d(TAG, "현재 시간 (" + year + "년 " + month + "월 " + day + "일 " + hour + "시 " + min + "분 " + sec + "초)");
     }
 
+    private void initDday() {
+        picker_dday_date = (DatePicker) findViewById(R.id.picker_dday_date);
+        text_dday_date = (TextView) findViewById(R.id.text_dday_date);
+
+        picker_dday_date.setEnabled(false);
+        text_dday_date.setEnabled(false);
+
+        checkBox_dday = (CheckBox) findViewById(R.id.checkBox_dday);
+        checkBox_dday.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // dday date enable
+                    picker_dday_date.setEnabled(true);
+                    text_dday_date.setEnabled(true);
+                } else {
+                    // dday date disable
+                    picker_dday_date.setEnabled(false);
+                    text_dday_date.setEnabled(false);
+                }
+            }
+        });
+    }
+
     private void InsertSchdule(View view) {
         Log.d(TAG, "InsertSchdule");
         new Thread(new Runnable() {
@@ -329,14 +353,14 @@ public class DetailActivity extends AppCompatActivity
                 // 매일, 매주, 매월, 매년
                 /*if (repeatType == 1) {
 
-                } else*/ if (repeatType == 2) { // 매주
+                } else*/ if (repeatType == 2) { // 매주, 1년
                     s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
 
-                } else if (repeatType == 3) { // 매월
+                } else if (repeatType == 3) { // 매월, 5년
                     s_year = picker_start_date.getYear();
                     s_month = picker_start_date.getMonth() + 1;
                     s_day = picker_start_date.getDayOfMonth();
-                    for (int i = 0; i < 12; i++) {
+                    for (int i = 0; i < 12 * 5; i++) {
                         s_month += 1;
                         if (s_month > 12) {
                             s_month -= 12;
@@ -348,11 +372,11 @@ public class DetailActivity extends AppCompatActivity
                         Log.d(TAG, "Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " + title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
                         list.add(s);
                     }
-                } else if (repeatType == 4) { // 매년
+                } else if (repeatType == 4) { // 매년, 10년
                     s_year = picker_start_date.getYear();
                     s_month = picker_start_date.getMonth() + 1;
                     s_day = picker_start_date.getDayOfMonth();
-                    for (int i = 0; i < 12; i++) {
+                    for (int i = 0; i < 10; i++) {
                         s_year += 1;
 
                         startDate = LocalDate.of(s_year, s_month, s_day);
