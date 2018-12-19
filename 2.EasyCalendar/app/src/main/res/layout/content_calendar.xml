@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="scheduleViewModel"
-            type="study.easycalendar.model.ScheduleViewModel" />
+            name="calendarViewModel"
+            type="study.easycalendar.model.CalendarViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -46,7 +46,7 @@
             android:id="@+id/schedule"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/insertQuery"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/calendar"
@@ -60,36 +60,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@android:drawable/ic_menu_add" />
-
-        <Button
-            android:id="@+id/insertQuery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{scheduleViewModel::testDataInsert}"
-            android:text="data insert"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/selectQuery"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <Button
-            android:id="@+id/selectQuery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{scheduleViewModel::testGetData}"
-            android:text="data select"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/goToTest"
-            app:layout_constraintStart_toEndOf="@+id/insertQuery" />
-
-        <Button
-            android:id="@+id/goToTest"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{scheduleViewModel::goToTest}"
-            android:text="go to test"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/selectQuery" />
 
     </android.support.constraint.ConstraintLayout>
 

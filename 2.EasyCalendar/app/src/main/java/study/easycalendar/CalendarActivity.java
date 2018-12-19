@@ -7,17 +7,12 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import org.threeten.bp.LocalDate;
@@ -25,29 +20,29 @@ import org.threeten.bp.LocalDate;
 import study.easycalendar.adapter.CalendarAdapter;
 import study.easycalendar.databinding.ActivityCalendarBinding;
 import study.easycalendar.list.ListActivity;
-import study.easycalendar.model.ScheduleViewModel;
+import study.easycalendar.model.CalendarViewModel;
 
-public class CalendarActivity extends AppCompatActivity implements ScheduleViewModel.ScheduleNavigator, NavigationView.OnNavigationItemSelectedListener {
+public class CalendarActivity extends AppCompatActivity implements CalendarViewModel.CalendarNavigator, NavigationView.OnNavigationItemSelectedListener {
 
     private ActivityCalendarBinding binding;
     private CalendarAdapter calendarAdapter;
-    private ScheduleViewModel scheduleViewModel;
+    private CalendarViewModel calendarViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_calendar);
-        scheduleViewModel = ViewModelProviders.of(this).get(ScheduleViewModel.class);
-        binding.setScheduleViewModel(scheduleViewModel);
-        scheduleViewModel.setNavigator(this);
+        calendarViewModel = ViewModelProviders.of(this).get(CalendarViewModel.class);
+        binding.setCalendarViewModel(calendarViewModel);
+        calendarViewModel.setNavigator(this);
 
         setSupportActionBar(binding.contentCalendar.toolbar);
         calendarAdapter = new CalendarAdapter();
         binding.contentCalendar.schedule.setLayoutManager(new LinearLayoutManager(this));
         binding.contentCalendar.schedule.setAdapter(calendarAdapter);
-        binding.contentCalendar.calendar.setOnDateChangedListener(scheduleViewModel);
-        scheduleViewModel.getSchedules(LocalDate.now()).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
+        binding.contentCalendar.calendar.setOnDateChangedListener(calendarViewModel);
+        calendarViewModel.getSchedules(LocalDate.now()).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, binding.drawerLayout, binding.contentCalendar.toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         binding.drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -58,9 +53,9 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
     @Override
     protected void onResume() {
         super.onResume();
-        scheduleViewModel.getAllSchedules().observe(this, schedules -> {
-            scheduleViewModel.setData(schedules);
-            binding.contentCalendar.calendar.addDecorator(scheduleViewModel);
+        calendarViewModel.getAllSchedules().observe(this, schedules -> {
+            calendarViewModel.setData(schedules);
+            binding.contentCalendar.calendar.addDecorator(calendarViewModel);
         });
     }
 
@@ -75,7 +70,7 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
 
     @Override
     public void onSelectedDayChange(LocalDate selectedDate) {
-        scheduleViewModel.getSchedules(selectedDate).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
+        calendarViewModel.getSchedules(selectedDate).observe(this, newSchedules -> calendarAdapter.setData(newSchedules));
     }
 
     @Override
@@ -83,9 +78,7 @@ public class CalendarActivity extends AppCompatActivity implements ScheduleViewM
         Intent intent = null;
 
         switch (item.getItemId()) {
-            case R.id.nav_calendar:
-                intent = new Intent(this, CalendarActivity.class);
-                break;
+
             case R.id.nav_schedule:
                 intent = new Intent(this, ListActivity.class);
                 break;

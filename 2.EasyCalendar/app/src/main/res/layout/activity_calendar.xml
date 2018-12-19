@@ -6,8 +6,8 @@
     <data>
 
         <variable
-            name="scheduleViewModel"
-            type="study.easycalendar.model.ScheduleViewModel" />
+            name="calendarViewModel"
+            type="study.easycalendar.model.CalendarViewModel" />
     </data>
 
     <android.support.v4.widget.DrawerLayout

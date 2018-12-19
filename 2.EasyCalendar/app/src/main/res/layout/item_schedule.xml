@@ -3,12 +3,21 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="study.easycalendar.model.ScheduleViewModel" />
+    </data>
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/item_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="1dp"
-        android:background="#faeeee">
+        android:background="#faeeee"
+        android:onClick="@{() -> viewModel.onItemClick()}"
+        android:onLongClick="@{() -> viewModel.onItemLongClick()}"
+        android:padding="1dp">
 
         <View
             android:id="@+id/id"

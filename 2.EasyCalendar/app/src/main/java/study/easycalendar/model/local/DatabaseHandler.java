@@ -1,7 +1,6 @@
 package study.easycalendar.model.local;
 
 import android.arch.lifecycle.LiveData;
-import android.content.Context;
 import android.os.AsyncTask;
 
 import java.util.List;
@@ -51,32 +50,70 @@ public class DatabaseHandler {
         new InsertScheduleListAsync(scheduleDao).execute(scheduleList);
     }
 
+    public void updateSchedule(Schedule schedule) {
+        new UpdateScheduleAsync(scheduleDao).execute(schedule);
+    }
+
+    public void deleteSchedule(Schedule schedule) {
+        new DeleteScheduleAsync(scheduleDao).execute(schedule);
+    }
+
     private static class InsertScheduleAsync extends AsyncTask<Schedule, Void, Void> {
 
-        private ScheduleDao managerDaoAsync;
+        private ScheduleDao scheduleDaoAsync;
 
-        InsertScheduleAsync(ScheduleDao managerDao) {
-            managerDaoAsync = managerDao;
+        InsertScheduleAsync(ScheduleDao scheduleDao) {
+            scheduleDaoAsync = scheduleDao;
         }
 
         @Override
-        protected Void doInBackground(Schedule... managerResponses) {
-            managerDaoAsync.insertSchedule(managerResponses[0]);
+        protected Void doInBackground(Schedule... schedules) {
+            scheduleDaoAsync.insertSchedule(schedules[0]);
             return null;
         }
     }
 
     private static class InsertScheduleListAsync extends AsyncTask<List<Schedule>, Void, Void> {
 
-        private ScheduleDao managerDaoAsync;
+        private ScheduleDao scheduleDaoAsync;
 
-        InsertScheduleListAsync(ScheduleDao managerDao) {
-            managerDaoAsync = managerDao;
+        InsertScheduleListAsync(ScheduleDao scheduleDao) {
+            scheduleDaoAsync = scheduleDao;
         }
 
         @Override
-        protected Void doInBackground(List<Schedule>... managerResponses) {
-            managerDaoAsync.insertTestSchedules(managerResponses[0]);
+        protected Void doInBackground(List<Schedule>... schedules) {
+            scheduleDaoAsync.insertTestSchedules(schedules[0]);
+            return null;
+        }
+    }
+
+    private static class UpdateScheduleAsync extends AsyncTask<Schedule, Void, Void> {
+
+        private ScheduleDao scheduleDaoAsync;
+
+        UpdateScheduleAsync(ScheduleDao scheduleDao) {
+            scheduleDaoAsync = scheduleDao;
+        }
+
+        @Override
+        protected Void doInBackground(Schedule... schedules) {
+            scheduleDaoAsync.updateSchedule(schedules[0]);
+            return null;
+        }
+    }
+    
+    private static class DeleteScheduleAsync extends AsyncTask<Schedule, Void, Void> {
+        
+        private ScheduleDao scheduleDaoAsync;
+
+        DeleteScheduleAsync(ScheduleDao scheduleDao) {
+            scheduleDaoAsync = scheduleDao;
+        }
+
+        @Override
+        protected Void doInBackground(Schedule... schedules) {
+            scheduleDaoAsync.deleteSchedule(schedules[0]);
             return null;
         }
     }

@@ -2,9 +2,11 @@ package study.easycalendar.model.local;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.Update;
 
 import org.threeten.bp.LocalDate;
 
@@ -35,5 +37,11 @@ public interface ScheduleDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTestSchedules(List<Schedule> schedules);
+
+    @Update
+    void updateSchedule(Schedule schedule);
+
+    @Delete
+    void deleteSchedule(Schedule schedule);
 
 }

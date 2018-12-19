@@ -159,7 +159,8 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
                                 , ""
                                 , ""
                                 , ""
-                                , true
+                                , true,
+                                null
                         );
 
                         DatabaseHandler.getInstance().insertSchedule(schedule);

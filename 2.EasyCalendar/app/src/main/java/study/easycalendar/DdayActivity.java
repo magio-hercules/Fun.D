@@ -208,9 +208,6 @@ public class DdayActivity extends AppCompatActivity
         Intent intent = null;
 
         switch (item.getItemId()) {
-            case R.id.nav_calendar:
-                intent = new Intent(this, CalendarActivity.class);
-                break;
             case R.id.nav_schedule:
                 intent = new Intent(this, ListActivity.class);
                 break;

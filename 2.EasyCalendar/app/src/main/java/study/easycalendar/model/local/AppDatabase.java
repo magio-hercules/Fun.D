@@ -37,7 +37,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     "category1",
                     "notification1",
                     "repeat1",
-                    false),
+                    false,
+                    null),
 
             new Schedule(
                     LocalDate.of(2018, 12, 1),
@@ -49,7 +50,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     "category122",
                     "notification122",
                     "repeat1",
-                    false),
+                    false,
+                    null),
 
             new Schedule(
                     LocalDate.of(2018, 12, 3),
@@ -61,7 +63,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     "category2",
                     "notification2",
                     "repeat2",
-                    false),
+                    false,
+                    null),
             new Schedule(
                     LocalDate.of(2018, 12, 3),
                     LocalTime.of(1,1,1),
@@ -72,7 +75,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     "category2",
                     "notification2",
                     "repeat2",
-                    false)
+                    false,
+                    null)
 
 
     );

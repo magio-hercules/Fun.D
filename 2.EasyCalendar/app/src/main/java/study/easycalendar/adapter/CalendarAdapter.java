@@ -1,5 +1,7 @@
 package study.easycalendar.adapter;
 
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
@@ -14,6 +16,9 @@ import study.easycalendar.AppUtil;
 import study.easycalendar.R;
 import study.easycalendar.databinding.ItemScheduleBinding;
 import study.easycalendar.model.Schedule;
+import study.easycalendar.model.ScheduleViewModel;
+
+import static study.easycalendar.App.getApplicationInstance;
 
 public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHolder> {
 
@@ -70,7 +75,25 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                 binding.title.setText(schedule.getTitle());
                 binding.memo.setText(schedule.getMemo());
             }
+
+            if(binding.getViewModel() == null) {
+                ScheduleViewModel scheduleViewModel = new ScheduleViewModel(getApplicationInstance());
+                binding.setViewModel(scheduleViewModel);
+                scheduleViewModel.setSchedule(schedule);
+            } else {
+                binding.getViewModel().setSchedule(schedule);
+            }
         }
+
+//        void bindRepository(JsonBody jsonBody) {
+//            if (binding.getItemViewModel() == null) {
+//                ItemNameViewModel itemNameViewModel = new ItemNameViewModel(this, jsonBody, itemView, spreadViewModel);
+//                binding.setItemViewModel(itemNameViewModel);
+//            } else {
+//                binding.getItemViewModel().setJsonBody(jsonBody, itemView);
+//            }
+//
+//        }
     }
 
     class ScheduleDiffCallback extends DiffUtil.Callback {

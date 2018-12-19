@@ -11,11 +11,13 @@ public class DataConverter {
 
     @TypeConverter
     public static LocalDate toDate(Long timestamp) {
+        if (timestamp == null) return null;
         return LocalDate.ofEpochDay(timestamp);
     }
 
     @TypeConverter
     public static Long toLong(LocalDate date) {
+        if (date == null) return null;
         return date.toEpochDay();
     }
 

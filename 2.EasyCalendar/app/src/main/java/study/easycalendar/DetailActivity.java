@@ -93,7 +93,7 @@ public class DetailActivity extends AppCompatActivity
             threadSchedule = new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    synchronized(this){
+                    synchronized (this) {
                         Log.d(TAG, "Thread RUN start");
                         scheduleInfo = scheduleDao.getSchedule(scheduleId);
 
@@ -126,21 +126,21 @@ public class DetailActivity extends AppCompatActivity
             threadSchedule.start();
         } else {
             Log.d(TAG, "onCreate scheduleId == -1");
-                initEdit();
-                initSpinner();
-                initDateTime();
-                initDday();
-                initFAB();
+            initEdit();
+            initSpinner();
+            initDateTime();
+            initDday();
+            initFAB();
 
-                drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                drawer.addDrawerListener(toggle);
-                toggle.syncState();
+            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
 
-                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                navigationView.setNavigationItemSelectedListener(this);
-            }
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+        }
 
 //        synchronized (threadSchedule) {
 //
@@ -229,10 +229,7 @@ public class DetailActivity extends AppCompatActivity
         int id = item.getItemId();
         Intent intent;
 
-        if (id == R.id.nav_calendar) {
-            intent = new Intent(DetailActivity.this, CalendarActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_schedule) {
+        if (id == R.id.nav_schedule) {
             intent = new Intent(DetailActivity.this, ListActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_dday) {
@@ -247,9 +244,9 @@ public class DetailActivity extends AppCompatActivity
     }
 
     private void initSpinner() {
-        spinner_category = (Spinner)findViewById(R.id.spinner_category);
-        spinner_repeat = (Spinner)findViewById(R.id.spinner_repeat);
-        spinner_notification = (Spinner)findViewById(R.id.spinner_notification);
+        spinner_category = (Spinner) findViewById(R.id.spinner_category);
+        spinner_repeat = (Spinner) findViewById(R.id.spinner_repeat);
+        spinner_notification = (Spinner) findViewById(R.id.spinner_notification);
 
         ArrayAdapter<CharSequence> adapterCategory = ArrayAdapter.createFromResource(
                 this, R.array.category, android.R.layout.simple_spinner_item);
@@ -260,8 +257,10 @@ public class DetailActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(parent.getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         ArrayAdapter<CharSequence> adapterRepeat = ArrayAdapter.createFromResource(
@@ -273,8 +272,10 @@ public class DetailActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(parent.getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         ArrayAdapter<CharSequence> adapterNotification = ArrayAdapter.createFromResource(
@@ -286,8 +287,10 @@ public class DetailActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(parent.getContext(), parent.getItemAtPosition(position).toString(), Toast.LENGTH_LONG).show();
             }
+
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
 
         if (scheduleId != -1) {
@@ -317,8 +320,8 @@ public class DetailActivity extends AppCompatActivity
         if (scheduleId != -1) {
             // 스케쥴 정보에 맞게 date/time 설정
             picker_start_date.init(scheduleInfo.startDate.getYear(),
-            scheduleInfo.startDate.getMonthValue() + 1,
-                        scheduleInfo.startDate.getDayOfMonth(),
+                    scheduleInfo.startDate.getMonthValue() + 1,
+                    scheduleInfo.startDate.getDayOfMonth(),
                     null);
             picker_end_date.init(scheduleInfo.endDate.getYear(),
                     scheduleInfo.endDate.getMonthValue() + 1,
@@ -331,12 +334,12 @@ public class DetailActivity extends AppCompatActivity
             endHour = scheduleInfo.endTime.getHour();
             endMinute = scheduleInfo.endTime.getMinute();
 
-            if(Build.VERSION.SDK_INT < 23){
+            if (Build.VERSION.SDK_INT < 23) {
                 picker_start_time.setCurrentHour(startHour);
                 picker_start_time.setCurrentMinute(startMinute);
                 picker_end_time.setCurrentHour(endHour);
                 picker_end_time.setCurrentMinute(endMinute);
-            } else{
+            } else {
                 picker_start_time.setHour(startHour);
                 picker_start_time.setMinute(startMinute);
                 picker_end_time.setHour(endHour);
@@ -412,12 +415,12 @@ public class DetailActivity extends AppCompatActivity
             @Override
             public void run() {
                 int startHour, startMinute, endHour, endMinute;
-                if(Build.VERSION.SDK_INT < 23){
+                if (Build.VERSION.SDK_INT < 23) {
                     startHour = picker_start_time.getCurrentHour();
                     startMinute = picker_start_time.getCurrentMinute();
                     endHour = picker_end_time.getCurrentHour();
                     endMinute = picker_end_time.getCurrentMinute();
-                } else{
+                } else {
                     startHour = picker_start_time.getHour();
                     startMinute = picker_start_time.getMinute();
                     endHour = picker_end_time.getHour();
@@ -438,14 +441,13 @@ public class DetailActivity extends AppCompatActivity
                 String notification = spinner_notification.getSelectedItem().toString();
                 String repeat = spinner_repeat.getSelectedItem().toString();
 
-//                Schedule s = new Schedule(LocalDate.now(), LocalTime.now(), title, memo);
-                Schedule s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+                Schedule s = new Schedule(startDate, startTime, endDate, endTime, title, memo, category, notification, repeat, bDday, null);
 
                 DatabaseHandler.getInstance().insertSchedule(s);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Snackbar.make(view, "저장 완료", Snackbar.LENGTH_LONG) .setAction("Action", null).show();
+                        Snackbar.make(view, "저장 완료", Snackbar.LENGTH_LONG).setAction("Action", null).show();
                         Log.d(TAG, "InsertSchdule Complete : Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " +
                                 title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
 
@@ -464,12 +466,12 @@ public class DetailActivity extends AppCompatActivity
             @Override
             public void run() {
                 int startHour, startMinute, endHour, endMinute;
-                if(Build.VERSION.SDK_INT < 23){
+                if (Build.VERSION.SDK_INT < 23) {
                     startHour = picker_start_time.getCurrentHour();
                     startMinute = picker_start_time.getCurrentMinute();
                     endHour = picker_end_time.getCurrentHour();
                     endMinute = picker_end_time.getCurrentMinute();
-                } else{
+                } else {
                     startHour = picker_start_time.getHour();
                     startMinute = picker_start_time.getMinute();
                     endHour = picker_end_time.getHour();
@@ -491,15 +493,16 @@ public class DetailActivity extends AppCompatActivity
                 String repeat = spinner_repeat.getSelectedItem().toString();
 
                 List<Schedule> list = new ArrayList<Schedule>();
-                Schedule s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+                Schedule s = new Schedule(startDate, startTime, endDate, endTime, title, memo, category, notification, repeat, bDday, null);
                 list.add(s);
 
                 int s_year, s_month, s_day;
                 // 매일, 매주, 매월, 매년
                 /*if (repeatType == 1) {
 
-                } else*/ if (repeatType == 2) { // 매주, 1년
-                    s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+                } else*/
+                if (repeatType == 2) { // 매주, 1년
+                    s = new Schedule(startDate, startTime, endDate, endTime, title, memo, category, notification, repeat, bDday, null);
 
                 } else if (repeatType == 3) { // 매월, 5년
                     s_year = picker_start_date.getYear();
@@ -512,7 +515,7 @@ public class DetailActivity extends AppCompatActivity
                             s_year += 1;
                         }
                         startDate = LocalDate.of(s_year, s_month, s_day);
-                        s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+                        s = new Schedule(startDate, startTime, endDate, endTime, title, memo, category, notification, repeat, bDday, null);
 
                         Log.d(TAG, "Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " + title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
                         list.add(s);
@@ -525,7 +528,7 @@ public class DetailActivity extends AppCompatActivity
                         s_year += 1;
 
                         startDate = LocalDate.of(s_year, s_month, s_day);
-                        s = new Schedule(startDate,startTime,endDate,endTime,title,memo,category,notification,repeat,bDday);
+                        s = new Schedule(startDate, startTime, endDate, endTime, title, memo, category, notification, repeat, bDday, null);
 
                         Log.d(TAG, "Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " + title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
                         list.add(s);
@@ -537,7 +540,7 @@ public class DetailActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Snackbar.make(view, "저장 완료", Snackbar.LENGTH_LONG) .setAction("Action", null).show();
+                        Snackbar.make(view, "저장 완료", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 //                        Log.d(TAG, "InsertSchdule Complete : Data (" + startDate + ", " + startTime + ", " + endDate + ", " + endTime + ", " +
 //                                title + ", " + memo + ", " + category + ", " + notification + ", " + repeat + ", " + (bDday ? "D-day checked" : "D-day not Checked") + ")");
 
