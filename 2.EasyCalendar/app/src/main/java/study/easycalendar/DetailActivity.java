@@ -35,11 +35,15 @@ import java.util.List;
 
 import study.easycalendar.list.ListActivity;
 import study.easycalendar.model.Schedule;
+import study.easycalendar.model.local.AppDatabase;
 import study.easycalendar.model.local.DatabaseHandler;
+import study.easycalendar.model.local.ScheduleDao;
 
 public class DetailActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = "[easy][Detail]";
+
+    Toolbar toolbar;
 
     EditText edit_title;
     EditText edit_memo;
@@ -62,62 +66,107 @@ public class DetailActivity extends AppCompatActivity
     DatePicker picker_dday_date;
     TextView text_dday_date;
 
+    Schedule scheduleInfo = null;
+    int scheduleId = -1;
+
+    boolean condition = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, edit_title.getText().toString());
+        Intent intent = getIntent();
+        scheduleId = intent.getIntExtra("id", -1);
+        Log.d(TAG, "id : " + scheduleId);
 
-                if (edit_title.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "일정 타이틀을 입력하세요.", Toast.LENGTH_SHORT).show();
-                } else {
-                    int repeat = 0;
-                    switch (spinner_repeat.getSelectedItem().toString()) {
-//                        case "매일":
-//                        repeat = 1;
-//                            break;
-                        case "매주":
-                            repeat = 2;
-                            break;
-                        case "매월":
-                            repeat = 3;
-                            break;
-                        case "매년":
-                            repeat = 4;
-                            break;
-                    }
+        Thread threadSchedule = null;
 
-                    if (repeat == 0) {
-                        InsertSchdule(view);
-                    } else {
-                        InsertSchduleList(view, repeat);
+
+        if (scheduleId != -1) {
+            Log.d(TAG, "onCreate scheduleId != -1");
+
+            // id 조회
+            ScheduleDao scheduleDao = AppDatabase.getInstance(getApplicationContext()).scheduleDao();
+            threadSchedule = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    synchronized(this){
+                        Log.d(TAG, "Thread RUN start");
+                        scheduleInfo = scheduleDao.getSchedule(scheduleId);
+
+                        Log.d(TAG, "schedule (id: " + scheduleInfo.id + ", title: " + scheduleInfo.title + ", memo: " + scheduleInfo.memo + ")");
+
+                        setTitle("상세일정");
+
+//                        notifyAll();
+                        condition = true;
+                        Log.d(TAG, "Thread notify");
+
+                        initEdit();
+                        initSpinner();
+                        initDateTime();
+                        initDday();
+                        initFAB();
+
+                        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                                DetailActivity.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                        drawer.addDrawerListener(toggle);
+                        toggle.syncState();
+
+                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                        navigationView.setNavigationItemSelectedListener(DetailActivity.this);
                     }
                 }
+            });
+
+            threadSchedule.start();
+        } else {
+            Log.d(TAG, "onCreate scheduleId == -1");
+                initEdit();
+                initSpinner();
+                initDateTime();
+                initDday();
+                initFAB();
+
+                drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                drawer.addDrawerListener(toggle);
+                toggle.syncState();
+
+                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                navigationView.setNavigationItemSelectedListener(this);
             }
-        });
 
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        edit_title = (EditText) findViewById(R.id.edit_title);
-        edit_memo = (EditText) findViewById(R.id.edit_memo);
-
-        initSpinner();
-        initDateTime();
-        initDday();
+//        synchronized (threadSchedule) {
+//
+//            try {
+//                Log.d(TAG, "Thread WAIT start");
+//                threadSchedule.wait();
+//                Log.d(TAG, "Thread WAIT end");
+//
+//                initEdit();
+//                initSpinner();
+//                initDateTime();
+//                initDday();
+//                initFAB();
+//
+//                drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//                ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                        this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//                drawer.addDrawerListener(toggle);
+//                toggle.syncState();
+//
+//                NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+//                navigationView.setNavigationItemSelectedListener(this);
+//            }catch(InterruptedException e){
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     @Override
@@ -152,6 +201,27 @@ public class DetailActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    private void initEdit() {
+        Log.d(TAG, "initEdit start");
+
+        edit_title = (EditText) findViewById(R.id.edit_title);
+        edit_memo = (EditText) findViewById(R.id.edit_memo);
+
+        Log.d(TAG, "scheduleId : " + scheduleId);
+        if (scheduleId != -1) {
+            if (scheduleInfo != null) {
+                Log.d(TAG, "scheduleInfo : " + scheduleInfo.toString());
+                edit_title.setText(scheduleInfo.title);
+                edit_memo.setText(scheduleInfo.memo);
+
+//                edit_title.setEnabled(false);
+//                edit_memo.setEnabled(false);
+            } else {
+                Log.d(TAG, "scheduleInfo : null");
+            }
+        }
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -181,10 +251,10 @@ public class DetailActivity extends AppCompatActivity
         spinner_repeat = (Spinner)findViewById(R.id.spinner_repeat);
         spinner_notification = (Spinner)findViewById(R.id.spinner_notification);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<CharSequence> adapterCategory = ArrayAdapter.createFromResource(
                 this, R.array.category, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_category.setAdapter(adapter);
+        adapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_category.setAdapter(adapterCategory);
         spinner_category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -194,10 +264,10 @@ public class DetailActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<CharSequence> adapterRepeat = ArrayAdapter.createFromResource(
                 this, R.array.repeat, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_repeat.setAdapter(adapter);
+        adapterRepeat.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_repeat.setAdapter(adapterRepeat);
         spinner_repeat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -207,10 +277,10 @@ public class DetailActivity extends AppCompatActivity
             public void onNothingSelected(AdapterView<?> parent) {}
         });
 
-        adapter = ArrayAdapter.createFromResource(
+        ArrayAdapter<CharSequence> adapterNotification = ArrayAdapter.createFromResource(
                 this, R.array.notification, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner_notification.setAdapter(adapter);
+        adapterNotification.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_notification.setAdapter(adapterNotification);
         spinner_notification.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -219,6 +289,13 @@ public class DetailActivity extends AppCompatActivity
             @Override
             public void onNothingSelected(AdapterView<?> parent) {}
         });
+
+        if (scheduleId != -1) {
+            // 스케쥴 정보에 맞게 스피너 설정
+            spinner_category.setSelection(adapterCategory.getPosition(scheduleInfo.category));
+            spinner_repeat.setSelection(adapterRepeat.getPosition(scheduleInfo.repeat));
+            spinner_notification.setSelection(adapterNotification.getPosition(scheduleInfo.notification));
+        }
     }
 
     private void initDateTime() {
@@ -236,6 +313,36 @@ public class DetailActivity extends AppCompatActivity
         int sec = calendar.get(calendar.SECOND);
 
         Log.d(TAG, "현재 시간 (" + year + "년 " + month + "월 " + day + "일 " + hour + "시 " + min + "분 " + sec + "초)");
+
+        if (scheduleId != -1) {
+            // 스케쥴 정보에 맞게 date/time 설정
+            picker_start_date.init(scheduleInfo.startDate.getYear(),
+            scheduleInfo.startDate.getMonthValue() + 1,
+                        scheduleInfo.startDate.getDayOfMonth(),
+                    null);
+            picker_end_date.init(scheduleInfo.endDate.getYear(),
+                    scheduleInfo.endDate.getMonthValue() + 1,
+                    scheduleInfo.endDate.getDayOfMonth(),
+                    null);
+
+            int startHour, startMinute, endHour, endMinute;
+            startHour = scheduleInfo.startTime.getHour();
+            startMinute = scheduleInfo.startTime.getMinute();
+            endHour = scheduleInfo.endTime.getHour();
+            endMinute = scheduleInfo.endTime.getMinute();
+
+            if(Build.VERSION.SDK_INT < 23){
+                picker_start_time.setCurrentHour(startHour);
+                picker_start_time.setCurrentMinute(startMinute);
+                picker_end_time.setCurrentHour(endHour);
+                picker_end_time.setCurrentMinute(endMinute);
+            } else{
+                picker_start_time.setHour(startHour);
+                picker_start_time.setMinute(startMinute);
+                picker_end_time.setHour(endHour);
+                picker_end_time.setMinute(endMinute);
+            }
+        }
     }
 
     private void initDday() {
@@ -256,6 +363,44 @@ public class DetailActivity extends AppCompatActivity
                     // dday date disable
                     picker_dday_date.setEnabled(false);
                     text_dday_date.setEnabled(false);
+                }
+            }
+        });
+    }
+
+    private void initFAB() {
+        Log.d(TAG, "initFAB");
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "initFAB onClick : title " + edit_title.getText().toString());
+
+                if (edit_title.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "일정 타이틀을 입력하세요.", Toast.LENGTH_SHORT).show();
+                } else {
+                    int repeat = 0;
+                    switch (spinner_repeat.getSelectedItem().toString()) {
+//                        case "매일":
+//                        repeat = 1;
+//                            break;
+                        case "매주":
+                            repeat = 2;
+                            break;
+                        case "매월":
+                            repeat = 3;
+                            break;
+                        case "매년":
+                            repeat = 4;
+                            break;
+                    }
+
+                    if (repeat == 0) {
+                        InsertSchdule(view);
+                    } else {
+                        InsertSchduleList(view, repeat);
+                    }
                 }
             }
         });

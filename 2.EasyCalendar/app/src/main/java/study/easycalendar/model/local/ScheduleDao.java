@@ -18,6 +18,9 @@ public interface ScheduleDao {
     @Query("SELECT * FROM Schedule")
     LiveData<List<Schedule>> getSchedules();
 
+    @Query("SELECT * FROM Schedule WHERE id = :id")
+    Schedule getSchedule(int id);
+
     @Query("SELECT * FROM Schedule")
     List<Schedule> getSchedulesList();
 
