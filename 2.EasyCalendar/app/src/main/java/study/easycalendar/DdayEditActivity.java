@@ -22,6 +22,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -150,8 +151,9 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
                     @Override
                     public void run() {
 
-                        Schedule schedule = new Schedule(LocalDate.now()
-                                , LocalTime.now()
+                        Schedule schedule = new Schedule(
+                                LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
+                                , LocalTime.parse("000000",DateTimeFormatter.ofPattern("HHmmss"))
                                 , LocalDate.now()
                                 , LocalTime.now()
                                 , etTitle.getText().toString()
@@ -159,8 +161,8 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
                                 , ""
                                 , ""
                                 , ""
-                                , true,
-                                null
+                                , true
+                                , LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
                         );
 
                         DatabaseHandler.getInstance().insertSchedule(schedule);

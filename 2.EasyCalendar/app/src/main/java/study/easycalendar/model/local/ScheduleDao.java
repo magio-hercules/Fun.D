@@ -32,6 +32,12 @@ public interface ScheduleDao {
     @Query("SELECT * FROM Schedule WHERE startDate =:localDate")
     List<Schedule> getSchedulesOnSelectedDateList(LocalDate localDate);
 
+    @Query("SELECT * FROM Schedule WHERE isDday = 1 AND dDayDate > :localDate")
+    List<Schedule> getDDayList(LocalDate localDate);
+
+    @Query("SELECT * FROM Schedule WHERE isDday = 1 AND dDayDate < :localDate")
+    List<Schedule> getCountingList(LocalDate localDate);
+
     @Insert
     void insertSchedule(Schedule schedule);
 

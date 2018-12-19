@@ -20,12 +20,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import study.easycalendar.adapter.DdayAdapter;
 import study.easycalendar.list.ListActivity;
 import study.easycalendar.model.Dday;
+import study.easycalendar.model.Schedule;
+import study.easycalendar.model.local.DatabaseHandler;
 
 public class DdayActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -100,15 +105,19 @@ public class DdayActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                rvDday.setVisibility(View.VISIBLE);
-                rvCounting.setVisibility(View.GONE);
 
-                itemTouchHelper.attachToRecyclerView(rvDday);
+                //rvDday.setVisibility(View.VISIBLE);
+                //rvCounting.setVisibility(View.GONE);
 
-                ddayList.clear();
+                //itemTouchHelper.attachToRecyclerView(rvDday);
+
+                //ddayList.clear();
 
 
-                testDday();
+                //testDday();
+
+
+                LoadDDays(true);
             }
         });
 
@@ -118,14 +127,15 @@ public class DdayActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                rvDday.setVisibility(View.GONE);
-                rvCounting.setVisibility(View.VISIBLE);
+                //rvDday.setVisibility(View.GONE);
+                //rvCounting.setVisibility(View.VISIBLE);
 
-                itemTouchHelper.attachToRecyclerView(rvCounting);
+                //itemTouchHelper.attachToRecyclerView(rvCounting);
 
-                ddayList.clear();
+                //ddayList.clear();
+                //testCounting();
 
-                testCounting();
+                LoadDDays(false);
             }
         });
 
@@ -147,6 +157,67 @@ public class DdayActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+    }
+
+    private void LoadDDays(final boolean isDDays) {
+
+        ddayList.clear();
+
+        if (isDDays) {
+
+            rvDday.setVisibility(View.VISIBLE);
+            rvCounting.setVisibility(View.GONE);
+
+            itemTouchHelper.attachToRecyclerView(rvDday);
+
+        }
+        else {
+
+            rvDday.setVisibility(View.GONE);
+            rvCounting.setVisibility(View.VISIBLE);
+
+            itemTouchHelper.attachToRecyclerView(rvCounting);
+
+        }
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                List<Schedule> scheduleist;
+
+                if (isDDays) {
+                    scheduleist = DatabaseHandler.getInstance().getDDayList();
+                }
+                else {
+                    scheduleist = DatabaseHandler.getInstance().getCountingList();
+                }
+
+
+                for (int i = 0; i < scheduleist.size(); i++) {
+
+                    LocalDate dDay = scheduleist.get(i).dDayDate;
+
+                    ddayList.add(new Dday(scheduleist.get(i).title
+                            , LocalDate.of(dDay.getYear(), dDay.getMonth(),dDay.getDayOfMonth()).format(DateTimeFormatter.BASIC_ISO_DATE)
+                            ,-769226
+                            ,null));
+                }
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        rvDday.setAdapter(adapter);
+                    }
+                });
+
+
+            }
+        }).start();
+
+
     }
 
 
@@ -225,4 +296,10 @@ public class DdayActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        LoadDDays(true);
+    }
 }

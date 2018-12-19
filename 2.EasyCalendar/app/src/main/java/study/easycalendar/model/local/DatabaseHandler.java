@@ -3,6 +3,8 @@ package study.easycalendar.model.local;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 
+import org.threeten.bp.LocalDate;
+
 import java.util.List;
 
 import study.easycalendar.model.Schedule;
@@ -40,6 +42,14 @@ public class DatabaseHandler {
 
     public List<Schedule> getSchedulesList() {
         return scheduleDao.getSchedulesList();
+    }
+
+    public List<Schedule> getDDayList() {
+        return scheduleDao.getDDayList(LocalDate.now());
+    }
+
+    public List<Schedule> getCountingList() {
+        return scheduleDao.getCountingList(LocalDate.now());
     }
 
     public void insertSchedule(Schedule schedule) {
