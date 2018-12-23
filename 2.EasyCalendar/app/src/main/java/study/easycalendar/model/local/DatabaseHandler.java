@@ -30,7 +30,7 @@ public class DatabaseHandler {
         return instance;
     }
 
-    private DatabaseHandler() {
+    public DatabaseHandler() {
         AppDatabase database = AppDatabase.getInstance(getApplicationInstance());
         scheduleDao = database.scheduleDao();
     }
@@ -64,8 +64,9 @@ public class DatabaseHandler {
         new UpdateScheduleAsync(scheduleDao).execute(schedule);
     }
 
-    public void deleteSchedule(Schedule schedule) {
+    public Integer deleteSchedule(Schedule schedule) {
         new DeleteScheduleAsync(scheduleDao).execute(schedule);
+        return null;
     }
 
     private static class InsertScheduleAsync extends AsyncTask<Schedule, Void, Void> {

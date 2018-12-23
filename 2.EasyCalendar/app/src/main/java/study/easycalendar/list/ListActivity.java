@@ -41,6 +41,7 @@ public class ListActivity extends AppCompatActivity
     private ArrayList<Schedule> arrayList;
     private ListAdapter adapter;
     private Schedule schedule;
+    DatabaseHandler databaseHandler;
     private List<Schedule> scheduleListFromDB = new ArrayList<Schedule>();
 
     @Override
@@ -79,17 +80,19 @@ public class ListActivity extends AppCompatActivity
 
             @Override
             public void onItemLongClick(View view, int position) {
+                schedule = arrayList.get(position);
                 AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
                 builder.setTitle("삭제");
                 builder.setMessage("삭제하시겠습니까?");
-                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-//                        deleteSchedule(arrayList.get(position).getId());
+//                        dao.deleteSchedule(schedule);
+
                     }
                 });
-                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
