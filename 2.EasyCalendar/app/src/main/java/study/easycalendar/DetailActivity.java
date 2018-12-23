@@ -220,6 +220,17 @@ public class DetailActivity extends AppCompatActivity
                 Log.d(TAG, "scheduleInfo : null");
             }
         }
+
+        edit_title.post(new Runnable() {
+            @Override
+            public void run() {
+                edit_title.setFocusableInTouchMode(true);
+                edit_title.requestFocus();
+
+//                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.showSoftInput(edittext,0);
+            }
+        });
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
