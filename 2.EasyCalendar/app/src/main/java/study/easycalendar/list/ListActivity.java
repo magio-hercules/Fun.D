@@ -1,5 +1,6 @@
 package study.easycalendar.list;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,9 +22,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-import study.easycalendar.CalendarActivity;
 import study.easycalendar.DdayActivity;
+import study.easycalendar.DetailActivity;
 import study.easycalendar.R;
+import study.easycalendar.RecyclerItemClickListener;
 import study.easycalendar.adapter.ListAdapter;
 import study.easycalendar.model.Schedule;
 import study.easycalendar.model.local.AppDatabase;
@@ -37,6 +40,7 @@ public class ListActivity extends AppCompatActivity
     private ScheduleDao dao;
     private ArrayList<Schedule> arrayList;
     private ListAdapter adapter;
+    private Schedule schedule;
     private List<Schedule> scheduleListFromDB = new ArrayList<Schedule>();
 
     @Override
@@ -61,6 +65,39 @@ public class ListActivity extends AppCompatActivity
         recyclerView.addItemDecoration(new MyItemDecoration());
 
         dao = AppDatabase.getInstance(this).scheduleDao();
+
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(this,
+                recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(View view, int position) {
+                schedule = arrayList.get(position);
+                Intent intent = new Intent(getApplicationContext(), DetailActivity.class);
+                intent.putExtra("id", schedule.id);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(ListActivity.this);
+                builder.setTitle("삭제");
+                builder.setMessage("삭제하시겠습니까?");
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+//                        deleteSchedule(arrayList.get(position).getId());
+                    }
+                });
+                builder.setNegativeButton("아니오", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                });
+                builder.show();
+            }
+        }));
 
     }
 
@@ -107,6 +144,7 @@ public class ListActivity extends AppCompatActivity
         super.onResume();
         loadNotes();
     }
+
 
     class MyItemDecoration extends RecyclerView.ItemDecoration {
         @Override

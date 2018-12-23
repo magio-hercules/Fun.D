@@ -15,7 +15,7 @@ import study.easycalendar.model.Schedule;
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> {
     private Context context;
     private ArrayList<Schedule> arrayList = new ArrayList<>();
-
+    private Schedule schedule;
     // 생성자
     public ListAdapter(Context context, ArrayList<Schedule> arrayList) {
         this.context = context;
@@ -46,6 +46,10 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
         holder.date.setText(schedule.getStartDate().toString());
         holder.day.setText(schedule.getStartDate().toString().substring(8, 10)+"일");
     }
+//
+//    public void setSchedule(Schedule schedule) {
+//        this.schedule = schedule;
+//    }
 
     @Override
     public int getItemCount() {
@@ -66,6 +70,21 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.MyViewHolder> 
             memo = view.findViewById(R.id.memo);
             date = view.findViewById(R.id.startDate);
             day = view.findViewById(R.id.day);
+
+//            int position = getAdapterPosition();
+//
+//            Log.w("RRRRR", String.valueOf(position));
+//
+//            schedule = arrayList.get(position);
+//
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(context, DetailActivity.class);
+//                    intent.putExtra("id", schedule.getId());
+//                    context.startActivity(intent);
+//                }
+//            });
         }
     }
 }
