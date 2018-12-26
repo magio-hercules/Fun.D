@@ -35,9 +35,12 @@ import study.easycalendar.model.local.DatabaseHandler;
 public class DdayActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private List<Dday> ddayList;
+    private static final int EDIT_SCHEDULE = 1234;
 
-    private DdayAdapter adapter;
+    private List<Dday> ddayList;
+    private List<Schedule> scheduleList;
+
+    private DdayAdapter adapterDday, adapterCounting;
 
     private RecyclerView rvDday, rvCounting;
 
@@ -55,6 +58,7 @@ public class DdayActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         ddayList = new ArrayList<>();
+        scheduleList = new ArrayList<>();
 
         rvDday = findViewById(R.id.rv_dday);
         rvCounting = findViewById(R.id.rv_counting);
@@ -62,8 +66,11 @@ public class DdayActivity extends AppCompatActivity
         rvDday.setLayoutManager(new LinearLayoutManager(this));
         rvCounting.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new DdayAdapter(ddayList);
-        rvDday.setAdapter(adapter);
+        adapterDday = new DdayAdapter(ddayList);
+        rvDday.setAdapter(adapterDday);
+
+        adapterCounting = new DdayAdapter(ddayList);
+        rvCounting.setAdapter(adapterCounting);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback
                 = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
@@ -75,15 +82,38 @@ public class DdayActivity extends AppCompatActivity
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
-                ddayList.remove(position);
-                adapter.notifyDataSetChanged();
+                final int position = viewHolder.getAdapterPosition();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DatabaseHandler.getInstance().deleteSchedule(scheduleList.get(position));
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                Toast.makeText(DdayActivity.this, scheduleList.get(position).dDayDate + "디데이 삭제 완료", Toast.LENGTH_SHORT).show();
+
+                                if (rvDday.getVisibility() == View.VISIBLE) {
+                                    LoadDDays(true);
+
+                                } else {
+
+                                    LoadDDays(false);
+
+                                }
+
+                            }
+                        });
+
+                    }
+                }).start();
+
             }
         };
 
         itemTouchHelper = new ItemTouchHelper(simpleItemTouchCallback);
-
-
 
 
         ImageView newDday = (ImageView) findViewById(R.id.iv_new_dday);
@@ -94,7 +124,8 @@ public class DdayActivity extends AppCompatActivity
 
                 Intent intent;
                 intent = new Intent(getApplicationContext(), DdayEditActivity.class);
-                startActivity(intent);
+                //startActivity(intent);
+                startActivityForResult(intent, EDIT_SCHEDULE);
 
             }
         });
@@ -104,18 +135,6 @@ public class DdayActivity extends AppCompatActivity
         btnDday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-                //rvDday.setVisibility(View.VISIBLE);
-                //rvCounting.setVisibility(View.GONE);
-
-                //itemTouchHelper.attachToRecyclerView(rvDday);
-
-                //ddayList.clear();
-
-
-                //testDday();
-
 
                 LoadDDays(true);
             }
@@ -127,17 +146,10 @@ public class DdayActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
 
-                //rvDday.setVisibility(View.GONE);
-                //rvCounting.setVisibility(View.VISIBLE);
-
-                //itemTouchHelper.attachToRecyclerView(rvCounting);
-
-                //ddayList.clear();
-                //testCounting();
-
                 LoadDDays(false);
             }
         });
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -164,11 +176,16 @@ public class DdayActivity extends AppCompatActivity
     private void LoadDDays(final boolean isDDays) {
 
         ddayList.clear();
+        scheduleList.clear();
+
+        adapterDday.notifyDataSetChanged();
+        adapterCounting.notifyDataSetChanged();
 
         if (isDDays) {
 
             rvDday.setVisibility(View.VISIBLE);
             rvCounting.setVisibility(View.GONE);
+
 
             itemTouchHelper.attachToRecyclerView(rvDday);
 
@@ -186,21 +203,18 @@ public class DdayActivity extends AppCompatActivity
             @Override
             public void run() {
 
-                List<Schedule> scheduleist;
-
                 if (isDDays) {
-                    scheduleist = DatabaseHandler.getInstance().getDDayList();
+                    scheduleList = DatabaseHandler.getInstance().getDDayList();
                 }
                 else {
-                    scheduleist = DatabaseHandler.getInstance().getCountingList();
+                    scheduleList = DatabaseHandler.getInstance().getCountingList();
                 }
 
+                for (int i = 0; i < scheduleList.size(); i++) {
 
-                for (int i = 0; i < scheduleist.size(); i++) {
+                    LocalDate dDay = scheduleList.get(i).dDayDate;
 
-                    LocalDate dDay = scheduleist.get(i).dDayDate;
-
-                    ddayList.add(new Dday(scheduleist.get(i).title
+                    ddayList.add(new Dday(scheduleList.get(i).title
                             , LocalDate.of(dDay.getYear(), dDay.getMonth(),dDay.getDayOfMonth()).format(DateTimeFormatter.BASIC_ISO_DATE)
                             ,-769226
                             ,null));
@@ -209,36 +223,22 @@ public class DdayActivity extends AppCompatActivity
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        rvDday.setAdapter(adapter);
+
+                        if (isDDays) {
+
+                            rvDday.setAdapter(adapterDday);
+                        }
+                        else {
+
+                            rvCounting.setAdapter(adapterCounting);
+                        }
                     }
                 });
-
 
             }
         }).start();
 
 
-    }
-
-
-    private void testDday()
-    {
-
-        ddayList.add(new Dday("고등어","20190101", -769226,null));
-        ddayList.add(new Dday("미꾸라지","20190215", -26624, null));
-        ddayList.add(new Dday("갈치","20190330",-3285959, null));
-
-        rvDday.setAdapter(adapter);
-    }
-
-    private void testCounting()
-    {
-
-        ddayList.add(new Dday("오징어","20180101",-14575885, null));
-        ddayList.add(new Dday("꼴뚜기","20180215",-769226,null));
-        ddayList.add(new Dday("랍스터","20180330",-26624, null));
-
-        rvCounting.setAdapter(adapter);
     }
 
     @Override
@@ -301,5 +301,18 @@ public class DdayActivity extends AppCompatActivity
         super.onStart();
 
         LoadDDays(true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK) {
+
+            if (requestCode == EDIT_SCHEDULE) {
+
+                //LoadDDays(true);
+            }
+        }
+
     }
 }

@@ -171,13 +171,15 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
                             @Override
                             public void run() {
                                 Toast.makeText(DdayEditActivity.this, "D-Day 생성 완료", Toast.LENGTH_SHORT).show();
+                                setResult(RESULT_OK);
+                                finish();
                             }
                         });
 
                     }
                 }).start();
 
-                finish();
+
 
             }
         });
