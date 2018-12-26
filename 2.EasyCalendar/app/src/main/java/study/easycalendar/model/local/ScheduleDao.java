@@ -39,7 +39,7 @@ public interface ScheduleDao {
     List<Schedule> getCountingList(LocalDate localDate);
 
     @Insert
-    void insertSchedule(Schedule schedule);
+    long insertSchedule(Schedule schedule);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertTestSchedules(List<Schedule> schedules);

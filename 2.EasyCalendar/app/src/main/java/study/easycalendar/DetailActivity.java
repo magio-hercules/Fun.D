@@ -486,8 +486,8 @@ public class DetailActivity extends AppCompatActivity
                     Log.d(TAG, "UpdateSchdule");
                     DatabaseHandler.getInstance().updateSchedule(s);
                 } else {
-                    Log.d(TAG, "InsertSchdule");
-                    DatabaseHandler.getInstance().insertSchedule(s);
+                    long scheduleId = DatabaseHandler.getInstance().insertSchedule(s);
+                    Log.d(TAG, "InsertSchdule " + scheduleId);
                 }
 
                 runOnUiThread(new Runnable() {

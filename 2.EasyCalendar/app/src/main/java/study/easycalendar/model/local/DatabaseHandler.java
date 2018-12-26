@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import org.threeten.bp.LocalDate;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import study.easycalendar.model.Schedule;
 
@@ -52,8 +53,15 @@ public class DatabaseHandler {
         return scheduleDao.getCountingList(LocalDate.now());
     }
 
-    public void insertSchedule(Schedule schedule) {
-        new InsertScheduleAsync(scheduleDao).execute(schedule);
+    public long insertSchedule(Schedule schedule) {
+        try {
+            return new InsertScheduleAsync(scheduleDao).execute(schedule).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public void insertScheduleList(List<Schedule> scheduleList) {
@@ -69,7 +77,7 @@ public class DatabaseHandler {
         return null;
     }
 
-    private static class InsertScheduleAsync extends AsyncTask<Schedule, Void, Void> {
+    private static class InsertScheduleAsync extends AsyncTask<Schedule, Long, Long> {
 
         private ScheduleDao scheduleDaoAsync;
 
@@ -78,9 +86,13 @@ public class DatabaseHandler {
         }
 
         @Override
-        protected Void doInBackground(Schedule... schedules) {
-            scheduleDaoAsync.insertSchedule(schedules[0]);
-            return null;
+        protected Long doInBackground(Schedule... schedules) {
+            return scheduleDaoAsync.insertSchedule(schedules[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Long aLong) {
+            super.onPostExecute(aLong);
         }
     }
 
@@ -113,9 +125,9 @@ public class DatabaseHandler {
             return null;
         }
     }
-    
+
     private static class DeleteScheduleAsync extends AsyncTask<Schedule, Void, Void> {
-        
+
         private ScheduleDao scheduleDaoAsync;
 
         DeleteScheduleAsync(ScheduleDao scheduleDao) {
