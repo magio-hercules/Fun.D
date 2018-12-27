@@ -40,6 +40,14 @@
             android:label="@string/list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".TestActivity"/>
+
+        <receiver android:name=".alarm.AlarmReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="study.easycalendar.ALARM_START" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

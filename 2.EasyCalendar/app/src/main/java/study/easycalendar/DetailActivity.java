@@ -1,5 +1,8 @@
 package study.easycalendar;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,10 +32,12 @@ import android.widget.Toast;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import study.easycalendar.alarm.AlarmReceiver;
 import study.easycalendar.list.ListActivity;
 import study.easycalendar.model.Schedule;
 import study.easycalendar.model.local.AppDatabase;
@@ -70,6 +75,8 @@ public class DetailActivity extends AppCompatActivity
     int scheduleId = -1;
 
     boolean condition = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +117,7 @@ public class DetailActivity extends AppCompatActivity
                         initDateTime();
                         initDday();
                         initFAB();
+//                        initAlarm();
 
                         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
                         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -131,6 +139,7 @@ public class DetailActivity extends AppCompatActivity
             initDateTime();
             initDday();
             initFAB();
+//            initAlarm();
 
             drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -441,6 +450,90 @@ public class DetailActivity extends AppCompatActivity
         });
     }
 
+    // for test
+    private void initAlarm() {
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(calendar.HOUR_OF_DAY);
+        int min = calendar.get(calendar.MINUTE);
+        int sec = calendar.get(calendar.SECOND);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, min);
+        calendar.set(Calendar.SECOND, sec + 5);
+
+        Intent alarmIntent = new Intent(DetailActivity.this, AlarmReceiver.class);
+        alarmIntent.putExtra("state","ALARM test");
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(
+                        DetailActivity.this,
+                        1,
+                        alarmIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                pendingIntent);
+    }
+
+    private void SetAlarm(LocalDate date, LocalTime time, String notification, String title, int id) {
+        // type
+        // 1 (10분 전), 2(30분 전), 3(1시간 전), 4(1일 전), 5(7일 전)
+
+        Calendar calendar = Calendar.getInstance();
+        int year = date.getYear();
+        int month = date.getMonthValue(); // 1~12
+        int day = date.getDayOfMonth();
+        int hour = time.getHour();
+        int min = time.getMinute();
+        int sec = time.getSecond();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month-1); // 0~11
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, min);
+        calendar.set(Calendar.SECOND, sec);
+
+        Log.d(TAG, "SetAlarm " + notification);
+        Log.d(TAG, "SetAlarm (notification: " + notification + ", title: " + title + ", id: " + id + ")");
+        switch (notification) {
+            case "10분 전":
+                calendar.add(Calendar.MINUTE, -10);
+                break;
+            case "30분 전":
+                calendar.add(Calendar.MINUTE, -30);
+                break;
+            case "1시간 전":
+                calendar.add(Calendar.HOUR, -1);
+                break;
+            case "1일 전":
+                calendar.add(Calendar.DATE, -1);
+                break;
+            case "7일 전":
+                calendar.add(Calendar.DATE, -7);
+                break;
+        }
+
+        Intent alarmIntent = new Intent(DetailActivity.this, AlarmReceiver.class);
+        alarmIntent.putExtra("type", notification);
+        alarmIntent.putExtra("title", title);
+        alarmIntent.putExtra("id", id);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(
+                        DetailActivity.this,
+                        1,
+                        alarmIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                pendingIntent);
+    }
+
     private void InsertSchdule(View view) {
         Log.d(TAG, "InsertSchdule");
         new Thread(new Runnable() {
@@ -460,12 +553,12 @@ public class DetailActivity extends AppCompatActivity
                 }
 
                 LocalDate startDate = LocalDate.of(picker_start_date.getYear(),
-                                            picker_start_date.getMonth() + 1,
-                                                   picker_start_date.getDayOfMonth());
+                        picker_start_date.getMonth() + 1,
+                        picker_start_date.getDayOfMonth());
                 LocalTime startTime = LocalTime.of(startHour, startMinute);
                 LocalDate endDate = LocalDate.of(picker_end_date.getYear(),
-                                          picker_end_date.getMonth() + 1,
-                                                 picker_end_date.getDayOfMonth());
+                        picker_end_date.getMonth() + 1,
+                        picker_end_date.getDayOfMonth());
                 LocalTime endTime = LocalTime.of(endHour, endMinute);
 
                 String title = edit_title.getText().toString();
@@ -477,18 +570,22 @@ public class DetailActivity extends AppCompatActivity
 
                 boolean bDday = checkBox_dday.isChecked();
                 LocalDate ddayDate = LocalDate.of(picker_dday_date.getYear(),
-                                           picker_dday_date.getMonth() + 1,
-                                                  picker_dday_date.getDayOfMonth());
+                        picker_dday_date.getMonth() + 1,
+                        picker_dday_date.getDayOfMonth());
 
                 Schedule s = new Schedule(startDate, startTime, endDate, endTime, title, memo, category, notification, repeat, bDday, ddayDate);
 
+                long newId;
                 if (scheduleId != -1) {
                     Log.d(TAG, "UpdateSchdule");
                     DatabaseHandler.getInstance().updateSchedule(s);
+                    newId = scheduleId;
                 } else {
-                    long scheduleId = DatabaseHandler.getInstance().insertSchedule(s);
-                    Log.d(TAG, "InsertSchdule " + scheduleId);
+                    newId = DatabaseHandler.getInstance().insertSchedule(s);
+                    Log.d(TAG, "InsertSchdule (scheduleId: " + scheduleId + ")");
                 }
+
+                SetAlarm(startDate, startTime, notification, title, (int)newId);
 
                 runOnUiThread(new Runnable() {
                     @Override
@@ -544,8 +641,8 @@ public class DetailActivity extends AppCompatActivity
 
                 boolean bDday = checkBox_dday.isChecked();
                 LocalDate ddayDate = LocalDate.of(picker_dday_date.getYear(),
-                                           picker_dday_date.getMonth() + 1,
-                                                  picker_dday_date.getDayOfMonth());
+                        picker_dday_date.getMonth() + 1,
+                        picker_dday_date.getDayOfMonth());
 
                 List<Schedule> list = new ArrayList<Schedule>();
                 Schedule s = new Schedule(startDate, startTime, endDate, endTime, title, memo, category, notification, repeat, bDday, ddayDate);
