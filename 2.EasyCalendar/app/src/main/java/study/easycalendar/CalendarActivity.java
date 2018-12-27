@@ -12,7 +12,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.threeten.bp.LocalDate;
@@ -27,6 +29,7 @@ public class CalendarActivity extends AppCompatActivity implements CalendarViewM
     private ActivityCalendarBinding binding;
     private CalendarAdapter calendarAdapter;
     private CalendarViewModel calendarViewModel;
+    private long lastTimeBackPressed;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +67,16 @@ public class CalendarActivity extends AppCompatActivity implements CalendarViewM
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
             binding.drawerLayout.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
+                finishAffinity();
+                return;
+            }
+            Toast toast = Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT);
+            TextView v = (TextView) toast.getView().findViewById(android.R.id.message);
+            if (v != null) v.setGravity(Gravity.CENTER);
+            toast.show();
+            lastTimeBackPressed = System.currentTimeMillis();
+//            super.onBackPressed();
         }
     }
 
