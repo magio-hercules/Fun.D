@@ -53,6 +53,10 @@ public class DatabaseHandler {
         return scheduleDao.getCountingList(LocalDate.now());
     }
 
+    public Schedule getSchedule(int id) {
+        return scheduleDao.getSchedule(id);
+    }
+
     public long insertSchedule(Schedule schedule) {
         try {
             return new InsertScheduleAsync(scheduleDao).execute(schedule).get();

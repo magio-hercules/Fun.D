@@ -1,5 +1,7 @@
 package study.easycalendar.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,17 +15,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import study.easycalendar.DdayEditActivity;
 import study.easycalendar.R;
 import study.easycalendar.model.Dday;
 
 public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.DdayViewHolder> {
 
     private List<Dday> ddayList;
+    private Context context;
 
     class DdayViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView tvTitle, tvDay, tvCount;
-        public LinearLayout itemLayout;
+        TextView tvTitle, tvDay, tvCount;
+        LinearLayout itemLayout;
 
         DdayViewHolder (View itemView) {
 
@@ -35,15 +39,14 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.DdayViewHolder
 
             itemLayout = itemView.findViewById(R.id.layout_item);
 
-
-
         }
 
     }
 
-    public DdayAdapter(List<Dday> ddayList) {
+    public DdayAdapter(List<Dday> ddayList, Context context) {
 
         this.ddayList = ddayList;
+        this.context = context;
     }
 
     @NonNull
@@ -52,13 +55,14 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.DdayViewHolder
 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.dday_item, parent, false);
 
+
         return new DdayViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull DdayViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final DdayViewHolder holder, int position) {
 
-        Dday dday = ddayList.get(position);
+        final Dday dday = ddayList.get(position);
 
         long days = getDays(dday.getDay());
 
@@ -77,6 +81,20 @@ public class DdayAdapter extends RecyclerView.Adapter<DdayAdapter.DdayViewHolder
         holder.tvTitle.setText(dday.getTitle());
 
         holder.itemLayout.setBackgroundColor(dday.getColor());
+
+
+        holder.tvDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(context, DdayEditActivity.class);
+
+                intent.putExtra("id",dday.getId());
+
+                context.startActivity(intent);
+
+            }
+        });
 
     }
 

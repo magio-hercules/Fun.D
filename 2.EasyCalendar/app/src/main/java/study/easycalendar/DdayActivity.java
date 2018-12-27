@@ -66,10 +66,10 @@ public class DdayActivity extends AppCompatActivity
         rvDday.setLayoutManager(new LinearLayoutManager(this));
         rvCounting.setLayoutManager(new LinearLayoutManager(this));
 
-        adapterDday = new DdayAdapter(ddayList);
+        adapterDday = new DdayAdapter(ddayList, this );
         rvDday.setAdapter(adapterDday);
 
-        adapterCounting = new DdayAdapter(ddayList);
+        adapterCounting = new DdayAdapter(ddayList, this);
         rvCounting.setAdapter(adapterCounting);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback
@@ -130,6 +130,7 @@ public class DdayActivity extends AppCompatActivity
             }
         });
 
+
         Button btnDday = (Button) findViewById(R.id.btn_dday);
 
         btnDday.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +141,7 @@ public class DdayActivity extends AppCompatActivity
             }
         });
 
+
         Button btnCounting = (Button) findViewById(R.id.btn_counting);
 
         btnCounting.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +151,7 @@ public class DdayActivity extends AppCompatActivity
                 LoadDDays(false);
             }
         });
+
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -214,7 +217,7 @@ public class DdayActivity extends AppCompatActivity
 
                     LocalDate dDay = scheduleList.get(i).dDayDate;
 
-                    ddayList.add(new Dday(scheduleList.get(i).title
+                    ddayList.add(new Dday(scheduleList.get(i).id, scheduleList.get(i).title
                             , LocalDate.of(dDay.getYear(), dDay.getMonth(),dDay.getDayOfMonth()).format(DateTimeFormatter.BASIC_ISO_DATE)
                             ,-769226
                             ,null));

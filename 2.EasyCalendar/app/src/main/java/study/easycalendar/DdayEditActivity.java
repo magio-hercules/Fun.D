@@ -53,10 +53,16 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
 
     LinearLayout itemLayout;
 
+    int updateId;
+
+    Schedule updateSchedule;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dday_edit);
+
+        updateId = getIntent().getIntExtra("id",0);
 
         tvCount = findViewById(R.id.tv_count);
         tvDay   = findViewById(R.id.tv_day);
@@ -66,20 +72,54 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
 
         itemLayout.setBackgroundColor(backColor);
 
+        if (updateId > 0) {
 
-        Calendar cal = new GregorianCalendar();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
 
-        cal.add(Calendar.DATE, 1);
+                    updateSchedule = DatabaseHandler.getInstance().getSchedule(updateId);
 
-        minDate = cal.getTime().getTime();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+                            LocalDate dDay = updateSchedule.getdDayDate();
 
-        long days = getDays(sdf.format(cal.getTime()));
+                            String date = LocalDate.of(dDay.getYear(), dDay.getMonth(),dDay.getDayOfMonth()).format(DateTimeFormatter.BASIC_ISO_DATE);
 
-        tvCount.setText("D - "+ days);
+                            long days = getDays(date);
 
-        tvDay.setText(sdf.format(cal.getTime()));
+                            tvCount.setText("D - " + days);
+
+                            tvDay.setText(date);
+
+                            etTitle.setText(updateSchedule.getTitle());
+                        }
+                    });
+
+                }
+            }).start();
+
+
+        }
+        else {
+
+            Calendar cal = new GregorianCalendar();
+
+            cal.add(Calendar.DATE, 1);
+
+            minDate = cal.getTime().getTime();
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+            long days = getDays(sdf.format(cal.getTime()));
+
+            tvCount.setText("D - " + days);
+
+            tvDay.setText(sdf.format(cal.getTime()));
+
+        }
 
 
 
@@ -147,37 +187,66 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
                     return;
                 }
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
+                if (updateId > 0) {
 
-                        Schedule schedule = new Schedule(
-                                LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
-                                , LocalTime.parse("000000",DateTimeFormatter.ofPattern("HHmmss"))
-                                , LocalDate.now()
-                                , LocalTime.now()
-                                , etTitle.getText().toString()
-                                , ""
-                                , ""
-                                , ""
-                                , ""
-                                , true
-                                , LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
-                        );
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
 
-                        DatabaseHandler.getInstance().insertSchedule(schedule);
+                            updateSchedule.setStartDate(LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd")));
+                            updateSchedule.setTitle(etTitle.getText().toString());
+                            updateSchedule.setdDayDate(LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd")));
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(DdayEditActivity.this, "D-Day 생성 완료", Toast.LENGTH_SHORT).show();
-                                setResult(RESULT_OK);
-                                finish();
-                            }
-                        });
+                            DatabaseHandler.getInstance().updateSchedule(updateSchedule);
 
-                    }
-                }).start();
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(DdayEditActivity.this, "D-Day 수정 완료", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
+                            });
+
+                        }
+                    }).start();
+
+                } else {
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            Schedule schedule = new Schedule(
+                                    LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
+                                    , LocalTime.parse("000000",DateTimeFormatter.ofPattern("HHmmss"))
+                                    , LocalDate.now()
+                                    , LocalTime.now()
+                                    , etTitle.getText().toString()
+                                    , ""
+                                    , ""
+                                    , ""
+                                    , ""
+                                    , true
+                                    , LocalDate.parse(tvDay.getText().toString(), DateTimeFormatter.ofPattern("yyyyMMdd"))
+                            );
+
+                            DatabaseHandler.getInstance().insertSchedule(schedule);
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(DdayEditActivity.this, "D-Day 생성 완료", Toast.LENGTH_SHORT).show();
+                                    setResult(RESULT_OK);
+                                    finish();
+                                }
+                            });
+
+                        }
+                    }).start();
+
+                }
+
 
 
 
@@ -216,15 +285,29 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
             }
         });
 
+        ImageView ivCapture = findViewById(R.id.iv_capture);
+
+        ivCapture.setVisibility(View.GONE);
+
     }
 
     private void createDatePicker() {
 
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+        try {
+            cal.setTime(sdf.parse(tvDay.getText().toString()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         DatePickerDialog datePickerDialog = new DatePickerDialog(DdayEditActivity.this
-                , date
-                , myCalendar.get(Calendar.YEAR)
-                , myCalendar.get(Calendar.MONTH)
-                , myCalendar.get(Calendar.DAY_OF_MONTH));
+                    , date
+                    , cal.get(Calendar.YEAR)
+                    , cal.get(Calendar.MONTH)
+                    , cal.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.getDatePicker().setMinDate(minDate);
 
