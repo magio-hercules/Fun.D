@@ -13,13 +13,4 @@
 
     </group>
 
-    <item android:title="추가기능">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="공유하기" />
-        </menu>
-    </item>
-
 </menu>

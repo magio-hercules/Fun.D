@@ -2,13 +2,8 @@ package study.easycalendar;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,13 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import study.easycalendar.adapter.DdayAdapter;
-import study.easycalendar.list.ListActivity;
 import study.easycalendar.model.Dday;
 import study.easycalendar.model.Schedule;
 import study.easycalendar.model.local.DatabaseHandler;
 
-public class DdayActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class DdayActivity extends AppCompatActivity {
 
     private static final int EDIT_SCHEDULE = 1234;
 
@@ -46,8 +39,6 @@ public class DdayActivity extends AppCompatActivity
 
     ItemTouchHelper itemTouchHelper;
 
-    DrawerLayout drawer;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +47,7 @@ public class DdayActivity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ddayList = new ArrayList<>();
         scheduleList = new ArrayList<>();
 
@@ -66,14 +57,14 @@ public class DdayActivity extends AppCompatActivity
         rvDday.setLayoutManager(new LinearLayoutManager(this));
         rvCounting.setLayoutManager(new LinearLayoutManager(this));
 
-        adapterDday = new DdayAdapter(ddayList, this );
+        adapterDday = new DdayAdapter(ddayList, this);
         rvDday.setAdapter(adapterDday);
 
         adapterCounting = new DdayAdapter(ddayList, this);
         rvCounting.setAdapter(adapterCounting);
 
         ItemTouchHelper.SimpleCallback simpleItemTouchCallback
-                = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT ) {
+                = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
 
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -153,7 +144,6 @@ public class DdayActivity extends AppCompatActivity
         });
 
 
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,16 +153,6 @@ public class DdayActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
 
     }
 
@@ -192,8 +172,7 @@ public class DdayActivity extends AppCompatActivity
 
             itemTouchHelper.attachToRecyclerView(rvDday);
 
-        }
-        else {
+        } else {
 
             rvDday.setVisibility(View.GONE);
             rvCounting.setVisibility(View.VISIBLE);
@@ -208,8 +187,7 @@ public class DdayActivity extends AppCompatActivity
 
                 if (isDDays) {
                     scheduleList = DatabaseHandler.getInstance().getDDayList();
-                }
-                else {
+                } else {
                     scheduleList = DatabaseHandler.getInstance().getCountingList();
                 }
 
@@ -218,9 +196,9 @@ public class DdayActivity extends AppCompatActivity
                     LocalDate dDay = scheduleList.get(i).dDayDate;
 
                     ddayList.add(new Dday(scheduleList.get(i).id, scheduleList.get(i).title
-                            , LocalDate.of(dDay.getYear(), dDay.getMonth(),dDay.getDayOfMonth()).format(DateTimeFormatter.BASIC_ISO_DATE)
-                            ,-769226
-                            ,null));
+                            , LocalDate.of(dDay.getYear(), dDay.getMonth(), dDay.getDayOfMonth()).format(DateTimeFormatter.BASIC_ISO_DATE)
+                            , -769226
+                            , null));
                 }
 
                 runOnUiThread(new Runnable() {
@@ -230,8 +208,7 @@ public class DdayActivity extends AppCompatActivity
                         if (isDDays) {
 
                             rvDday.setAdapter(adapterDday);
-                        }
-                        else {
+                        } else {
 
                             rvCounting.setAdapter(adapterCounting);
                         }
@@ -244,60 +221,24 @@ public class DdayActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
     /**************************************************************************
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+     @Override public boolean onCreateOptionsMenu(Menu menu) {
+     // Inflate the menu; this adds items to the action bar if it is present.
+     getMenuInflater().inflate(R.menu.main, menu);
+     return true;
+     }
+     **************************************************************************/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Toast.makeText(getApplicationContext(), "Setting 기능 추가하기", Toast.LENGTH_SHORT).show();
-            return true;
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
         }
-
         return super.onOptionsItemSelected(item);
     }
-    **************************************************************************/
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent intent = null;
-
-        switch (item.getItemId()) {
-            case R.id.nav_schedule:
-                intent = new Intent(this, ListActivity.class);
-                break;
-            case R.id.nav_dday:
-                intent = new Intent(this, DdayActivity.class);
-                break;
-            case R.id.nav_share:
-                Toast.makeText(this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        finish();
-        return true;
-    }
 
     @Override
     protected void onStart() {

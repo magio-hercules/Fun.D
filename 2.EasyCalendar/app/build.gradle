@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: 'deploygate'
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -27,8 +27,26 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
     dataBinding {
         enabled = true
+    }
+
+    deploygate {
+
+        userName = "slee8789"
+        token = "810f56a99a6965f64bf92f4182c41c9372c26b63"
+
+        apks {
+
+            release {
+                sourceFile = file("build/outputs/apk/release/app-release.apk")
+            }
+
+            debug {
+                sourceFile = file("build/outputs/apk/debug/app-debug.apk")
+            }
+        }
     }
 }
 

@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.annimon.stream.Stream;
 import com.prolificinteractive.materialcalendarview.CalendarDay;

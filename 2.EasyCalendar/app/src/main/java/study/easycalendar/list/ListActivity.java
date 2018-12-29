@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +22,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import study.easycalendar.DdayActivity;
 import study.easycalendar.DetailActivity;
@@ -32,10 +35,8 @@ import study.easycalendar.model.local.AppDatabase;
 import study.easycalendar.model.local.DatabaseHandler;
 import study.easycalendar.model.local.ScheduleDao;
 
-public class ListActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class ListActivity extends AppCompatActivity {
 
-    DrawerLayout drawer;
     private RecyclerView recyclerView;
     private ScheduleDao dao;
     private ArrayList<Schedule> arrayList;
@@ -43,23 +44,16 @@ public class ListActivity extends AppCompatActivity
     private Schedule schedule;
     DatabaseHandler databaseHandler;
     private List<Schedule> scheduleListFromDB = new ArrayList<Schedule>();
+    private ExecutorService executorService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-
+        executorService = Executors.newSingleThreadExecutor();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView) findViewById(R.id.schedule_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -87,8 +81,15 @@ public class ListActivity extends AppCompatActivity
                 builder.setPositiveButton("삭제", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //executorService 이용
+//                        executorService.execute(() -> dao.deleteSchedule(schedule));
 
-//                        dao.deleteSchedule(schedule);
+                        //DatabaseHandler 이용
+                        DatabaseHandler.getInstance().deleteSchedule(schedule);
+
+                        //삭제 후 리사이클러뷰 업데이트
+                        loadNotes();
+                        adapter.notifyDataSetChanged();
 
                     }
                 });
@@ -102,15 +103,6 @@ public class ListActivity extends AppCompatActivity
             }
         }));
 
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
     }
 
     @Override
@@ -168,30 +160,11 @@ public class ListActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             Toast.makeText(getApplicationContext(), "Setting 기능 추가하기", Toast.LENGTH_SHORT).show();
             return true;
+        } else if( id == android.R.id.home) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Intent intent = null;
-
-        switch (item.getItemId()) {
-            case R.id.nav_schedule:
-                intent = new Intent(this, ListActivity.class);
-                break;
-            case R.id.nav_dday:
-                intent = new Intent(this, DdayActivity.class);
-                break;
-            case R.id.nav_share:
-                Toast.makeText(this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
-                break;
-        }
-        drawer.closeDrawer(GravityCompat.START);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        finish();
-        return true;
-    }
 }

@@ -76,9 +76,8 @@ public class DatabaseHandler {
         new UpdateScheduleAsync(scheduleDao).execute(schedule);
     }
 
-    public Integer deleteSchedule(Schedule schedule) {
+    public void deleteSchedule(Schedule schedule) {
         new DeleteScheduleAsync(scheduleDao).execute(schedule);
-        return null;
     }
 
     private static class InsertScheduleAsync extends AsyncTask<Schedule, Long, Long> {

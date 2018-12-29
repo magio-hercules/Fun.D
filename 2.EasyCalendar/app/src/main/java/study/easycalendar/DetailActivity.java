@@ -10,10 +10,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -32,20 +28,17 @@ import android.widget.Toast;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import study.easycalendar.alarm.AlarmReceiver;
-import study.easycalendar.list.ListActivity;
 import study.easycalendar.model.Schedule;
 import study.easycalendar.model.local.AppDatabase;
 import study.easycalendar.model.local.DatabaseHandler;
 import study.easycalendar.model.local.ScheduleDao;
 
-public class DetailActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class DetailActivity extends AppCompatActivity {
     public static final String TAG = "[easy][Detail]";
 
     Toolbar toolbar;
@@ -58,8 +51,6 @@ public class DetailActivity extends AppCompatActivity
     Spinner spinner_notification;
 
     CheckBox checkBox_dday;
-
-    DrawerLayout drawer;
 
     // Calendar
     Calendar calendar;
@@ -77,20 +68,21 @@ public class DetailActivity extends AppCompatActivity
     boolean condition = false;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent intent = getIntent();
         scheduleId = intent.getIntExtra("id", -1);
         Log.d(TAG, "id : " + scheduleId);
+        //intent date로 date 값 보냅니다.
+        String scheduleDate = intent.getStringExtra("date");
+        Log.d(TAG, "date : " + scheduleDate);
 
         Thread threadSchedule = null;
-
 
         if (scheduleId != -1) {
             Log.d(TAG, "onCreate scheduleId != -1");
@@ -118,15 +110,6 @@ public class DetailActivity extends AppCompatActivity
                         initDday();
                         initFAB();
 //                        initAlarm();
-
-                        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-                        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                                DetailActivity.this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-                        drawer.addDrawerListener(toggle);
-                        toggle.syncState();
-
-                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-                        navigationView.setNavigationItemSelectedListener(DetailActivity.this);
                     }
                 }
             });
@@ -140,15 +123,6 @@ public class DetailActivity extends AppCompatActivity
             initDday();
             initFAB();
 //            initAlarm();
-
-            drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.addDrawerListener(toggle);
-            toggle.syncState();
-
-            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-            navigationView.setNavigationItemSelectedListener(this);
         }
 
 //        synchronized (threadSchedule) {
@@ -178,14 +152,6 @@ public class DetailActivity extends AppCompatActivity
 //        }
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -205,6 +171,8 @@ public class DetailActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             Toast.makeText(getApplicationContext(), "Setting 기능 추가하기", Toast.LENGTH_SHORT).show();
             return true;
+        } else if(id == android.R.id.home) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -240,27 +208,6 @@ public class DetailActivity extends AppCompatActivity
 //                    imm.showSoftInput(edittext,0);
             }
         });
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-        Intent intent;
-
-        if (id == R.id.nav_schedule) {
-            intent = new Intent(DetailActivity.this, ListActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_dday) {
-            intent = new Intent(DetailActivity.this, DdayActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_share) {
-            Toast.makeText(DetailActivity.this, "공유하기 기능 추가하기", Toast.LENGTH_SHORT).show();
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private void initSpinner() {
@@ -461,7 +408,7 @@ public class DetailActivity extends AppCompatActivity
         calendar.set(Calendar.SECOND, sec + 5);
 
         Intent alarmIntent = new Intent(DetailActivity.this, AlarmReceiver.class);
-        alarmIntent.putExtra("state","ALARM test");
+        alarmIntent.putExtra("state", "ALARM test");
 
         PendingIntent pendingIntent =
                 PendingIntent.getBroadcast(
@@ -489,7 +436,7 @@ public class DetailActivity extends AppCompatActivity
         int min = time.getMinute();
         int sec = time.getSecond();
         calendar.set(Calendar.YEAR, year);
-        calendar.set(Calendar.MONTH, month-1); // 0~11
+        calendar.set(Calendar.MONTH, month - 1); // 0~11
         calendar.set(Calendar.DAY_OF_MONTH, day);
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, min);
@@ -585,7 +532,7 @@ public class DetailActivity extends AppCompatActivity
                     Log.d(TAG, "InsertSchdule (scheduleId: " + scheduleId + ")");
                 }
 
-                SetAlarm(startDate, startTime, notification, title, (int)newId);
+                SetAlarm(startDate, startTime, notification, title, (int) newId);
 
                 runOnUiThread(new Runnable() {
                     @Override
