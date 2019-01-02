@@ -62,6 +62,8 @@ public class DetailActivity extends AppCompatActivity {
     DatePicker picker_dday_date;
     TextView text_dday_date;
 
+    LocalDate selectedDate;
+
     Schedule scheduleInfo = null;
     int scheduleId = -1;
 
@@ -79,8 +81,15 @@ public class DetailActivity extends AppCompatActivity {
         scheduleId = intent.getIntExtra("id", -1);
         Log.d(TAG, "id : " + scheduleId);
         //intent date로 date 값 보냅니다.
-        String scheduleDate = intent.getStringExtra("date");
-        Log.d(TAG, "date : " + scheduleDate);
+//        String scheduleDate = intent.getStringExtra("date");
+//        Log.d(TAG, "date : " + scheduleDate);
+        ArrayList<Integer> dateInfo = intent.getIntegerArrayListExtra("date");
+        int year = dateInfo.get(0);
+        int month = dateInfo.get(1);
+        int day = dateInfo.get(2);
+        Log.d(TAG, "date : " + year + "-" + month + "-" + day);
+
+        selectedDate = LocalDate.of(year, month, day);
 
         Thread threadSchedule = null;
 
@@ -107,7 +116,6 @@ public class DetailActivity extends AppCompatActivity {
                         initEdit();
                         initSpinner();
                         initDateTime();
-                        initDday();
                         initFAB();
 //                        initAlarm();
                     }
@@ -120,7 +128,6 @@ public class DetailActivity extends AppCompatActivity {
             initEdit();
             initSpinner();
             initDateTime();
-            initDday();
             initFAB();
 //            initAlarm();
         }
@@ -274,6 +281,9 @@ public class DetailActivity extends AppCompatActivity {
         picker_start_time = (TimePicker) findViewById(R.id.picker_start_time);
         picker_end_time = (TimePicker) findViewById(R.id.picker_end_time);
 
+        picker_dday_date = (DatePicker) findViewById(R.id.picker_dday_date);
+        text_dday_date = (TextView) findViewById(R.id.text_dday_date);
+
         calendar = Calendar.getInstance();
         int year = picker_start_date.getYear();
         int month = picker_start_date.getMonth() + 1;
@@ -312,13 +322,22 @@ public class DetailActivity extends AppCompatActivity {
                 picker_end_time.setHour(endHour);
                 picker_end_time.setMinute(endMinute);
             }
+        } else {
+            int curYear = selectedDate.getYear();
+            int curMonth = selectedDate.getMonthValue() - 1;
+            int curDay = selectedDate.getDayOfMonth();
+
+            Log.d(TAG, "curDate : " + curYear + "-" + curMonth + "-" + curDay);
+
+            picker_start_date.updateDate(curYear, curMonth, curDay);
+            picker_end_date.updateDate(curYear, curMonth, curDay);
+            picker_dday_date.updateDate(curYear, curMonth, curDay);
         }
+
+        initDday();
     }
 
     private void initDday() {
-        picker_dday_date = (DatePicker) findViewById(R.id.picker_dday_date);
-        text_dday_date = (TextView) findViewById(R.id.text_dday_date);
-
         picker_dday_date.setEnabled(false);
         text_dday_date.setEnabled(false);
 

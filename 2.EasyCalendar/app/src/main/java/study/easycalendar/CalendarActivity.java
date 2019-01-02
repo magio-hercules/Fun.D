@@ -22,6 +22,9 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import org.threeten.bp.LocalDate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import study.easycalendar.adapter.CalendarAdapter;
 import study.easycalendar.databinding.ActivityCalendarBinding;
 import study.easycalendar.list.ListActivity;
@@ -57,7 +60,13 @@ public class CalendarActivity extends AppCompatActivity implements CalendarViewM
         binding.navView.setNavigationItemSelectedListener(this);
         binding.contentCalendar.fab.setOnClickListener(v -> {
             Intent intent = new Intent(this, DetailActivity.class);
-            intent.putExtra("date", binding.contentCalendar.calendar.getSelectedDate().toString());
+//            intent.putExtra("date", binding.contentCalendar.calendar.getSelectedDate().toString());
+            CalendarDay selectedDate = binding.contentCalendar.calendar.getSelectedDate();
+            List<Integer> dateInfo = new ArrayList<Integer>();
+            dateInfo.add(selectedDate.getYear());
+            dateInfo.add(selectedDate.getMonth());
+            dateInfo.add(selectedDate.getDay());
+            intent.putIntegerArrayListExtra("date", (ArrayList<Integer>)dateInfo);
             startActivity(intent);
         });
     }
