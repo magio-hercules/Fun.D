@@ -551,7 +551,9 @@ public class DetailActivity extends AppCompatActivity {
                     Log.d(TAG, "InsertSchdule (scheduleId: " + scheduleId + ")");
                 }
 
-                SetAlarm(startDate, startTime, notification, title, (int) newId);
+                if (!notification.equals("없음")) {
+                    SetAlarm(startDate, startTime, notification, title, (int)newId);
+                }
 
                 runOnUiThread(new Runnable() {
                     @Override
