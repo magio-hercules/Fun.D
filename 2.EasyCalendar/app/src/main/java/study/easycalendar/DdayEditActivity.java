@@ -90,7 +90,8 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
 
                             long days = getDays(date);
 
-                            tvCount.setText("D - " + days);
+                            if (days >= 0) tvCount.setText("D - " + days);
+                            else tvCount.setText("D + " + (days * (-1)));
 
                             tvDay.setText(date);
 
@@ -142,7 +143,9 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
 
                 long days = getDays(sb.toString());
 
-                tvCount.setText("D - "+ days);
+                if (days >= 0) tvCount.setText("D - " + days);
+                else tvCount.setText("D + " + (days * (-1)));
+
 
                 tvDay.setText(sb.toString());
             }
@@ -309,7 +312,7 @@ public class DdayEditActivity extends AppCompatActivity implements ColorPickerDi
                     , cal.get(Calendar.MONTH)
                     , cal.get(Calendar.DAY_OF_MONTH));
 
-        datePickerDialog.getDatePicker().setMinDate(minDate);
+        //datePickerDialog.getDatePicker().setMinDate(minDate);
 
         datePickerDialog.show();
 

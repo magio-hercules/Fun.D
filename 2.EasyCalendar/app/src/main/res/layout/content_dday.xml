@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/btn_counting"
-            android:text = "Counting List"
+            android:text = "D+Day"
             style="?android:attr/buttonBarButtonStyle"
             />
 
