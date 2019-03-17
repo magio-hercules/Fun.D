@@ -1,0 +1,40 @@
+ext {
+    supportLibrary = '28.0.0'
+    navigation = '1.0.0-beta01'
+    constraintLayout = '1.1.3'
+    rxJava2 = '2.2.7'
+    rxAndroid = '2.1.1'
+    retrofit2 = '2.5.0'
+    rxLifecycle2 = '2.2.2'
+    stetho = '1.5.0'
+    stream = '1.2.1'
+    tedPermission = '2.2.2'
+    dagger = '2.21'
+    architectureComponent = '1.1.1'
+    androidAsync = '2.0.2'
+
+    dependencies = [
+            appCompat             : "com.android.support:appcompat-v7:$supportLibrary",
+            design                : "com.android.support:design:$supportLibrary",
+            constraintLayout      : "androidx.constraintlayout:constraintlayout:$constraintLayout",
+            navigationFragment    : "android.arch.navigation:navigation-fragment:$navigation",
+            navigationUi          : "android.arch.navigation:navigation-ui:$navigation",
+            rxJava                : "io.reactivex.rxjava2:rxjava:$rxJava2",
+            rxAndroid             : "io.reactivex.rxjava2:rxandroid:$rxAndroid",
+            retrofit              : "com.squareup.retrofit2:retrofit:$retrofit2",
+            converterGson         : "com.squareup.retrofit2:converter-gson:$retrofit2",
+            adapterRxjava2        : "com.squareup.retrofit2:adapter-rxjava2:$retrofit2",
+            stetho                : "com.facebook.stetho:stetho:$stetho",
+            stream                : "com.annimon:stream:$stream",
+            tedPermission         : "gun0912.ted:tedpermission-rx2:$tedPermission",
+            lifecycleExtension    : "android.arch.lifecycle:extensions:$architectureComponent",
+            lifecycleCompiler     : "android.arch.lifecycle:compiler:$architectureComponent",
+            lifecycleRuntime      : "android.arch.lifecycle:runtime:$architectureComponent",
+            dagger                : "com.google.dagger:dagger:$dagger",
+            daggerCompiler        : "com.google.dagger:dagger-compiler:$dagger",
+            daggerAndroid         : "com.google.dagger:dagger-android:$dagger",
+            daggerAndroidSupport  : "com.google.dagger:dagger-android-support:$dagger",
+            daggerAndroidProccesor: "com.google.dagger:dagger-android-processor:$dagger",
+            androidAsync          : "com.koushikdutta.async:androidasync:$androidAsync"
+    ]
+}

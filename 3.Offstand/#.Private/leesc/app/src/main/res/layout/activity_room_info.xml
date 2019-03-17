@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.leesc.tazza.ui.roominfo.RoomInfoViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.roominfo.RoomInfoActivity">
+
+        <Button
+            android:id="@+id/btn_create_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.createGroup()}"
+            android:text="CreateGroup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_remove_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.removeGroup()}"
+            android:text="REMOVE GROUP"
+            app:layout_constraintStart_toEndOf="@id/btn_create_group"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_create_socket"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.createSocket()}"
+            android:text="CreateSocket"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_create_group" />
+
+        <Button
+            android:id="@+id/btn_send_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.sendMessage()}"
+            android:text="메세지보내기 (to Client)"
+            app:layout_constraintStart_toEndOf="@id/btn_create_socket"
+            app:layout_constraintTop_toBottomOf="@id/btn_create_group" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
