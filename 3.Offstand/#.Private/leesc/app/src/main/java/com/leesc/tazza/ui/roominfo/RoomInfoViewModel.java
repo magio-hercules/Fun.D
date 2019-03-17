@@ -1,40 +1,23 @@
 package com.leesc.tazza.ui.roominfo;
 
 import android.content.Context;
-import android.content.IntentFilter;
-import android.net.wifi.p2p.WifiP2pConfig;
-import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.annimon.stream.Collectors;
-import com.annimon.stream.Stream;
-import com.koushikdutta.async.AsyncServer;
 import com.leesc.tazza.R;
 import com.leesc.tazza.data.DataManager;
-import com.leesc.tazza.data.model.Room;
 import com.leesc.tazza.data.remote.ConnectionManager;
 import com.leesc.tazza.di.provider.ResourceProvider;
 import com.leesc.tazza.ui.base.BaseViewModel;
-import com.leesc.tazza.ui.main.WifiDirectBroadcastReceiver;
 import com.leesc.tazza.utils.rx.RxEventBus;
 import com.leesc.tazza.utils.rx.SchedulerProvider;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.net.Socket;
 
-import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 
 public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
@@ -54,26 +37,26 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
         this.resourceProvider = resourceProvider;
 
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(WifiP2pInfo.class)
-                        .filter(info -> ((WifiP2pInfo) info).groupFormed && ((WifiP2pInfo) info).isGroupOwner)
-                        //Todo : 서버 소켓 옵저버블 변환...
-                        .subscribeOn(schedulerProvider.io())
-                        .subscribe(
-                                info -> {
-                                    Log.d("lsc", "RoomInfoViewModel info " + info);
-//                            serverThreadObservable(8080)
-//                                    .subscribeOn(schedulerProvider.io())
-//                                    .observeOn(schedulerProvider.ui())
-//                                    .subscribe(onNext -> {
-//                                        Log.d("lsc", "RoomInfoViewModel makeRoom onNext " + onNext);
-//                                        Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
-//                                    }, onError -> {
-//                                        Log.d("lsc", "RoomInfoViewModel makeRoom onError " + onError.getMessage());
-//                                    }, () -> {
-//                                        Log.d("lsc", "RoomInfoViewModel makeRoom terminated");
-//                                    });
+                .filter(info -> ((WifiP2pInfo) info).groupFormed && ((WifiP2pInfo) info).isGroupOwner)
+                //Todo : 서버 소켓 옵저버블 변환...
+                .subscribeOn(schedulerProvider.io())
+                .subscribe(
+                        info -> {
+                            Log.d("lsc", "RoomInfoViewModel info " + info);
+//                            createSocket(8080);
+                        }
+                )
+        );
 
-                                }
-                        )
+        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                        message -> {
+                            Log.d("lsc", "RoomInfoViewModel message " + message);
+                            Toast.makeText(context, (String) message, Toast.LENGTH_SHORT).show();
+                        }
+                )
         );
     }
 

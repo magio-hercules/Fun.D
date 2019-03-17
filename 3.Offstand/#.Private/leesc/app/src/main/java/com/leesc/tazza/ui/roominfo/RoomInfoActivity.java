@@ -9,21 +9,14 @@ import android.util.Log;
 
 import com.leesc.tazza.BR;
 import com.leesc.tazza.R;
-import com.leesc.tazza.data.model.Room;
 import com.leesc.tazza.databinding.ActivityRoomInfoBinding;
 import com.leesc.tazza.receiver.WifiDirectReceiver;
 import com.leesc.tazza.ui.base.BaseActivity;
-import com.leesc.tazza.ui.main.AttendeeAdapter;
-import com.leesc.tazza.ui.main.RoomAdapter;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -82,20 +75,20 @@ public class RoomInfoActivity extends BaseActivity<ActivityRoomInfoBinding, Room
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("lsc","RoomInfoActivity onStart");
+        Log.d("lsc", "RoomInfoActivity onStart");
         registerReceiver(wifiDirectReceiver, intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("lsc","RoomInfoActivity onStop");
+        Log.d("lsc", "RoomInfoActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
     }
 
     @Override
     public void handleError(Throwable throwable) {
-        Log.e("lsc","RoomInfoActivity handleError " + throwable.getMessage());
+        Log.e("lsc", "RoomInfoActivity handleError " + throwable.getMessage());
     }
 
 }

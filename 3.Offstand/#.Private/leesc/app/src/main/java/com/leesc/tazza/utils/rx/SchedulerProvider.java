@@ -8,6 +8,8 @@ public interface SchedulerProvider {
 
     Scheduler io();
 
+    Scheduler newwThread();
+
     Scheduler computation();
 
 }

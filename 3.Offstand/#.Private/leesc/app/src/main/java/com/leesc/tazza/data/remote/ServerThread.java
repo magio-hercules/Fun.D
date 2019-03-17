@@ -2,6 +2,8 @@ package com.leesc.tazza.data.remote;
 
 import android.util.Log;
 
+import com.leesc.tazza.utils.rx.RxEventBus;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -24,7 +26,7 @@ public class ServerThread implements Runnable {
     }
 
     public ServerThread(ServerSocket serverSocket) {
-        Log.i("lsc", "ServerThread constructor " + Thread.currentThread().getId());
+        Log.i("lsc", "ServerThread constructor " + Thread.currentThread().getName());
         this.serverSocket = serverSocket;
     }
 
@@ -38,7 +40,8 @@ public class ServerThread implements Runnable {
                 streamByClient = new DataInputStream(socket.getInputStream());
                 Log.d("lsc", "ServerThread 3");
                 streamToClient = new DataOutputStream(socket.getOutputStream());
-                Log.d("lsc", "ServerThread 클라이언트로부터 받은 메세지 " + streamByClient.readUTF());
+//                Log.d("lsc", "ServerThread 클라이언트로부터 받은 메세지 " + streamByClient.readUTF());
+                RxEventBus.getInstance().sendEvent(streamByClient.readUTF());
             }
         } catch (IOException e) {
             Log.d("lsc", "ServerThread e " + e.getMessage());

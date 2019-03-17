@@ -21,4 +21,8 @@ public class AppSchedulerProvider implements SchedulerProvider {
         return Schedulers.computation();
     }
 
+    @Override
+    public Scheduler newwThread() {
+        return Schedulers.newThread();
+    }
 }

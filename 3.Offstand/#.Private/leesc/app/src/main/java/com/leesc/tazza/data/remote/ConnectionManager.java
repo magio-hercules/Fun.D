@@ -24,20 +24,25 @@ public class ConnectionManager {
 
     private static List<ServerThread> serverThreads = new ArrayList<>();
     private static ClientThread clientThread;
+    private static ServerSocket serverSocket;
 
     public static Observable<String> serverThreadObservable(int roomPort) {
         return Observable.create(subscriber -> {
             Log.d("lsc", "ConnectionManager serverThreadObservable create");
-            ServerSocket serverSocket = new ServerSocket(roomPort);
+            Log.d("lsc", "ConnectionManager serverThreadObservable thread " + Thread.currentThread().getName());
+            /*if (serverSocket != null) */
+            serverSocket = new ServerSocket(roomPort);
             ServerThread serverThread = new ServerThread(serverSocket);
             new Thread(serverThread).start();
             serverThreads.add(serverThread);
         });
     }
 
+
     public static Observable<String> clientThreadObservable(InetAddress serverIp, int serverPort) {
         return Observable.create(subscriber -> {
             Log.d("lsc", "ConnectionManager clientThreadObservable create");
+            Log.d("lsc", "ConnectionManager clientThreadObservable thread " + Thread.currentThread().getName());
             Socket socket = new Socket();
             clientThread = new ClientThread(socket, serverIp, serverPort);
             new Thread(clientThread).start();
@@ -45,24 +50,22 @@ public class ConnectionManager {
     }
 
     public static Completable broadcastMessageCompletable(String message) {
+        Log.d("lsc", "ConnectionManager broadcastMessageCompletable " + serverThreads.size());
         for (ServerThread serverThread : serverThreads) {
-            try {
+            return Completable.create(subscriber -> {
+                Log.d("lsc", "ConnectionManager broadcastMessageCompletable thread " + Thread.currentThread().getName());
                 serverThread.getStreamToClient().writeUTF(message);
-                return Completable.complete();
-            } catch (IOException e) {
-                return Completable.error(e);
-            }
+            });
         }
         return Completable.complete();
     }
 
     public static Completable sendMessageCompletable(String message) {
-        try {
+        return Completable.create(subscriber -> {
+            Log.d("lsc", "ConnectionManager sendMessageCompletable " + Thread.currentThread().getName());
             clientThread.getStreamToServer().writeUTF(message);
-            return Completable.complete();
-        } catch (IOException e) {
-            return Completable.error(e);
-        }
+        });
+//            return Completable.complete();
     }
 
 }

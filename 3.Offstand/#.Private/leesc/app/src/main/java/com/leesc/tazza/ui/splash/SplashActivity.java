@@ -8,7 +8,6 @@ import com.leesc.tazza.R;
 import com.leesc.tazza.databinding.ActivitySplashBinding;
 import com.leesc.tazza.ui.base.BaseActivity;
 import com.leesc.tazza.ui.lobby.LobbyActivity;
-import com.leesc.tazza.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -39,13 +38,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
         super.onCreate(savedInstanceState);
         splashViewModel.setNavigator(this);
         Log.d("lsc","SplashActivity onCreate");
-    }
-
-    @Override
-    public void startMainActivity() {
-        MainActivity.start(this);
-        overridePendingTransition(R.anim.fade_out,R.anim.fade_in);
-        finish();
     }
 
     @Override

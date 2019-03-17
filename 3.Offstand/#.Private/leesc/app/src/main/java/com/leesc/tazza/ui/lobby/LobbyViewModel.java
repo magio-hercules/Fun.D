@@ -14,6 +14,7 @@ import com.annimon.stream.Stream;
 import com.leesc.tazza.R;
 import com.leesc.tazza.data.DataManager;
 import com.leesc.tazza.data.model.Room;
+import com.leesc.tazza.data.remote.ConnectionManager;
 import com.leesc.tazza.di.provider.ResourceProvider;
 import com.leesc.tazza.receiver.WifiDirectReceiver;
 import com.leesc.tazza.service.WifiP2pService;
@@ -21,16 +22,7 @@ import com.leesc.tazza.ui.base.BaseViewModel;
 import com.leesc.tazza.utils.rx.RxEventBus;
 import com.leesc.tazza.utils.rx.SchedulerProvider;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-
-import io.reactivex.Completable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 
 public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
@@ -93,12 +85,22 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(WifiP2pInfo.class)
                 .filter(info -> !(((WifiP2pInfo) info).isGroupOwner))
-                //Todo : 서버 소켓 옵저버블 변환...
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(
                         info -> {
                             Log.d("lsc", "LobbyViewModel info " + info);
                             enterRoom(((WifiP2pInfo) info).groupOwnerAddress, 8080);
+                        }
+                )
+        );
+
+        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(
+                        message -> {
+                            Log.d("lsc", "LobbyViewModel message " + message);
+                            Toast.makeText(context, (String) message, Toast.LENGTH_SHORT).show();
                         }
                 )
         );
@@ -128,73 +130,33 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     }
 
     public void enterRoom(InetAddress roomAddress, int roomPort) {
-        Log.d("lsc", "enterRoom " + roomAddress);
-        getCompositeDisposable()
-                .add(clientThreadObservable(roomAddress, roomPort)
-                        .subscribeOn(schedulerProvider.io())
-                        .observeOn(schedulerProvider.ui())
-                        .subscribe(onNext -> {
-                            Log.d("lsc", "enterRoom onNext " + onNext);
+        Log.d("lsc", "LobbyViewModel enterRoom " + roomAddress);
+        getCompositeDisposable().add(ConnectionManager.clientThreadObservable(roomAddress, roomPort)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(onNext -> {
+                    Log.d("lsc", "LobbyViewModel enterRoom thread " + Thread.currentThread().getName());
+                    Log.d("lsc", "LobbyViewModel enterRoom onNext " + onNext);
 //                            Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
-                        }, onError -> {
-                            Log.d("lsc", "enterRoom onError " + onError.getMessage());
-                        }, () -> {
-                            Log.d("lsc", "enterRoom terminated");
-                        }));
-    }
+                }, onError -> {
+                    Log.d("lsc", "enterRoom onError " + onError.getMessage());
+                }, () -> {
+                    Log.d("lsc", "enterRoom terminated");
+                }));
 
-    DataInputStream streamByServer = null;
-    DataOutputStream streamToServer = null;
-
-    private Observable<String> clientThreadObservable(InetAddress serverIp, int serverPort) {
-        return Observable.create(subscriber -> {
-            Log.d("lsc", "clientThreadObservable create");
-
-            try {
-                Socket socket = new Socket();
-                Log.d("lsc", "clientThreadObservable create 1");
-                socket.connect(new InetSocketAddress(serverIp, serverPort), 30000);
-                Log.d("lsc", "clientThreadObservable create 2");
-                streamByServer = new DataInputStream(socket.getInputStream());
-                Log.d("lsc", "clientThreadObservable create 3");
-                streamToServer = new DataOutputStream(socket.getOutputStream());
-                Log.d("lsc", "clientThreadObservable create 4");
-                while (socket != null) {
-                    try {
-                        subscriber.onNext(streamByServer.readUTF());
-                    } catch (IOException e) {
-                        subscriber.onError(e);
-                    }
-                }
-
-            } catch (IOException e) {
-                subscriber.onError(e);
-            }
-
-
-//            Socket socket = new Socket(serverIp, serverPort);
-//            String messageFromServer;
-//            streamByServer = new DataInputStream(socket.getInputStream());
-//            streamToServer = new DataOutputStream(socket.getOutputStream());
-//            messageFromServer = streamByServer.readUTF();
-//            subscriber.onNext(messageFromServer);
-        });
-    }
-
-    private Single sendToClientCompletable() {
-        return Single.just("messageByClient");
     }
 
     public void sendMessage() {
-        getCompositeDisposable().add(sendToClientCompletable()
-                .observeOn(schedulerProvider.io())
-                .subscribeOn(schedulerProvider.io()).subscribe(
-                        message -> {
-                            Log.d("lsc","sendMessage onNext");
-                            streamToServer.writeUTF(message.toString());
+        getCompositeDisposable().add(ConnectionManager.sendMessageCompletable("testByClient")
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .doOnComplete(() -> Log.d("lsc", "LobbyViewModel sendMessage doOnComplete " + Thread.currentThread().getName()))
+                .subscribe(
+                        () -> {
+                            Log.d("lsc", "LobbyViewModel sendMessage onCompleted");
                         },
                         error -> {
-                            Log.d("lsc","sendMessage error " + error.toString());
+                            getNavigator().handleError(error);
                         }
                 ));
     }

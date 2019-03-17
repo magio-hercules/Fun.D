@@ -13,7 +13,6 @@ import com.leesc.tazza.data.model.Room;
 import com.leesc.tazza.databinding.ActivityLobbyBinding;
 import com.leesc.tazza.receiver.WifiDirectReceiver;
 import com.leesc.tazza.ui.base.BaseActivity;
-import com.leesc.tazza.ui.main.AttendeeAdapter;
 import com.leesc.tazza.ui.roominfo.RoomInfoActivity;
 
 import java.util.List;
