@@ -5,18 +5,15 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.koushikdutta.async.AsyncServer;
-import com.koushikdutta.async.AsyncServerSocket;
 import com.leesc.tazza.data.DataManager;
 import com.leesc.tazza.data.model.Room;
 import com.leesc.tazza.ui.base.BaseViewModel;
-import com.leesc.tazza.ui.roominfo.ServerThread;
 import com.leesc.tazza.utils.rx.RxEventBus;
 import com.leesc.tazza.utils.rx.SchedulerProvider;
 
@@ -29,8 +26,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import javax.net.ServerSocketFactory;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;

@@ -6,6 +6,7 @@ import android.net.wifi.p2p.WifiP2pConfig;
 import android.net.wifi.p2p.WifiP2pDeviceList;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import com.koushikdutta.async.AsyncServer;
 import com.leesc.tazza.R;
 import com.leesc.tazza.data.DataManager;
 import com.leesc.tazza.data.model.Room;
+import com.leesc.tazza.data.remote.ConnectionManager;
 import com.leesc.tazza.di.provider.ResourceProvider;
 import com.leesc.tazza.ui.base.BaseViewModel;
 import com.leesc.tazza.ui.main.WifiDirectBroadcastReceiver;
@@ -32,6 +34,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 
 public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
@@ -80,7 +83,7 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
             Method setDeviceName = wifiP2pManager.getClass().getMethod("setDeviceName", WifiP2pManager.Channel.class, String.class, WifiP2pManager.ActionListener.class);
             setDeviceName.setAccessible(true);
             //Todo : 방이름 UI
-            setDeviceName.invoke(wifiP2pManager, channel, resourceProvider.getString(R.string.key_room_prefix) + "테스트", new WifiP2pManager.ActionListener() {
+            setDeviceName.invoke(wifiP2pManager, channel, resourceProvider.getString(R.string.key_room_prefix) + Build.MODEL, new WifiP2pManager.ActionListener() {
 
                 @Override
                 public void onSuccess() {
@@ -139,16 +142,21 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
     }
 
     public void sendMessage() {
-
+        Log.d("lsc", "RoomInfoViewModel sendMessage ");
+        getCompositeDisposable().add(ConnectionManager.broadcastMessageCompletable("testByServer")
+                .subscribeOn(schedulerProvider.io())
+                .subscribe(
+                        () -> {
+                            Log.d("lsc", "RoomInfoViewModel sendMessage onCompleted");
+                        },
+                        error -> {
+                            getNavigator().handleError(error);
+                        }
+                ));
     }
 
     private Observable<String> serverThreadObservable(int roomPort) {
-        return Observable.create(subscriber -> {
-            Log.d("lsc", "serverThreadObservable create");
-            ServerSocket serverSocket = new ServerSocket(roomPort);
-            ServerThread serverThread = new ServerThread(serverSocket);
-            new Thread(serverThread).start();
-        });
+        return ConnectionManager.serverThreadObservable(roomPort);
     }
 
     @Override

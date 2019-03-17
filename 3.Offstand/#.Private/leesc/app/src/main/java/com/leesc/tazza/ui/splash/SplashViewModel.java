@@ -18,7 +18,6 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
         Log.d("lsc", "SplashViewModel constructor");
         getCompositeDisposable()
                 .add(Observable.timer(1, TimeUnit.SECONDS)
-                        .subscribeOn(getSchedulerProvider().io())
                         .observeOn(getSchedulerProvider().ui())
 //                        .subscribe(time -> getNavigator().startMainActivity()));
                         .subscribe(time -> getNavigator().startLobbyActivity()));
