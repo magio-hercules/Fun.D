@@ -3,6 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorTest">#33D81B60</color>
     <color name="material_light_blue">#E7F2D5</color>
     <color name="material_light_semi_blue">#ACD1F2</color>
     <color name="material_blue">#82A8D9</color>

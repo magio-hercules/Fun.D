@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".ui.splash.SplashActivity">
+        <activity
+            android:name=".ui.splash.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,9 +30,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.lobby.LobbyActivity" />
+        <activity
+            android:name=".ui.lobby.LobbyActivity"
+            android:screenOrientation="portrait" />
 
-        <activity android:name=".ui.roominfo.RoomInfoActivity" />
+        <activity
+            android:name=".ui.roominfo.RoomInfoActivity"
+            android:screenOrientation="portrait" />
 
         <service android:name=".service.WifiP2pService" />
 

@@ -9,6 +9,8 @@ public interface LobbyNavigator {
 
     void goToRoomInfoActivity();
 
+    void goToSettingActivity();
+
     void onRepositoriesChanged(List<Room> rooms);
 
     void handleError(Throwable throwable);

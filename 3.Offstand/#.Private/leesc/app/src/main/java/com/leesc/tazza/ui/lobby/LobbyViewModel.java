@@ -110,7 +110,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     }
 
     public void discover() {
-        Log.d("lsc", "discover");
+        Log.d("lsc", "LobbyViewModel discover");
         wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
@@ -127,6 +127,10 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
     public void goToRoomInfo() {
         getNavigator().goToRoomInfoActivity();
+    }
+
+    public void goToSetting() {
+        getNavigator().goToSettingActivity();
     }
 
     public void enterRoom(InetAddress roomAddress, int roomPort) {

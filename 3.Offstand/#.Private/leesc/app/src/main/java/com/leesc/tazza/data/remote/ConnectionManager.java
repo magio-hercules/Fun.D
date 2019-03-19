@@ -2,22 +2,14 @@ package com.leesc.tazza.data.remote;
 
 import android.util.Log;
 
-import com.annimon.stream.Stream;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 //Todo : 테스트 -> 나중에 정리
 public class ConnectionManager {

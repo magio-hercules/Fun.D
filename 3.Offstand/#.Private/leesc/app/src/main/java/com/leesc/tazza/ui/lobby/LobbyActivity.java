@@ -6,6 +6,7 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.MediaController;
 
 import com.leesc.tazza.BR;
 import com.leesc.tazza.R;
@@ -26,6 +27,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import pl.droidsonroids.gif.AnimationListener;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.MultiCallback;
 
 public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector {
 
@@ -69,9 +73,10 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lsc","LobbyActivity onCreate");
+        Log.d("lsc", "LobbyActivity onCreate");
         activityLobbyBinding = getViewDataBinding();
         lobbyViewModel.setNavigator(this);
+        initViews();
         setupRecyclerView(activityLobbyBinding.rvRoom, new RoomAdapter());
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
@@ -83,15 +88,19 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("lsc","LobbyActivity onStart");
+        Log.d("lsc", "LobbyActivity onStart");
         registerReceiver(wifiDirectReceiver, intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("lsc","LobbyActivity onStop");
+        Log.d("lsc", "LobbyActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
+    }
+
+    private void initViews() {
+        ((GifDrawable) activityLobbyBinding.bgLobby.getDrawable()).setLoopCount(0);
     }
 
     private void setupRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
@@ -105,6 +114,10 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     }
 
     @Override
+    public void goToSettingActivity() {
+    }
+
+    @Override
     public void onRepositoriesChanged(List<Room> rooms) {
         RoomAdapter adapter = (RoomAdapter) activityLobbyBinding.rvRoom.getAdapter();
         adapter.setDatas(rooms);
@@ -112,7 +125,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void handleError(Throwable throwable) {
-        Log.e("lsc","LobbyActivity handleError " + throwable.getMessage());
+        Log.e("lsc", "LobbyActivity handleError " + throwable.getMessage());
     }
 
 }

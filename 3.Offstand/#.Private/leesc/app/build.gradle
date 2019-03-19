@@ -88,4 +88,7 @@ dependencies {
     implementation dependencies.navigationFragment
     implementation dependencies.navigationUi
 
+    //gifDrawable
+    implementation dependencies.gifDrawable
+
 }

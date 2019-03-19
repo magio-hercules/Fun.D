@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Tazza</string>
+    <string name="app_name">오프섰다</string>
     <string name="shared_preferences">com.leesc.tazza.sharedpreferences</string>
 </resources>
