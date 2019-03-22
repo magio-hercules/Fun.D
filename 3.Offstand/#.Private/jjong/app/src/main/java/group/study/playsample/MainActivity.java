@@ -16,6 +16,8 @@ import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageView image1;
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button button_reset;
     Button button_shuffle;
+    Button button_random;
 
     int windowwidth;
     int windowheight;
@@ -56,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     boolean bCheck = false;
     int tempIndex = 1;
 
+
+    String card1, card2;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +83,8 @@ public class MainActivity extends AppCompatActivity {
         button_reset.setEnabled(false);
 
         button_shuffle = (Button) findViewById(R.id.button_shuffle);
+
+        button_random = (Button) findViewById(R.id.button_random);
 
         image1.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView1);
         image2.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView2);
@@ -162,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 //                        image2.setLayoutParams(layoutParams);
 
 
-                        Log.d("[PLAY]", "v.getY() : " + v.getY() + ", event.getRawY() : " + event.getRawY());
+//                        Log.d("[PLAY]", "v.getY() : " + v.getY() + ", event.getRawY() : " + event.getRawY());
 
                         //  a different approach would be to change the view's LayoutParams.
                         image2.animate()
@@ -190,6 +198,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        button_random.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, RandomActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        makeRandomNumber();
+        image1.setImageResource(getResourceId("drawable", "card_" + card1));
     }
 
     public static SpringAnimation createSpringAnimation(View view,
@@ -226,7 +244,10 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
                     Log.d("[PLAY]", "Reset 완료");
-                    image1.setImageResource(R.drawable.card_3_1);
+
+                    makeRandomNumber();
+
+                    image1.setImageResource(getResourceId("drawable", "card_" + card1));
                     image2.setImageResource(R.drawable.card_back);
                 }
             });
@@ -269,22 +290,34 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
+    private int getResourceId(String type, String name) {
+        // use case
+//        // image from res/drawable
+//        int resID = getResources().getIdentifier("my_image", "drawable", getPackageName());
+//        // view
+//        int resID = getResources().getIdentifier("my_resource", "id", getPackageName());
+//        // string
+//        int resID = getResources().getIdentifier("my_string", "string", getPackageName());
+        return getResources().getIdentifier(name, type, getPackageName());
+    }
+
 
     private void changeCard() {
         if (tempIndex == 1) {
-            text1.setText("첫번째 패 : 3光");
-            Toast.makeText(this, "3光", Toast.LENGTH_SHORT).show();
-            image1.setImageResource(R.drawable.card_8_1);
-            image2.setImageResource(R.drawable.card_3_1);
+//            text1.setText("첫번째 패 : 3光");
+            text1.setText("첫번째 패 : " + card1);
+//            Toast.makeText(this, "3光", Toast.LENGTH_SHORT).show();
+//            image1.setImageResource(R.drawable.card_8_1);
+//            image2.setImageResource(R.drawable.card_3_1);
+            image1.setImageResource(getResourceId("drawable", "card_" + card2));
+            image2.setImageResource(getResourceId("drawable", "card_" + card1));
+
             tempIndex++;
             bCheck = false;
         } else  if (tempIndex == 2){
-            text2.setText("두번째 패 : 8光");
-            Toast.makeText(this, "8光", Toast.LENGTH_SHORT).show();
-//            image1.setImageResource(R.drawable.card_8_1);
-//            image2.setImageResource(R.drawable.card_3_1);
-//            image3.setImageResource(R.drawable.card_8_1);
-//            image4.setImageResource(R.drawable.card_3_1);
+//            text2.setText("두번째 패 : 8光");
+//            Toast.makeText(this, "8光", Toast.LENGTH_SHORT).show();
+            text2.setText("두번째 패 : " + card2);
             tempIndex = 1;
             bCheck = false;
 
@@ -313,5 +346,40 @@ public class MainActivity extends AppCompatActivity {
         ret_view2_y.start();
         ret_view1_x.start();
         ret_view1_y.start();
+    }
+
+    private void makeRandomNumber() {
+        Log.d("[PLAY]", "makeRandomNumber");
+        double d = Math.random(); // 0 <= d < 1
+
+        Random rnd = new Random();
+        int n1 = rnd.nextInt(21) + 1;
+        int n2 = rnd.nextInt(21) + 1;
+
+        if (n1 == n2) {
+            n2 = rnd.nextInt(20);
+        }
+        Log.d("[PLAY]", "makeRandomNumber n1 : " + n1);
+        Log.d("[PLAY]", "makeRandomNumber n2 : " + n2);
+
+        String val = "";
+        int tempNum = n1;
+        if (tempNum/11 > 0) {
+            val = String.valueOf(tempNum%10 == 0 ? 10 : tempNum%10) + "_2";
+        } else {
+            val = String.valueOf(tempNum) + "_1";
+        }
+        card1 = val;
+
+        tempNum = n2;
+        if (tempNum/11 > 0) {
+            val = String.valueOf(tempNum%10 == 0 ? 10 : tempNum%10) + "_2";
+        } else {
+            val = String.valueOf(tempNum) + "_1";
+        }
+        card2 = val;
+
+        Log.d("[PLAY]", "Card1 : " + card1);
+        Log.d("[PLAY]", "Card2 : " + card2);
     }
 }

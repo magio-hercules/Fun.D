@@ -18,17 +18,24 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.Toast;
 
 public class ShuffleActivity extends Activity {
     Button button_main;
+    Button button_reset;
     Button button_shuffle;
     Button button_test;
 
+    Button imageButton;
+    ImageButton imageButton_test;
+
     ImageView shuffleCard1, shuffleCard2, shuffleCard3;
     ImageView card1, card2, card3, card4;
+
+    ImageView test;
 
     private SpringAnimation shuffleAniX1, shuffleAniY1;
     private SpringAnimation shuffleAniX2, shuffleAniY2;
@@ -39,6 +46,7 @@ public class ShuffleActivity extends Activity {
 
     public ShuffleActivity() {
     }
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +61,15 @@ public class ShuffleActivity extends Activity {
                 startActivity(intent);
             }
         });
+
+        button_reset = (Button) findViewById(R.id.button_reset);
+        button_reset.setEnabled(false);
+        button_reset.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                reset();
+            }
+        });
+
 
         button_shuffle = (Button) findViewById(R.id.button_shuffle);
         button_shuffle.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +90,13 @@ public class ShuffleActivity extends Activity {
             }
         });
 
+//        imageButton_test = (ImageButton) findViewById(R.id.imgbtn_test);
+//        imageButton_test.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//
+//                Log.d("[Shuffle]", "imageButton_test.setOnClickListener");
+//            }
+//        });
 
         shuffleCard1 = (ImageView) findViewById(R.id.cardShuffle1);
         shuffleCard2 = (ImageView) findViewById(R.id.cardShuffle2);
@@ -85,6 +109,34 @@ public class ShuffleActivity extends Activity {
         card2 = (ImageView) findViewById(R.id.card2);
         card3 = (ImageView) findViewById(R.id.card3);
         card4 = (ImageView) findViewById(R.id.card4);
+
+        test = (ImageView) findViewById(R.id.image_test);
+        test.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("[Shuffle]", "test.setOnClickListener");
+            }
+        });
+
+        addListenerOnButton();
+    }
+
+
+    public void addListenerOnButton() {
+
+        imageButton = (Button) findViewById(R.id.imageButtonSelector);
+
+        imageButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                Toast.makeText(ShuffleActivity.this,
+                        "ImageButton (selector) is clicked!",
+                        Toast.LENGTH_SHORT).show();
+
+            }
+
+        });
 
     }
 
@@ -104,6 +156,38 @@ public class ShuffleActivity extends Activity {
         }
     }
 
+    private void shuffleR(int index) {
+        Log.d("[Shuffle]", "shuffle");
+
+        switch (index) {
+            case 1:
+                translateAni(card2, shuffleCard1, index);
+                break;
+            case 2:
+                translateAni(card3, shuffleCard2, index);
+                break;
+            case 3:
+                translateAni(card4, shuffleCard3, index);
+                break;
+        }
+    }
+
+    private void reset() {
+        Log.d("[Shuffle]", "reset");
+
+        shuffleCount = 0;
+        bShuffle = false;
+
+        translateAni(shuffleCard1, card1, 0);
+        translateAni(shuffleCard2, card1, 0);
+        translateAni(shuffleCard3, card1, 0);
+
+        card2.setVisibility(View.INVISIBLE);
+        card3.setVisibility(View.INVISIBLE);
+        card4.setVisibility(View.INVISIBLE);
+
+        button_reset.setEnabled(false);
+    }
 
     public static SpringAnimation createSpringAnimation(View view,
                                                         DynamicAnimation.ViewProperty property,
@@ -136,7 +220,7 @@ public class ShuffleActivity extends Activity {
                 0 ,
                 dst.getY()-src.getY()+(gapY*shuffleCount));
         animation.setRepeatMode(0);
-        animation.setDuration(350);
+        animation.setDuration(250);
         animation.setFillAfter(true);
 
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -158,11 +242,14 @@ public class ShuffleActivity extends Activity {
                     case 3:
                         if (shuffleCount > 0) {
                             shuffleCount = 0;
+                            button_reset.setEnabled(true);
                             return;
                         }
                         card4.setVisibility(View.VISIBLE);
                         shuffleCount++;
                         shuffle(1);
+                        break;
+                    default:
                         break;
                 }
             }

@@ -21,7 +21,16 @@
         android:layout_gravity="top"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="60dp"
-        android:text="셔플" />
+        android:text="셔플 효과" />
+
+    <Button
+        android:id="@+id/button_random"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="110dp"
+        android:text="무작위 패" />
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
@@ -34,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="첫번째 패 : "
-            android:textSize="24sp" />
+            android:textSize="22sp" />
 
         <TextView
             android:id="@+id/text_card2"
@@ -42,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
             android:text="두번째 패 : "
-            android:textSize="24sp" />
+            android:textSize="22sp" />
     </FrameLayout>
     <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
         <!--android:layout_width="wrap_content"-->
@@ -65,7 +74,7 @@
             android:layout_width="162dp"
             android:layout_height="252dp"
             android:layout_gravity="center"
-            android:src="@drawable/card_3_1"
+            android:src="@drawable/card_back"
             ></ImageView>
 
         <ImageView
@@ -99,4 +108,10 @@
             android:layout_marginTop="0dp"></ImageView>
     </FrameLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|center">
+
+    </FrameLayout>
 </FrameLayout>

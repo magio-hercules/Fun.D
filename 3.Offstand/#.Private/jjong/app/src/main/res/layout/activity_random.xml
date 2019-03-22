@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <Button
+        android:id="@+id/button_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="쪼개기" />
+
+    <Button
+        android:id="@+id/button_random"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="60dp"
+        android:text="무작위 패" />
+
+    <Button
+        android:id="@+id/button_test"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="110dp"
+        android:visibility="gone"
+        android:text="test" />
+
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|center">
+
+        <!--<TextView-->
+            <!--android:id="@+id/text_card1"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:text="첫번째 패 : "-->
+            <!--android:textSize="36sp" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/text_card2"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="50dp"-->
+            <!--android:text="두번째 패 : "-->
+            <!--android:textSize="36sp" />-->
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="300dp"
+            android:layout_height="600dp"
+            android:ems="10"
+            android:layout_gravity="center"
+            android:inputType="textMultiLine" />
+
+    </FrameLayout>
+
+</FrameLayout>
