@@ -3,7 +3,6 @@ package com.leesc.tazza.ui.roominfo;
 import android.content.Context;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,6 +17,7 @@ import com.leesc.tazza.utils.rx.SchedulerProvider;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import androidx.databinding.ObservableField;
 import io.reactivex.Observable;
 
 public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
@@ -27,6 +27,10 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
     private WifiP2pManager wifiP2pManager;
     private WifiP2pManager.Channel channel;
     private ResourceProvider resourceProvider;
+    public ObservableField<String> roomName = new ObservableField<>();
+    public ObservableField<String> roomMaxAttendee = new ObservableField<>();
+    //    public ObservableField<Boolean> isSatisfy = new ObservableField<>();
+    private boolean testBoolean = false;
 
     public RoomInfoViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, Context context, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider);
@@ -36,14 +40,21 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
         this.channel = channel;
         this.resourceProvider = resourceProvider;
 
+        //test
+        roomName.set("테스트방장");
+        roomMaxAttendee.set("2");
+
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(WifiP2pInfo.class)
                 .filter(info -> ((WifiP2pInfo) info).groupFormed && ((WifiP2pInfo) info).isGroupOwner)
-                //Todo : 서버 소켓 옵저버블 변환...
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(
                         info -> {
                             Log.d("lsc", "RoomInfoViewModel info " + info);
-//                            createSocket(8080);
+                            if (testBoolean) {
+                                testBoolean = false;
+                                createSocket(8080, Integer.parseInt(roomMaxAttendee.get()));
+                            }
+
                         }
                 )
         );
@@ -62,11 +73,11 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
 
     public void createGroup() {
         Log.d("lsc", "RoomInfoViewModel createGroup");
+        testBoolean = true;
         try {
             Method setDeviceName = wifiP2pManager.getClass().getMethod("setDeviceName", WifiP2pManager.Channel.class, String.class, WifiP2pManager.ActionListener.class);
             setDeviceName.setAccessible(true);
-            //Todo : 방이름 UI
-            setDeviceName.invoke(wifiP2pManager, channel, resourceProvider.getString(R.string.key_room_prefix) + Build.MODEL, new WifiP2pManager.ActionListener() {
+            setDeviceName.invoke(wifiP2pManager, channel, resourceProvider.getString(R.string.key_room_prefix) + roomName.get(), new WifiP2pManager.ActionListener() {
 
                 @Override
                 public void onSuccess() {
@@ -96,7 +107,11 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
     }
 
     public void createSocket() {
-        getCompositeDisposable().add(serverThreadObservable(8080)
+        createSocket(8080,1);
+    }
+
+    public void createSocket(int roomPort, int roomMaxAttendee) {
+        getCompositeDisposable().add(serverThreadObservable(roomPort, roomMaxAttendee)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(onNext -> {
@@ -111,6 +126,7 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
     }
 
     public void removeGroup() {
+        testBoolean = false;
         wifiP2pManager.removeGroup(channel, new WifiP2pManager.ActionListener() {
             @Override
             public void onSuccess() {
@@ -138,8 +154,8 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
                 ));
     }
 
-    private Observable<String> serverThreadObservable(int roomPort) {
-        return ConnectionManager.serverThreadObservable(roomPort);
+    private Observable<String> serverThreadObservable(int roomPort, int roomMaxAttendee) {
+        return ConnectionManager.serverThreadObservable(roomPort, roomMaxAttendee);
     }
 
     @Override

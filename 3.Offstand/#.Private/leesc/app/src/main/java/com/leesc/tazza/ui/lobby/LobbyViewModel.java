@@ -23,6 +23,7 @@ import com.leesc.tazza.utils.rx.RxEventBus;
 import com.leesc.tazza.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
@@ -48,16 +49,24 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         this.channel = channel;
         this.wifiP2pService = wifiP2pService;
 
+        Log.d("lsc","LobbyViewModel constructor");
+
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(WifiP2pDeviceList.class)
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(
                         peers -> {
                             Log.d("lsc", "LobbyViewModel peers " + ((WifiP2pDeviceList) peers).getDeviceList());
                             getNavigator().onRepositoriesChanged(Stream.of(((WifiP2pDeviceList) peers).getDeviceList())
-                                    .map(wifiP2pDevice -> new Room(wifiP2pDevice.deviceName, wifiP2pDevice.deviceAddress))
-                                    .filter(room -> room.getDeviceName().contains(resourceProvider.getString(R.string.key_room_prefix)))
+                                    .filter(wifiP2pDevice -> wifiP2pDevice.deviceName.contains(resourceProvider.getString(R.string.key_room_prefix)))
+                                    .map(wifiP2pDevice -> new Room(wifiP2pDevice.deviceName.substring(resourceProvider.getString(R.string.key_room_prefix).length()), wifiP2pDevice.deviceAddress))
                                     .collect(Collectors.toList())
                             );
+                        },
+                        error -> {
+                            getNavigator().handleError((Throwable) error);
+                        },
+                        () -> {
+
                         }
                 )
         );
@@ -69,6 +78,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                             Log.d("lsc", "LobbyViewModel room info " + ((Room) room).deviceName + ", " + ((Room) room).deviceAddress);
                             WifiP2pConfig config = new WifiP2pConfig();
                             config.deviceAddress = ((Room) room).deviceAddress;
+                            config.groupOwnerIntent = 0;
                             wifiP2pManager.connect(channel, config, new WifiP2pManager.ActionListener() {
                                 @Override
                                 public void onSuccess() {
@@ -105,11 +115,11 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                 )
         );
 
-        discover();
+//        discoverPeers();
 
     }
 
-    public void discover() {
+    public void discoverPeers() {
         Log.d("lsc", "LobbyViewModel discover");
         wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
             @Override
@@ -125,12 +135,42 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         });
     }
 
+    public void stopPeerDiscovery() {
+        wifiP2pManager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d("lsc", "LobbyViewModel stopPeerDiscovery onSuccess");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d("lsc", "LobbyViewModel stopPeerDiscovery onFailure " + reason);
+            }
+        });
+    }
+
+    public void refresh() {
+        stopPeerDiscovery();
+        discoverPeers();
+    }
+
     public void goToRoomInfo() {
         getNavigator().goToRoomInfoActivity();
     }
 
     public void goToSetting() {
         getNavigator().goToSettingActivity();
+    }
+
+    public void enterRoom() {
+        byte[] ipAddr = new byte[]{(byte)192, (byte)168, (byte)0, (byte)17};
+        InetAddress addr = null;
+        try {
+            addr = InetAddress.getByAddress(ipAddr);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        enterRoom(addr,8080);
     }
 
     public void enterRoom(InetAddress roomAddress, int roomPort) {

@@ -9,11 +9,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerThread implements Runnable {
-    private ServerSocket serverSocket;
     private Socket socket;
-
     private DataInputStream streamByClient = null;
     private DataOutputStream streamToClient = null;
 
@@ -25,26 +25,26 @@ public class ServerThread implements Runnable {
         return streamToClient;
     }
 
-    public ServerThread(ServerSocket serverSocket) {
+    public ServerThread(Socket socket) {
         Log.i("lsc", "ServerThread constructor " + Thread.currentThread().getName());
-        this.serverSocket = serverSocket;
+        this.socket = socket;
     }
 
     @Override
     public void run() {
-        Log.d("lsc", "ServerThread 1");
+        Log.d("lsc", "ServerThread 1 " + Thread.currentThread().getName());
         try {
-            socket = serverSocket.accept();
             while (true) {
-                Log.d("lsc", "ServerThread 2");
+                Log.d("lsc", "ServerThread 2 " + Thread.currentThread().getName());
                 streamByClient = new DataInputStream(socket.getInputStream());
-                Log.d("lsc", "ServerThread 3");
+                Log.d("lsc", "ServerThread 3 " + Thread.currentThread().getName());
                 streamToClient = new DataOutputStream(socket.getOutputStream());
 //                Log.d("lsc", "ServerThread 클라이언트로부터 받은 메세지 " + streamByClient.readUTF());
                 RxEventBus.getInstance().sendEvent(streamByClient.readUTF());
+//                clientThreads.add(serverThread);
             }
         } catch (IOException e) {
-            Log.d("lsc", "ServerThread e " + e.getMessage());
+            Log.e("lsc", "ServerThread e " + e.getMessage() + ", " + Thread.currentThread().getName());
         }
 
     }

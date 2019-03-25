@@ -11,10 +11,11 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".ui.roominfo.RoomInfoActivity">
 
         <Button
@@ -22,36 +23,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.createGroup()}"
-            android:text="CreateGroup"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="CreateGroup" />
 
         <Button
             android:id="@+id/btn_remove_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.removeGroup()}"
-            android:text="REMOVE GROUP"
-            app:layout_constraintStart_toEndOf="@id/btn_create_group"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:text="REMOVE GROUP" />
 
         <Button
             android:id="@+id/btn_create_socket"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.createSocket()}"
-            android:text="CreateSocket"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_create_group" />
+            android:text="CreateSocket" />
 
         <Button
             android:id="@+id/btn_send_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.sendMessage()}"
-            android:text="메세지보내기 (to Client)"
-            app:layout_constraintStart_toEndOf="@id/btn_create_socket"
-            app:layout_constraintTop_toBottomOf="@id/btn_create_group" />
+            android:text="메세지보내기 (to Client)" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/et_room_name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="방이름"
+            android:text="@={viewModel.roomName}" />
+
+        <EditText
+            android:id="@+id/et_max_attendee"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="방인원수"
+            android:text="@={viewModel.roomMaxAttendee}"
+            android:inputType="number" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </layout>

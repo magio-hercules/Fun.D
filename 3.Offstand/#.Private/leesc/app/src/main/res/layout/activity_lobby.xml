@@ -19,29 +19,29 @@
         tools:context=".ui.lobby.LobbyActivity">
 
         <!--<Button
-            android:id="@+id/btn_go_to_roominfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="@{() -> viewModel.goToRoomInfo()}"
-            android:text="방만들러가기"
-            android:visibility="invisible"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
             android:id="@+id/btn_send_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.sendMessage()}"
             android:text="메세지보내기 (to Server)"
-            android:visibility="invisible"
-            app:layout_constraintStart_toEndOf="@id/btn_go_to_roominfo"
-            app:layout_constraintTop_toTopOf="parent" />-->
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.enterRoom()}"
+            android:text="enter Room"
+            android:visibility="visible"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_send_message" />-->
 
         <pl.droidsonroids.gif.GifImageView
             android:id="@+id/bg_lobby"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:src="@drawable/bg_lobby"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,7 +57,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginEnd="24dp"
-            android:onClick="@{() -> viewModel.goToSetting()}"
+            android:onClick="@{() -> viewModel.enterRoom()}"
             android:src="@drawable/btn_setting"
             app:layout_constraintBottom_toBottomOf="@id/guide_setting"
             app:layout_constraintEnd_toEndOf="parent"
@@ -100,7 +100,7 @@
             android:id="@+id/btn_guide"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:onClick="@{() -> viewModel.goToSetting()}"
+            android:onClick="@{() -> viewModel.sendMessage()}"
             android:src="@drawable/btn_guide"
             app:layout_constraintBottom_toBottomOf="@id/guide_make_room_horizontal"
             app:layout_constraintEnd_toEndOf="@id/guide_guide_vertical"
@@ -118,7 +118,7 @@
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_marginEnd="24dp"
-            android:onClick="@{() -> viewModel.goToSetting()}"
+            android:onClick="@{() -> viewModel.refresh()}"
             android:src="@drawable/btn_refresh"
             app:layout_constraintBottom_toBottomOf="@id/guide_refresh"
             app:layout_constraintEnd_toEndOf="parent"
@@ -142,9 +142,9 @@
             android:id="@+id/rv_room"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:background="@drawable/bg_list_host"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
-            android:background="@color/colorTest"
             app:layout_constraintBottom_toBottomOf="@id/guide_room_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
