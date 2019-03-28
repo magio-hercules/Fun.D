@@ -24,6 +24,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
+    @OnClick(R.id.button_room)
+    public void goRoom() {
+        Log.d(TAG, "goRoom");
+
+        Intent intent = new Intent(MainActivity.this, RoomActivity.class);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.button_play)
     public void goPlay() {
         Log.d(TAG, "goPlay");
