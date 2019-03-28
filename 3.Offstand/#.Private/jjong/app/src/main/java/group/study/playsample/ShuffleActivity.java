@@ -4,6 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.animation.DynamicAnimation;
@@ -11,6 +14,7 @@ import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -121,22 +125,63 @@ public class ShuffleActivity extends Activity {
     }
 
 
+
+
     public void addListenerOnButton() {
 
         imageButton = (Button) findViewById(R.id.imageButtonSelector);
-
         imageButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
-
                 Toast.makeText(ShuffleActivity.this,
                         "ImageButton (selector) is clicked!",
                         Toast.LENGTH_SHORT).show();
-
             }
-
         });
+
+        imageButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final Bitmap bitmap;  //Declare bitmap
+                bitmap = decodeSampleBitmapFromResource(getResources(), R.drawable.icon_normal, 700, 500);
+                Log.d("[Shuffle]", "이미지 사이즈");
+                Log.d("[Shuffle]", "width : " + bitmap.getWidth() + ", height : " + bitmap.getHeight());
+
+                int[] location = new int[2];
+                imageButton.getLocationOnScreen(location);
+
+                int eventPadTouch = event.getAction();
+                float iX=event.getX();
+                float iY=event.getY();
+
+                switch (eventPadTouch) {
+                    case MotionEvent.ACTION_DOWN:
+                        Log.d("[Shuffle]","Button location\tx = "+location[0]+"\ty = "+ location[1]);
+                        Log.d("[Shuffle]", "iX : " + iX + ", iY : " + iY);
+
+                        if (iX>=0 & iY>=0 & iX<bitmap.getWidth() & iY<bitmap.getHeight()) {
+                            Log.d("[Shuffle]", "영역 안");
+                            Log.d("[Shuffle]", "Pixel : " + bitmap.getPixel((int) iX, (int) iY));
+
+                            if (bitmap.getPixel((int) iX, (int) iY)!=0) {
+                                imageButton.setPressed(true);
+                                Log.d("[Shuffle]", "실제 이미지");
+                            } else {
+                                Log.d("[Shuffle]", "배경 선택");
+                            }
+                        } else {
+                            Log.d("[Shuffle]", "영역 밖");
+                        }
+                        return true;
+                    case MotionEvent.ACTION_HOVER_EXIT:
+                    case MotionEvent.ACTION_UP:
+                        imageButton.setPressed(false);
+                        break;
+                }
+                return false;
+            }
+        });
+
 
     }
 
@@ -330,4 +375,32 @@ public class ShuffleActivity extends Activity {
 //        Log.d("[Shuffle]", "resetShuffleCard layoutParams : (" + layoutParams.leftMargin + ", " + layoutParams.topMargin + ", " + layoutParams.rightMargin + ", " + layoutParams.bottomMargin + ")");
     }
 
+
+    public static int calculateInSampleSize( BitmapFactory.Options options, int reqWidth, int reqHeight){
+        final int width = options.outWidth;
+        final int height = options.outHeight;
+        Log.d("[Shuffle]", "options.outWidth : " + options.outWidth + ", options.outHeight : " + options.outHeight);
+        int inSampleSize = 1;
+
+        if( height > reqHeight || width > reqWidth){
+            final int heightRatio = Math.round((float)height / (float)reqHeight);
+            final int widthRatio = Math.round((float)width / (float)reqWidth);
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        Log.d("[Shuffle]", "inSampleSize : " + inSampleSize);
+        return inSampleSize;
+    }
+
+    public static Bitmap decodeSampleBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight){
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = false;
+        options.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeResource( res, resId, options);
+
+        options.inSampleSize = calculateInSampleSize( options, reqWidth, reqHeight);
+        options.inJustDecodeBounds = false;
+
+        return BitmapFactory.decodeResource( res, resId, options);
+    }
 }

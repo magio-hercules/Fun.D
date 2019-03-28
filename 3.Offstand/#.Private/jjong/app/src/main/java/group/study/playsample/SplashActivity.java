@@ -8,17 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.ImageView;
-
 import pl.droidsonroids.gif.GifImageView;
 
-//import com.bumptech.glide.Glide;
-//import com.bumptech.glide.annotation.GlideModule;
-//import com.bumptech.glide.load.DataSource;
-//import com.bumptech.glide.load.engine.GlideException;
-//import com.bumptech.glide.load.resource.gif.GifDrawable;
-//import com.bumptech.glide.module.AppGlideModule;
-//import com.bumptech.glide.request.RequestListener;
-//import com.bumptech.glide.request.target.Target;
 
 public class SplashActivity extends AppCompatActivity {
 

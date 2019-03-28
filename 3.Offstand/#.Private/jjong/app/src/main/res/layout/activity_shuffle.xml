@@ -52,10 +52,11 @@
 
     <Button
         android:id="@+id/imageButtonSelector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:background="@drawable/new_button" />
+        android:layout_width="700px"
+        android:layout_height="500px"
+        android:layout_marginLeft="100dp"
+        android:visibility="visible"
+        android:background="@drawable/new_button2" />
 
     <!--<ImageButton-->
         <!--android:id="@+id/imgbtn_test"-->
