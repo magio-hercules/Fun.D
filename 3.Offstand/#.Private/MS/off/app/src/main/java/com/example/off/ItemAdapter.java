@@ -53,7 +53,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
     //아이템의 갯수
     @Override
     public int getItemCount() {
-        return 0;
+        return items.size();
     }
 
     public void addItem(Item item) {
@@ -91,9 +91,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ViewHolder> {
             super(itemView);
 
             rank = (ImageView) itemView.findViewById(R.id.rank);
-            userId = (TextView) userId.findViewById(R.id.userId);
-            win = (TextView) win.findViewById(R.id.win);
-            lose = (TextView) lose.findViewById(R.id.lose);
+            userId = (TextView) itemView.findViewById(R.id.userId);
+            win = (TextView) itemView.findViewById(R.id.win);
+            lose = (TextView) itemView.findViewById(R.id.lose);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
