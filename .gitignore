@@ -1,2 +1,5 @@
 
 2.EasyCalendar/.idea/misc.xml
+*.DS_Store
+.idea/
+.gradle/
