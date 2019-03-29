@@ -2,9 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#ffffff"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,14 +16,13 @@
             android:layout_weight="8">
 
 
-
             <ImageButton
                 android:id="@+id/imagebtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:scaleType="fitCenter"
                 android:background="#ffffff"
-                android:src="@drawable/ic_home"/>
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_home" />
 
 
         </LinearLayout>
@@ -144,7 +142,7 @@
 
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="283dp">
 
             </android.support.v7.widget.RecyclerView>
 
@@ -273,7 +271,7 @@
                     android:id="@+id/myImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitCenter"/>
+                    android:scaleType="fitCenter" />
 
             </LinearLayout>
 

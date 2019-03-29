@@ -1,9 +1,11 @@
 package com.example.off;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     LinearLayoutManager layoutManager;
     RecyclerView recyclerView;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-
-
-
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+
+        //줄 사이에 수평선 넣기
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),layoutManager.getOrientation());
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         Log.d("@@", "@@" + adapter.getItem(0));
         Log.d("@@", "@@" + adapter.getItem(1));
