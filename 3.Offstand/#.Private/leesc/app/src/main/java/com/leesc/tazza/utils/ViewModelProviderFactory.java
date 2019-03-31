@@ -1,5 +1,6 @@
 package com.leesc.tazza.utils;
 
+import android.content.Context;
 import android.net.wifi.p2p.WifiP2pManager;
 
 import com.leesc.tazza.data.DataManager;
@@ -19,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 @Singleton
 public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFactory {
 
+    private final Context context;
     private final DataManager dataManager;
     private final SchedulerProvider schedulerProvider;
     private final WifiP2pService wifiP2pService;
@@ -27,7 +29,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
     private final ResourceProvider resourceProvider;
 
     @Inject
-    public ViewModelProviderFactory(DataManager dataManager, SchedulerProvider schedulerProvider, WifiP2pService wifiP2pService, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
+    public ViewModelProviderFactory(Context context, DataManager dataManager, SchedulerProvider schedulerProvider, WifiP2pService wifiP2pService, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
+        this.context = context;
         this.dataManager = dataManager;
         this.schedulerProvider = schedulerProvider;
         this.wifiP2pService = wifiP2pService;
@@ -39,7 +42,7 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(SplashViewModel.class)) {
-            return (T) new SplashViewModel(dataManager, schedulerProvider);
+            return (T) new SplashViewModel(dataManager, schedulerProvider, context, resourceProvider);
         } else if (modelClass.isAssignableFrom(LobbyViewModel.class)) {
             return (T) new LobbyViewModel(dataManager, schedulerProvider, wifiP2pManager, channel, resourceProvider);
         } else if (modelClass.isAssignableFrom(RoomInfoViewModel.class)) {

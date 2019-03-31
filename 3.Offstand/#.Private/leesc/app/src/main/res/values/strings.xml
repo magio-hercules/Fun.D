@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">오프섰다</string>
     <string name="shared_preferences">com.leesc.tazza.sharedpreferences</string>
+    <!-- Splash -->
+    <string name="splash_msg_title">알림</string>
+    <string name="splash_msg_denied">이 서비스를 사용하기 위해서 권한이 필요합니다.</string>
+    <string name="splash_msg_goto_setting">설정하러 가기</string>
 </resources>
