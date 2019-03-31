@@ -1,21 +1,31 @@
 package com.leesc.tazza.ui.splash;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.leesc.tazza.BR;
 import com.leesc.tazza.R;
 import com.leesc.tazza.databinding.ActivitySplashBinding;
 import com.leesc.tazza.ui.base.BaseActivity;
 import com.leesc.tazza.ui.lobby.LobbyActivity;
+import com.leesc.tazza.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProviders;
+import io.reactivex.annotations.NonNull;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashViewModel> implements SplashNavigator {
 
     @Inject
+    ViewModelProviderFactory viewModelProviderFactory;
+
     SplashViewModel splashViewModel;
 
     @Override
@@ -30,6 +40,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
 
     @Override
     public SplashViewModel getViewModel() {
+        splashViewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(SplashViewModel.class);
         return splashViewModel;
     }
 

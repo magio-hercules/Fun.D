@@ -13,5 +13,7 @@ public interface LobbyNavigator {
 
     void onRepositoriesChanged(List<Room> rooms);
 
+    void showToast(String message);
+
     void handleError(Throwable throwable);
 }

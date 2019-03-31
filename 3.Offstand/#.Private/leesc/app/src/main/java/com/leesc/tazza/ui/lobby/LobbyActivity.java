@@ -6,7 +6,7 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.MediaController;
+import android.widget.Toast;
 
 import com.leesc.tazza.BR;
 import com.leesc.tazza.R;
@@ -15,6 +15,7 @@ import com.leesc.tazza.databinding.ActivityLobbyBinding;
 import com.leesc.tazza.receiver.WifiDirectReceiver;
 import com.leesc.tazza.ui.base.BaseActivity;
 import com.leesc.tazza.ui.roominfo.RoomInfoActivity;
+import com.leesc.tazza.utils.ViewModelProviderFactory;
 
 import java.util.List;
 
@@ -22,21 +23,22 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import pl.droidsonroids.gif.AnimationListener;
 import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.MultiCallback;
 
 public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector {
 
     @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+    ViewModelProviderFactory viewModelProviderFactory;
 
     @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+
     LobbyViewModel lobbyViewModel;
 
     @Inject
@@ -57,6 +59,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public LobbyViewModel getViewModel() {
+        lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
         return lobbyViewModel;
     }
 
@@ -73,7 +76,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lsc", "LobbyActivity onCreate");
+        Log.d("lsc", "LobbyActivity onCreate "/* + (wifiP2pService == null)*/);
         activityLobbyBinding = getViewDataBinding();
         lobbyViewModel.setNavigator(this);
         initViews();
@@ -121,6 +124,11 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     public void onRepositoriesChanged(List<Room> rooms) {
         RoomAdapter adapter = (RoomAdapter) activityLobbyBinding.rvRoom.getAdapter();
         adapter.setDatas(rooms);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

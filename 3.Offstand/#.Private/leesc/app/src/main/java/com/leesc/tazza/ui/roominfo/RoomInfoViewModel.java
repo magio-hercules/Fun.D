@@ -1,10 +1,8 @@
 package com.leesc.tazza.ui.roominfo;
 
-import android.content.Context;
 import android.net.wifi.p2p.WifiP2pInfo;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.leesc.tazza.R;
 import com.leesc.tazza.data.DataManager;
@@ -17,24 +15,25 @@ import com.leesc.tazza.utils.rx.SchedulerProvider;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import javax.inject.Inject;
+
 import androidx.databinding.ObservableField;
 import io.reactivex.Observable;
 
 public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
 
     private SchedulerProvider schedulerProvider;
-    private Context context;
     private WifiP2pManager wifiP2pManager;
     private WifiP2pManager.Channel channel;
     private ResourceProvider resourceProvider;
+
     public ObservableField<String> roomName = new ObservableField<>();
     public ObservableField<String> roomMaxAttendee = new ObservableField<>();
     //    public ObservableField<Boolean> isSatisfy = new ObservableField<>();
     private boolean testBoolean = false;
 
-    public RoomInfoViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, Context context, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
+    public RoomInfoViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider);
-        this.context = context;
         this.schedulerProvider = schedulerProvider;
         this.wifiP2pManager = wifiP2pManager;
         this.channel = channel;
@@ -54,7 +53,6 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
                                 testBoolean = false;
                                 createSocket(8080, Integer.parseInt(roomMaxAttendee.get()));
                             }
-
                         }
                 )
         );
@@ -62,17 +60,12 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(
-                        message -> {
-                            Log.d("lsc", "RoomInfoViewModel message " + message);
-                            Toast.makeText(context, (String) message, Toast.LENGTH_SHORT).show();
-                        }
-                )
+                .subscribe(message -> getNavigator().showToast((String) message))
         );
     }
 
     public void createGroup() {
-        Log.d("lsc", "RoomInfoViewModel createGroup");
+        Log.d("lsc", "RoomInfoViewModel createGroup " + (wifiP2pManager == null));
         testBoolean = true;
         try {
             Method setDeviceName = wifiP2pManager.getClass().getMethod("setDeviceName", WifiP2pManager.Channel.class, String.class, WifiP2pManager.ActionListener.class);
@@ -107,16 +100,16 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
     }
 
     public void createSocket() {
-        createSocket(8080,1);
+        createSocket(8080, 1);
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {
         getCompositeDisposable().add(serverThreadObservable(roomPort, roomMaxAttendee)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(onNext -> {
-                    Log.d("lsc", "RoomInfoViewModel createSocket onNext " + onNext);
-                    Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
+                .subscribe(message -> {
+                    Log.d("lsc", "RoomInfoViewModel createSocket message " + message);
+                    getNavigator().showToast(message);
                 }, onError -> {
                     Log.d("lsc", "RoomInfoViewModel createSocket onError " + onError.getMessage());
                 }, () -> {

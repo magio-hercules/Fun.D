@@ -6,17 +6,21 @@ import android.content.IntentFilter;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.leesc.tazza.BR;
 import com.leesc.tazza.R;
 import com.leesc.tazza.databinding.ActivityRoomInfoBinding;
 import com.leesc.tazza.receiver.WifiDirectReceiver;
 import com.leesc.tazza.ui.base.BaseActivity;
+import com.leesc.tazza.ui.lobby.LobbyViewModel;
+import com.leesc.tazza.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -24,9 +28,11 @@ import dagger.android.support.HasSupportFragmentInjector;
 public class RoomInfoActivity extends BaseActivity<ActivityRoomInfoBinding, RoomInfoViewModel> implements RoomInfoNavigator, HasSupportFragmentInjector {
 
     @Inject
-    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+    ViewModelProviderFactory viewModelProviderFactory;
 
     @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+
     RoomInfoViewModel roomInfoViewModel;
 
     @Inject
@@ -47,6 +53,7 @@ public class RoomInfoActivity extends BaseActivity<ActivityRoomInfoBinding, Room
 
     @Override
     public RoomInfoViewModel getViewModel() {
+        roomInfoViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(RoomInfoViewModel.class);
         return roomInfoViewModel;
     }
 
@@ -84,6 +91,11 @@ public class RoomInfoActivity extends BaseActivity<ActivityRoomInfoBinding, Room
         super.onStop();
         Log.d("lsc", "RoomInfoActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     @Override

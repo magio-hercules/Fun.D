@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface RoomInfoNavigator {
 
+    void showToast(String message);
+
     void handleError(Throwable throwable);
 }
