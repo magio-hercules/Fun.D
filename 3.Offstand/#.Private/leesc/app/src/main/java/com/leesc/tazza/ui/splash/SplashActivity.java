@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.leesc.tazza.BR;
 import com.leesc.tazza.R;
+import com.leesc.tazza.databinding.ActivityLobbyBinding;
 import com.leesc.tazza.databinding.ActivitySplashBinding;
 import com.leesc.tazza.ui.base.BaseActivity;
 import com.leesc.tazza.ui.lobby.LobbyActivity;
@@ -20,6 +21,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProviders;
 import io.reactivex.annotations.NonNull;
+import pl.droidsonroids.gif.AnimationListener;
+import pl.droidsonroids.gif.GifDrawable;
 
 public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashViewModel> implements SplashNavigator {
 
@@ -27,6 +30,8 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
     ViewModelProviderFactory viewModelProviderFactory;
 
     SplashViewModel splashViewModel;
+
+    private ActivitySplashBinding activitySplashBinding;
 
     @Override
     public int getBindingVariable() {
@@ -40,36 +45,41 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
 
     @Override
     public SplashViewModel getViewModel() {
-        splashViewModel = ViewModelProviders.of(this,viewModelProviderFactory).get(SplashViewModel.class);
+        splashViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(SplashViewModel.class);
         return splashViewModel;
     }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        activitySplashBinding = getViewDataBinding();
         splashViewModel.setNavigator(this);
-        Log.d("lsc","SplashActivity onCreate");
-		
-		//마시멜로우 이상 버전 권한 체크
+        Log.d("lsc", "SplashActivity onCreate");
+        initViews();
+        //마시멜로우 이상 버전 권한 체크
         int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
-	
+
+    }
+
+    private void initViews() {
+        ((GifDrawable) activitySplashBinding.bgSplash.getDrawable()).addAnimationListener(loopNumber -> startLobbyActivity());
     }
 
     @Override
     public void startLobbyActivity() {
         LobbyActivity.start(this);
-        overridePendingTransition(R.anim.fade_out,R.anim.fade_in);
+        overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
         finish();
     }
 
     @Override
     public void finish() {
         super.finish();
-        overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+        overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
     }
 
     @Override
@@ -77,7 +87,7 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
 
     }
 
-	//마시멜로우 이상 버전 권한 체크
+    //마시멜로우 이상 버전 권한 체크
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -94,7 +104,6 @@ public class SplashActivity extends BaseActivity<ActivitySplashBinding, SplashVi
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-	 	
-		
-		
+
+
 }

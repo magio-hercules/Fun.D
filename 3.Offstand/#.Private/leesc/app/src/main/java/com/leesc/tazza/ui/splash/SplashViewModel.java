@@ -10,19 +10,13 @@ import com.leesc.tazza.utils.rx.SchedulerProvider;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import pl.droidsonroids.gif.GifDrawable;
 
 public class SplashViewModel extends BaseViewModel<SplashNavigator> {
 
     public SplashViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
         Log.d("lsc", "SplashViewModel constructor");
-        getCompositeDisposable()
-                .add(Observable.timer(1, TimeUnit.SECONDS)
-                        .observeOn(getSchedulerProvider().ui())
-//                        .subscribe(time -> getNavigator().startMainActivity()));
-                        .subscribe(time -> getNavigator().startLobbyActivity()));
-
-
     }
 
     @Override
