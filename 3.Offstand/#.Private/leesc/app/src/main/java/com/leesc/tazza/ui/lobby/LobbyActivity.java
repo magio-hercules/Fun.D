@@ -16,6 +16,10 @@ import com.leesc.tazza.receiver.WifiDirectReceiver;
 import com.leesc.tazza.ui.base.BaseActivity;
 import com.leesc.tazza.ui.roominfo.RoomInfoActivity;
 import com.leesc.tazza.utils.ViewModelProviderFactory;
+import com.rafakob.nsdhelper.NsdHelper;
+import com.rafakob.nsdhelper.NsdListener;
+import com.rafakob.nsdhelper.NsdService;
+import com.rafakob.nsdhelper.NsdType;
 
 import java.util.List;
 
@@ -31,7 +35,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import pl.droidsonroids.gif.GifDrawable;
 
-public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector {
+public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector, NsdListener {
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -46,6 +50,8 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     private ActivityLobbyBinding activityLobbyBinding;
     private IntentFilter intentFilter;
+
+    private NsdHelper nsdHelper;
 
     @Override
     public int getBindingVariable() {
@@ -76,9 +82,9 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lsc", "LobbyActivity onCreate "/* + (wifiP2pService == null)*/);
-        activityLobbyBinding = getViewDataBinding();
+        Log.d("lsc", "LobbyActivity onCreate ");
         lobbyViewModel.setNavigator(this);
+        activityLobbyBinding = getViewDataBinding();
         initViews();
         setupRecyclerView(activityLobbyBinding.rvRoom, new RoomAdapter());
         intentFilter = new IntentFilter();
@@ -86,6 +92,13 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
+        nsdHelper = new NsdHelper(this, this);
+        nsdHelper.setLogEnabled(true);
+
+        nsdHelper.registerService("Chat", NsdType.HTTP);
+        nsdHelper.startDiscovery(NsdType.HTTP);
+        Log.d("lsc", "nsd timeout " + nsdHelper.getDiscoveryTimeout());
     }
 
     @Override
@@ -100,6 +113,9 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         super.onStop();
         Log.d("lsc", "LobbyActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
+
+        nsdHelper.stopDiscovery();
+        nsdHelper.unregisterService();
     }
 
     private void initViews() {
@@ -109,6 +125,37 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     private void setupRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+
+    @Override
+    public void onNsdRegistered(NsdService nsdService) {
+        Log.d("lsc","LobbyActivity onNsdRegistered nsdService " + nsdService);
+    }
+
+    @Override
+    public void onNsdDiscoveryFinished() {
+        Log.d("lsc","LobbyActivity onNsdDiscoveryFinished");
+    }
+
+    @Override
+    public void onNsdServiceFound(NsdService nsdService) {
+        Log.d("lsc","LobbyActivity onNsdServiceFound ");
+    }
+
+    @Override
+    public void onNsdServiceResolved(NsdService nsdService) {
+        Log.d("lsc","LobbyActivity onNsdServiceResolved");
+    }
+
+    @Override
+    public void onNsdServiceLost(NsdService nsdService) {
+        Log.d("lsc","LobbyActivity onNsdServiceLost");
+    }
+
+    @Override
+    public void onNsdError(String errorMessage, int errorCode, String errorSource) {
+        Log.d("lsc","LobbyActivity onNsdError " + errorMessage + ", " + errorCode + ", " + errorSource);
     }
 
     @Override

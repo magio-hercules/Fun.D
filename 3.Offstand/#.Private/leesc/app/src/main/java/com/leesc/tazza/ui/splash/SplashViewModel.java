@@ -26,24 +26,6 @@ public class SplashViewModel extends BaseViewModel<SplashNavigator> {
     public SplashViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, Context context, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider);
         Log.d("lsc", "SplashViewModel constructor");
-        getCompositeDisposable().add(TedRx2Permission.with(context)
-                .setPermissions(ACCESS_FINE_LOCATION)
-                .setDeniedMessage(resourceProvider.getString(R.string.splash_msg_denied))
-                .setGotoSettingButton(true)
-                .setGotoSettingButtonText(resourceProvider.getString(R.string.splash_msg_goto_setting))
-                .request()
-                .subscribe(
-                        permissionResult -> {
-                            if (permissionResult.isGranted()) {
-                                getNavigator().startSplashAnimation();
-                            } else {
-                                //Todo : DialogFragment 으로 바꿀 것...
-                                Log.d("lsc","SplashViewModel permission not granted");
-                                getNavigator().finishLobbyActivity();
-                            }
-                        },
-                        onError -> getNavigator().handleError(onError)));
-
     }
 
     @Override

@@ -12,15 +12,12 @@ import com.leesc.tazza.data.DataManager;
 import com.leesc.tazza.data.model.Room;
 import com.leesc.tazza.data.remote.ConnectionManager;
 import com.leesc.tazza.di.provider.ResourceProvider;
-import com.leesc.tazza.service.WifiP2pService;
 import com.leesc.tazza.ui.base.BaseViewModel;
 import com.leesc.tazza.utils.rx.RxEventBus;
 import com.leesc.tazza.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-
-import javax.inject.Inject;
 
 public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 

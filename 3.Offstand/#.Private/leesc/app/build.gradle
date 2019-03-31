@@ -91,4 +91,6 @@ dependencies {
     //gifDrawable
     implementation dependencies.gifDrawable
 
+    implementation dependencies.nsdHelper
+
 }
