@@ -22,6 +22,8 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".RoomActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+        <activity android:name=".Room2Activity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity android:name=".PlayActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>

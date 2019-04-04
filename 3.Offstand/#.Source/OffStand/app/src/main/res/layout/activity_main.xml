@@ -11,17 +11,30 @@
         android:id="@+id/button_room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="go Room"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="go Room (4인)"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button_room2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="go Room (10인)"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_room" />
 
     <Button
         android:id="@+id/button_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="go Play"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_room" />
+        app:layout_constraintTop_toBottomOf="@+id/button_room2" />
 
 </android.support.constraint.ConstraintLayout>
