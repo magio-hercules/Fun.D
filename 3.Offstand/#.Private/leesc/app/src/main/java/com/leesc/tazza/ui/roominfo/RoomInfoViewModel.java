@@ -100,7 +100,7 @@ public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
     }
 
     public void createSocket() {
-        createSocket(8080, 1);
+        createSocket(8080, 5);
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {

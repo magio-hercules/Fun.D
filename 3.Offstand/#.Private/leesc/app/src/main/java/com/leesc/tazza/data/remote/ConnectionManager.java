@@ -2,6 +2,8 @@ package com.leesc.tazza.data.remote;
 
 import android.util.Log;
 
+import com.leesc.tazza.data.model.JsonBody;
+
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -56,10 +58,10 @@ public class ConnectionManager {
         });
     }
 
-    public static Completable sendMessageCompletable(String message) {
+    public static Completable sendMessageCompletable(JsonBody message) {
         return Completable.create(subscriber -> {
             Log.d("lsc", "ConnectionManager sendMessageCompletable " + Thread.currentThread().getName());
-            clientThread.getStreamToServer().writeUTF(message);
+            clientThread.getStreamToServer().writeUTF(message.toString());
         });
 //            return Completable.complete();
     }
