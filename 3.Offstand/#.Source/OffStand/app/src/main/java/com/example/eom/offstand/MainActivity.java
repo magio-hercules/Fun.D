@@ -32,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @OnClick(R.id.button_room2)
+    public void goRoom2() {
+        Log.d(TAG, "goRoom2");
+
+        Intent intent = new Intent(MainActivity.this, Room2Activity.class);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.button_play)
     public void goPlay() {
         Log.d(TAG, "goPlay");

@@ -134,7 +134,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     }
 
     public void enterRoom() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 17};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 100};
         InetAddress addr = null;
         try {
             addr = InetAddress.getByAddress(ipAddr);
@@ -161,20 +161,20 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
     }
 
-    public void sendMessage() {
-        getCompositeDisposable().add(ConnectionManager.sendMessageCompletable("testByClient")
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .doOnComplete(() -> Log.d("lsc", "LobbyViewModel sendMessage doOnComplete " + Thread.currentThread().getName()))
-                .subscribe(
-                        () -> {
-                            Log.d("lsc", "LobbyViewModel sendMessage onCompleted");
-                        },
-                        error -> {
-                            getNavigator().handleError(error);
-                        }
-                ));
-    }
+//    public void sendMessage() {
+//        getCompositeDisposable().add(ConnectionManager.sendMessageCompletable("testByClient")
+//                .subscribeOn(schedulerProvider.io())
+//                .observeOn(schedulerProvider.ui())
+//                .doOnComplete(() -> Log.d("lsc", "LobbyViewModel sendMessage doOnComplete " + Thread.currentThread().getName()))
+//                .subscribe(
+//                        () -> {
+//                            Log.d("lsc", "LobbyViewModel sendMessage onCompleted");
+//                        },
+//                        error -> {
+//                            getNavigator().handleError(error);
+//                        }
+//                ));
+//    }
 
     @Override
     protected void onCleared() {

@@ -34,7 +34,8 @@ android {
         apks {
 
             release {
-                sourceFile = file("build/outputs/apk/release/app-release.apk")
+//                sourceFile = file("build/outputs/apk/release/app-release.apk")
+                sourceFile = file("release/app-release.apk")
             }
 
             debug {

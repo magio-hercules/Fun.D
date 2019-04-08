@@ -21,16 +21,6 @@
         app:layout_constraintStart_toStartOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
-    <Button
-        android:id="@+id/btn_profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:tag="PROFILE"
-        android:text="Profile"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars[0]" />
-
 
     <Button
         android:id="@+id/btn_ban"
