@@ -3,7 +3,7 @@ import java.net.Socket;
 import java.util.Scanner;
 
 public class Client {
-    public static void main(String[] args ) {
+    public static void main(String[] args) {
         DataInputStream streamByServer = null;
         DataOutputStream streamToServer = null;
         Scanner scanner = new Scanner(System.in);
@@ -19,10 +19,14 @@ public class Client {
                 streamToServer.writeUTF(scanner.nextLine());
                 System.out.println("Server : " + streamByServer.readUTF());
             }
-        }
-        catch( Exception e ){
+        } catch (Exception e) {
             System.out.println("클라이언트 실패 " + e.getMessage());
         }
     }
 }
-//{ "no": 1,"client": {"name": "Mr.Moon","character": 3,"win": 15,"lose": 15,"winningRate": 50.0}}
+
+/**
+ * 한줄로 정리해서 보내기
+ * { "no": 1,"client": {"name": "Mr.Moon","character": 3,"win": 15,"lose": 15,"winningRate": 50.0}}     2. 대기실 입장
+ * { "no": 3,"seatNo": 3}                                                                               2. 레디
+ */
