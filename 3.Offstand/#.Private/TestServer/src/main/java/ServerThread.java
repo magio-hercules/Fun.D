@@ -24,29 +24,14 @@ public class ServerThread implements Runnable {
 
         try {
             while (true) {
-//                System.out.println("클라이언트 접속 1");
                 streamByClient = new DataInputStream(socket.getInputStream());
-//                System.out.println("클라이언트 접속 2");
                 streamToClient = new DataOutputStream(socket.getOutputStream());
-//                System.out.println("클라이언트 접속 3");
                 String client = streamByClient.readUTF();
-//                System.out.println("클라이언트 접속 4 " + client);
                 JsonObject jsonObject = (JsonObject) jsonParser.parse(client);
                 int no = jsonObject.get("no").getAsInt();
-//                System.out.println("클라이언트 접속 5 " + no);
-                switch (no) {
-                    case 1:
-                        streamToClient.writeUTF(scanner.nextLine());
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-
-                }
-//                System.out.println("클라이언트 접속 4");
+                System.out.println("Client " + socket.getRemoteSocketAddress() + " >> " + jsonObject);
+                System.out.println("Server >> ");
+                streamToClient.writeUTF(scanner.nextLine());
             }
         } catch (IOException e) {
             System.out.println("에러 " + e.getMessage());
