@@ -1,18 +1,26 @@
 package com.example.eom.offstand;
 
+import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.animation.DynamicAnimation;
 import android.support.animation.SpringAnimation;
 import android.support.animation.SpringForce;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.DragEvent;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -21,16 +29,16 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
 
-public class PlayActivity extends AppCompatActivity {
+public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
     static final String TAG = "[PLAY]";
 
-    @BindView(R.id.ImageView01)
+    @BindView(R.id.play_image_card1)
     ImageView image1;
-    @BindView(R.id.ImageView02)
+    @BindView(R.id.play_image_card2)
     ImageView image2;
-    @BindView(R.id.ImageView03)
+    @BindView(R.id.play_image_card3)
     ImageView image3;
-    @BindView(R.id.ImageView04)
+    @BindView(R.id.play_image_card4)
     ImageView image4;
 
     @BindView(R.id.text_card1)
@@ -40,6 +48,13 @@ public class PlayActivity extends AppCompatActivity {
 
     @BindView(R.id.button_reset)
     Button button_reset;
+
+    @BindView(R.id.play_image_setting)
+    ImageView image_setting;
+    @BindView(R.id.play_image_open)
+    ImageView image_open;
+
+    View.OnTouchListener touchListener;
 
     private SpringAnimation xAnimation;
     private SpringAnimation yAnimation;
@@ -63,6 +78,11 @@ public class PlayActivity extends AppCompatActivity {
     private String card1, card2;
 
 
+    // TODO
+    // 참여인원
+    // 잔여 시간
+    // 진행 게임
+    // 잔여 게임
 
 
     @Override
@@ -80,11 +100,84 @@ public class PlayActivity extends AppCompatActivity {
 
         makeRandomNumber();
         image1.setImageResource(getResourceId("drawable", "card_" + card1));
+
+        image2.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector = new GestureDetector(PlayActivity.this, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    Log.d(TAG, "onDoubleTap");
+
+                    bCheck = true;
+                    changeCard();
+
+                    return super.onDoubleTap(e);
+                }
+            });
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                gestureDetector.onTouchEvent(event);
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (button_reset.isEnabled()) {
+                            return false;
+                        }
+
+                        viewHeight = v.getHeight();
+                        Log.d(TAG, "v.getHeight() : " + viewHeight);
+                        Log.d(TAG, "v.getY() : " + v.getY());
+                        Log.d(TAG, "event.getRawY() : " + event.getRawY());
+
+                        startY = (int) event.getRawY();
+
+//                        dX = v.getX() - event.getRawX();
+                        dY = v.getY() - event.getRawY();
+                        // cancel animations
+                        xAnimation.cancel();
+                        yAnimation.cancel();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
+                        Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
+
+                        // 패가 절반이상 까진경우
+                        if (viewHeight/2 < gap) {
+                            Log.d(TAG, "패가 절반이상 까진경우");
+//                            openAnimation.start();
+                            bCheck = true;
+                        }
+
+//                        xAnimation.start();
+                        yAnimation.start();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        image2.animate()
+//                                .x(event.getRawX() + dX)
+                                .y(event.getRawY() + dY)
+                                .setDuration(0)
+                                .start();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
+        initTouchListener();
     }
 
 
-    @OnClick({ R.id.button_reset, R.id.button_shuffle, R.id.button_random })
+    @OnClick({
+            R.id.button_reset
+//            R.id.button_shuffle,
+//            R.id.button_random,
+             })
     public void onClickButton(View view) {
+        Log.d(TAG, "clicked 22");
+
         switch(view.getId()) {
             case R.id.button_reset:
                 resetCard();
@@ -97,57 +190,69 @@ public class PlayActivity extends AppCompatActivity {
 //              Intent intent = new Intent(MainActivity.this, RandomActivity.class);
 //              startActivity(intent);
                 break;
+//            case R.id.button_open:
+//                openCard();
+//                break;
         }
     }
 
 
-    @OnTouch(R.id.ImageView02)
-    public boolean onTouchView(View v, MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                if (button_reset.isEnabled()) {
-                    return false;
-                }
-
-                viewHeight = v.getHeight();
-                Log.d(TAG, "v.getHeight() : " + viewHeight);
-                Log.d(TAG, "v.getY() : " + v.getY());
-                Log.d(TAG, "event.getRawY() : " + event.getRawY());
-
-                startY = (int) event.getRawY();
-
-//                        dX = v.getX() - event.getRawX();
-                dY = v.getY() - event.getRawY();
-                // cancel animations
-                xAnimation.cancel();
-                yAnimation.cancel();
-                break;
-            case MotionEvent.ACTION_UP:
-                int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
-                Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
-
-                // 패가 절반이상 까진경우
-                if (viewHeight/2 < gap) {
-                    Log.d(TAG, "패가 절반이상 까진경우");
-//                            openAnimation.start();
-                    bCheck = true;
-                }
-
-//                        xAnimation.start();
-                yAnimation.start();
-                break;
-            case MotionEvent.ACTION_MOVE:
-                image2.animate()
-//                                .x(event.getRawX() + dX)
-                        .y(event.getRawY() + dY)
-                        .setDuration(0)
-                        .start();
-                break;
-            default:
-                break;
-        }
-        return true;
+    @OnClick({R.id.play_image_setting,
+            R.id.play_image_open
+    })
+    public void clicked(ImageView view) {
+        Log.d(TAG, "clicked");
+        view.setSelected(true);
     }
+
+
+//    @OnTouch(R.id.ImageView02)
+//    public boolean onTouchView(View v, MotionEvent event) {
+//        switch (event.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                if (button_reset.isEnabled()) {
+//                    return false;
+//                }
+//
+//                viewHeight = v.getHeight();
+//                Log.d(TAG, "v.getHeight() : " + viewHeight);
+//                Log.d(TAG, "v.getY() : " + v.getY());
+//                Log.d(TAG, "event.getRawY() : " + event.getRawY());
+//
+//                startY = (int) event.getRawY();
+//
+////                        dX = v.getX() - event.getRawX();
+//                dY = v.getY() - event.getRawY();
+//                // cancel animations
+//                xAnimation.cancel();
+//                yAnimation.cancel();
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
+//                Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
+//
+//                // 패가 절반이상 까진경우
+//                if (viewHeight/2 < gap) {
+//                    Log.d(TAG, "패가 절반이상 까진경우");
+////                            openAnimation.start();
+//                    bCheck = true;
+//                }
+//
+////                        xAnimation.start();
+//                yAnimation.start();
+//                break;
+//            case MotionEvent.ACTION_MOVE:
+//                image2.animate()
+////                                .x(event.getRawX() + dX)
+//                        .y(event.getRawY() + dY)
+//                        .setDuration(0)
+//                        .start();
+//                break;
+//            default:
+//                break;
+//        }
+//        return true;
+//    }
 
 
     public static SpringAnimation createSpringAnimation(View view,
@@ -228,6 +333,51 @@ public class PlayActivity extends AppCompatActivity {
         }
     };
 
+    private void initTouchListener() {
+//        touchListener =  new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                View.DragShadowBuilder mShadow = new View.DragShadowBuilder(v);
+//                ClipData.Item item = new ClipData.Item(v.getTag().toString());
+//                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+//                ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
+//
+//                int eventPadTouch = event.getAction();
+//
+//                switch (event.getAction()) {
+//                    case MotionEvent.ACTION_DOWN:
+//                        Log.d(TAG, "ACTION_DOWN");
+////
+//                        break;
+//                    case MotionEvent.ACTION_UP:
+//                        Log.d(TAG, "ACTION_UP");
+//                        switch (v.getId()) {
+//                            case R.id.play_image_setting:
+//                                image_setting.setPressed(false);
+//                                Toast.makeText(getApplicationContext(), "세팅 기능 실행", Toast.LENGTH_SHORT).show();
+//                                break;
+//                            case R.id.play_image_open:
+//                                image_open.setPressed(false);
+//                                openCard();
+//                                break;
+//                        }
+//                        break;
+//                    case MotionEvent.ACTION_MOVE:
+//                        break;
+//                }
+//                return true;
+//            }
+//        };
+//
+//        image_setting.setOnTouchListener(touchListener);
+//        image_open.setOnTouchListener(touchListener);
+
+        image_setting.setOnTouchListener(this);
+        image_open.setOnTouchListener(this);
+
+        image_setting.setOnDragListener(this);
+        image_open.setOnDragListener(this);
+    }
 
     private int getResourceId(String type, String name) {
         // use case
@@ -268,6 +418,16 @@ public class PlayActivity extends AppCompatActivity {
 
 
     private void resetCard() {
+        Log.d(TAG, "resetCard");
+
+        xAnimation.cancel();
+        yAnimation.cancel();
+
+        ret_view2_x.cancel();
+        ret_view2_y.cancel();
+        ret_view1_x.cancel();
+        ret_view1_y.cancel();
+
         tempIndex = 1;
         bCheck = false;
         image1.setImageResource(R.drawable.card_back);
@@ -283,6 +443,15 @@ public class PlayActivity extends AppCompatActivity {
         ret_view2_y.start();
         ret_view1_x.start();
         ret_view1_y.start();
+    }
+
+    private void openCard() {
+        Log.d(TAG, "openCard");
+
+        bCheck = true;
+        changeCard();
+        bCheck = true;
+        changeCard();
     }
 
 
@@ -319,5 +488,67 @@ public class PlayActivity extends AppCompatActivity {
 
         Log.d(TAG, "Card1 : " + card1);
         Log.d(TAG, "Card2 : " + card2);
+    }
+
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        View.DragShadowBuilder mShadow = new View.DragShadowBuilder(v);
+        ClipData.Item item = new ClipData.Item(v.getTag().toString());
+        String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
+        ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
+
+        int eventPadTouch = event.getAction();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                Log.d(TAG, "ACTION_DOWN");
+//
+                break;
+            case MotionEvent.ACTION_UP:
+                Log.d(TAG, "ACTION_UP");
+                switch (v.getId()) {
+                    case R.id.play_image_setting:
+                        image_setting.setPressed(false);
+                        Toast.makeText(getApplicationContext(), "세팅 기능 실행", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.play_image_open:
+                        image_open.setPressed(false);
+                        openCard();
+                        break;
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+        ImageView target = (ImageView)v;
+        String targetTag = target.getTag().toString();
+
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_STARTED:
+                return true;
+
+            case DragEvent.ACTION_DRAG_LOCATION:
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                Log.d(TAG, "ACTION_DRAG_ENTERED : " + targetTag);
+
+                return true;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                Log.d(TAG, "ACTION_DRAG_EXITED : " + targetTag);
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENDED:
+                Log.d(TAG, "ACTION_DRAG_ENDED : " + targetTag);
+                return true;
+        }
+        return true;
     }
 }

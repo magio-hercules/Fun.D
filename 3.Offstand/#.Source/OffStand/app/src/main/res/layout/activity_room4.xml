@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="81dp">
+
+    <!-- start of Background -->
+    <!--<android.support.constraint.Group-->
+    <!--android:id="@+id/winnerplayer_group"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:constraint_referenced_ids="image_background_logo, image_background_top, image_background_center, image_background_bottom" />-->
+
+    <include layout="@layout/activity_background" />
+
+
+    <!-- room layout -->
+
+    <ImageView
+        android:id="@+id/image_background_table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_table_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_table_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_5"
+        app:srcCompat="@drawable/room_table" />
+
+    <ImageView
+        android:id="@+id/room_image_start"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_button_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_button_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_button_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_button_e"
+        app:srcCompat="@drawable/button_room_start" />
+
+    <ImageView
+        android:id="@+id/room_image_ban"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_button2_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_button2_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_button_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_button_e"
+        app:srcCompat="@drawable/button_room_ban" />
+
+    <ImageView
+        android:id="@+id/room_image_exit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_exit_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_exit_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_exit_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_exit_e"
+        app:srcCompat="@drawable/button_room_exit" />
+
+    <!-- end of room layout -->
+
+
+    <!-- player layout -->
+    <ImageView
+        android:id="@+id/room_avatar_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="AVATAR"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_2"
+        app:srcCompat="@drawable/avatar_1" />
+    <ImageView
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_2"
+        app:srcCompat="@drawable/room_nametag" />
+    <TextView
+        android:id="@+id/room_name_1"
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:textSize="16sp"
+        android:text="USER 1"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_text_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_text_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_text_2"/>
+
+    <ImageView
+        android:id="@+id/room_avatar_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="AVATAR"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_2"
+        app:srcCompat="@drawable/avatar_2" />
+    <ImageView
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_2"
+        app:srcCompat="@drawable/room_nametag" />
+    <TextView
+        android:id="@+id/room_name_2"
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:textSize="16sp"
+        android:text="USER 2"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_text_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_text_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_text_2"/>
+
+
+    <ImageView
+        android:id="@+id/room_avatar_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="AVATAR"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_4"
+        app:srcCompat="@drawable/avatar_8" />
+    <ImageView
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_4"
+        app:srcCompat="@drawable/room_nametag" />
+    <TextView
+        android:id="@+id/room_name_3"
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:textSize="16sp"
+        android:text="USER 3"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_text_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_text_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_text_4"/>
+
+    <ImageView
+        android:id="@+id/room_avatar_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="AVATAR"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_4"
+        app:srcCompat="@drawable/avatar_9" />
+    <ImageView
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_4"
+        app:srcCompat="@drawable/room_nametag" />
+    <TextView
+        android:id="@+id/room_name_4"
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:textSize="16sp"
+        android:text="USER 4"
+        android:textAlignment="center"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_name_text_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_text_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_text_4"/>
+
+    <!-- end of player layout -->
+
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone">
+
+        <Button
+        android:id="@+id/btn_table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimaryDark"
+        android:clickable="false"
+        android:text="TABLE"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+
+
+        <Button
+        android:id="@+id/btn_ban"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_red_light"
+        android:clickable="false"
+        android:tag="BAN"
+        android:text="내보내기"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+        <Button
+        android:id="@+id/btn_shuffle"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimary"
+        android:tag="SHUFFLE"
+        android:text="셔플"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/btn_ban"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+        <Button
+        android:id="@+id/btn_ready"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_green_light"
+        android:clickable="false"
+        android:tag="READY"
+        android:text="준비"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
+
+
+        <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
+
+        <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+        <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+        <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
+
+
+
+        <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+        <Button
+        android:id="@+id/btn_1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="쫑미니"
+        app:layout_constraintBottom_toTopOf="@id/btn_2"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintHorizontal_bias="0.369"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline3"
+        app:layout_constraintVertical_bias="0.22" />
+
+        <Button
+        android:id="@+id/btn_2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="Mr. Moon"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintHorizontal_bias="0.369"
+        app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+        android:id="@+id/btn_3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="이승철"
+        app:layout_constraintBottom_toTopOf="@id/btn_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toTopOf="@id/guideline3"
+        app:layout_constraintVertical_bias="0.214" />
+
+        <Button
+        android:id="@+id/btn_4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="지수오"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    </FrameLayout>
+
+
+
+
+</android.support.constraint.ConstraintLayout>
