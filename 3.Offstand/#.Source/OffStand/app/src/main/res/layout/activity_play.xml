@@ -1,48 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/FrameLayout01"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_gravity="center">
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="81dp">
 
-    <Button
-        android:id="@+id/button_reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
+    <include layout="@layout/activity_background" />
 
-        android:text="Reset" />
+    <!-- Vertical -->
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_background_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.014" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_background_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.986" />
 
-    <Button
-        android:id="@+id/button_shuffle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="60dp"
-        android:text="셔플 효과" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_setting_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.812" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_setting_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.931" />
 
-    <Button
-        android:id="@+id/button_random"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="110dp"
-        android:text="무작위 패" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_dashboard_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.041" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_dashboard_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.956" />
 
-    <Button
-        android:id="@+id/button_open"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="110dp"
-        android:text="한번에 오픈" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_open_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.326" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_open_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.673" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_card_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.306" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_v_card_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.692" />
+    <!-- end of Vertical -->
+
+
+    <!-- Horizontal -->
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_setting_s" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.037" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_setting_e" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.104" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_dashboard_s" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.16" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_dashboard_e" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.258" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_open_s" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.785" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_open_e" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.844" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_card_s" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.37" />
+    <android.support.constraint.Guideline
+        android:id="@+id/guide_h_card_e" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.707" />
+    <!-- end of Horizontal -->
+
+
+    <!-- contents -->
+
+    <ImageView
+        android:id="@+id/image_background_table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_background_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_background_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_5"
+        app:srcCompat="@drawable/play_background" />
+
+    <ImageView
+        android:id="@+id/play_image_setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_setting_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_setting_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_setting_e"
+        app:srcCompat="@drawable/button_play_setting" />
+
+    <ImageView
+        android:id="@+id/play_image_dashboard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_dashboard_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_dashboard_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_dashboard_e"
+        app:srcCompat="@drawable/play_dashboard" />
+
+    <ImageView
+        android:id="@+id/play_image_open"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_open_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_open_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_open_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_open_e"
+        app:srcCompat="@drawable/button_play_open" />
+
+
+    <ImageView
+        android:id="@+id/play_image_card1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_card_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_card_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
+        app:srcCompat="@drawable/card_back" />
+
+    <ImageView
+        android:id="@+id/play_image_card2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_card_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_card_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
+        app:srcCompat="@drawable/card_back" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/play_image_card3"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="-100dp"
+            android:layout_marginTop="0dp"></ImageView>
+
+        <ImageView
+            android:id="@+id/play_image_card4"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="0dp"></ImageView>
+    </FrameLayout>
+
+    <!-- end of contents -->
+
+
+    <!-- temp -->
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -63,55 +218,18 @@
             android:layout_marginTop="50dp"
             android:text="두번째 패 : "
             android:textSize="18sp" />
+
+
+        <Button
+            android:id="@+id/button_reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+
+            android:text="Reset" />
     </FrameLayout>
+    <!-- end of temp -->
+</android.support.constraint.ConstraintLayout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
-        <ImageView
-            android:id="@+id/ImageView01"
-            android:layout_width="162dp"
-            android:layout_height="252dp"
-            android:layout_gravity="center"
-            android:src="@drawable/card_back"
-            ></ImageView>
-
-        <ImageView
-            android:id="@+id/ImageView02"
-            android:layout_width="162dp"
-            android:layout_height="252dp"
-            android:layout_gravity="center"
-            android:src="@drawable/card_back"
-            ></ImageView>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
-
-        <ImageView
-            android:id="@+id/ImageView03"
-            android:layout_width="162dp"
-            android:layout_height="252dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="-100dp"
-            android:layout_marginTop="0dp"></ImageView>
-
-        <ImageView
-            android:id="@+id/ImageView04"
-            android:layout_width="162dp"
-            android:layout_height="252dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="0dp"></ImageView>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom|center">
-
-    </FrameLayout>
-</FrameLayout>

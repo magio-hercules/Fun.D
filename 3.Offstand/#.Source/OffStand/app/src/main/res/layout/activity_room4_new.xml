@@ -152,171 +152,171 @@
     <!-- end of Background -->
 
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_table"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:background="@color/colorPrimaryDark"-->
-        <!--android:clickable="false"-->
-        <!--android:text="TABLE"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--app:layout_constraintBottom_toTopOf="@+id/guideline4"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/guideline2"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/guideline"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/guideline3" />-->
+    <Button
+        android:id="@+id/btn_table"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/colorPrimaryDark"
+        android:clickable="false"
+        android:text="TABLE"
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_ban"-->
-        <!--android:layout_width="120dp"-->
-        <!--android:layout_height="70dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:background="@android:color/holo_red_light"-->
-        <!--android:clickable="false"-->
-        <!--android:tag="BAN"-->
-        <!--android:text="내보내기"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textSize="28sp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/guideline"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/guideline6" />-->
+    <Button
+        android:id="@+id/btn_ban"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_red_light"
+        android:clickable="false"
+        android:tag="BAN"
+        android:text="내보내기"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_shuffle"-->
-        <!--android:layout_width="150dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:background="@color/colorPrimary"-->
-        <!--android:tag="SHUFFLE"-->
-        <!--android:text="셔플"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textSize="28sp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/guideline2"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/btn_ban"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/guideline6" />-->
+    <Button
+        android:id="@+id/btn_shuffle"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorPrimary"
+        android:tag="SHUFFLE"
+        android:text="셔플"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toEndOf="@+id/btn_ban"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_ready"-->
-        <!--android:layout_width="120dp"-->
-        <!--android:layout_height="70dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:background="@android:color/holo_green_light"-->
-        <!--android:clickable="false"-->
-        <!--android:tag="READY"-->
-        <!--android:text="준비"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textSize="28sp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/guideline2"-->
-        <!--app:layout_constraintTop_toTopOf="@+id/guideline6" />-->
-
-
-    <!--<android.support.constraint.Guideline-->
-        <!--android:id="@+id/guideline"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--app:layout_constraintGuide_percent="0.3" />-->
-
-    <!--<android.support.constraint.Guideline-->
-        <!--android:id="@+id/guideline2"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="vertical"-->
-        <!--app:layout_constraintGuide_percent="0.7" />-->
-
-    <!--<android.support.constraint.Guideline-->
-        <!--android:id="@+id/guideline3"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--app:layout_constraintGuide_percent="0.3" />-->
-
-    <!--<android.support.constraint.Guideline-->
-        <!--android:id="@+id/guideline4"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--app:layout_constraintGuide_percent="0.7" />-->
+    <Button
+        android:id="@+id/btn_ready"
+        android:layout_width="120dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_green_light"
+        android:clickable="false"
+        android:tag="READY"
+        android:text="준비"
+        android:textColor="@android:color/white"
+        android:textSize="28sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline6" />
 
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3" />
 
-    <!--<android.support.constraint.Guideline-->
-        <!--android:id="@+id/guideline6"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:orientation="horizontal"-->
-        <!--app:layout_constraintGuide_percent="0.75" />-->
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_1"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:tag="USER"-->
-        <!--android:text="쫑미니"-->
-        <!--app:layout_constraintBottom_toTopOf="@id/btn_2"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/guideline"-->
-        <!--app:layout_constraintHorizontal_bias="0.369"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guideline3"-->
-        <!--app:layout_constraintVertical_bias="0.22" />-->
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_2"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:tag="USER"-->
-        <!--android:text="Mr. Moon"-->
-        <!--app:layout_constraintBottom_toTopOf="@id/guideline4"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/guideline"-->
-        <!--app:layout_constraintHorizontal_bias="0.369"-->
-        <!--app:layout_constraintStart_toStartOf="parent" />-->
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.7" />
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_3"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:tag="USER"-->
-        <!--android:text="이승철"-->
-        <!--app:layout_constraintBottom_toTopOf="@id/btn_4"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="@id/guideline2"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guideline3"-->
-        <!--app:layout_constraintVertical_bias="0.214" />-->
 
-    <!--<Button-->
-        <!--android:id="@+id/btn_4"-->
-        <!--android:layout_width="100dp"-->
-        <!--android:layout_height="100dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:tag="USER"-->
-        <!--android:text="지수오"-->
-        <!--app:layout_constraintBottom_toTopOf="@id/guideline4"-->
-        <!--app:layout_constraintStart_toStartOf="@id/guideline2"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"/>-->
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75" />
+
+    <Button
+        android:id="@+id/btn_1"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="쫑미니"
+        app:layout_constraintBottom_toTopOf="@id/btn_2"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintHorizontal_bias="0.369"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/guideline3"
+        app:layout_constraintVertical_bias="0.22" />
+
+    <Button
+        android:id="@+id/btn_2"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="Mr. Moon"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintEnd_toStartOf="@id/guideline"
+        app:layout_constraintHorizontal_bias="0.369"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_3"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="이승철"
+        app:layout_constraintBottom_toTopOf="@id/btn_4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toTopOf="@id/guideline3"
+        app:layout_constraintVertical_bias="0.214" />
+
+    <Button
+        android:id="@+id/btn_4"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:tag="USER"
+        android:text="지수오"
+        app:layout_constraintBottom_toTopOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </android.support.constraint.ConstraintLayout>
