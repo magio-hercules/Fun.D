@@ -88,4 +88,7 @@ dependencies {
     //gifDrawable
     implementation dependencies.gifDrawable
 
+    //json
+    implementation dependencies.gson
+
 }
