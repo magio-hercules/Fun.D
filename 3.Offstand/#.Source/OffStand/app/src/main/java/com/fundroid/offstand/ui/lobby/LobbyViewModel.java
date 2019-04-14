@@ -9,6 +9,7 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.DataManager;
+import com.fundroid.offstand.data.model.JsonBody;
 import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.di.provider.ResourceProvider;
@@ -161,20 +162,20 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
     }
 
-//    public void sendMessage() {
-//        getCompositeDisposable().add(ConnectionManager.sendMessageCompletable("testByClient")
-//                .subscribeOn(schedulerProvider.io())
-//                .observeOn(schedulerProvider.ui())
-//                .doOnComplete(() -> Log.d("lsc", "LobbyViewModel sendMessage doOnComplete " + Thread.currentThread().getName()))
-//                .subscribe(
-//                        () -> {
-//                            Log.d("lsc", "LobbyViewModel sendMessage onCompleted");
-//                        },
-//                        error -> {
-//                            getNavigator().handleError(error);
-//                        }
-//                ));
-//    }
+    public void sendMessage() {
+        getCompositeDisposable().add(ConnectionManager.sendMessageCompletable(new JsonBody())
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .doOnComplete(() -> Log.d("lsc", "LobbyViewModel sendMessage doOnComplete " + Thread.currentThread().getName()))
+                .subscribe(
+                        () -> {
+                            Log.d("lsc", "LobbyViewModel sendMessage onCompleted");
+                        },
+                        error -> {
+                            getNavigator().handleError(error);
+                        }
+                ));
+    }
 
     @Override
     protected void onCleared() {

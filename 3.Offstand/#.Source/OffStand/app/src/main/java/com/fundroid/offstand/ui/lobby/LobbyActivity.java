@@ -14,6 +14,8 @@ import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.receiver.WifiDirectReceiver;
 import com.fundroid.offstand.ui.base.BaseActivity;
+import com.fundroid.offstand.ui.lobby.main.MainFragment;
+import com.fundroid.offstand.ui.lobby.roominfo.RoomInfoDialog;
 import com.fundroid.offstand.ui.roominfo.RoomInfoActivity;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
@@ -29,9 +31,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import pl.droidsonroids.gif.GifDrawable;
 
-public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector/*, NsdListener*/ {
+public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector{
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -46,8 +47,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     private ActivityLobbyBinding activityLobbyBinding;
     private IntentFilter intentFilter;
-
-//    private NsdHelper nsdHelper;
 
     @Override
     public int getBindingVariable() {
@@ -67,6 +66,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
+        Log.d("lsc","LobbyActivity supportFragmentInjector");
         return fragmentDispatchingAndroidInjector;
     }
 
@@ -82,19 +82,16 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         lobbyViewModel.setNavigator(this);
         activityLobbyBinding = getViewDataBinding();
         initViews();
-        setupRecyclerView(activityLobbyBinding.rvRoom, new RoomAdapter());
+//        setupRecyclerView(activityLobbyBinding.rvRoom, new RoomAdapter());
         intentFilter = new IntentFilter();
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+    }
 
-//        nsdHelper = new NsdHelper(this, this);
-//        nsdHelper.setLogEnabled(true);
-//
-//        nsdHelper.registerService("Chat", NsdType.HTTP);
-//        nsdHelper.startDiscovery(NsdType.HTTP);
-//        Log.d("lsc", "nsd timeout " + nsdHelper.getDiscoveryTimeout());
+    private void test() {
+        RoomInfoDialog.newInstance().show(getSupportFragmentManager());
     }
 
     @Override
@@ -109,22 +106,21 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         super.onStop();
         Log.d("lsc", "LobbyActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
-
-//        nsdHelper.stopDiscovery();
-//        nsdHelper.unregisterService();
     }
 
     private void initViews() {
-        ((GifDrawable) activityLobbyBinding.bgLobby.getDrawable()).setLoopCount(0);
+//        ((GifDrawable) activityLobbyBinding.bgLobby.getDrawable()).setLoopCount(0);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .add(R.id.fragment_container, MainFragment.newInstance(), MainFragment.TAG)
+                .commit();
     }
 
     private void setupRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
-
-
-//    @Override
 
     @Override
     public void goToRoomInfoActivity() {
@@ -137,8 +133,8 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void onRepositoriesChanged(List<Room> rooms) {
-        RoomAdapter adapter = (RoomAdapter) activityLobbyBinding.rvRoom.getAdapter();
-        adapter.setDatas(rooms);
+//        RoomAdapter adapter = (RoomAdapter) activityLobbyBinding.rvRoom.getAdapter();
+//        adapter.setDatas(rooms);
     }
 
     @Override
