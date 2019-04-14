@@ -29,7 +29,7 @@ ext {
             daggerAndroid         : "com.google.dagger:dagger-android:$dagger",
             daggerAndroidSupport  : "com.google.dagger:dagger-android-support:$dagger",
             daggerAndroidProccesor: "com.google.dagger:dagger-android-processor:$dagger",
-            gson                  : "com.google.code.gson:$gson",
+            gson                  : "com.google.code.gson:gson:$gson",
             gifDrawable           : "pl.droidsonroids.gif:android-gif-drawable:$gifDrawable",
     ]
 }
