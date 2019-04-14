@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,47 +10,47 @@
     <include layout="@layout/activity_background" />
 
     <!-- Vertical -->
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_background_s" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.014" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_background_e" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.986" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_setting_s" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.812" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_setting_e" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.931" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_dashboard_s" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.041" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_dashboard_e" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.956" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_open_s" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.326" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_open_e" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.673" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_card_s" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.306" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_card_e" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.692" />
@@ -58,38 +58,38 @@
 
 
     <!-- Horizontal -->
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_setting_s" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.037" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_setting_e" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.104" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_dashboard_s" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.16" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_dashboard_e" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.258" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_open_s" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.785" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_open_e" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.844" />
 
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_card_s" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.37" />
-    <android.support.constraint.Guideline
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_card_e" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.707" />
@@ -231,5 +231,5 @@
             android:text="Reset" />
     </FrameLayout>
     <!-- end of temp -->
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 

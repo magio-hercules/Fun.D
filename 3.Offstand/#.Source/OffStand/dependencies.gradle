@@ -1,0 +1,35 @@
+ext {
+    supportLibrary = '1.0.0-beta01'
+    constraintLayout = '1.1.3'
+    rxJava2 = '2.2.7'
+    rxAndroid = '2.1.1'
+    rxLifecycle2 = '2.2.2'
+    stetho = '1.5.0'
+    stream = '1.2.1'
+    tedPermission = '2.2.2'
+    dagger = '2.21'
+    architectureComponent = '2.0.0-beta01'
+    gson = '2.8.5'
+    gifDrawable = '1.2.16'
+
+    dependencies = [
+            appCompat             : "androidx.appcompat:appcompat:$supportLibrary",
+            design                : "com.google.android.material:material:$supportLibrary",
+            constraintLayout      : "androidx.constraintlayout:constraintlayout:$constraintLayout",
+            rxJava                : "io.reactivex.rxjava2:rxjava:$rxJava2",
+            rxAndroid             : "io.reactivex.rxjava2:rxandroid:$rxAndroid",
+            stetho                : "com.facebook.stetho:stetho:$stetho",
+            stream                : "com.annimon:stream:$stream",
+            tedPermission         : "gun0912.ted:tedpermission-rx2:$tedPermission",
+            lifecycleExtension    : "androidx.lifecycle:lifecycle-extensions:$architectureComponent",
+            lifecycleCompiler     : "androidx.lifecycle:lifecycle-compiler:$architectureComponent",
+            lifecycleRuntime      : "androidx.lifecycle:lifecycle-runtime:$architectureComponent",
+            dagger                : "com.google.dagger:dagger:$dagger",
+            daggerCompiler        : "com.google.dagger:dagger-compiler:$dagger",
+            daggerAndroid         : "com.google.dagger:dagger-android:$dagger",
+            daggerAndroidSupport  : "com.google.dagger:dagger-android-support:$dagger",
+            daggerAndroidProccesor: "com.google.dagger:dagger-android-processor:$dagger",
+            gson                  : "com.google.code.gson:$gson",
+            gifDrawable           : "pl.droidsonroids.gif:android-gif-drawable:$gifDrawable",
+    ]
+}
