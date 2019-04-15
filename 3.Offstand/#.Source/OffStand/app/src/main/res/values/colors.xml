@@ -15,6 +15,6 @@
     <color name="holo_orange_light">#ffffbb33</color>
 
     <color name="colorGreen">#59773D</color>
-    <color name="colorTransparant">#33FFFFFF</color>
+    <color name="colorTransparant70">#B3000000</color> <!-- 알파 70% -->
 
 </resources>

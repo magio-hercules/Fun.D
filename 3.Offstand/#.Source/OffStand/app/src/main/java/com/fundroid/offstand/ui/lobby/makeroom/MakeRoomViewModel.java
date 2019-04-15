@@ -14,26 +14,20 @@
  *  limitations under the License
  */
 
-package com.fundroid.offstand.ui.lobby.roominfo;
+package com.fundroid.offstand.ui.lobby.makeroom;
 
-import android.net.wifi.p2p.WifiP2pManager;
 
 import com.fundroid.offstand.data.DataManager;
-import com.fundroid.offstand.di.provider.ResourceProvider;
 import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
-public class RoomInfoViewModel extends BaseViewModel<RoomInfoNavigator> {
+public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
-    public RoomInfoViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
+    public MakeRoomViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
     }
 
-    public void onLaterClick() {
-        getNavigator().dismissDialog();
-    }
-
-    public void onSubmitClick() {
-        getNavigator().dismissDialog();
+    public void onNavBackClick() {
+        getNavigator().goBack();
     }
 }

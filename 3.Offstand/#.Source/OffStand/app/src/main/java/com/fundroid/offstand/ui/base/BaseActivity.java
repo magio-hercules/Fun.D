@@ -17,6 +17,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import dagger.android.AndroidInjection;
 
 public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseViewModel> extends AppCompatActivity
@@ -57,7 +59,15 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     @Override
     public void onFragmentDetached(String tag) {
-
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+        if (fragment != null) {
+            fragmentManager
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .remove(fragment)
+                    .commitNow();
+        }
     }
 
 

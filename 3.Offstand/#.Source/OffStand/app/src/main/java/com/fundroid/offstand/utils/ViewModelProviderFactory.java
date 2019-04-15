@@ -7,8 +7,9 @@ import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.di.provider.ResourceProvider;
 import com.fundroid.offstand.service.WifiP2pService;
 import com.fundroid.offstand.ui.lobby.LobbyViewModel;
+import com.fundroid.offstand.ui.lobby.findroom.FindRoomViewModel;
 import com.fundroid.offstand.ui.lobby.main.MainViewModel;
-import com.fundroid.offstand.ui.roominfo.RoomInfoViewModel;
+import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomViewModel;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -43,12 +44,12 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(LobbyViewModel.class)) {
             return (T) new LobbyViewModel(dataManager, schedulerProvider, wifiP2pManager, channel, resourceProvider);
-        } else if (modelClass.isAssignableFrom(RoomInfoViewModel.class)) {
-            return (T) new RoomInfoViewModel(dataManager, schedulerProvider, wifiP2pManager, channel, resourceProvider);
-        } else if (modelClass.isAssignableFrom(com.fundroid.offstand.ui.lobby.roominfo.RoomInfoViewModel.class)) {
-            return (T) new com.fundroid.offstand.ui.lobby.roominfo.RoomInfoViewModel(dataManager, schedulerProvider, wifiP2pManager, channel, resourceProvider);
         } else if (modelClass.isAssignableFrom(MainViewModel.class)) {
             return (T) new MainViewModel(dataManager, schedulerProvider);
+        } else if (modelClass.isAssignableFrom(FindRoomViewModel.class)) {
+            return (T) new FindRoomViewModel(dataManager, schedulerProvider);
+        } else if (modelClass.isAssignableFrom(MakeRoomViewModel.class)) {
+            return (T) new MakeRoomViewModel(dataManager, schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown class name");
     }

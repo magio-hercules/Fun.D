@@ -6,8 +6,6 @@ import java.util.List;
 
 public interface LobbyNavigator {
 
-    void goToRoomInfoActivity();
-
     void goToSettingActivity();
 
     void onRepositoriesChanged(List<Room> rooms);

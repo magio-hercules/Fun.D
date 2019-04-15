@@ -14,38 +14,36 @@
  *  limitations under the License
  */
 
-package com.fundroid.offstand.ui.lobby.main;
+package com.fundroid.offstand.ui.lobby.findroom;
 
 import android.os.Bundle;
 import android.view.View;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
-import com.fundroid.offstand.databinding.FragmentMainBinding;
+import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
-import com.fundroid.offstand.ui.lobby.findroom.FindRoomFragment;
-import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import pl.droidsonroids.gif.GifDrawable;
 
-public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewModel> implements MainNavigator {
+public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, FindRoomViewModel> implements FindRoomNavigator {
 
-    public static final String TAG = MainFragment.class.getSimpleName();
+    public static final String TAG = FindRoomFragment.class.getSimpleName();
+
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
 
-    private MainViewModel mainViewModel;
+    private FindRoomViewModel findRoomViewModel;
 
-    private FragmentMainBinding fragmentMainBinding;
+    private FragmentFindRoomBinding fragmentFindRoomBinding;
 
-    public static MainFragment newInstance() {
+    public static FindRoomFragment newInstance() {
         Bundle args = new Bundle();
-        MainFragment fragment = new MainFragment();
+        FindRoomFragment fragment = new FindRoomFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,13 +55,13 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_main;
+        return R.layout.fragment_find_room;
     }
 
     @Override
-    public MainViewModel getViewModel() {
-        mainViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(MainViewModel.class);
-        return mainViewModel;
+    public FindRoomViewModel getViewModel() {
+        findRoomViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(FindRoomViewModel.class);
+        return findRoomViewModel;
     }
 
     @Override
@@ -74,40 +72,17 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainViewModel.setNavigator(this);
+        findRoomViewModel.setNavigator(this);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fragmentMainBinding = getViewDataBinding();
+        fragmentFindRoomBinding = getViewDataBinding();
         initViews();
     }
 
     private void initViews() {
-        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).setLoopCount(0);
-    }
-
-    @Override
-    public void makeRoom() {
-        getBaseActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .disallowAddToBackStack()
-                .add(R.id.fragment_container, MakeRoomFragment.newInstance(), MakeRoomFragment.TAG)
-                .commit();
-    }
-
-    @Override
-    public void findRoom() {
-        getBaseActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .disallowAddToBackStack()
-                .add(R.id.fragment_container, FindRoomFragment.newInstance(), FindRoomFragment.TAG)
-                .commit();
-    }
-
-    @Override
-    public void guide() {
 
     }
 }

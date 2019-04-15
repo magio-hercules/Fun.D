@@ -126,10 +126,6 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         discoverPeers();
     }
 
-    public void goToRoomInfo() {
-        getNavigator().goToRoomInfoActivity();
-    }
-
     public void goToSetting() {
         getNavigator().goToSettingActivity();
     }

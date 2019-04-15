@@ -28,7 +28,15 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
     }
 
     public void makeRoom() {
+        getNavigator().makeRoom();
+    }
 
+    public void findRoom() {
+        getNavigator().findRoom();
+    }
+
+    public void guide() {
+        getNavigator().guide();
     }
 
     public void onNavBackClick() {

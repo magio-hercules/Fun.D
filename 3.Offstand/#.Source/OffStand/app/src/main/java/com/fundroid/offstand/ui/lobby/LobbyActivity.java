@@ -15,8 +15,6 @@ import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.receiver.WifiDirectReceiver;
 import com.fundroid.offstand.ui.base.BaseActivity;
 import com.fundroid.offstand.ui.lobby.main.MainFragment;
-import com.fundroid.offstand.ui.lobby.roominfo.RoomInfoDialog;
-import com.fundroid.offstand.ui.roominfo.RoomInfoActivity;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
 import java.util.List;
@@ -90,10 +88,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
     }
 
-    private void test() {
-        RoomInfoDialog.newInstance().show(getSupportFragmentManager());
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -120,11 +114,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     private void setupRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    @Override
-    public void goToRoomInfoActivity() {
-        RoomInfoActivity.start(this);
     }
 
     @Override

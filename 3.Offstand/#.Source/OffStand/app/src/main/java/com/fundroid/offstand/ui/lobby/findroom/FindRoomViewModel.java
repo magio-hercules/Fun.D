@@ -14,14 +14,21 @@
  *  limitations under the License
  */
 
-package com.fundroid.offstand.ui.lobby.roominfo;
+package com.fundroid.offstand.ui.lobby.findroom;
 
-import dagger.Module;
-import dagger.android.ContributesAndroidInjector;
 
-@Module
-public abstract class RoomInfoDialogProvider {
+import com.fundroid.offstand.data.DataManager;
+import com.fundroid.offstand.ui.base.BaseViewModel;
+import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
-    @ContributesAndroidInjector
-    abstract RoomInfoDialog provideRoomInfoDialogFactory();
+public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
+
+    public FindRoomViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
+        super(dataManager, schedulerProvider);
+    }
+
+    //Test
+    public void onNavBackClick() {
+        getNavigator().goBack();
+    }
 }

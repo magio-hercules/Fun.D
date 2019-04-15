@@ -29,7 +29,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorGreen">
+        android:background="@color/colorGreen"
+        android:clickable="true"
+        android:focusable="true">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_center_start"
@@ -122,6 +124,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/btn_find_room"
+            android:onClick="@{() -> viewModel.findRoom()}"
             app:layout_constraintBottom_toBottomOf="@id/guide_card_bottom"
             app:layout_constraintEnd_toStartOf="@id/btn_guide"
             app:layout_constraintStart_toEndOf="@id/btn_make_room"
@@ -132,6 +135,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/btn_guide"
+            android:onClick="@{() -> viewModel.guide()}"
             app:layout_constraintBottom_toBottomOf="@id/guide_card_bottom"
             app:layout_constraintEnd_toEndOf="@id/guide_card_end"
             app:layout_constraintStart_toEndOf="@id/btn_find_room"
