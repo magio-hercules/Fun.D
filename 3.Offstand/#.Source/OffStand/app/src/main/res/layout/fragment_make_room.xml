@@ -34,6 +34,34 @@
         android:focusable="true">
 
         <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_title_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.211" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_title_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.789" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_label_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.111" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_label_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.889" />
+
+        <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_make_room_start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -54,6 +82,77 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.869" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_test_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.15" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_test_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.75" />
+
+        <ImageView
+            android:id="@+id/title_make_room"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/title_make_room"
+            app:layout_constraintEnd_toEndOf="@id/guide_title_end"
+            app:layout_constraintStart_toStartOf="@id/guide_title_start" />
+
+        <ImageView
+            android:id="@+id/test1"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/label_room_name"
+            app:layout_constraintBottom_toTopOf="@id/test2"
+            app:layout_constraintEnd_toEndOf="@id/guide_label_end"
+            app:layout_constraintStart_toStartOf="@id/guide_label_start"
+            app:layout_constraintTop_toBottomOf="@id/guide_test_top" />
+
+        <ImageView
+            android:id="@+id/test2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/label_game_rule"
+            app:layout_constraintBottom_toTopOf="@id/test3"
+            app:layout_constraintEnd_toEndOf="@id/guide_label_end"
+            app:layout_constraintStart_toStartOf="@id/guide_label_start"
+            app:layout_constraintTop_toBottomOf="@id/test1" />
+
+        <ImageView
+            android:id="@+id/test3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/label_limit_edition"
+            app:layout_constraintBottom_toTopOf="@id/test4"
+            app:layout_constraintEnd_toEndOf="@id/guide_label_end"
+            app:layout_constraintStart_toStartOf="@id/guide_label_start"
+            app:layout_constraintTop_toBottomOf="@id/test2" />
+
+        <ImageView
+            android:id="@+id/test4"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/label_limit_time"
+            app:layout_constraintBottom_toTopOf="@id/test5"
+            app:layout_constraintEnd_toEndOf="@id/guide_label_end"
+            app:layout_constraintStart_toStartOf="@id/guide_label_start"
+            app:layout_constraintTop_toBottomOf="@id/test3" />
+
+        <ImageView
+            android:id="@+id/test5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/label_room_password"
+            app:layout_constraintBottom_toTopOf="@id/guide_test_bottom"
+            app:layout_constraintEnd_toEndOf="@id/guide_label_end"
+            app:layout_constraintStart_toStartOf="@id/guide_label_start"
+            app:layout_constraintTop_toBottomOf="@id/test4" />
 
 
         <ImageView
@@ -69,8 +168,8 @@
             android:id="@+id/btn_back"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:src="@drawable/btn_back"
             android:onClick="@{() -> viewModel.onNavBackClick()}"
+            android:src="@drawable/btn_back"
             app:layout_constraintBottom_toBottomOf="@id/guide_make_room_bottom"
             app:layout_constraintEnd_toEndOf="@id/guide_back_end"
             app:layout_constraintStart_toEndOf="@id/btn_make_room" />
