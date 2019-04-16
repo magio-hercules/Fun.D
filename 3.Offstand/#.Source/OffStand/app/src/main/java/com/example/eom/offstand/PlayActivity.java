@@ -51,8 +51,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     @BindView(R.id.play_image_setting)
     ImageView image_setting;
+    @BindView(R.id.play_image_exit)
+    ImageView image_exit;
     @BindView(R.id.play_image_open)
     ImageView image_open;
+    @BindView(R.id.play_image_re)
+    ImageView image_re;
+    @BindView(R.id.play_image_die)
+    ImageView image_die;
+    @BindView(R.id.play_image_result)
+    ImageView image_result;
+    @BindView(R.id.play_image_jokbo)
+    ImageView image_jokbo;
 
     View.OnTouchListener touchListener;
 
@@ -166,7 +176,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             }
         });
 
+        initListener();
+
         initTouchListener();
+
+        initButton(true);
     }
 
 
@@ -197,8 +211,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
 
-    @OnClick({R.id.play_image_setting,
-            R.id.play_image_open
+    @OnClick({
+            R.id.play_image_setting,
+            R.id.play_image_exit,
+            R.id.play_image_open,
+            R.id.play_image_re,
+            R.id.play_image_die,
+            R.id.play_image_result,
+            R.id.play_image_jokbo
     })
     public void clicked(ImageView view) {
         Log.d(TAG, "clicked");
@@ -333,6 +353,50 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     };
 
+
+    private void initButton(boolean bFlag) {
+        if (bFlag) {
+            image_setting.setVisibility(View.VISIBLE);
+            image_open.setVisibility(View.VISIBLE);
+
+            image_exit.setVisibility(View.INVISIBLE);
+            image_re.setVisibility(View.INVISIBLE);
+            image_die.setVisibility(View.INVISIBLE);
+            image_result.setVisibility(View.INVISIBLE);
+            image_jokbo.setVisibility(View.INVISIBLE);
+        } else {
+            image_setting.setVisibility(View.INVISIBLE);
+            image_open.setVisibility(View.INVISIBLE);
+
+            image_exit.setVisibility(View.VISIBLE);
+            image_re.setVisibility(View.VISIBLE);
+            image_die.setVisibility(View.VISIBLE);
+            image_result.setVisibility(View.VISIBLE);
+            image_jokbo.setVisibility(View.VISIBLE);
+        }
+    }
+
+
+    private void initListener() {
+        image_setting.setOnTouchListener(this);
+        image_exit.setOnTouchListener(this);
+        image_open.setOnTouchListener(this);
+        image_re.setOnTouchListener(this);
+        image_die.setOnTouchListener(this);
+        image_result.setOnTouchListener(this);
+        image_jokbo.setOnTouchListener(this);
+
+        image_setting.setOnDragListener(this);
+        image_exit.setOnDragListener(this);
+        image_open.setOnDragListener(this);
+        image_re.setOnDragListener(this);
+        image_die.setOnDragListener(this);
+        image_result.setOnDragListener(this);
+        image_jokbo.setOnDragListener(this);
+    }
+
+
+    // TODO : 제거
     private void initTouchListener() {
 //        touchListener =  new View.OnTouchListener() {
 //            @Override
@@ -371,12 +435,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 //
 //        image_setting.setOnTouchListener(touchListener);
 //        image_open.setOnTouchListener(touchListener);
-
-        image_setting.setOnTouchListener(this);
-        image_open.setOnTouchListener(this);
-
-        image_setting.setOnDragListener(this);
-        image_open.setOnDragListener(this);
     }
 
     private int getResourceId(String type, String name) {
@@ -413,9 +471,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             ani_view2_y.start();
             ani_view1_x.start();
             ani_view1_y.start();
+
+            initButton(false);
         }
     }
-
 
     private void resetCard() {
         Log.d(TAG, "resetCard");
@@ -443,6 +502,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         ret_view2_y.start();
         ret_view1_x.start();
         ret_view1_y.start();
+
+        initButton(true);
     }
 
     private void openCard() {
@@ -491,6 +552,46 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
 
+    private void doSetting() {
+        Log.d(TAG, "doSetting");
+        // TODO : 세팅으로 이동
+//        Intent intent = new Intent(PlayActivity.this, SettingActivity.class);
+//        startActivity(intent);
+    }
+
+    private void doExit() {
+        Log.d(TAG, "doExit");
+        // TODO : 로비로 이동하도록 변경
+        Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+        startActivity(intent);
+    }
+
+    private void doRestart() {
+        Log.d(TAG, "doRestart");
+        // TODO :
+        Toast.makeText(getApplicationContext(), "RE 게임", Toast.LENGTH_SHORT).show();
+
+        resetCard();
+    }
+
+    private void doDie() {
+        Log.d(TAG, "doDie");
+        // TODO :
+        Toast.makeText(getApplicationContext(), "DIE", Toast.LENGTH_SHORT).show();
+    }
+
+    private void doResult() {
+        Log.d(TAG, "doResult");
+        // TODO :
+        Toast.makeText(getApplicationContext(), "RESULT", Toast.LENGTH_SHORT).show();
+    }
+
+    private void doJokbo() {
+        Log.d(TAG, "doJokbo");
+        // TODO :
+        Toast.makeText(getApplicationContext(), "족보 표시", Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         View.DragShadowBuilder mShadow = new View.DragShadowBuilder(v);
@@ -510,11 +611,31 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 switch (v.getId()) {
                     case R.id.play_image_setting:
                         image_setting.setPressed(false);
-                        Toast.makeText(getApplicationContext(), "세팅 기능 실행", Toast.LENGTH_SHORT).show();
+                        doSetting();
+                        break;
+                    case R.id.play_image_exit:
+                        image_exit.setPressed(false);
+                        doExit();
                         break;
                     case R.id.play_image_open:
                         image_open.setPressed(false);
                         openCard();
+                        break;
+                    case R.id.play_image_re:
+                        image_re.setPressed(false);
+                        doRestart();
+                        break;
+                    case R.id.play_image_die:
+                        image_die.setPressed(false);
+                        doDie();
+                        break;
+                    case R.id.play_image_result:
+                        image_result.setPressed(false);
+                        doResult();
+                        break;
+                    case R.id.play_image_jokbo:
+                        image_jokbo.setPressed(false);
+                        doJokbo();
                         break;
                 }
                 break;
@@ -538,7 +659,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             case DragEvent.ACTION_DRAG_ENTERED:
                 Log.d(TAG, "ACTION_DRAG_ENTERED : " + targetTag);
-
                 return true;
 
             case DragEvent.ACTION_DRAG_EXITED:
