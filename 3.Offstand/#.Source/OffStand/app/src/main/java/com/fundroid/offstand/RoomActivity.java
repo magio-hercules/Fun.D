@@ -102,28 +102,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         btn_3.setOnDragListener(this);
         btn_4.setOnDragListener(this);
 
-        image_start.setOnTouchListener(this);
-        image_ban.setOnTouchListener(this);
-        image_exit.setOnTouchListener(this);
-
-        image_start.setOnDragListener(this);
-        image_ban.setOnDragListener(this);
-        image_exit.setOnDragListener(this);
-
-        image_avatar_1.setOnTouchListener(this);
-        image_avatar_2.setOnTouchListener(this);
-        image_avatar_3.setOnTouchListener(this);
-        image_avatar_4.setOnTouchListener(this);
-
-        image_avatar_1.setOnDragListener(this);
-        image_avatar_2.setOnDragListener(this);
-        image_avatar_3.setOnDragListener(this);
-        image_avatar_4.setOnDragListener(this);
-
-
-        initDragListener();
+        initListener();
 
         initRoomConfig();
+
+
     }
 
     @OnClick({R.id.room_image_start,
@@ -319,13 +302,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             target.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                             break;
                     }
-                } else {
-                    Log.d(TAG, "ACTION_DRAG_ENDED else");
-//                    switch (selected.getId()) {
-//                        case R.id.room_image_ban:
-//                            target.setBackgroundColor(getResources().getColor(R.color.holo_red_light));
-//                            break;
-//                    }
+                } else if (targetTag.equals("BUTTON")){
+                    switch (target.getId()) {
+                        case R.id.room_image_ban:
+                            target.setPressed(false);
+                            break;
+                    }
                 }
                 return true;
 
@@ -367,8 +349,24 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         nUserCount = 4;
     }
 
-    private void initDragListener() {
+    private void initListener() {
+        image_start.setOnTouchListener(this);
+        image_ban.setOnTouchListener(this);
+        image_exit.setOnTouchListener(this);
 
+        image_start.setOnDragListener(this);
+        image_ban.setOnDragListener(this);
+        image_exit.setOnDragListener(this);
+
+        image_avatar_1.setOnTouchListener(this);
+        image_avatar_2.setOnTouchListener(this);
+        image_avatar_3.setOnTouchListener(this);
+        image_avatar_4.setOnTouchListener(this);
+
+        image_avatar_1.setOnDragListener(this);
+        image_avatar_2.setOnDragListener(this);
+        image_avatar_3.setOnDragListener(this);
+        image_avatar_4.setOnDragListener(this);
     }
 
     private void doExit() {

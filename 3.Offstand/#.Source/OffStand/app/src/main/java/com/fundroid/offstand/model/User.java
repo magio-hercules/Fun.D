@@ -6,7 +6,8 @@ public class User {
     // 방장
     private boolean boss;
 
-    private int status; // 0(Standby), 1(ready), 2(game)
+    private int id;
+    private int status; // 0(Standby), 1(ready), 2(game), 3(result)
     private int seat; // 1~10
     private int avatar; // 1~10
     private String name;
@@ -14,22 +15,76 @@ public class User {
     // 전적
     private int win;
     private int lose;
+    private int draw;
     private int rate;
 
     // card
     private int card1;
     private int card2;
+    private int level; // 족보 등급을 위한
+    private int level_score;
+
 
     public User() {
-
+        new User(0, false, 0, 0, "");
     }
 
-    public User(boolean boss, int seat, int avatar, String name) {
-        boss = boss;
-        status = 0;
-        seat = seat;
-        avatar = avatar;
-        name = name;
+
+    public User(int id, boolean boss, int seat, int avatar, String name) {
+        this.id = id;
+        this.boss = boss;
+        this.status = 0;
+        this.seat = seat;
+        this.avatar = avatar;
+        this.name = name;
+    }
+
+    public boolean isBoss() {
+        return boss;
+    }
+
+    public void setBoss(boolean boss) {
+        this.boss = boss;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getDraw() {
+        return draw;
+    }
+
+    public void setDraw(int draw) {
+        this.draw = draw;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getLevel_score() {
+        return level_score;
+    }
+
+    public void setLevel_score(int level_score) {
+        this.level_score = level_score;
     }
 
     public int getStatus() {
@@ -54,14 +109,6 @@ public class User {
 
     public void setAvatar(int avatar) {
         this.avatar = avatar;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getWin() {
