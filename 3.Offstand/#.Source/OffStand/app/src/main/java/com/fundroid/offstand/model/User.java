@@ -2,9 +2,8 @@ package com.fundroid.offstand.model;
 
 public class User {
 
-
     // 방장
-    private boolean boss;
+    private boolean host;
 
     private int id;
     private int status; // 0(Standby), 1(ready), 2(game), 3(result)
@@ -21,30 +20,41 @@ public class User {
     // card
     private int card1;
     private int card2;
-    private int level; // 족보 등급을 위한
+
+    // 족보
+    private int level;
     private int level_score;
 
 
     public User() {
-        new User(0, false, 0, 0, "");
+        new User(-1, false, 0, 0, "");
     }
 
 
-    public User(int id, boolean boss, int seat, int avatar, String name) {
+    public User(int id, boolean host, int seat, int avatar, String name) {
         this.id = id;
-        this.boss = boss;
+        this.host = host;
         this.status = 0;
         this.seat = seat;
         this.avatar = avatar;
         this.name = name;
     }
 
-    public boolean isBoss() {
-        return boss;
+    public void doBan() {
+        this.id = -1;
+        this.host = false;
+        this.status = 0;
+//        this.seat = 0; // seat는 유지
+        this.avatar = 0;
+        this.name = "";
     }
 
-    public void setBoss(boolean boss) {
-        this.boss = boss;
+    public boolean isHost() {
+        return host;
+    }
+
+    public void setHost(boolean host) {
+        this.host = host;
     }
 
     public int getId() {
@@ -150,4 +160,17 @@ public class User {
     public void setCard2(int card2) {
         this.card2 = card2;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "host=" + host +
+                ", id=" + id +
+                ", seat=" + seat +
+                ", avatar=" + avatar +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
+
+
