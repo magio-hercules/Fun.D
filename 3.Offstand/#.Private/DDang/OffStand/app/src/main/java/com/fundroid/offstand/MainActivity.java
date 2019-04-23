@@ -99,4 +99,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    @OnClick(R.id.button_setting)
+    public void Setting(){
+        Log.d(TAG, "goSetting");
+
+        Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+        startActivity(intent);
+    }
 }

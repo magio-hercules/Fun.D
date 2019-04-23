@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.fundroid.offstand.ui.lobby.LobbyViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_lobby"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.lobby.LobbyActivity">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_background_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.014" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_background_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.986" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_setting_s" android:orientation="vertical"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.812" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_setting_e" android:orientation="vertical"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.931" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_setting_s" android:orientation="horizontal"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.037" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_setting_e" android:orientation="horizontal"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            app:layout_constraintGuide_percent="0.104" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_setting_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.0705" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_setting_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8715" />
+
+        <include layout="@layout/activity_background" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/btn_setting"
+            android:onClick="@{() -> viewModel.goToSetting()}"
+            app:layout_constraintLeft_toLeftOf="@id/guide_v_setting_s"
+            app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
+            app:layout_constraintTop_toTopOf="@id/guide_h_setting_s"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_setting_e" />
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+            app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
+            app:layout_constraintTop_toTopOf="@id/guide_h_5">
+
+            <EditText
+                android:id="@+id/Text_Name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="-100dp"
+                android:layout_marginLeft="0dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="이름" />
+
+            <EditText
+                android:id="@+id/Text_Avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="-50dp"
+                android:ems="10"
+                android:inputType="number"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/button_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="0dp"
+                android:text="SAVE" />
+
+            <Button
+                android:id="@+id/button_show"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:layout_marginLeft="0dp"
+                android:text="SHOW" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="---" />
+
+        </FrameLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
