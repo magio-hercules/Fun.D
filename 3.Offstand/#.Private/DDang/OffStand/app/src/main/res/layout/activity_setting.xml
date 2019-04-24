@@ -85,14 +85,34 @@
             app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
             app:layout_constraintTop_toTopOf="@id/guide_h_5">
 
+            <ImageView
+                android:id="@+id/title_setting_me"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-200dp"
+                android:src="@drawable/me_character_name"
+                app:layout_constraintEnd_toEndOf="@id/guide_title_end"
+                app:layout_constraintStart_toStartOf="@id/guide_title_start" />
+
+            <ImageView
+                android:id="@+id/select_character"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="-120dp"
+                android:src="@drawable/me_character_1"
+                app:layout_constraintEnd_toEndOf="@id/guide_title_end"
+                app:layout_constraintStart_toStartOf="@id/guide_title_start" />
+
             <EditText
                 android:id="@+id/Text_Name"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="-100dp"
+                android:layout_marginTop="-200dp"
                 android:layout_marginLeft="0dp"
-                android:ems="10"
+                android:ems="0"
                 android:inputType="textPersonName"
                 android:text="이름" />
 
@@ -131,24 +151,7 @@
                 android:layout_height="wrap_content"
                 android:text="---" />
 
-            <ImageView
-                android:id="@+id/title_setting_me"
-                android:layout_width="200dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="100dp"
-                android:src="@drawable/me_character_name"
-                app:layout_constraintEnd_toEndOf="@id/guide_title_end"
-                app:layout_constraintStart_toStartOf="@id/guide_title_start" />
 
-            <ImageView
-                android:id="@+id/select_character"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="300dp"
-                android:layout_marginLeft="150dp"
-                android:src="@drawable/me_character_1"
-                app:layout_constraintEnd_toEndOf="@id/guide_title_end"
-                app:layout_constraintStart_toStartOf="@id/guide_title_start" />
 
         </FrameLayout>
 
