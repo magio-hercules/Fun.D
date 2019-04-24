@@ -47,8 +47,7 @@ public class SettingActivity extends AppCompatActivity {
             db.add(Text_Name.getText().toString(), Integer.parseInt(Text_Avatar.getText().toString()));
         }
         else {
-//            db.update(new User(Text_Name.toString()));
-            Log.d(TAG, "기존 DB가 있다");
+            db.update(Text_Name.getText().toString(), Integer.parseInt(Text_Avatar.getText().toString()));
         }
     }
 
