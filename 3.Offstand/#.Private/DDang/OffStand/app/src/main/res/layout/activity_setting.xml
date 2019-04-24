@@ -131,6 +131,25 @@
                 android:layout_height="wrap_content"
                 android:text="---" />
 
+            <ImageView
+                android:id="@+id/title_setting_me"
+                android:layout_width="200dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="100dp"
+                android:src="@drawable/me_character_name"
+                app:layout_constraintEnd_toEndOf="@id/guide_title_end"
+                app:layout_constraintStart_toStartOf="@id/guide_title_start" />
+
+            <ImageView
+                android:id="@+id/select_character"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="300dp"
+                android:layout_marginLeft="150dp"
+                android:src="@drawable/me_character_1"
+                app:layout_constraintEnd_toEndOf="@id/guide_title_end"
+                app:layout_constraintStart_toStartOf="@id/guide_title_start" />
+
         </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
