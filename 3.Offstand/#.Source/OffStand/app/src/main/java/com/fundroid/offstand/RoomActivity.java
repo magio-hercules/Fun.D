@@ -596,7 +596,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(result -> {
 
-        }, onError -> {
-        });
+                }, onError -> {
+                });
     }
 }
