@@ -3,22 +3,15 @@ package com.fundroid.offstand;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.fundroid.offstand.data.remote.ConnectionManager;
-import com.fundroid.offstand.utils.rx.AppSchedulerProvider;
-import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Scheduler;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
@@ -65,15 +58,13 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.button_server)
     public void createSocket() {
-        ConnectionManager.serverThreadObservable(ROOM_PORT, 5)
+        ConnectionManager.createServerThread(ROOM_PORT, 5)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
                 .subscribe(message -> {
                     Log.d(TAG, "createSocket message " + message);
                 }, onError -> {
                     Log.d(TAG, "createSocket onError " + onError.getMessage());
-                }, () -> {
-                    Log.d(TAG, "createSocket terminated");
                 });
     }
 
@@ -82,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
 
         new Thread(() -> {
             try {
-                ConnectionManager.clientThreadObservable(InetAddress.getLocalHost(), ROOM_PORT)
+                ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT)
                         .subscribeOn(Schedulers.io())
                         .observeOn(Schedulers.io())
                         .subscribe(onNext -> {
@@ -91,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
                             //                            Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
                         }, onError -> {
                             Log.d(TAG, "enterRoom onError " + onError.getMessage());
-                        }, () -> {
-                            Log.d(TAG, "enterRoom terminated");
                         });
             } catch (UnknownHostException e) {
                 Log.e("lsc","e " + e.getMessage());

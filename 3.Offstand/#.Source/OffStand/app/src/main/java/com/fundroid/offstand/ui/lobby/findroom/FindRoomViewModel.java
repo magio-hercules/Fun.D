@@ -4,6 +4,8 @@ package com.fundroid.offstand.ui.lobby.findroom;
 import android.util.Log;
 
 import com.fundroid.offstand.data.DataManager;
+import com.fundroid.offstand.data.model.Attendee;
+import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.RxEventBus;
@@ -13,6 +15,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
+import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.JAN;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
@@ -26,23 +30,21 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(message -> {
-                    Log.d("lsc","FindRoomViewModel message " + message);
+                    Log.d("lsc", "FindRoomViewModel message " + message);
                 })
         );
     }
 
     private void enterRoom(InetAddress roomAddress, int roomPort) {
         Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
-        getCompositeDisposable().add(ConnectionManager.clientThreadObservable(roomAddress, roomPort)
+        getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
+                .flatMap(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN, 10, 1))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(onNext -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom thread " + Thread.currentThread().getName());
-                    Log.d("lsc", "FindRoomViewModel enterRoom onNext " + onNext);
+                .subscribe(result -> {
+                    Log.d("lsc", "FindRoomViewModel enterRoom result " + result);
                 }, onError -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError.getMessage());
-                }, () -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom terminated");
+                    Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError);
                 }));
 
     }

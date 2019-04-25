@@ -12,30 +12,9 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
-<<<<<<< HEAD
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <excludeFolder url="file://$MODULE_DIR$/build" />
-    </content>
-    <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
-=======
-    </content>
-    <orderEntry type="inheritedJdk" />
->>>>>>> dea32d6b0668272197ef697e239b7fb3ac85251a
-=======
-    </content>
-    <orderEntry type="inheritedJdk" />
->>>>>>> dea32d6b0668272197ef697e239b7fb3ac85251a
-=======
-    </content>
-    <orderEntry type="inheritedJdk" />
->>>>>>> dea32d6b0668272197ef697e239b7fb3ac85251a
->>>>>>> f2091213455bd6194a0f968f0bcf2f1949765dd1
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>

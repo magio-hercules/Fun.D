@@ -36,9 +36,10 @@ public class ServerThread implements Runnable {
                 streamByClient = new DataInputStream(socket.getInputStream());
                 Log.d("lsc", "ServerThread 3 " + Thread.currentThread().getName());
                 streamToClient = new DataOutputStream(socket.getOutputStream());
-//                Log.d("lsc", "ServerThread 클라이언트로부터 받은 메세지 " + streamByClient.readUTF());
+//                String message = streamByClient.readUTF();
+//                RxEventBus.getInstance().sendEvent(new Gson().fromJson(message, ApiBody.class));
                 RxEventBus.getInstance().sendEvent(streamByClient.readUTF());
-//                clientThreads.add(serverThread);
+                Log.d("lsc", "ServerThread 4 " + Thread.currentThread().getName());
             }
         } catch (IOException e) {
             Log.e("lsc", "ServerThread e " + e.getMessage() + ", " + Thread.currentThread().getName());
