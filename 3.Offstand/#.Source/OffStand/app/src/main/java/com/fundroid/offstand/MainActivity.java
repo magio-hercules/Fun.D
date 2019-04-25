@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, RoomActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.button_room2)
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, Room2Activity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.button_play)
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(MainActivity.this, PlayActivity.class);
         startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.button_server)

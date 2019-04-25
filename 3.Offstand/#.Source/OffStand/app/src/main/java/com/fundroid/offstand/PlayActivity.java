@@ -24,6 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -102,6 +103,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         // 버터나이프 사용
         ButterKnife.bind(this);
+
+        initShuffle();
 
         button_reset.setEnabled(false);
 
@@ -377,6 +380,37 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
 
+    private void initShuffle() {
+        ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
+        if (fragment == null) {
+            // Make new fragment to show this selection.
+            fragment = new ShuffleFragment();
+
+            // Execute a transaction, replacing any existing fragment
+            // with this one inside the frame.
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.room_shuffle_frame, fragment);
+//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
+    }
+
+
+    public void finishShuffle() {
+        ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
+        if (fragment == null) {
+            // Make new fragment to show this selection.
+            fragment = new ShuffleFragment();
+
+            // Execute a transaction, replacing any existing fragment
+            // with this one inside the frame.
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.hide(fragment);
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            ft.commit();
+        }
+    }
+
     private void initListener() {
         image_setting.setOnTouchListener(this);
         image_exit.setOnTouchListener(this);
@@ -557,6 +591,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // TODO : 세팅으로 이동
 //        Intent intent = new Intent(PlayActivity.this, SettingActivity.class);
 //        startActivity(intent);
+        Toast.makeText(getApplicationContext(), "세팅 화면 연결해주세요", Toast.LENGTH_SHORT).show();
     }
 
     private void doExit() {
@@ -564,6 +599,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // TODO : 로비로 이동하도록 변경
         Intent intent = new Intent(PlayActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     private void doRestart() {
@@ -583,13 +619,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void doResult() {
         Log.d(TAG, "doResult");
         // TODO :
-        Toast.makeText(getApplicationContext(), "RESULT", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "게임 결과 연결해주세요", Toast.LENGTH_SHORT).show();
     }
 
     private void doJokbo() {
         Log.d(TAG, "doJokbo");
         // TODO :
-        Toast.makeText(getApplicationContext(), "족보 표시", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "족보 화면 연결해주세요", Toast.LENGTH_SHORT).show();
     }
 
     @Override

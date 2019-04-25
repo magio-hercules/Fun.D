@@ -29,7 +29,7 @@ public class SplashActivity extends AppCompatActivity {
                 startActivity(mainIntent);
                 finish();
             }
-        }, 1000);
+        }, 4000);
 
         Log.d(TAG, "end onCreate");
     }

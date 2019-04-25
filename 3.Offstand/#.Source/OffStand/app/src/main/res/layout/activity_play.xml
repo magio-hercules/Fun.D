@@ -167,6 +167,19 @@
         app:srcCompat="@drawable/play_background" />
 
     <ImageView
+        android:id="@+id/play_image_open"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_open_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_open_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_open_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_open_e"
+        app:srcCompat="@drawable/button_play_open" />
+
+    <ImageView
         android:id="@+id/play_image_dashboard"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -260,19 +273,6 @@
         app:srcCompat="@drawable/button_room_exit" />
 
     <ImageView
-        android:id="@+id/play_image_open"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:tag="BUTTON"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="@id/guide_v_open_s"
-        app:layout_constraintRight_toRightOf="@id/guide_v_open_e"
-        app:layout_constraintTop_toTopOf="@id/guide_h_open_s"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_open_e"
-        app:srcCompat="@drawable/button_play_open" />
-
-    <ImageView
         android:id="@+id/play_image_re"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -328,6 +328,15 @@
 
 
 
+    <FrameLayout
+        android:id="@+id/room_shuffle_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_start"
+        app:layout_constraintRight_toRightOf="@id/guide_v_end"
+        app:layout_constraintTop_toTopOf="@id/guide_h_4"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_8" />
 
 
     <!-- temp -->
@@ -335,6 +344,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center"
+        android:visibility="gone"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
