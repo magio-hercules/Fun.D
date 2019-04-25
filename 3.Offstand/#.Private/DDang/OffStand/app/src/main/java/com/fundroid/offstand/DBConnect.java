@@ -88,4 +88,16 @@ public class DBConnect extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    public void update(String name, Integer avatar) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String UPDATE_TABLE_USER =
+                "UPDATE " + TABLE_MYINFO
+                        + " SET name = " + name;
+//                        + " , avatar = " + avatar;
+
+        db.execSQL(UPDATE_TABLE_USER);
+        db.close();
+    }
 }

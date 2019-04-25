@@ -34,36 +34,35 @@ public class SettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.button_save)
-    public void Save() {
-        EditText Text_Name = (EditText) findViewById(R.id.Text_Name);
-        EditText Text_Avatar = (EditText) findViewById(R.id.Text_Avatar);
-
-        Log.d(TAG, "DB Selecting");
-        Cursor selectDB = db.select();
-        Log.d(TAG, "DB Selecting Succes");
-
-        if (selectDB.getCount() == 0){
-            db.add(Text_Name.getText().toString(), Integer.parseInt(Text_Avatar.getText().toString()));
-        }
-        else {
-//            db.update(new User(Text_Name.toString()));
-            Log.d(TAG, "기존 DB가 있다");
-        }
-    }
-
-    @OnClick(R.id.button_show)
-    public void Load() {
-        EditText Text_Name = (EditText) findViewById(R.id.Text_Name);
-        EditText Text_Avatar = (EditText) findViewById(R.id.Text_Avatar);
-
-        Log.d(TAG, "DB Selecting");
-        Cursor selectDB = db.select();
-        Log.d(TAG, "DB Selecting Succes");
-
-        selectDB.moveToFirst();
-
-        Text_Name.setText(selectDB.getString(0));
-        Text_Avatar.setText(selectDB.getString(1));
-    }
+//    @OnClick(R.id.button_save)
+//    public void Save() {
+//        EditText Text_Name = (EditText) findViewById(R.id.Text_Name);
+//        EditText Text_Avatar = (EditText) findViewById(R.id.Text_Avatar);
+//
+//        Log.d(TAG, "DB Selecting");
+//        Cursor selectDB = db.select();
+//        Log.d(TAG, "DB Selecting Succes");
+//
+//        if (selectDB.getCount() == 0){
+//            db.add(Text_Name.getText().toString(), Integer.parseInt(Text_Avatar.getText().toString()));
+//        }
+//        else {
+//            db.update(Text_Name.getText().toString(), Integer.parseInt(Text_Avatar.getText().toString()));
+//        }
+//    }
+//
+//    @OnClick(R.id.button_show)
+//    public void Load() {
+//        EditText Text_Name = (EditText) findViewById(R.id.Text_Name);
+//        EditText Text_Avatar = (EditText) findViewById(R.id.Text_Avatar);
+//
+//        Log.d(TAG, "DB Selecting");
+//        Cursor selectDB = db.select();
+//        Log.d(TAG, "DB Selecting Succes");
+//
+//        selectDB.moveToFirst();
+//
+//        Text_Name.setText(selectDB.getString(0));
+//        Text_Avatar.setText(selectDB.getString(1));
+//    }
 }
