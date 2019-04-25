@@ -351,5 +351,32 @@
             app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
             app:layout_constraintTop_toTopOf="@id/guide_h_5"/>
 
+        // 개인 통계 Start
+        <FrameLayout
+            android:id="@+id/fragment_container_stats"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#CC000000"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+            app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
+            app:layout_constraintTop_toTopOf="@id/guide_h_5"/>
+
+        <ImageView
+            android:id="@+id/setting_stats_save"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            android:src="@drawable/me_btn_save"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_save_top"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_save_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_left"
+            app:layout_constraintRight_toRightOf="@id/guide_save_right"/>
+
+        // 개인 통계 End
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
