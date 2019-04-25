@@ -1,19 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-  ~  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
-  ~
-  ~  Licensed under the Apache License, Version 2.0 (the "License");
-  ~  you may not use this file except in compliance with the License.
-  ~  You may obtain a copy of the License at
-  ~
-  ~      https://mindorks.com/license/apache-v2
-  ~
-  ~  Unless required by applicable law or agreed to in writing, software
-  ~  distributed under the License is distributed on an "AS IS" BASIS,
-  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~  See the License for the specific language governing permissions and
-  ~  limitations under the License
-  -->
-
+<?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
@@ -32,6 +17,34 @@
         android:background="@color/colorTransparant70"
         android:clickable="true"
         android:focusable="true">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_title_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.09" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_title_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.3" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_title_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.4" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_refresh_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.9" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_enter_room_start"
@@ -61,11 +74,61 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.7" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_list_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.41" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_list_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.6" />
+
+        <ImageView
+            android:id="@+id/title_find_room"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/title_host_list"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"
+            app:layout_constraintDimensionRatio="H,3984:450"
+            app:layout_constraintEnd_toEndOf="@id/guide_enter_room_end"
+            app:layout_constraintStart_toStartOf="@id/guide_title_start"
+            app:layout_constraintTop_toTopOf="@id/guide_title_top" />
+
+        <ImageView
+            android:id="@+id/btn_refresh"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{() -> viewModel.onNavBackClick()}"
+            android:padding="@dimen/padding_refresh"
+            android:src="@drawable/btn_refresh"
+            app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintEnd_toEndOf="@id/guide_refresh_end"
+            app:layout_constraintStart_toEndOf="@id/title_find_room"
+            app:layout_constraintTop_toTopOf="@id/guide_title_top" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:padding="@dimen/padding_list_room"
+            app:layout_constraintBottom_toBottomOf="@id/guide_list_bottom"
+            app:layout_constraintEnd_toEndOf="@id/guide_refresh_end"
+            app:layout_constraintStart_toStartOf="@id/guide_title_start"
+            app:layout_constraintTop_toTopOf="@id/guide_list_top"
+            tools:listitem="@layout/item_room" />
+
         <ImageView
             android:id="@+id/btn_enter_room"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:onClick="@{() -> viewModel.onNavBackClick()}"
+            android:onClick="@{() -> viewModel.onEnterRoomClick()}"
             android:src="@drawable/btn_enter_room"
             app:layout_constraintBottom_toBottomOf="@id/guide_enter_room_bottom"
             app:layout_constraintEnd_toEndOf="@id/guide_enter_room_end"

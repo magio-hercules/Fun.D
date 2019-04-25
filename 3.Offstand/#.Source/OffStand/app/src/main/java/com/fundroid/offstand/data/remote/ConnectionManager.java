@@ -22,17 +22,19 @@ public class ConnectionManager {
     private static ServerSocket serverSocket;
 //    private static ExecutorService threadPool = Executors.newFixedThreadPool(2);
 
-    public static Observable<String> serverThreadObservable(int roomPort, int roomMaxAttendee) {
+    public static Observable<Integer> serverThreadObservable(int roomPort, int roomMaxUser) {
         Log.d("lsc", "ConnectionManager serverThreadObservable thread before " + Thread.currentThread().getName());
         return Observable.create(subscriber -> {
             Log.d("lsc", "ConnectionManager serverThreadObservable create");
             Log.d("lsc", "ConnectionManager serverThreadObservable thread " + Thread.currentThread().getName());
+            subscriber.onNext(1);   // 자기 자신
             serverSocket = new ServerSocket(roomPort);
             while (true) {
                 Socket socket = serverSocket.accept();
                 ServerThread serverThread = new ServerThread(socket);
                 new Thread(serverThread).start();
                 serverThreads.add(serverThread);
+
             }
         });
     }
