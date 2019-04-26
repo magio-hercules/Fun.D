@@ -16,6 +16,7 @@ import java.net.InetAddress;
 
 import io.reactivex.Single;
 
+import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.FEB;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
@@ -31,12 +32,21 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .map(string -> new Gson().fromJson((String) string, ApiBody.class))
-//                .flatMap(json -> ConnectionManager.serverProcessor(json))
+                .flatMap(json -> {
+                    Log.d("lsc", "MakeRoomViewModel flatMap " + json);
+                    return ConnectionManager.serverProcessor((String) json);
+                })
                 .subscribe(result -> {
                     Log.d("lsc", "MakeRoomViewModel result " + result);
-                    getNavigator().goToRoomActivity();
-                })
+                    switch ((int) result) {
+                        case RESULT_OK:
+                            getNavigator().goToRoomActivity();
+                            break;
+                    }
+
+                }, onError -> {
+                    Log.d("lsc", "MakeRoomViewModel onError " + onError);
+                }, () -> Log.d("lsc", "MakeRoomViewModel onCompleted"))
         );
     }
 

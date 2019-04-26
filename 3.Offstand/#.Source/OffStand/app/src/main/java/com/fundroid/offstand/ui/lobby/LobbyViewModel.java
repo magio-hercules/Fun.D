@@ -82,11 +82,11 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                 )
         );
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(message -> getNavigator().showToast((String) message))
-        );
+//        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+//                .subscribeOn(schedulerProvider.io())
+//                .observeOn(schedulerProvider.ui())
+//                .subscribe(message -> getNavigator().showToast((String) message))
+//        );
     }
 
     public void discoverPeers() {

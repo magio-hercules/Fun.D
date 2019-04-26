@@ -69,7 +69,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        Log.d("lsc", "LobbyActivity supportFragmentInjector");
         return fragmentDispatchingAndroidInjector;
     }
 

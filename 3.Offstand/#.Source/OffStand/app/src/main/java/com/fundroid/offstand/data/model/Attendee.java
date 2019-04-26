@@ -59,6 +59,14 @@ public class Attendee {
         this.name = name;
     }
 
+    public Integer getSeatNo() {
+        return seatNo;
+    }
+
+    public void setSeatNo(Integer seatNo) {
+        this.seatNo = seatNo;
+    }
+
     public EnumStatus getStatus() {
         return status;
     }

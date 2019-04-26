@@ -20,6 +20,7 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.model.UserWrapper;
+import com.fundroid.offstand.utils.rx.RxEventBus;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
@@ -28,6 +29,7 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
+import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
 
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
@@ -96,6 +98,18 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room4);
+
+        Log.d("lsc", "test onCreate");
+        //test
+        RxEventBus.getInstance().getEvents(String.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Log.d("lsc", "test result " + result);
+                }, onError -> {
+                    Log.d("lsc", "test onError " + onError);
+                }, () -> Log.d("lsc", "test onCompleted"));
+
 
         // 버터나이프 사용
         ButterKnife.bind(this);

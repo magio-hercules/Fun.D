@@ -4,6 +4,10 @@ import com.annimon.stream.Stream;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedMap;
+
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 
@@ -13,6 +17,9 @@ public class ApiBody {
 
     @Expose
     private Attendee attendee;
+
+    @Expose
+    private ArrayList<Attendee> attendees;
 
     @Expose
     private Integer seatNo;
@@ -33,9 +40,22 @@ public class ApiBody {
         return no;
     }
 
+    public Attendee getAttendee() {
+        return attendee;
+    }
+
+    public ArrayList<Attendee> getAttendees() {
+        return attendees;
+    }
+
     public ApiBody(Integer no, Attendee attendee) {
         this.no = no;
         this.attendee = attendee;
+    }
+
+    public ApiBody(Integer no, ArrayList<Attendee> attendees) {
+        this.no = no;
+        this.attendees = attendees;
     }
 
     public ApiBody(Integer no, Integer seatNo) {
