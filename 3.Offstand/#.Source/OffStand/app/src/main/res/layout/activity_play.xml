@@ -20,15 +20,6 @@
         app:layout_constraintGuide_percent="0.986" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_setting_s" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.812" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_setting_e" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.931" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_dashboard_s" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.041" />
@@ -36,6 +27,42 @@
         android:id="@+id/guide_v_dashboard_e" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.956" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.306" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.692" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_result1_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.086" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_result1_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.472" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_result2_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.527" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_result2_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.913" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_setting_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.812" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_setting_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.931" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_open_s" android:orientation="vertical"
@@ -47,25 +74,27 @@
         app:layout_constraintGuide_percent="0.673" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_card_s" android:orientation="vertical"
+        android:id="@+id/guide_v_re_s" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.306" />
+        app:layout_constraintGuide_percent="0.048" />
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_card_e" android:orientation="vertical"
+        android:id="@+id/guide_v_re_e" android:orientation="vertical"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.692" />
+        app:layout_constraintGuide_percent="0.478" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_die_s" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.519" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_die_e" android:orientation="vertical"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.949" />
+
     <!-- end of Vertical -->
 
 
     <!-- Horizontal -->
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_setting_s" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.037" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_setting_e" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.104" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_dashboard_s" android:orientation="horizontal"
@@ -77,6 +106,24 @@
         app:layout_constraintGuide_percent="0.258" />
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_card_s" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.37" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_card_e" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.707" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_setting_s" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.037" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_setting_e" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.104" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_open_s" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.785" />
@@ -86,13 +133,23 @@
         app:layout_constraintGuide_percent="0.844" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_card_s" android:orientation="horizontal"
+        android:id="@+id/guide_h_re_s" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.37" />
+        app:layout_constraintGuide_percent="0.736" />
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_card_e" android:orientation="horizontal"
+        android:id="@+id/guide_h_re_e" android:orientation="horizontal"
         android:layout_width="wrap_content" android:layout_height="wrap_content"
-        app:layout_constraintGuide_percent="0.707" />
+        app:layout_constraintGuide_percent="0.809" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_result_s" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.833" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_result_e" android:orientation="horizontal"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        app:layout_constraintGuide_percent="0.906" />
+
     <!-- end of Horizontal -->
 
 
@@ -110,31 +167,6 @@
         app:srcCompat="@drawable/play_background" />
 
     <ImageView
-        android:id="@+id/play_image_setting"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:tag="BUTTON"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="@id/guide_v_setting_s"
-        app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
-        app:layout_constraintTop_toTopOf="@id/guide_h_setting_s"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_setting_e"
-        app:srcCompat="@drawable/button_play_setting" />
-
-    <ImageView
-        android:id="@+id/play_image_dashboard"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:tag="BUTTON"
-        app:layout_constraintLeft_toLeftOf="@id/guide_v_dashboard_s"
-        app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
-        app:layout_constraintTop_toTopOf="@id/guide_h_dashboard_s"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_dashboard_e"
-        app:srcCompat="@drawable/play_dashboard" />
-
-    <ImageView
         android:id="@+id/play_image_open"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -147,6 +179,17 @@
         app:layout_constraintBottom_toBottomOf="@id/guide_h_open_e"
         app:srcCompat="@drawable/button_play_open" />
 
+    <ImageView
+        android:id="@+id/play_image_dashboard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_dashboard_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_dashboard_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_dashboard_e"
+        app:srcCompat="@drawable/play_dashboard" />
 
     <ImageView
         android:id="@+id/play_image_card1"
@@ -172,36 +215,138 @@
         app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
         app:srcCompat="@drawable/card_back" />
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center">
+    <ImageView
+        android:id="@+id/play_image_card3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_card_result1_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_card_result1_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
+        app:srcCompat="@drawable/card_back" />
 
-        <ImageView
-            android:id="@+id/play_image_card3"
-            android:layout_width="162dp"
-            android:layout_height="252dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="-100dp"
-            android:layout_marginTop="0dp"></ImageView>
-
-        <ImageView
-            android:id="@+id/play_image_card4"
-            android:layout_width="162dp"
-            android:layout_height="252dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="0dp"></ImageView>
-    </FrameLayout>
+    <ImageView
+        android:id="@+id/play_image_card4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_card_result2_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_card_result2_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
+        app:srcCompat="@drawable/card_back" />
 
     <!-- end of contents -->
 
 
+
+    <!-- button -->
+    <ImageView
+        android:id="@+id/play_image_setting"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_setting_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_setting_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_setting_e"
+        app:srcCompat="@drawable/button_play_setting" />
+
+    <ImageView
+        android:id="@+id/play_image_exit"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_exit_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_exit_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_exit_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_exit_e"
+        app:srcCompat="@drawable/button_room_exit" />
+
+    <ImageView
+        android:id="@+id/play_image_re"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_re_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_re_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_re_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_re_e"
+        app:srcCompat="@drawable/button_play_re" />
+
+    <ImageView
+        android:id="@+id/play_image_die"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_die_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_die_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_re_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_re_e"
+        app:srcCompat="@drawable/button_play_die" />
+
+    <ImageView
+        android:id="@+id/play_image_result"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_re_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_re_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_result_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_result_e"
+        app:srcCompat="@drawable/button_play_result" />
+
+    <ImageView
+        android:id="@+id/play_image_jokbo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_die_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_die_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_result_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_result_e"
+        app:srcCompat="@drawable/button_play_jokbo" />
+
+    <!-- end of button -->
+
+
+
+    <FrameLayout
+        android:id="@+id/room_shuffle_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_start"
+        app:layout_constraintRight_toRightOf="@id/guide_v_end"
+        app:layout_constraintTop_toTopOf="@id/guide_h_4"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_8" />
+
+
     <!-- temp -->
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="top|center">
+        android:layout_gravity="top|center"
+        android:visibility="gone"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <TextView
             android:id="@+id/text_card1"

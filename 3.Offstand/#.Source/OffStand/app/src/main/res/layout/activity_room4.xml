@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -82,8 +83,17 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_1"
         app:layout_constraintRight_toRightOf="@id/guide_v_avatar_2"
         app:layout_constraintTop_toTopOf="@id/guide_h_avatar_1"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_2"
-        app:srcCompat="@drawable/avatar_1" />
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_2" />
+    <ImageView
+        android:id="@+id/room_avatar_tag_1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="TAG"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_tag_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_tag_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_tag_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_tag_2" />
     <ImageView
         android:layout_width="0dp" android:layout_height="0dp"
         android:scaleType="fitXY"
@@ -96,7 +106,7 @@
         android:id="@+id/room_name_1"
         android:layout_width="0dp" android:layout_height="0dp"
         android:textSize="16sp"
-        android:text="USER 1"
+        android:text=""
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_1"
         app:layout_constraintRight_toRightOf="@id/guide_v_name_text_2"
@@ -112,8 +122,17 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_3"
         app:layout_constraintRight_toRightOf="@id/guide_v_avatar_4"
         app:layout_constraintTop_toTopOf="@id/guide_h_avatar_1"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_2"
-        app:srcCompat="@drawable/avatar_2" />
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_2" />
+    <ImageView
+        android:id="@+id/room_avatar_tag_2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="AVATAR"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_tag_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_tag_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_tag_1"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_tag_2" />
     <ImageView
         android:layout_width="0dp" android:layout_height="0dp"
         android:scaleType="fitXY"
@@ -126,13 +145,12 @@
         android:id="@+id/room_name_2"
         android:layout_width="0dp" android:layout_height="0dp"
         android:textSize="16sp"
-        android:text="USER 2"
+        android:text=""
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_3"
         app:layout_constraintRight_toRightOf="@id/guide_v_name_text_4"
         app:layout_constraintTop_toTopOf="@id/guide_h_name_text_1"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_name_text_2"/>
-
 
     <ImageView
         android:id="@+id/room_avatar_3"
@@ -143,8 +161,17 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_1"
         app:layout_constraintRight_toRightOf="@id/guide_v_avatar_2"
         app:layout_constraintTop_toTopOf="@id/guide_h_avatar_3"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_4"
-        app:srcCompat="@drawable/avatar_8" />
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_4" />
+    <ImageView
+        android:id="@+id/room_avatar_tag_3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="AVATAR"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_tag_1"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_tag_2"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_tag_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_tag_4" />
     <ImageView
         android:layout_width="0dp" android:layout_height="0dp"
         android:scaleType="fitXY"
@@ -157,7 +184,7 @@
         android:id="@+id/room_name_3"
         android:layout_width="0dp" android:layout_height="0dp"
         android:textSize="16sp"
-        android:text="USER 3"
+        android:text=""
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_1"
         app:layout_constraintRight_toRightOf="@id/guide_v_name_text_2"
@@ -173,8 +200,17 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_3"
         app:layout_constraintRight_toRightOf="@id/guide_v_avatar_4"
         app:layout_constraintTop_toTopOf="@id/guide_h_avatar_3"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_4"
-        app:srcCompat="@drawable/avatar_9" />
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_4" />
+    <ImageView
+        android:id="@+id/room_avatar_tag_4"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="AVATAR"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_avatar_tag_3"
+        app:layout_constraintRight_toRightOf="@id/guide_v_avatar_tag_4"
+        app:layout_constraintTop_toTopOf="@id/guide_h_avatar_tag_3"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_avatar_tag_4" />
     <ImageView
         android:layout_width="0dp" android:layout_height="0dp"
         android:scaleType="fitXY"
@@ -187,7 +223,7 @@
         android:id="@+id/room_name_4"
         android:layout_width="0dp" android:layout_height="0dp"
         android:textSize="16sp"
-        android:text="USER 4"
+        android:text=""
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_3"
         app:layout_constraintRight_toRightOf="@id/guide_v_name_text_4"
@@ -197,6 +233,59 @@
     <!-- end of player layout -->
 
 
+    <!-- TEST -->
+    <Button
+        android:id="@+id/room_test_add_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="USER 추가"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/room_image_ready"
+        android:layout_width="68dp"
+        android:layout_height="80dp"
+        android:scaleType="fitXY"
+        android:tag="TAG"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_start"
+        app:layout_constraintTop_toBottomOf="@id/room_test_add_user"
+        app:srcCompat="@drawable/tag_ready1" />
+    <!-- end of TEST -->
+
+
+    <!--<fragment-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:id="@+id/room_fragment_shuffle"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_7"-->
+        <!--app:layout_constraintLeft_toLeftOf="@id/guide_v_table_s"-->
+        <!--app:layout_constraintRight_toRightOf="@id/guide_v_table_e"-->
+        <!--app:layout_constraintTop_toTopOf="@id/guide_h_5" />-->
+
+    <!--<fragment-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:id="@+id/room_fragment_shuffle"-->
+        <!--android:name="com.fundroid.offstand.ShuffleFragment"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_7"-->
+        <!--app:layout_constraintLeft_toLeftOf="@id/guide_v_table_s"-->
+        <!--app:layout_constraintRight_toRightOf="@id/guide_v_table_e"-->
+        <!--app:layout_constraintTop_toTopOf="@id/guide_h_5" />-->
+
+    <!--<FrameLayout-->
+        <!--android:id="@+id/room_shuffle_frame"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--app:layout_constraintLeft_toLeftOf="@id/guide_v_start"-->
+        <!--app:layout_constraintRight_toRightOf="@id/guide_v_end"-->
+        <!--app:layout_constraintTop_toTopOf="@id/guide_h_4"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_8" />-->
+
+    <!-- TODO : 제거 예정 -->
     <FrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

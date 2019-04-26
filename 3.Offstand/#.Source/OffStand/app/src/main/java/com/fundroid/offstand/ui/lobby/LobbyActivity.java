@@ -16,6 +16,7 @@ import com.fundroid.offstand.receiver.WifiDirectReceiver;
 import com.fundroid.offstand.ui.base.BaseActivity;
 import com.fundroid.offstand.ui.lobby.main.MainFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
+import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
 import java.util.List;
 
@@ -29,8 +30,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import io.reactivex.disposables.Disposable;
 
-public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector{
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
+public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector {
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -45,6 +49,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     private ActivityLobbyBinding activityLobbyBinding;
     private IntentFilter intentFilter;
+    private Disposable disposable;
 
     @Override
     public int getBindingVariable() {
@@ -64,7 +69,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        Log.d("lsc","LobbyActivity supportFragmentInjector");
+        Log.d("lsc", "LobbyActivity supportFragmentInjector");
         return fragmentDispatchingAndroidInjector;
     }
 
@@ -86,6 +91,26 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
+
+        disposable = TedRx2Permission.with(this)
+                .setPermissions(ACCESS_FINE_LOCATION)
+                .setDeniedMessage(getString(R.string.splash_msg_denied))
+                .setGotoSettingButton(true)
+                .setGotoSettingButtonText(getString(R.string.splash_msg_goto_setting))
+                .request()
+                .subscribe(
+                        permissionResult -> {
+                            Log.d("lsc", "LobbyActivity permissionResult " + permissionResult.isGranted());
+                            if (permissionResult.isGranted()) {
+
+                            } else {
+//                                Todo : DialogFragment 으로 바꿀 것...
+                                Log.d("lsc", "LobbyActivity permission not granted");
+                                finish();
+                            }
+                        },
+                        this::handleError
+                );
     }
 
     @Override
@@ -100,6 +125,12 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         super.onStop();
         Log.d("lsc", "LobbyActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        disposable.dispose();
     }
 
     private void initViews() {

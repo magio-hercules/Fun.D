@@ -2,11 +2,11 @@ package com.fundroid.offstand.model;
 
 public class User {
 
-
     // 방장
-    private boolean boss;
+    private boolean host;
 
-    private int status; // 0(Standby), 1(ready), 2(game)
+    private int id;
+    private int status; // 0(Standby), 1(ready), 2(game), 3(result)
     private int seat; // 1~10
     private int avatar; // 1~10
     private String name;
@@ -14,22 +14,101 @@ public class User {
     // 전적
     private int win;
     private int lose;
+    private int draw;
     private int rate;
 
     // card
     private int card1;
     private int card2;
 
-    public User() {
+    // 족보
+    private int level;
+    private int level_score;
 
+
+    public User() {
+        new User(-1, false, 0, 0, "");
     }
 
-    public User(boolean boss, int seat, int avatar, String name) {
-        boss = boss;
-        status = 0;
-        seat = seat;
-        avatar = avatar;
-        name = name;
+
+    public User(int id, boolean host, int seat, int avatar, String name) {
+        this.id = id;
+        this.host = host;
+
+        // TODO : 테스트 코드,
+        if (host) {
+            this.status = 1;
+        } else {
+            this.status = 0;
+        }
+        this.seat = seat;
+        this.avatar = avatar;
+        this.name = name;
+    }
+
+    public void doBan() {
+        this.id = -1;
+        this.host = false;
+        this.status = 0;
+//        this.seat = 0; // seat는 유지
+        this.avatar = 0;
+        this.name = "";
+    }
+
+    public void doReady(boolean bFlag) {
+        if (bFlag) {
+            this.status = 1;
+        } else {
+            this.status = 0;
+        }
+    }
+
+    public boolean isHost() {
+        return host;
+    }
+
+    public void setHost(boolean host) {
+        this.host = host;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getDraw() {
+        return draw;
+    }
+
+    public void setDraw(int draw) {
+        this.draw = draw;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getLevel_score() {
+        return level_score;
+    }
+
+    public void setLevel_score(int level_score) {
+        this.level_score = level_score;
     }
 
     public int getStatus() {
@@ -54,14 +133,6 @@ public class User {
 
     public void setAvatar(int avatar) {
         this.avatar = avatar;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public int getWin() {
@@ -103,4 +174,17 @@ public class User {
     public void setCard2(int card2) {
         this.card2 = card2;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "host=" + host +
+                ", id=" + id +
+                ", seat=" + seat +
+                ", avatar=" + avatar +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
+
+

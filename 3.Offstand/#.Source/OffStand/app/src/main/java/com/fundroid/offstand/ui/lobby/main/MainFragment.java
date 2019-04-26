@@ -1,19 +1,3 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.fundroid.offstand.ui.lobby.main;
 
 import android.os.Bundle;
@@ -32,6 +16,9 @@ import javax.inject.Inject;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import pl.droidsonroids.gif.GifDrawable;
+
+import static com.fundroid.offstand.core.AppConstant.FRAGMENT_FIND_ROOM;
+import static com.fundroid.offstand.core.AppConstant.FRAGMENT_MAKE_ROOM;
 
 public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewModel> implements MainNavigator {
 
@@ -92,7 +79,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     public void makeRoom() {
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .disallowAddToBackStack()
+                .addToBackStack(FRAGMENT_MAKE_ROOM)
                 .add(R.id.fragment_container, MakeRoomFragment.newInstance(), MakeRoomFragment.TAG)
                 .commit();
     }
@@ -101,7 +88,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     public void findRoom() {
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .disallowAddToBackStack()
+                .addToBackStack(FRAGMENT_FIND_ROOM)
                 .add(R.id.fragment_container, FindRoomFragment.newInstance(), FindRoomFragment.TAG)
                 .commit();
     }
