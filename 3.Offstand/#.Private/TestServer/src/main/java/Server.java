@@ -8,6 +8,7 @@ public class Server {
 
     private static ServerSocket serverSocket;
     private static List<ServerThread> serverThreads = new ArrayList<>();
+    private static int roomMaxAttendee = 2;
 
     public static void main(String[] args) {
 
@@ -15,7 +16,7 @@ public class Server {
             Socket socket = null;
             serverSocket = new ServerSocket(8080);
             System.out.println("서버소켓 생성");
-            while (true) {
+            while (serverThreads.size() != roomMaxAttendee) {
                 socket = serverSocket.accept();
                 ServerThread serverThread = new ServerThread(socket);
                 new Thread(serverThread).start();
@@ -25,5 +26,12 @@ public class Server {
         } catch (IOException e) {
             System.out.println("서버소켓 생성 실패 " + e.getMessage());
         }
+        System.out.println("서버스레드 종료");
     }
+
+//    private void broadcastMessage() {
+//        for (ServerThread serverThread : serverThreads) {
+//            serverThread.getStreamToClient().writeUTF(message);
+//        }
+//    }
 }
