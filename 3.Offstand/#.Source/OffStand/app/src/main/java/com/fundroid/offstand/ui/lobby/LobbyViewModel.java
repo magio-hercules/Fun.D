@@ -9,7 +9,6 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.DataManager;
-import com.fundroid.offstand.data.model.JsonBody;
 import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.di.provider.ResourceProvider;
@@ -83,11 +82,11 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                 )
         );
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(message -> getNavigator().showToast((String) message))
-        );
+//        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+//                .subscribeOn(schedulerProvider.io())
+//                .observeOn(schedulerProvider.ui())
+//                .subscribe(message -> getNavigator().showToast((String) message))
+//        );
     }
 
     public void discoverPeers() {
@@ -143,7 +142,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
     public void enterRoom(InetAddress roomAddress, int roomPort) {
         Log.d("lsc", "LobbyViewModel enterRoom " + roomAddress);
-        getCompositeDisposable().add(ConnectionManager.clientThreadObservable(roomAddress, roomPort)
+        getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(onNext -> {
@@ -152,26 +151,23 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 //                            Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
                 }, onError -> {
                     Log.d("lsc", "enterRoom onError " + onError.getMessage());
-                }, () -> {
-                    Log.d("lsc", "enterRoom terminated");
                 }));
 
     }
 
-    public void sendMessage() {
-        getCompositeDisposable().add(ConnectionManager.sendMessageCompletable(new JsonBody())
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .doOnComplete(() -> Log.d("lsc", "LobbyViewModel sendMessage doOnComplete " + Thread.currentThread().getName()))
-                .subscribe(
-                        () -> {
-                            Log.d("lsc", "LobbyViewModel sendMessage onCompleted");
-                        },
-                        error -> {
-                            getNavigator().handleError(error);
-                        }
-                ));
-    }
+//    public void sendMessage() {
+//        getCompositeDisposable().add(ConnectionManager.sendMessage(new ApiBody())
+//                .subscribeOn(schedulerProvider.io())
+//                .observeOn(schedulerProvider.ui())
+//                .subscribe(
+//                        () -> {
+//                            Log.d("lsc", "LobbyViewModel sendMessage onCompleted");
+//                        },
+//                        error -> {
+//                            getNavigator().handleError(error);
+//                        }
+//                ));
+//    }
 
     @Override
     protected void onCleared() {

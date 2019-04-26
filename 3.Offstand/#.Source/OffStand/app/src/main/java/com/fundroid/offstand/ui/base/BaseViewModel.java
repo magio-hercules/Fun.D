@@ -54,14 +54,11 @@ public abstract class BaseViewModel<N> extends ViewModel {
     }
 
     public N getNavigator() {
-        Log.d("lsc","getNavigator " + (mNavigator == null));
         return mNavigator.get();
     }
 
     public void setNavigator(N navigator) {
-        Log.d("lsc","setNavigator");
         this.mNavigator = new WeakReference<>(navigator);
-        Log.d("lsc","setNavigator " + (mNavigator == null));
     }
 
     public SchedulerProvider getSchedulerProvider() {

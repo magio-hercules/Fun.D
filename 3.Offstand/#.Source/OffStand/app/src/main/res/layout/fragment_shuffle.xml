@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--<layout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools">-->
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--android:background="@color/colorTransparant70"-->
+<!--android:clickable="false"-->
+<!--android:focusable="false">-->
+
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+<!--</layout>-->
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/FrameLayout01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground"
+    android:layout_gravity="center">
+
+    <Button
+        android:id="@+id/button_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="쪼개기" />
+
+    <Button
+        android:id="@+id/button_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="60dp"
+        android:text="RESET" />
+
+    <Button
+        android:id="@+id/button_shuffle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:visibility="gone"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="110dp"
+        android:text="셔플" />
+
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/cardShuffle1"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="300dp"
+            android:src="@drawable/card_back"></ImageView>
+        <ImageView
+            android:id="@+id/cardShuffle2"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="300dp"
+            android:src="@drawable/card_back"></ImageView>
+
+        <ImageView
+            android:id="@+id/cardShuffle3"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="300dp"
+            android:src="@drawable/card_back"></ImageView>
+
+        <ImageView
+            android:id="@+id/card4"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="200dp"
+            android:layout_marginTop="-100dp"
+            android:visibility="invisible"
+            android:src="@drawable/card_back"
+            ></ImageView>
+
+        <ImageView
+            android:id="@+id/card3"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="-150dp"
+            android:visibility="invisible"
+            android:src="@drawable/card_back"></ImageView>
+
+        <ImageView
+            android:id="@+id/card2"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="-200dp"
+            android:layout_marginTop="-100dp"
+            android:visibility="invisible"
+            android:src="@drawable/card_back"
+            ></ImageView>
+
+        <ImageView
+            android:id="@+id/card1"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="300dp"
+            android:src="@drawable/card_back"></ImageView>
+
+    </FrameLayout>
+</FrameLayout>

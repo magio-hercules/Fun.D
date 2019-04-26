@@ -16,5 +16,7 @@
 
     <color name="colorGreen">#59773D</color>
     <color name="colorTransparant70">#B3000000</color> <!-- 알파 70% -->
+    <color name="colorBackground">#ff517936</color> <!-- 알파 70% -->
+
 
 </resources>

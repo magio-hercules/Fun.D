@@ -43,8 +43,9 @@ public class ClientThread implements Runnable {
                 streamByServer = new DataInputStream(socket.getInputStream());
                 Log.d("lsc", "ClientThread 3");
                 streamToServer = new DataOutputStream(socket.getOutputStream());
-//                Log.d("lsc", "ClientThread 서버로부터 받은 메세지 " + streamByServer.readUTF());
-                RxEventBus.getInstance().sendEvent(streamByServer.readUTF());
+                String message = streamByServer.readUTF();
+                RxEventBus.getInstance().sendEvent(message);
+                Log.d("lsc", "ClientThread 4 " + message);
 
             }
         } catch (IOException e) {

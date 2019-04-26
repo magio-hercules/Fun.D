@@ -15,6 +15,10 @@ public class ServerThread implements Runnable {
     private Scanner scanner = new Scanner(System.in);
     private JsonParser jsonParser = new JsonParser();
 
+    public DataOutputStream getStreamToClient() {
+        return streamToClient;
+    }
+
     public ServerThread(Socket socket) {
         this.socket = socket;
     }

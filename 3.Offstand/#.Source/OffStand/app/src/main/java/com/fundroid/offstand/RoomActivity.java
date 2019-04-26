@@ -2,6 +2,7 @@ package com.fundroid.offstand;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -15,13 +16,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fundroid.offstand.data.model.ApiBody;
+import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.model.UserWrapper;
+import com.fundroid.offstand.utils.rx.RxEventBus;
 
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
 
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
 //public class RoomActivity extends AppCompatActivity {
@@ -90,6 +99,18 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room4);
 
+        Log.d("lsc", "test onCreate");
+        //test
+        RxEventBus.getInstance().getEvents(String.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    Log.d("lsc", "test result " + result);
+                }, onError -> {
+                    Log.d("lsc", "test onError " + onError);
+                }, () -> Log.d("lsc", "test onCompleted"));
+
+
         // 버터나이프 사용
         ButterKnife.bind(this);
 
@@ -120,14 +141,14 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         initRoom();
         initUser();
 
-        for (int i = 1; i < nUserCount+1; i++) {
+        for (int i = 1; i < nUserCount + 1; i++) {
             drawUser(allUser[i]);
         }
     }
 
     @OnClick({R.id.room_image_start,
-              R.id.room_image_ban,
-              R.id.room_image_exit,
+            R.id.room_image_ban,
+            R.id.room_image_exit,
 //              R.id.room_image_ready
     })
     public void clicked(ImageView view) {
@@ -184,12 +205,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             Toast.makeText(getApplicationContext(), "방장만 강퇴시킬수 있습니다.", Toast.LENGTH_SHORT).show();
                             return false;
                         }
-                        if (!isExist((ImageView)v)) {
+                        if (!isExist((ImageView) v)) {
                             Log.d(TAG, "빈 자리");
                             return false;
                         }
                         Log.d(TAG, "Drag 시작");
-                        selectedAvatar = (ImageView)v;
+                        selectedAvatar = (ImageView) v;
 
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             v.startDragAndDrop(data, mShadow, v, 0);
@@ -222,8 +243,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         Log.d(TAG, "room_image_exit");
 
                         image_exit.setPressed(false);
-                        Toast.makeText(getApplicationContext(), "방 나가기", Toast.LENGTH_SHORT).show();
-                        doExit();
+//                        Toast.makeText(getApplicationContext(), "방 나가기", Toast.LENGTH_SHORT).show();
+//                        doExit();
+                        test();
+
                         break;
                 }
                 break;
@@ -234,7 +257,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onDrag(View v, DragEvent event) {
 //        String clipData = event.getClipDescription().getLabel().toString();
-        ImageView target = (ImageView)v;
+        ImageView target = (ImageView) v;
         String targetTag = target.getTag().toString();
 
 //        ImageView selected = (ImageView) event.getLocalState();
@@ -249,7 +272,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 //            return false;
 //        }
 //        target.setBackgroundColor(getResources().getColor(R.color.green));
-
 
 
 //        if (!selected.getTag().equals("BUTTON")) {
@@ -281,7 +303,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             break;
                     }
                     v.invalidate();
-                } else if (targetTag.equals("BUTTON")){
+                } else if (targetTag.equals("BUTTON")) {
                     switch (target.getId()) {
                         case R.id.room_image_ban:
                             target.setPressed(true);
@@ -294,7 +316,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.d(TAG, "ACTION_DRAG_EXITED : " + targetTag);
 
                 if (targetTag.equals("AVATAR")) {
-                    ClipDescription clipDesc = (ClipDescription)event.getClipDescription();
+                    ClipDescription clipDesc = (ClipDescription) event.getClipDescription();
                     if (clipDesc == null) {
                         return false;
                     }
@@ -305,7 +327,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             target.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                             break;
                     }
-                } else if (targetTag.equals("BUTTON")){
+                } else if (targetTag.equals("BUTTON")) {
                     switch (target.getId()) {
                         case R.id.room_image_ban:
                             target.setPressed(false);
@@ -318,7 +340,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.d(TAG, "ACTION_DRAG_ENDED : " + targetTag);
 
                 if (targetTag.equals("AVATAR")) {
-                    ClipDescription clipDesc = (ClipDescription)event.getClipDescription();
+                    ClipDescription clipDesc = (ClipDescription) event.getClipDescription();
                     if (clipDesc == null) {
                         Log.d(TAG, "clipDesc is null");
                         return false;
@@ -330,7 +352,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             target.setBackgroundColor(getResources().getColor(android.R.color.transparent));
                             break;
                     }
-                } else if (targetTag.equals("BUTTON")){
+                } else if (targetTag.equals("BUTTON")) {
                     switch (target.getId()) {
                         case R.id.room_image_ban:
                             target.setPressed(false);
@@ -415,8 +437,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
 //        currentUser = new User(id, bHost, seatNo, avatarId, name);
 
-        allUser = new User[nUserCount+1];
-        for (int i = 1; i < nUserCount+1; i++) {
+        allUser = new User[nUserCount + 1];
+        for (int i = 1; i < nUserCount + 1; i++) {
             allUser[i] = new User(i, bHost, i, i, name + i);
             bHost = false;
         }
@@ -522,17 +544,24 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     private int getSeatNo(View v) {
         int retSeat = 0;
         switch (v.getId()) {
-            case R.id.room_avatar_1: retSeat = 1; break;
-            case R.id.room_avatar_2: retSeat = 2; break;
-            case R.id.room_avatar_3: retSeat = 3; break;
-            case R.id.room_avatar_4: retSeat = 4; break;
+            case R.id.room_avatar_1:
+                retSeat = 1;
+                break;
+            case R.id.room_avatar_2:
+                retSeat = 2;
+                break;
+            case R.id.room_avatar_3:
+                retSeat = 3;
+                break;
+            case R.id.room_avatar_4:
+                retSeat = 4;
+                break;
         }
         return retSeat;
     }
 
 
-    private void swap(UserWrapper user1, UserWrapper user2)
-    {
+    private void swap(UserWrapper user1, UserWrapper user2) {
         User temp = user1.user;
         user1.user = user2.user;
         user2.user = temp;
@@ -568,5 +597,20 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 //                "seatNo" : 3,
 //                "avatar" : 4
 
+    }
+
+    public static void start(Context context) {
+        final Intent intent = new Intent(context, RoomActivity.class);
+        context.startActivity(intent);
+    }
+
+    private void test() {
+        ConnectionManager.sendMessage(new ApiBody(API_READY, 3))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+
+                }, onError -> {
+                });
     }
 }

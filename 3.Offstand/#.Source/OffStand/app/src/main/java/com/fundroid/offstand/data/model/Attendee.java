@@ -1,6 +1,10 @@
 package com.fundroid.offstand.data.model;
 
-public class Attendee extends JsonBody {
+import com.google.gson.Gson;
+
+import androidx.annotation.NonNull;
+
+public class Attendee {
 
     public enum EnumStatus {
 
@@ -13,29 +17,33 @@ public class Attendee extends JsonBody {
         }
     }
 
-    public enum EnumCharacter {
+    public enum EnumAvatar {
         JAN(1), FEB(2), MAR(3), APR(4), MAY(5), JUN(6), JUL(7), AUG(8);
 
         private int index;
 
-        EnumCharacter(int index) {
+        EnumAvatar(int index) {
             this.index = index;
         }
     }
 
-    private int id;
+    private Integer id;
 
     private String name;
 
     private EnumStatus status;
 
-    private int win;
+    private EnumAvatar avatar;
 
-    private int lose;
+    private Integer seatNo;
 
-    private double winningRate;
+    private Integer win;
 
-    public int getId() {
+    private Integer lose;
+
+    private Double winningRate;
+
+    public Integer getId() {
         return id;
     }
 
@@ -51,6 +59,14 @@ public class Attendee extends JsonBody {
         this.name = name;
     }
 
+    public Integer getSeatNo() {
+        return seatNo;
+    }
+
+    public void setSeatNo(Integer seatNo) {
+        this.seatNo = seatNo;
+    }
+
     public EnumStatus getStatus() {
         return status;
     }
@@ -59,11 +75,19 @@ public class Attendee extends JsonBody {
         this.status = status;
     }
 
+    public EnumAvatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(EnumAvatar avatar) {
+        this.avatar = avatar;
+    }
+
     public int getWin() {
         return win;
     }
 
-    public void setWin(int win) {
+    public void setWin(Integer win) {
         this.win = win;
     }
 
@@ -71,7 +95,7 @@ public class Attendee extends JsonBody {
         return lose;
     }
 
-    public void setLose(int lose) {
+    public void setLose(Integer lose) {
         this.lose = lose;
     }
 
@@ -83,4 +107,15 @@ public class Attendee extends JsonBody {
         this.winningRate = winningRate;
     }
 
+    public Attendee(String name, EnumAvatar avatar, Integer win, Integer lose) {
+        this.name = name;
+        this.avatar = avatar;
+        this.win = win;
+        this.lose = lose;
+    }
+
+    @Override
+    public String toString() {
+        return new Gson().toJson(this);
+    }
 }

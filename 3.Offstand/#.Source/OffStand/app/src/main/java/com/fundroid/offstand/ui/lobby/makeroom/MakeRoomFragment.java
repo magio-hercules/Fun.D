@@ -21,6 +21,7 @@ import android.view.View;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
+import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.databinding.FragmentMakeRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
@@ -85,5 +86,11 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
 
     private void initViews() {
 
+    }
+
+    @Override
+    public void goToRoomActivity() {
+        RoomActivity.start(getContext());
+        getActivity().finish();
     }
 }

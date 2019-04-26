@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/FrameLayout01"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <Button
+        android:id="@+id/button_reset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+
+        android:text="Reset" />
+
+    <Button
+        android:id="@+id/button_shuffle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="60dp"
+        android:text="셔플 효과" />
+
+    <Button
+        android:id="@+id/button_random"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="110dp"
+        android:text="무작위 패" />
+
+    <Button
+        android:id="@+id/button_open"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="110dp"
+        android:text="한번에 오픈" />
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="top|center">
+
+        <TextView
+            android:id="@+id/text_card1"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="첫번째 패 : "
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/text_card2"
+            android:layout_width="160dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="두번째 패 : "
+            android:textSize="18sp" />
+    </FrameLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+        <ImageView
+            android:id="@+id/ImageView01"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:src="@drawable/card_back"
+            ></ImageView>
+
+        <ImageView
+            android:id="@+id/ImageView02"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:src="@drawable/card_back"
+            ></ImageView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/ImageView03"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="-100dp"
+            android:layout_marginTop="0dp"></ImageView>
+
+        <ImageView
+            android:id="@+id/ImageView04"
+            android:layout_width="162dp"
+            android:layout_height="252dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="100dp"
+            android:layout_marginTop="0dp"></ImageView>
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom|center">
+
+    </FrameLayout>
+</FrameLayout>

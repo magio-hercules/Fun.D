@@ -2,6 +2,7 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
+import com.fundroid.offstand.data.model.Attendee;
 import com.fundroid.offstand.utils.rx.RxEventBus;
 
 import java.io.DataInputStream;
@@ -13,6 +14,7 @@ public class ServerThread implements Runnable {
     private Socket socket;
     private DataInputStream streamByClient = null;
     private DataOutputStream streamToClient = null;
+    private Attendee attendee;
 
     public DataInputStream getStreamByClient() {
         return streamByClient;
@@ -20,6 +22,14 @@ public class ServerThread implements Runnable {
 
     public DataOutputStream getStreamToClient() {
         return streamToClient;
+    }
+
+    public Attendee getAttendee() {
+        return attendee;
+    }
+
+    public void setAttendee(Attendee attendee) {
+        this.attendee = attendee;
     }
 
     public ServerThread(Socket socket) {
@@ -36,9 +46,9 @@ public class ServerThread implements Runnable {
                 streamByClient = new DataInputStream(socket.getInputStream());
                 Log.d("lsc", "ServerThread 3 " + Thread.currentThread().getName());
                 streamToClient = new DataOutputStream(socket.getOutputStream());
-//                Log.d("lsc", "ServerThread 클라이언트로부터 받은 메세지 " + streamByClient.readUTF());
-                RxEventBus.getInstance().sendEvent(streamByClient.readUTF());
-//                clientThreads.add(serverThread);
+                String message = streamByClient.readUTF();
+                RxEventBus.getInstance().sendEvent(message);
+                Log.d("lsc", "ServerThread 4 " + message);
             }
         } catch (IOException e) {
             Log.e("lsc", "ServerThread e " + e.getMessage() + ", " + Thread.currentThread().getName());

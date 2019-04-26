@@ -34,7 +34,13 @@ public class User {
     public User(int id, boolean host, int seat, int avatar, String name) {
         this.id = id;
         this.host = host;
-        this.status = 0;
+
+        // TODO : 테스트 코드,
+        if (host) {
+            this.status = 1;
+        } else {
+            this.status = 0;
+        }
         this.seat = seat;
         this.avatar = avatar;
         this.name = name;
@@ -47,6 +53,14 @@ public class User {
 //        this.seat = 0; // seat는 유지
         this.avatar = 0;
         this.name = "";
+    }
+
+    public void doReady(boolean bFlag) {
+        if (bFlag) {
+            this.status = 1;
+        } else {
+            this.status = 0;
+        }
     }
 
     public boolean isHost() {

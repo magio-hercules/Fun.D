@@ -134,7 +134,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     }
 
     public void enterRoom() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 100};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 40, (byte) 14};
         InetAddress addr = null;
         try {
             addr = InetAddress.getByAddress(ipAddr);

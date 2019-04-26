@@ -1,33 +1,65 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.fundroid.offstand.ui.lobby.findroom;
 
 
+import android.util.Log;
+
 import com.fundroid.offstand.data.DataManager;
+import com.fundroid.offstand.data.model.Attendee;
+import com.fundroid.offstand.data.model.ApiBody;
+import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.base.BaseViewModel;
+import com.fundroid.offstand.utils.rx.RxEventBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
+import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
+import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.JAN;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
+    private SchedulerProvider schedulerProvider;
+
     public FindRoomViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
+        this.schedulerProvider = schedulerProvider;
+
+        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(message -> {
+                    Log.d("lsc", "FindRoomViewModel message " + message);
+                })
+        );
     }
 
-    //Test
+    private void enterRoom(InetAddress roomAddress, int roomPort) {
+        Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
+        getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
+                .flatMap(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN, 10, 1))))
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.ui())
+                .subscribe(result -> {
+                    Log.d("lsc", "FindRoomViewModel enterRoom result " + result);
+                }, onError -> {
+                    Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError);
+                }));
+
+    }
+
+    public void onEnterRoomClick() {
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 40, (byte) 197};
+        InetAddress addr = null;
+        try {
+            addr = InetAddress.getByAddress(ipAddr);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        enterRoom(addr, ROOM_PORT);
+    }
+
     public void onNavBackClick() {
         getNavigator().goBack();
     }

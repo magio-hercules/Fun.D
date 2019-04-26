@@ -114,6 +114,23 @@
 
     <androidx.constraintlayout.widget.Guideline
         android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_avatar_tag_1"
+        app:layout_constraintGuide_percent="0.1227222" />
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_avatar_tag_2"
+        app:layout_constraintGuide_percent="0.2254992" />
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_avatar_tag_3"
+        app:layout_constraintGuide_percent="0.6532778" />
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_avatar_tag_4"
+        app:layout_constraintGuide_percent="0.7560548" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:id="@+id/guide_v_name_1"
         app:layout_constraintGuide_percent="0.10" />
     <androidx.constraintlayout.widget.Guideline
@@ -266,6 +283,23 @@
     <androidx.constraintlayout.widget.Guideline
         android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
         android:id="@+id/guide_h_avatar_4"
+        app:layout_constraintGuide_percent="0.7375" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_avatar_tag_1"
+        app:layout_constraintGuide_percent="0.3609375" />
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_avatar_tag_2"
+        app:layout_constraintGuide_percent="0.4453125" />
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_avatar_tag_3"
+        app:layout_constraintGuide_percent="0.653125" />
+    <androidx.constraintlayout.widget.Guideline
+        android:orientation="horizontal" android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_avatar_tag_4"
         app:layout_constraintGuide_percent="0.7375" />
 
     <androidx.constraintlayout.widget.Guideline
