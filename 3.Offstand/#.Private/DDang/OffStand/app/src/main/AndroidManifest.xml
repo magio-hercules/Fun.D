@@ -29,8 +29,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
-        <activity android:name=".SettingActivity" />
+        <activity android:name=".MainActivity"
+            android:launchMode="singleInstance"/>
+
+        <activity android:name=".SettingActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:launchMode="singleInstance"/>
         <activity
             android:name=".RoomActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
