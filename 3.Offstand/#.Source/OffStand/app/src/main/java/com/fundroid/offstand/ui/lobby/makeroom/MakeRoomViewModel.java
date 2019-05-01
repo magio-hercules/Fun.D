@@ -10,10 +10,11 @@ import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.RxEventBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
-import com.google.gson.Gson;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
@@ -50,68 +51,47 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         );
     }
 
-    private Single<Integer> serverThreadObservable(int roomPort, int roomMaxAttendee) {
-        return ConnectionManager.createServerThread(roomPort, roomMaxAttendee);
-    }
-
     public void makeRoomClick() {
         //Test
-        createSocket(ROOM_PORT, 5);
+        try {
+            createSocket(ROOM_PORT, 5);
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void createSocket(int roomPort, int roomMaxAttendee) {
+    public void createSocket(int roomPort, int roomMaxAttendee) throws UnknownHostException {
         Log.d("lsc", "MakeRoomViewModel createSocket");
-        getCompositeDisposable().add(serverThreadObservable(roomPort, roomMaxAttendee)
-//                .flatMap(userCount -> ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT))
-//                .flatMap(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10))))
-                        .subscribeOn(schedulerProvider.io())
-                        .observeOn(schedulerProvider.ui())
-                        .subscribe(result -> {
-                            Log.d("lsc", "MakeRoomViewModel createSocket result " + result);
-                            ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT)
-                                    .flatMap(integer -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10)))).subscribe(
-                                    test -> {
-                                        Log.d("lsc", "MakeRoomViewModel 2 test " + test);
-                                    }, onError -> {
-                                        Log.d("lsc", "MakeRoomViewModel 2 onError " + onError);
-                                    }
-                            );
-
-
-                        }, onError -> {
-                            Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
-                        })
+        getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
+                .andThen(ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10))))
+                .subscribeOn(schedulerProvider.io())
+                .observeOn(schedulerProvider.io())
+                .subscribe(() -> {
+                    Log.d("lsc", "MakeRoomViewModel createSocket result ");
+                }, onError -> {
+                    Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
+                })
         );
     }
 
-//    public void createSocket(int roomPort, int roomMaxAttendee) {
-//        Log.d("lsc", "MakeRoomViewModel createSocket");
-//        getCompositeDisposable().add(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN, 10, 1)))
-//                .concatWith(serverThreadObservable(roomPort, roomMaxAttendee).flatMap(userCount -> ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT)))
-//                .subscribeOn(schedulerProvider.io())
-//                .observeOn(schedulerProvider.ui())
-//                .subscribe(message -> {
-//                    Log.d("lsc", "MakeRoomViewModel createSocket message " + message);
-//                }, onError -> {
-//                    Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
-//                }));
-//    }
 
     private void enterRoom(InetAddress roomAddress, int roomPort) {
         Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(onNext -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom onNext " + onNext);
+                .subscribe(() -> {
+                    Log.d("lsc", "MakeRoomViewModel enterRoom onNext ");
                 }, onError -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError.getMessage());
+                    Log.d("lsc", "MakeRoomViewModel enterRoom onError " + onError.getMessage());
                 }));
 
     }
 
     public void onNavBackClick() {
         getNavigator().goBack();
+
     }
 
     @Override

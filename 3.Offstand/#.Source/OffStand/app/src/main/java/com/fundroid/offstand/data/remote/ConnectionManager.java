@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,14 +39,16 @@ public class ConnectionManager {
     private static ClientThread clientThread;
     private static ServerSocket serverSocket;
 
-    public static Single<Integer> createServerThread(int roomPort, int roomMaxUser) {
-        return Single.defer(() -> Single.create(subscriber -> {
+    public static Completable createServerThread(int roomPort, int roomMaxUser) {
+        Log.d("lsc", "createServerThread " + Thread.currentThread().getName());
+        return Completable.defer(() -> Completable.create(subscriber -> {
+            Log.d("lsc", "createServerThread in " + Thread.currentThread().getName());
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
             while (true) {
-                if ((Stream.of(serverThreads).filter(serverThread -> serverThread == null).count()) == roomMaxUser) {
-                    subscriber.onSuccess(RESULT_OK);   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
-                }
+//                if ((Stream.of(serverThreads).filter(serverThread -> serverThread == null).count()) == roomMaxUser) {
+//                    subscriber.onSuccess(RESULT_OK);   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
+//                }
                 Socket socket = serverSocket.accept();
                 ServerThread serverThread = new ServerThread(socket);
                 new Thread(serverThread).start();
@@ -60,37 +63,38 @@ public class ConnectionManager {
         Log.d("lsc", "ConnectionManager serverProcessor " + apiBodyStr);
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
 
-        return Observable.create(subscriber -> {
+        return Observable.defer(() -> Observable.create(subscriber -> {
             switch (apiBody.getNo()) {
                 case API_ENTER_ROOM:
                     apiBody.getAttendee().setSeatNo(serverCount);
                     serverThreads[serverCount].setAttendee(apiBody.getAttendee());
                     // 서버 처리 로직
-                    Single.zip(
-                            sendMessage(new ApiBody(API_ROOM_INFO, attendees), serverCount),
-                            broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), apiBody.getAttendee().getSeatNo()),
-                            (firstOne, secondOne) -> RESULT_OK
-                    ).subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(result -> {
-                                serverCount++;
-                            }, onError -> {
-                                Log.e("lsc", "zip error " + onError);
-                            });
+//                    Single.zip(
+//                            sendMessage(new ApiBody(API_ROOM_INFO, attendees), serverCount),
+//                            broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), apiBody.getAttendee().getSeatNo()),
+//                            (firstOne, secondOne) -> RESULT_OK
+//                    ).subscribeOn(Schedulers.io())
+//                            .observeOn(Schedulers.io())
+//                            .subscribe(result -> {
+//                                serverCount++;
+//                            }, onError -> {
+//                                Log.e("lsc", "zip error " + onError);
+//                            });
                     // 서버 처리 로직 END
                     subscriber.onNext(RESULT_OK);
                     break;
             }
-        });
+        }));
     }
 
-    public static Single<Integer> createClientThread(InetAddress serverIp, int serverPort) {
-        return Single.create(subscriber -> {
+    public static Completable createClientThread(InetAddress serverIp, int serverPort) {
+        Log.d("lsc", "createClientThread " + Thread.currentThread().getName());
+        return Completable.defer(() -> Completable.create(subscriber -> {
+            Log.d("lsc", "createClientThread in " + Thread.currentThread().getName());
             Socket socket = new Socket();
             clientThread = new ClientThread(socket, serverIp, serverPort);
             new Thread(clientThread).start();
-            subscriber.onSuccess(RESULT_OK);
-        });
+        }));
     }
 
     public static Single broadcastMessage(ApiBody message) {
@@ -111,19 +115,17 @@ public class ConnectionManager {
     }
 
     public static Single sendMessage(ApiBody message, int seatNo) {
-//        Log.d("lsc","sendMessage " + message + ", seatNo " + seatNo);
         return Single.defer(() -> Single.create(subscriber -> {
             serverThreads[seatNo].getStreamToClient().writeUTF(message.toString());
         }));
     }
 
-    public static Single sendMessage(ApiBody message) {
-//        Log.d("lsc", "ConnectionManager sendMessage " + message);
-        return Single.defer(() -> Single.create(subscriber -> {
-            Log.d("lsc","sendMessage " + clientThread);
-            Log.d("lsc","sendMessage " + clientThread.getStreamToServer());
+    public static Completable sendMessage(ApiBody message) {
+        Log.d("lsc", "sendMessage " + Thread.currentThread().getName());
+        return Completable.defer(() -> Completable.create(subscriber -> {
+            Log.d("lsc", "sendMessage " + clientThread);
+            Log.d("lsc", "sendMessage " + clientThread.getStreamToServer());
             clientThread.getStreamToServer().writeUTF(message.toString());
-            subscriber.onSuccess(RESULT_OK);
         }));
     }
 }

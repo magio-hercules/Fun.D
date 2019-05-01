@@ -145,9 +145,9 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(onNext -> {
+                .subscribe(() -> {
                     Log.d("lsc", "LobbyViewModel enterRoom thread " + Thread.currentThread().getName());
-                    Log.d("lsc", "LobbyViewModel enterRoom onNext " + onNext);
+                    Log.d("lsc", "LobbyViewModel enterRoom onNext ");
 //                            Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
                 }, onError -> {
                     Log.d("lsc", "enterRoom onError " + onError.getMessage());

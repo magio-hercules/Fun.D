@@ -608,7 +608,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         ConnectionManager.sendMessage(new ApiBody(API_READY, 3))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(result -> {
+                .subscribe(() -> {
 
                 }, onError -> {
                 });
