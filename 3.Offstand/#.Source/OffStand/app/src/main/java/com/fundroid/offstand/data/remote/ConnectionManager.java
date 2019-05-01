@@ -30,7 +30,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHE
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 // 한번에 roomMaxAttendee만큼
-//Todo : 테스트 -> 나중에 정리
+
 public class ConnectionManager {
 
     private static ServerThread serverThreads[];
@@ -39,7 +39,7 @@ public class ConnectionManager {
     private static ServerSocket serverSocket;
 
     public static Single<Integer> createServerThread(int roomPort, int roomMaxUser) {
-        return Single.create(subscriber -> {
+        return Single.defer(() -> Single.create(subscriber -> {
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
             while (true) {
@@ -51,7 +51,7 @@ public class ConnectionManager {
                 new Thread(serverThread).start();
                 serverThreads[serverCount] = serverThread;
             }
-        });
+        }));
     }
 
     private static ArrayList<Attendee> attendees = new ArrayList<>();
@@ -120,6 +120,8 @@ public class ConnectionManager {
     public static Single sendMessage(ApiBody message) {
 //        Log.d("lsc", "ConnectionManager sendMessage " + message);
         return Single.defer(() -> Single.create(subscriber -> {
+            Log.d("lsc","sendMessage " + clientThread);
+            Log.d("lsc","sendMessage " + clientThread.getStreamToServer());
             clientThread.getStreamToServer().writeUTF(message.toString());
             subscriber.onSuccess(RESULT_OK);
         }));

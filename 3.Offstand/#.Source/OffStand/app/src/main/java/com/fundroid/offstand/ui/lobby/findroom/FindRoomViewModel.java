@@ -14,6 +14,7 @@ import com.fundroid.offstand.utils.rx.SchedulerProvider;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.JAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
@@ -31,6 +32,11 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 .observeOn(schedulerProvider.ui())
                 .subscribe(message -> {
                     Log.d("lsc", "FindRoomViewModel message " + message);
+                    switch ((int) message) {
+                        case RESULT_OK:
+                            getNavigator().goToRoomActivity();
+                            break;
+                    }
                 })
         );
     }
@@ -50,7 +56,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 40, (byte) 197};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 7};
         InetAddress addr = null;
         try {
             addr = InetAddress.getByAddress(ipAddr);

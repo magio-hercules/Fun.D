@@ -62,15 +62,25 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     public void createSocket(int roomPort, int roomMaxAttendee) {
         Log.d("lsc", "MakeRoomViewModel createSocket");
         getCompositeDisposable().add(serverThreadObservable(roomPort, roomMaxAttendee)
-                .flatMap(userCount -> ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT))
-                .flatMap(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10))))
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(result -> {
-                    Log.d("lsc", "MakeRoomViewModel createSocket result " + result);
-                }, onError -> {
-                    Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
-                })
+//                .flatMap(userCount -> ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT))
+//                .flatMap(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10))))
+                        .subscribeOn(schedulerProvider.io())
+                        .observeOn(schedulerProvider.ui())
+                        .subscribe(result -> {
+                            Log.d("lsc", "MakeRoomViewModel createSocket result " + result);
+                            ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT)
+                                    .flatMap(integer -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10)))).subscribe(
+                                    test -> {
+                                        Log.d("lsc", "MakeRoomViewModel 2 test " + test);
+                                    }, onError -> {
+                                        Log.d("lsc", "MakeRoomViewModel 2 onError " + onError);
+                                    }
+                            );
+
+
+                        }, onError -> {
+                            Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
+                        })
         );
     }
 
