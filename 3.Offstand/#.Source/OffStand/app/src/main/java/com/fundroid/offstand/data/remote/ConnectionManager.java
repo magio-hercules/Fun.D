@@ -2,6 +2,7 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
 import com.annimon.stream.Stream;
@@ -39,22 +40,34 @@ public class ConnectionManager {
     private static ClientThread clientThread;
     private static ServerSocket serverSocket;
 
+    public static boolean isOpen(ServerSocket ss) {
+
+        return ss.isBound() && !ss.isClosed();
+
+    }
+
     public static Completable createServerThread(int roomPort, int roomMaxUser) {
         Log.d("lsc", "createServerThread " + Thread.currentThread().getName());
-        return Completable.defer(() -> Completable.create(subscriber -> {
+        return Completable.create(subscriber -> {
             Log.d("lsc", "createServerThread in " + Thread.currentThread().getName());
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
+            Log.d("lsc", "createServerThread in 2");
             while (true) {
-//                if ((Stream.of(serverThreads).filter(serverThread -> serverThread == null).count()) == roomMaxUser) {
-//                    subscriber.onSuccess(RESULT_OK);   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
-//                }
+                if ((Stream.of(serverThreads).filter(thread -> thread == null).count()) == roomMaxUser) {
+                    Log.d("lsc", "createServerThread onNext");
+//                    subscriber.onNext(RESULT_OK);   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
+                    subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
+                }
+                Log.d("lsc", "createServerThread in 3");
                 Socket socket = serverSocket.accept();
+                Log.d("lsc", "createServerThread in 4");
                 ServerThread serverThread = new ServerThread(socket);
                 new Thread(serverThread).start();
                 serverThreads[serverCount] = serverThread;
+                Log.d("lsc", "createServerThread end");
             }
-        }));
+        });
     }
 
     private static ArrayList<Attendee> attendees = new ArrayList<>();
@@ -69,17 +82,17 @@ public class ConnectionManager {
                     apiBody.getAttendee().setSeatNo(serverCount);
                     serverThreads[serverCount].setAttendee(apiBody.getAttendee());
                     // 서버 처리 로직
-//                    Single.zip(
-//                            sendMessage(new ApiBody(API_ROOM_INFO, attendees), serverCount),
-//                            broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), apiBody.getAttendee().getSeatNo()),
-//                            (firstOne, secondOne) -> RESULT_OK
-//                    ).subscribeOn(Schedulers.io())
-//                            .observeOn(Schedulers.io())
-//                            .subscribe(result -> {
-//                                serverCount++;
-//                            }, onError -> {
-//                                Log.e("lsc", "zip error " + onError);
-//                            });
+                    Single.zip(
+                            sendMessage(new ApiBody(API_ROOM_INFO, attendees), serverCount),
+                            broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), apiBody.getAttendee().getSeatNo()),
+                            (firstOne, secondOne) -> RESULT_OK
+                    ).subscribeOn(Schedulers.io())
+                            .observeOn(Schedulers.io())
+                            .subscribe(result -> {
+                                serverCount++;
+                            }, onError -> {
+                                Log.e("lsc", "zip error " + onError);
+                            });
                     // 서버 처리 로직 END
                     subscriber.onNext(RESULT_OK);
                     break;
@@ -87,14 +100,31 @@ public class ConnectionManager {
         }));
     }
 
-    public static Completable createClientThread(InetAddress serverIp, int serverPort) {
+    public static Completable createClientThread(@Nullable InetAddress serverIp, int serverPort) {
         Log.d("lsc", "createClientThread " + Thread.currentThread().getName());
-        return Completable.defer(() -> Completable.create(subscriber -> {
+        return Completable.create(subscriber -> {
             Log.d("lsc", "createClientThread in " + Thread.currentThread().getName());
             Socket socket = new Socket();
-            clientThread = new ClientThread(socket, serverIp, serverPort);
+            clientThread = new ClientThread(socket, (serverIp == null) ? InetAddress.getLocalHost() : serverIp, serverPort);
             new Thread(clientThread).start();
-        }));
+//            subscriber.onNext(RESULT_OK);
+            subscriber.onComplete();
+        });
+    }
+
+    public static Observable test() {
+        return Observable.create(subscriber -> {
+            Log.d("lsc", "test complete");
+            subscriber.onNext(1);
+            subscriber.onComplete();
+        });
+    }
+
+    public static Observable test2() {
+        return Observable.create(subscriber -> {
+            Log.d("lsc", "test2 complete");
+            subscriber.onComplete();
+        });
     }
 
     public static Single broadcastMessage(ApiBody message) {
@@ -122,10 +152,11 @@ public class ConnectionManager {
 
     public static Completable sendMessage(ApiBody message) {
         Log.d("lsc", "sendMessage " + Thread.currentThread().getName());
-        return Completable.defer(() -> Completable.create(subscriber -> {
-            Log.d("lsc", "sendMessage " + clientThread);
+        return Completable.create(subscriber -> {
+            Log.d("lsc", "sendMessage " + message);
             Log.d("lsc", "sendMessage " + clientThread.getStreamToServer());
             clientThread.getStreamToServer().writeUTF(message.toString());
-        }));
+            subscriber.onComplete();
+        });
     }
 }

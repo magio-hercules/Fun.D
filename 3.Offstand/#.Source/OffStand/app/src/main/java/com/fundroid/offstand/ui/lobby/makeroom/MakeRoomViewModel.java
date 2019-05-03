@@ -13,6 +13,7 @@ import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
@@ -53,17 +54,14 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
     public void makeRoomClick() {
         //Test
-        try {
-            createSocket(ROOM_PORT, 5);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
+        createSocket(ROOM_PORT, 5);
     }
 
-    public void createSocket(int roomPort, int roomMaxAttendee) throws UnknownHostException {
+    public void createSocket(int roomPort, int roomMaxAttendee) {
         Log.d("lsc", "MakeRoomViewModel createSocket");
         getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
-                .andThen(ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT))
+                .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
+                .andThen(Completable.timer(1, TimeUnit.SECONDS))
                 .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.io())

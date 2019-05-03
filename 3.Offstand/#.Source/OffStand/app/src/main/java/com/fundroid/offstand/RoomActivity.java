@@ -23,6 +23,7 @@ import com.fundroid.offstand.model.UserWrapper;
 import com.fundroid.offstand.utils.rx.RxEventBus;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -104,8 +105,14 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         RxEventBus.getInstance().getEvents(String.class)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribe(result -> {
                     Log.d("lsc", "test result " + result);
+                    switch ((int) result) {
+                        case RESULT_OK:
+                            break;
+                    }
+
                 }, onError -> {
                     Log.d("lsc", "test onError " + onError);
                 }, () -> Log.d("lsc", "test onCompleted"));

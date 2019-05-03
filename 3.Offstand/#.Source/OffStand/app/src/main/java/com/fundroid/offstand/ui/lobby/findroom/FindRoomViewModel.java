@@ -13,6 +13,9 @@ import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Completable;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
@@ -32,11 +35,13 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 .observeOn(schedulerProvider.ui())
                 .subscribe(message -> {
                     Log.d("lsc", "FindRoomViewModel message " + message);
-                    switch ((int) message) {
-                        case RESULT_OK:
+//                    switch ((int) message) {
+//                        case RESULT_OK:
                             getNavigator().goToRoomActivity();
-                            break;
-                    }
+//                            break;
+//                    }
+                }, onError -> {
+                    Log.d("lsc","FindRoomViewModel onError " + onError);
                 })
         );
     }
@@ -44,7 +49,8 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     private void enterRoom(InetAddress roomAddress, int roomPort) {
         Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
-                .concatWith(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN, 10, 1))))
+                .andThen(Completable.timer(1, TimeUnit.SECONDS))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN, 10, 1))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(() -> {
@@ -56,7 +62,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 7};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 40, (byte) 34};
         InetAddress addr = null;
         try {
             addr = InetAddress.getByAddress(ipAddr);
