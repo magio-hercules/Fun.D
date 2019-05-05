@@ -33,22 +33,18 @@ public class ServerThread implements Runnable {
     }
 
     public ServerThread(Socket socket) {
-        Log.i("lsc", "ServerThread constructor " + Thread.currentThread().getName());
         this.socket = socket;
     }
 
     @Override
     public void run() {
-        Log.d("lsc", "ServerThread 1 " + Thread.currentThread().getName());
         try {
             while (true) {
-                Log.d("lsc", "ServerThread 2 " + Thread.currentThread().getName());
                 streamByClient = new DataInputStream(socket.getInputStream());
-                Log.d("lsc", "ServerThread 3 " + Thread.currentThread().getName());
                 streamToClient = new DataOutputStream(socket.getOutputStream());
                 String message = streamByClient.readUTF();
                 RxEventBus.getInstance().sendEvent(message);
-                Log.d("lsc", "ServerThread 4 " + message);
+                Log.d("lsc", "클라이언트 -> 서버 " + message);
             }
         } catch (IOException e) {
             Log.e("lsc", "ServerThread e " + e.getMessage() + ", " + Thread.currentThread().getName());

@@ -3,8 +3,8 @@ package com.fundroid.offstand.data.remote;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.core.util.Pair;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.model.Attendee;
@@ -13,19 +13,13 @@ import com.google.gson.Gson;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-import java.util.SortedMap;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
+import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
@@ -35,75 +29,54 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class ConnectionManager {
 
-    private static ServerThread serverThreads[];
+    private static ServerThread[] serverThreads;
     private static int serverCount;
     private static ClientThread clientThread;
     private static ServerSocket serverSocket;
 
-    public static boolean isOpen(ServerSocket ss) {
-
-        return ss.isBound() && !ss.isClosed();
-
-    }
-
     public static Completable createServerThread(int roomPort, int roomMaxUser) {
-        Log.d("lsc", "createServerThread " + Thread.currentThread().getName());
         return Completable.create(subscriber -> {
-            Log.d("lsc", "createServerThread in " + Thread.currentThread().getName());
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
-            Log.d("lsc", "createServerThread in 2");
-            while (true) {
+            while (serverCount != roomMaxUser) {
                 if ((Stream.of(serverThreads).filter(thread -> thread == null).count()) == roomMaxUser) {
-                    Log.d("lsc", "createServerThread onNext");
-//                    subscriber.onNext(RESULT_OK);   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
                     subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
                 }
-                Log.d("lsc", "createServerThread in 3");
                 Socket socket = serverSocket.accept();
-                Log.d("lsc", "createServerThread in 4");
                 ServerThread serverThread = new ServerThread(socket);
-                new Thread(serverThread).start();
                 serverThreads[serverCount] = serverThread;
-                Log.d("lsc", "createServerThread end");
+                serverCount++;
+                new Thread(serverThread).start();
             }
         });
     }
 
-    private static ArrayList<Attendee> attendees = new ArrayList<>();
-
     public static Observable<Integer> serverProcessor(String apiBodyStr) {
-        Log.d("lsc", "ConnectionManager serverProcessor " + apiBodyStr);
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
+        int newUserServerIndex = -1;
+        switch (apiBody.getNo()) {
+            case API_ENTER_ROOM:
+                for (int index = 0; index < serverThreads.length; index++) {
+                    if (serverThreads[index] != null && serverThreads[index].getAttendee() == null) {
+                        newUserServerIndex = index;
+                        apiBody.getAttendee().setSeatNo(index + 1);
+                        serverThreads[index].setAttendee(apiBody.getAttendee());
+                    }
+                }
 
-        return Observable.defer(() -> Observable.create(subscriber -> {
-            switch (apiBody.getNo()) {
-                case API_ENTER_ROOM:
-                    apiBody.getAttendee().setSeatNo(serverCount);
-                    serverThreads[serverCount].setAttendee(apiBody.getAttendee());
-                    // 서버 처리 로직
-                    Single.zip(
-                            sendMessage(new ApiBody(API_ROOM_INFO, attendees), serverCount),
-                            broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), apiBody.getAttendee().getSeatNo()),
-                            (firstOne, secondOne) -> RESULT_OK
-                    ).subscribeOn(Schedulers.io())
-                            .observeOn(Schedulers.io())
-                            .subscribe(result -> {
-                                serverCount++;
-                            }, onError -> {
-                                Log.e("lsc", "zip error " + onError);
-                            });
-                    // 서버 처리 로직 END
-                    subscriber.onNext(RESULT_OK);
-                    break;
-            }
-        }));
+                // 서버 처리 로직
+                return Observable.zip(
+                        sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<Attendee>)Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList())), newUserServerIndex),
+                        broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), newUserServerIndex),
+                        (firstOne, secondOne) -> RESULT_OK
+                );
+            default:
+                return Observable.just(RESULT_API_NOT_DEFINE);
+        }
     }
 
     public static Completable createClientThread(@Nullable InetAddress serverIp, int serverPort) {
-        Log.d("lsc", "createClientThread " + Thread.currentThread().getName());
         return Completable.create(subscriber -> {
-            Log.d("lsc", "createClientThread in " + Thread.currentThread().getName());
             Socket socket = new Socket();
             clientThread = new ClientThread(socket, (serverIp == null) ? InetAddress.getLocalHost() : serverIp, serverPort);
             new Thread(clientThread).start();
@@ -135,26 +108,25 @@ public class ConnectionManager {
         }));
     }
 
-    public static Single broadcastMessageExceptOne(ApiBody message, int seatNo) {
-        return Single.defer(() -> Single.create(subscriber -> {
+    private static Observable<Integer> broadcastMessageExceptOne(ApiBody message, int serverIndex) {
+        return Observable.create(subscriber -> {
             for (ServerThread serverThread : serverThreads) {
                 if (serverThread != null)
                     serverThread.getStreamToClient().writeUTF(message.toString());
             }
-        }));
+            subscriber.onNext(RESULT_OK);
+        });
     }
 
-    public static Single sendMessage(ApiBody message, int seatNo) {
-        return Single.defer(() -> Single.create(subscriber -> {
-            serverThreads[seatNo].getStreamToClient().writeUTF(message.toString());
-        }));
+    private static Observable<Integer> sendMessage(ApiBody message, int serverIndex) {
+        return Observable.create(subscriber -> {
+            serverThreads[serverIndex].getStreamToClient().writeUTF(message.toString());
+            subscriber.onNext(RESULT_OK);
+        });
     }
 
     public static Completable sendMessage(ApiBody message) {
-        Log.d("lsc", "sendMessage " + Thread.currentThread().getName());
         return Completable.create(subscriber -> {
-            Log.d("lsc", "sendMessage " + message);
-            Log.d("lsc", "sendMessage " + clientThread.getStreamToServer());
             clientThread.getStreamToServer().writeUTF(message.toString());
             subscriber.onComplete();
         });

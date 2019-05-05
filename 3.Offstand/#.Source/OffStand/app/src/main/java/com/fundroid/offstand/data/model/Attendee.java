@@ -8,22 +8,30 @@ public class Attendee {
 
     public enum EnumStatus {
 
-        STANDBY("STANDBY"), READY("READY"), INGAME("INGAME");
+        STANDBY(0), READY(1), INGAME(2), RESULT(3);
 
-        private String enumStatus;
+        private int enumStatus;
 
-        EnumStatus(String enumStatus) {
+        EnumStatus(int enumStatus) {
             this.enumStatus = enumStatus;
+        }
+
+        public int getEnumStatus() {
+            return enumStatus;
         }
     }
 
     public enum EnumAvatar {
-        JAN(1), FEB(2), MAR(3), APR(4), MAY(5), JUN(6), JUL(7), AUG(8);
+        JAN(1), FEB(2), MAR(3), APR(4), MAY(5), JUN(6), JUL(7), AUG(8), SEP(9), OCT(10);
 
         private int index;
 
         EnumAvatar(int index) {
             this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
         }
     }
 
@@ -31,9 +39,9 @@ public class Attendee {
 
     private String name;
 
-    private EnumStatus status;
+    private int status;
 
-    private EnumAvatar avatar;
+    private int avatar;
 
     private Integer seatNo;
 
@@ -67,19 +75,19 @@ public class Attendee {
         this.seatNo = seatNo;
     }
 
-    public EnumStatus getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(EnumStatus status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
-    public EnumAvatar getAvatar() {
+    public int getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(EnumAvatar avatar) {
+    public void setAvatar(int avatar) {
         this.avatar = avatar;
     }
 
@@ -107,7 +115,7 @@ public class Attendee {
         this.winningRate = winningRate;
     }
 
-    public Attendee(String name, EnumAvatar avatar, Integer win, Integer lose) {
+    public Attendee(String name, int avatar, Integer win, Integer lose) {
         this.name = name;
         this.avatar = avatar;
         this.win = win;

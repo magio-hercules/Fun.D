@@ -7,4 +7,5 @@ public class AppConstant {
     public static final String FRAGMENT_MAKE_ROOM = "FRAGMENT_MAKE_ROOM";
 
     public static final int RESULT_OK = 0;
+    public static final int RESULT_API_NOT_DEFINE = -1;
 }

@@ -32,12 +32,9 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         this.schedulerProvider = schedulerProvider;
 
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .flatMap(json -> {
-                    Log.d("lsc", "MakeRoomViewModel flatMap " + json);
-                    return ConnectionManager.serverProcessor((String) json);
-                })
                 .subscribe(result -> {
                     Log.d("lsc", "MakeRoomViewModel result " + result);
                     switch ((int) result) {
@@ -54,7 +51,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
     public void makeRoomClick() {
         //Test
-        createSocket(ROOM_PORT, 5);
+        createSocket(ROOM_PORT, 4);
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {
@@ -62,7 +59,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
                 .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
                 .andThen(Completable.timer(1, TimeUnit.SECONDS))
-                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10))))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB.getIndex(), 1, 10))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.io())
                 .subscribe(() -> {

@@ -103,9 +103,9 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         Log.d("lsc", "test onCreate");
         //test
         RxEventBus.getInstance().getEvents(String.class)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
                     Log.d("lsc", "test result " + result);
                     switch ((int) result) {
