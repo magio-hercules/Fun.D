@@ -8,7 +8,7 @@ public class Attendee {
 
     public enum EnumStatus {
 
-        STANDBY(0), READY(1), INGAME(2), RESULT(3);
+        STANDBY(0), READY(1), INGAME(2), CARDOPEN(3), RESULT(4);
 
         private int enumStatus;
 

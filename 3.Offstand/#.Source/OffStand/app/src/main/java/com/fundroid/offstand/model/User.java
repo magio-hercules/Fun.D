@@ -2,6 +2,35 @@ package com.fundroid.offstand.model;
 
 public class User {
 
+    public enum EnumStatus {
+
+        STANDBY(0), READY(1), INGAME(2), RESULT(3);
+
+        private int enumStatus;
+
+        EnumStatus(int enumStatus) {
+            this.enumStatus = enumStatus;
+        }
+
+        public int getEnumStatus() {
+            return enumStatus;
+        }
+    }
+
+    public enum EnumAvatar {
+        JAN(1), FEB(2), MAR(3), APR(4), MAY(5), JUN(6), JUL(7), AUG(8), SEP(9), OCT(10);
+
+        private int index;
+
+        EnumAvatar(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
+
     // 방장
     private boolean host;
 

@@ -80,6 +80,22 @@ public class ApiBody {
 
     }
 
+    public Integer getSeatNo() {
+        return seatNo;
+    }
+
+    public Integer getSeatNo2() {
+        return seatNo2;
+    }
+
+    public Integer getCardNo1() {
+        return cardNo1;
+    }
+
+    public Integer getCardNo2() {
+        return cardNo2;
+    }
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

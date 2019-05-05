@@ -21,8 +21,17 @@ import io.reactivex.Single;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 // 한번에 roomMaxAttendee만큼
@@ -53,9 +62,11 @@ public class ConnectionManager {
 
     public static Observable<Integer> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
-        int newUserServerIndex = -1;
+        Log.d("lsc", "serverProcessor apiBody " + apiBody);
+
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
+                int newUserServerIndex = -1;
                 for (int index = 0; index < serverThreads.length; index++) {
                     if (serverThreads[index] != null && serverThreads[index].getAttendee() == null) {
                         newUserServerIndex = index;
@@ -64,12 +75,30 @@ public class ConnectionManager {
                     }
                 }
 
-                // 서버 처리 로직
                 return Observable.zip(
-                        sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<Attendee>)Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList())), newUserServerIndex),
+                        sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<Attendee>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList())), newUserServerIndex),
                         broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), newUserServerIndex),
                         (firstOne, secondOne) -> RESULT_OK
                 );
+
+            case API_READY:
+                // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
+                return broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo()));
+
+            case API_DIE:
+                // 죽지 않은 User가 1명 밖에 안남을 경우 게임 결과 이동
+                return broadcastMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo()));
+
+            case API_CARD_OPEN:
+                // 모든 유저 카드 오픈 시 방장 게임 시작 버튼 활성화
+                return Observable.just(RESULT_OK);
+
+            case API_OUT:
+                return broadcastMessage(new ApiBody(API_OUT_BR, apiBody.getSeatNo()));
+
+            case API_READY_CANCEL:
+                return broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo()));
+
             default:
                 return Observable.just(RESULT_API_NOT_DEFINE);
         }
@@ -100,19 +129,21 @@ public class ConnectionManager {
         });
     }
 
-    public static Single broadcastMessage(ApiBody message) {
-        return Single.defer(() -> Single.create(subscriber -> {
-            for (ServerThread serverThread : serverThreads) {
-                serverThread.getStreamToClient().writeUTF(message.toString());
+    public static Observable broadcastMessage(ApiBody message) {
+        return Observable.create(subscriber -> {
+            for (int index = 0; index < serverThreads.length; index++) {
+                if (serverThreads[index] != null)
+                    serverThreads[index].getStreamToClient().writeUTF(message.toString());
             }
-        }));
+            subscriber.onNext(RESULT_OK);
+        });
     }
 
     private static Observable<Integer> broadcastMessageExceptOne(ApiBody message, int serverIndex) {
         return Observable.create(subscriber -> {
-            for (ServerThread serverThread : serverThreads) {
-                if (serverThread != null)
-                    serverThread.getStreamToClient().writeUTF(message.toString());
+            for (int index = 0; index < serverThreads.length; index++) {
+                if (serverThreads[index] != null && index != serverIndex)
+                    serverThreads[index].getStreamToClient().writeUTF(message.toString());
             }
             subscriber.onNext(RESULT_OK);
         });
