@@ -11,6 +11,8 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
+import static com.fundroid.offstand.core.AppConstant.SOCKET_TIMEOUT;
+
 public class ClientThread implements Runnable {
     private Socket socket;
     private InetAddress serverIp;
@@ -35,7 +37,7 @@ public class ClientThread implements Runnable {
     @Override
     public void run() {
         try {
-            socket.connect(new InetSocketAddress(serverIp, serverPort), 30000);
+            socket.connect(new InetSocketAddress(serverIp, serverPort), SOCKET_TIMEOUT);
             while (true) {
                 streamByServer = new DataInputStream(socket.getInputStream());
                 streamToServer = new DataOutputStream(socket.getOutputStream());

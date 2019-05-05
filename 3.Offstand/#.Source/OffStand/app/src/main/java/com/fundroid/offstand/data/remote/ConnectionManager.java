@@ -10,6 +10,7 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.model.Attendee;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -21,6 +22,7 @@ import io.reactivex.Single;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
@@ -42,27 +44,40 @@ public class ConnectionManager {
     private static int serverCount;
     private static ClientThread clientThread;
     private static ServerSocket serverSocket;
+    private static int roomPort;
+    private static int roomMaxUser;
 
     public static Completable createServerThread(int roomPort, int roomMaxUser) {
+        ConnectionManager.roomPort = roomPort;
+        ConnectionManager.roomMaxUser = roomMaxUser;
         return Completable.create(subscriber -> {
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
-            while (serverCount != roomMaxUser) {
-                if ((Stream.of(serverThreads).filter(thread -> thread == null).count()) == roomMaxUser) {
-                    subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
-                }
-                Socket socket = serverSocket.accept();
-                ServerThread serverThread = new ServerThread(socket);
-                serverThreads[serverCount] = serverThread;
-                serverCount++;
-                new Thread(serverThread).start();
-            }
+            Log.d("lsc", "createServerThread 1");
+//            if ((Stream.of(serverThreads).filter(thread -> thread == null).count()) == roomMaxUser) {
+            subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
+//            }
+            socketAcceptLoop();
+            Log.d("lsc", "createServerThread 3");
         });
+    }
+
+    private static void socketAcceptLoop() throws IOException {
+        while (serverCount != roomMaxUser) {
+            Log.d("lsc", "createServerThread 2");
+
+            Socket socket = serverSocket.accept();
+            ServerThread serverThread = new ServerThread(socket);
+            serverThreads[serverCount] = serverThread;
+            serverCount++;
+            new Thread(serverThread).start();
+        }
     }
 
     public static Observable<Integer> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
-        Log.d("lsc", "serverProcessor apiBody " + apiBody);
+//        Log.d("lsc", "serverProcessor apiBody " + apiBody);
+//        Log.d("lsc", "serverProcessor users " + Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList()));
 
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
@@ -85,6 +100,13 @@ public class ConnectionManager {
                 // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
                 return broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo()));
 
+            case API_READY_CANCEL:
+                return broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo()));
+
+            case API_BAN_BR:
+                return broadcastMessageExceptOne(new ApiBody(API_BAN_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
+                        .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
+
             case API_DIE:
                 // 죽지 않은 User가 1명 밖에 안남을 경우 게임 결과 이동
                 return broadcastMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo()));
@@ -94,14 +116,43 @@ public class ConnectionManager {
                 return Observable.just(RESULT_OK);
 
             case API_OUT:
-                return broadcastMessage(new ApiBody(API_OUT_BR, apiBody.getSeatNo()));
+                for (int index = 0; index < serverThreads.length; index++) {
+                    if (serverThreads[index] != null && serverThreads[index].getAttendee() != null) {
+                        if (serverThreads[index].getAttendee().getSeatNo().equals(apiBody.getSeatNo())) {
+                            try {
+                                serverThreads[index].getSocket().close();
+                                serverThreads[index] = null;
+                                serverCount--;
 
-            case API_READY_CANCEL:
-                return broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo()));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                    }
+                }
+                //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
+                return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
+                        .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             default:
                 return Observable.just(RESULT_API_NOT_DEFINE);
         }
+    }
+
+    private static Observable<Integer> closeServerSocket(int seatNo) {
+        Log.d("lsc", "closeServerSocket");
+        return Observable.create(subscriber -> {
+            for (int index = 0; index < serverThreads.length; index++) {
+                if (serverThreads[index] != null && serverThreads[index].getAttendee() != null) {
+                    if (serverThreads[index].getAttendee().getSeatNo().equals(seatNo)) {
+                        serverThreads[index].getSocket().close();
+                        serverThreads[index] = null;
+                        serverCount--;
+                    }
+                }
+            }
+        });
     }
 
     public static Completable createClientThread(@Nullable InetAddress serverIp, int serverPort) {
@@ -114,23 +165,10 @@ public class ConnectionManager {
         });
     }
 
-    public static Observable test() {
+    public static Observable<Integer> broadcastMessage(ApiBody message) {
+        Log.d("lsc", "broadcastMessage");
         return Observable.create(subscriber -> {
-            Log.d("lsc", "test complete");
-            subscriber.onNext(1);
-            subscriber.onComplete();
-        });
-    }
 
-    public static Observable test2() {
-        return Observable.create(subscriber -> {
-            Log.d("lsc", "test2 complete");
-            subscriber.onComplete();
-        });
-    }
-
-    public static Observable broadcastMessage(ApiBody message) {
-        return Observable.create(subscriber -> {
             for (int index = 0; index < serverThreads.length; index++) {
                 if (serverThreads[index] != null)
                     serverThreads[index].getStreamToClient().writeUTF(message.toString());

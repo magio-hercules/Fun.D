@@ -32,6 +32,10 @@ public class ServerThread implements Runnable {
         this.attendee = attendee;
     }
 
+    public Socket getSocket() {
+        return socket;
+    }
+
     public ServerThread(Socket socket) {
         this.socket = socket;
     }
