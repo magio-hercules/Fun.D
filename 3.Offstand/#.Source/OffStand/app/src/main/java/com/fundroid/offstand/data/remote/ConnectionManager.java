@@ -3,6 +3,7 @@ package com.fundroid.offstand.data.remote;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
@@ -15,6 +16,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -22,6 +25,7 @@ import io.reactivex.Single;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
@@ -35,6 +39,8 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
 // 한번에 roomMaxAttendee만큼
 
@@ -46,6 +52,7 @@ public class ConnectionManager {
     private static ServerSocket serverSocket;
     private static int roomPort;
     private static int roomMaxUser;
+    private static ArrayList<Integer> cards = new ArrayList<>();
 
     public static Completable createServerThread(int roomPort, int roomMaxUser) {
         ConnectionManager.roomPort = roomPort;
@@ -72,8 +79,6 @@ public class ConnectionManager {
 
     public static Observable<Integer> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
-//        Log.d("lsc", "serverProcessor apiBody " + apiBody);
-        Log.d("lsc", "serverProcessor users " + Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList()));
 
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
@@ -99,9 +104,17 @@ public class ConnectionManager {
             case API_READY_CANCEL:
                 return broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo()));
 
-            case API_BAN_BR:
+            case API_BAN:
                 return broadcastMessageExceptOne(new ApiBody(API_BAN_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
+
+            case API_SHUFFLE:
+                return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).collect(Collectors.toList()))
+                        .flatMap(pair -> {
+                            Log.d("lsc","pair " + pair);
+                            return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
+//                            return sendMessage(new ApiBody(API_SHUFFLE, pair.second.getCard1(), pair.second.getCard2()), pair.first);
+                        });
 
             case API_DIE:
                 // 죽지 않은 User가 1명 밖에 안남을 경우 게임 결과 이동
@@ -140,7 +153,25 @@ public class ConnectionManager {
             Socket socket = new Socket();
             clientThread = new ClientThread(socket, (serverIp == null) ? InetAddress.getLocalHost() : serverIp, serverPort);
             new Thread(clientThread).start();
-//            subscriber.onNext(RESULT_OK);
+            subscriber.onComplete();
+        });
+    }
+
+    public static Observable<Pair<ServerThread, Attendee>> shuffle(ArrayList<ServerThread> serverThreads) {
+        cards.clear();
+        for (int i = 1; i < 21; i++) {
+            cards.add(i);
+        }
+        Collections.shuffle(cards);
+        return Observable.create(subscriber -> {
+            for (int i = 0; i < serverThreads.size(); i++) {
+                serverThreads.get(i).getAttendee().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
+                serverThreads.get(i).getAttendee().setCard1(cards.get(i * 2));
+                serverThreads.get(i).getAttendee().setCard2(cards.get((i * 2) + 1));
+                subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getAttendee()));
+            }
+            Log.d("lsc","shuffle 0 " + serverThreads.get(0).getAttendee());
+            Log.d("lsc","shuffle 1 " + serverThreads.get(1).getAttendee());
             subscriber.onComplete();
         });
     }
@@ -169,6 +200,14 @@ public class ConnectionManager {
     private static Observable<Integer> sendMessage(ApiBody message, int serverIndex) {
         return Observable.create(subscriber -> {
             serverThreads[serverIndex].getStreamToClient().writeUTF(message.toString());
+            subscriber.onNext(RESULT_OK);
+        });
+    }
+
+    private static Observable<Integer> sendMessage(ApiBody message, ServerThread serverThread) {
+        Log.d("lsc","sendMessage " + message);
+        return Observable.create(subscriber -> {
+            serverThread.getStreamToClient().writeUTF(message.toString());
             subscriber.onNext(RESULT_OK);
         });
     }

@@ -39,6 +39,8 @@ public class Client {
  * {"no":9,"seatNo":2}
  * 카드 오픈
  * {"no":11,"seatNo":2}
+ * 셔플
+ * {"no":14}
  * 나가기
  * {"no":13,"seatNo":2}
  * 레디 취소

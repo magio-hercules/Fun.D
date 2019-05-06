@@ -1,8 +1,11 @@
 package com.fundroid.offstand.data.model;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
+import androidx.core.util.Pair;
 
 public class Attendee {
 
@@ -50,6 +53,12 @@ public class Attendee {
     private Integer lose;
 
     private Double winningRate;
+
+    private Pair<Integer, Integer> cards;
+
+    private int card1;
+
+    private int card2;
 
     public Integer getId() {
         return id;
@@ -115,6 +124,30 @@ public class Attendee {
         this.winningRate = winningRate;
     }
 
+    public int getCard1() {
+        return card1;
+    }
+
+    public void setCard1(int card1) {
+        this.card1 = card1;
+    }
+
+    public int getCard2() {
+        return card2;
+    }
+
+    public void setCard2(int card2) {
+        this.card2 = card2;
+    }
+
+    public Pair<Integer, Integer> getCards() {
+        return cards;
+    }
+
+    public void setCards(Pair<Integer, Integer> cards) {
+        this.cards = cards;
+    }
+
     public Attendee(String name, int avatar, Integer win, Integer lose) {
         this.name = name;
         this.avatar = avatar;
@@ -124,6 +157,7 @@ public class Attendee {
 
     @Override
     public String toString() {
+        Log.d("lsc","Attendee toString");
         return new Gson().toJson(this);
     }
 }

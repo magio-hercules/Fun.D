@@ -66,6 +66,11 @@ public class ApiBody {
         this.seatNo = seatNo;
     }
 
+    public ApiBody(Integer no, Integer[] seatNos) {
+        this.no = no;
+        this.seatNos = seatNos;
+    }
+
     public ApiBody(Integer no, Integer seatNo1OrCardNo1, Integer seatNo2OrCardNo2) {
         this.no = no;
 
@@ -78,9 +83,6 @@ public class ApiBody {
         } else {
             //error
         }
-
-        this.seatNo = seatNo;
-
     }
 
     public Integer getSeatNo() {
