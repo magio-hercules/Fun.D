@@ -53,19 +53,15 @@ public class ConnectionManager {
         return Completable.create(subscriber -> {
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
-            Log.d("lsc", "createServerThread 1");
 //            if ((Stream.of(serverThreads).filter(thread -> thread == null).count()) == roomMaxUser) {
             subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
 //            }
             socketAcceptLoop();
-            Log.d("lsc", "createServerThread 3");
         });
     }
 
     private static void socketAcceptLoop() throws IOException {
         while (serverCount != roomMaxUser) {
-            Log.d("lsc", "createServerThread 2");
-
             Socket socket = serverSocket.accept();
             ServerThread serverThread = new ServerThread(socket);
             serverThreads[serverCount] = serverThread;
@@ -77,7 +73,7 @@ public class ConnectionManager {
     public static Observable<Integer> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
 //        Log.d("lsc", "serverProcessor apiBody " + apiBody);
-//        Log.d("lsc", "serverProcessor users " + Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList()));
+        Log.d("lsc", "serverProcessor users " + Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList()));
 
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
@@ -116,21 +112,6 @@ public class ConnectionManager {
                 return Observable.just(RESULT_OK);
 
             case API_OUT:
-                for (int index = 0; index < serverThreads.length; index++) {
-                    if (serverThreads[index] != null && serverThreads[index].getAttendee() != null) {
-                        if (serverThreads[index].getAttendee().getSeatNo().equals(apiBody.getSeatNo())) {
-                            try {
-                                serverThreads[index].getSocket().close();
-                                serverThreads[index] = null;
-                                serverCount--;
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        }
-
-                    }
-                }
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
                 return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
@@ -141,7 +122,6 @@ public class ConnectionManager {
     }
 
     private static Observable<Integer> closeServerSocket(int seatNo) {
-        Log.d("lsc", "closeServerSocket");
         return Observable.create(subscriber -> {
             for (int index = 0; index < serverThreads.length; index++) {
                 if (serverThreads[index] != null && serverThreads[index].getAttendee() != null) {
@@ -166,7 +146,6 @@ public class ConnectionManager {
     }
 
     public static Observable<Integer> broadcastMessage(ApiBody message) {
-        Log.d("lsc", "broadcastMessage");
         return Observable.create(subscriber -> {
 
             for (int index = 0; index < serverThreads.length; index++) {

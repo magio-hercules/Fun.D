@@ -51,14 +51,14 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
     public void makeRoomClick() {
         //Test
-        createSocket(ROOM_PORT, 4);
+        createSocket(ROOM_PORT, 2);
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {
         Log.d("lsc", "MakeRoomViewModel createSocket");
         getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
                 .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
-                .andThen(Completable.timer(1, TimeUnit.SECONDS))
+                .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
                 .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB.getIndex(), 1, 10))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.io())

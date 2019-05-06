@@ -28,6 +28,9 @@ public class ApiBody {
     private Integer seatNo2;
 
     @Expose
+    private Integer[] seatNos;
+
+    @Expose
     private Integer cardNo1;
 
     @Expose
@@ -94,6 +97,10 @@ public class ApiBody {
 
     public Integer getCardNo2() {
         return cardNo2;
+    }
+
+    public Integer[] getSeatNos() {
+        return seatNos;
     }
 
     @Override
