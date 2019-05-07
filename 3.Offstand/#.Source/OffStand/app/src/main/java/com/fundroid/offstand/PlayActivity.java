@@ -33,13 +33,15 @@ import butterknife.OnTouch;
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
     static final String TAG = "[PLAY]";
 
-    @BindView(R.id.play_image_card1)
+//    @BindView(R.id.play_image_card0)
+    ImageView image0;
+//    @BindView(R.id.play_image_card1)
     ImageView image1;
-    @BindView(R.id.play_image_card2)
+//    @BindView(R.id.play_image_card2)
     ImageView image2;
-    @BindView(R.id.play_image_card3)
+//    @BindView(R.id.play_image_card3)
     ImageView image3;
-    @BindView(R.id.play_image_card4)
+//    @BindView(R.id.play_image_card4)
     ImageView image4;
 
     @BindView(R.id.text_card1)
@@ -98,6 +100,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
@@ -105,6 +109,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         ButterKnife.bind(this);
 
         initShuffle();
+
+        initCardImage();
 
         button_reset.setEnabled(false);
 
@@ -129,7 +135,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+//                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
                 gestureDetector.onTouchEvent(event);
 
                 switch (event.getAction()) {
@@ -180,8 +186,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         });
 
         initListener();
-
-        initTouchListener();
 
         initButton(true);
     }
@@ -300,8 +304,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             ani_view1_y = createSpringAnimation(image1, SpringAnimation.Y, image4.getY(),
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
 
-            org_x = image1.getX();
-            org_y = image1.getY();
+            org_x = image0.getX();
+            org_y = image0.getY();
 
             ret_view1_x = createSpringAnimation(image1, SpringAnimation.X, org_x,
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
@@ -315,8 +319,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                     makeRandomNumber();
 
+//                    image1.setImageResource(getResourceId("drawable", "card_" + card1));
+//                    image2.setImageResource(R.drawable.card_back);
                     image1.setImageResource(getResourceId("drawable", "card_" + card1));
+                    Log.d("[PLAY]", "Reset 완료11");
                     image2.setImageResource(R.drawable.card_back);
+                    Log.d("[PLAY]", "Reset 완료22");
                 }
             });
         }
@@ -337,8 +345,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             ani_view2_y = createSpringAnimation(image2, SpringAnimation.Y, image3.getY(),
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
 
-            org_x = image2.getX();
-            org_y = image2.getY();
+            org_x = image0.getX();
+            org_y = image0.getY();
 
             ret_view2_x = createSpringAnimation(image2, SpringAnimation.X, org_x,
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
@@ -348,9 +356,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             yAnimation.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                if (bCheck) {
-                    changeCard();
-                }
+                    if (bCheck) {
+                        changeCard();
+                    }
                 }
             });
         }
@@ -379,6 +387,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    private void initCardImage() {
+        image0 = (ImageView) findViewById(R.id.play_image_card0);
+        image1 = (ImageView) findViewById(R.id.play_image_card1);
+        image2 = (ImageView) findViewById(R.id.play_image_card2);
+        image3 = (ImageView) findViewById(R.id.play_image_card3);
+        image4 = (ImageView) findViewById(R.id.play_image_card4);
+    }
 
     private void initShuffle() {
         ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
@@ -429,47 +444,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         image_jokbo.setOnDragListener(this);
     }
 
-
-    // TODO : 제거
-    private void initTouchListener() {
-//        touchListener =  new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                View.DragShadowBuilder mShadow = new View.DragShadowBuilder(v);
-//                ClipData.Item item = new ClipData.Item(v.getTag().toString());
-//                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
-//                ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
-//
-//                int eventPadTouch = event.getAction();
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        Log.d(TAG, "ACTION_DOWN");
-////
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        Log.d(TAG, "ACTION_UP");
-//                        switch (v.getId()) {
-//                            case R.id.play_image_setting:
-//                                image_setting.setPressed(false);
-//                                Toast.makeText(getApplicationContext(), "세팅 기능 실행", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case R.id.play_image_open:
-//                                image_open.setPressed(false);
-//                                openCard();
-//                                break;
-//                        }
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        break;
-//                }
-//                return true;
-//            }
-//        };
-//
-//        image_setting.setOnTouchListener(touchListener);
-//        image_open.setOnTouchListener(touchListener);
-    }
 
     private int getResourceId(String type, String name) {
         // use case
@@ -525,6 +499,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         bCheck = false;
         image1.setImageResource(R.drawable.card_back);
         image2.setImageResource(R.drawable.card_back);
+
         image3.setImageResource(0);
         image4.setImageResource(0);
         text1.setText("첫번째 패 : ");
@@ -605,7 +580,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void doRestart() {
         Log.d(TAG, "doRestart");
         // TODO :
-        Toast.makeText(getApplicationContext(), "RE 게임", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "RE 게임", Toast.LENGTH_SHORT).show();
 
         resetCard();
     }

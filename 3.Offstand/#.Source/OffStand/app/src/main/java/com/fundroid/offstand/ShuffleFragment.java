@@ -155,7 +155,8 @@ public class ShuffleFragment extends Fragment {
                             shuffleCount = 0;
                             button_reset.setEnabled(true);
 
-                            Toast.makeText(getActivity(), "셔플 완료!!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getActivity(), "셔플 완료!!", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "end Shuffle");
 
                             doFinish();
                             return;

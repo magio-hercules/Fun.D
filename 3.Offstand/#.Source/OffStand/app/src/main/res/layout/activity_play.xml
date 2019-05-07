@@ -192,6 +192,18 @@
         app:srcCompat="@drawable/play_dashboard" />
 
     <ImageView
+        android:id="@+id/play_image_card0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_card_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_card_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
+        />
+
+    <ImageView
         android:id="@+id/play_image_card1"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -221,12 +233,11 @@
         android:layout_height="0dp"
         android:scaleType="fitXY"
         android:tag="BUTTON"
-        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_card_result1_s"
         app:layout_constraintRight_toRightOf="@id/guide_v_card_result1_e"
         app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
-        app:srcCompat="@drawable/card_back" />
+         />
 
     <ImageView
         android:id="@+id/play_image_card4"
@@ -234,12 +245,11 @@
         android:layout_height="0dp"
         android:scaleType="fitXY"
         android:tag="BUTTON"
-        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_card_result2_s"
         app:layout_constraintRight_toRightOf="@id/guide_v_card_result2_e"
         app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
-        app:srcCompat="@drawable/card_back" />
+         />
 
     <!-- end of contents -->
 
