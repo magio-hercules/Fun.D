@@ -17,6 +17,36 @@
         android:layout_height="match_parent"
         tools:context=".ui.lobby.LobbyActivity">
 
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="1.0" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.0" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_100"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="1.0" />
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_v_background_s"
             android:layout_width="wrap_content"
@@ -32,21 +62,31 @@
             app:layout_constraintGuide_percent="0.986" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_v_setting_s" android:orientation="vertical"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/guide_v_setting_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.812" />
+
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_v_setting_e" android:orientation="vertical"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/guide_v_setting_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             app:layout_constraintGuide_percent="0.931" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_h_setting_s" android:orientation="horizontal"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/guide_h_setting_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.037" />
+
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_h_setting_e" android:orientation="horizontal"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:id="@+id/guide_h_setting_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.104" />
 
         <androidx.constraintlayout.widget.Guideline
@@ -65,24 +105,24 @@
 
         <include layout="@layout/activity_background" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/btn_setting"
-            android:onClick="@{() -> viewModel.goToSetting()}"
-            app:layout_constraintLeft_toLeftOf="@id/guide_v_setting_s"
-            app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
-            app:layout_constraintTop_toTopOf="@id/guide_h_setting_s"
-            app:layout_constraintBottom_toBottomOf="@id/guide_h_setting_e" />
-
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
-            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
-            app:layout_constraintTop_toTopOf="@id/guide_h_5" />
+            app:layout_constraintStart_toStartOf="@id/guide_v_0"
+            app:layout_constraintEnd_toEndOf="@id/guide_v_100"
+            app:layout_constraintTop_toTopOf="@id/guide_h_0"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_100"/>
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{() -> viewModel.goToSetting()}"
+            android:src="@drawable/btn_setting"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_setting_e"
+            app:layout_constraintLeft_toLeftOf="@id/guide_v_setting_s"
+            app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
+            app:layout_constraintTop_toTopOf="@id/guide_h_setting_s" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
