@@ -150,6 +150,141 @@
         android:layout_width="wrap_content" android:layout_height="wrap_content"
         app:layout_constraintGuide_percent="0.906" />
 
+
+    // 만땅 Layout - Start
+    // 공통(왼쪽, 오른쪽)
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.102" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.896" />
+
+    // 결과창 - 이번 한 결과 title
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_title1_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.222" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_title1_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.264" />
+
+    // 결과창 - 이번 한 결과 content
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.272" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.454" />
+
+    // 결과창 - 라운드 결과 title
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_title2_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.482" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_title2_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.524" />
+
+    // 결과창 - 그림자
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.700" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.743" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.048" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.950" />
+
+    // 결과창 - 라운드 결과 content
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.537" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.719" />
+
+    // 결과창 - RE 게임 버튼
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.791" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.850" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.326" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.673" />
+    // 만땅 Layout - End
     <!-- end of Horizontal -->
 
 
@@ -167,6 +302,19 @@
         app:srcCompat="@drawable/play_background" />
 
     <ImageView
+        android:id="@+id/play_image_open"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_open_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_open_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_open_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_open_e"
+        app:srcCompat="@drawable/button_play_open" />
+
+    <ImageView
         android:id="@+id/play_image_dashboard"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -177,6 +325,18 @@
         app:layout_constraintTop_toTopOf="@id/guide_h_dashboard_s"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_dashboard_e"
         app:srcCompat="@drawable/play_dashboard" />
+
+    <ImageView
+        android:id="@+id/play_image_card0"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_card_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_card_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
+        />
 
     <ImageView
         android:id="@+id/play_image_card1"
@@ -208,12 +368,11 @@
         android:layout_height="0dp"
         android:scaleType="fitXY"
         android:tag="BUTTON"
-        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_card_result1_s"
         app:layout_constraintRight_toRightOf="@id/guide_v_card_result1_e"
         app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
-        app:srcCompat="@drawable/card_back" />
+        />
 
     <ImageView
         android:id="@+id/play_image_card4"
@@ -221,12 +380,11 @@
         android:layout_height="0dp"
         android:scaleType="fitXY"
         android:tag="BUTTON"
-        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_card_result2_s"
         app:layout_constraintRight_toRightOf="@id/guide_v_card_result2_e"
         app:layout_constraintTop_toTopOf="@id/guide_h_card_s"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_card_e"
-        app:srcCompat="@drawable/card_back" />
+        />
 
     <!-- end of contents -->
 
@@ -258,19 +416,6 @@
         app:layout_constraintTop_toTopOf="@id/guide_h_exit_s"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_exit_e"
         app:srcCompat="@drawable/button_room_exit" />
-
-    <ImageView
-        android:id="@+id/play_image_open"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:tag="BUTTON"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="@id/guide_v_open_s"
-        app:layout_constraintRight_toRightOf="@id/guide_v_open_e"
-        app:layout_constraintTop_toTopOf="@id/guide_h_open_s"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_open_e"
-        app:srcCompat="@drawable/button_play_open" />
 
     <ImageView
         android:id="@+id/play_image_re"
@@ -328,6 +473,15 @@
 
 
 
+    <FrameLayout
+        android:id="@+id/room_shuffle_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_start"
+        app:layout_constraintRight_toRightOf="@id/guide_v_end"
+        app:layout_constraintTop_toTopOf="@id/guide_h_4"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_8" />
 
 
     <!-- temp -->
@@ -335,6 +489,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="top|center"
+        android:visibility="gone"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
 
@@ -366,5 +521,95 @@
             android:text="Reset" />
     </FrameLayout>
     <!-- end of temp -->
+
+    // 게임 결과 창
+    <FrameLayout
+        android:id="@+id/fragment_container_play_result"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#CC000000"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+        app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
+        app:layout_constraintTop_toTopOf="@id/guide_h_5"/>
+
+    <ImageView
+        android:id="@+id/play_result_title1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_title1_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_title1_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_right"
+        app:srcCompat="@drawable/result_title1" />
+
+    <ImageView
+        android:id="@+id/play_result_content1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content1_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content1_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_right"
+        app:srcCompat="@drawable/result_content1" />
+
+    <ImageView
+        android:id="@+id/play_result_title2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_title2_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_title2_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_right"
+        app:srcCompat="@drawable/result_title2" />
+
+    <ImageView
+        android:id="@+id/play_result_shadow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_shadow_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_shadow_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_shadow_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_shadow_right"
+        app:srcCompat="@drawable/result_shadow" />
+
+    <ImageView
+        android:id="@+id/play_result_content2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_right"
+        app:srcCompat="@drawable/result_content2" />
+
+    <ImageView
+        android:id="@+id/play_result_ReButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_ReRutton_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_ReRutton_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_ReRutton_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_ReRutton_right"
+        app:srcCompat="@drawable/result_rebutton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

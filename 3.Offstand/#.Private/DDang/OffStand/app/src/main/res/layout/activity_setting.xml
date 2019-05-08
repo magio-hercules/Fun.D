@@ -366,13 +366,13 @@
             android:id="@+id/image_background_table"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:scaleType="fitCenter"
+            android:scaleType="fitXY"
             app:layout_constraintTop_toTopOf="@id/guide_h_5"
             app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
             app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
             app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:srcCompat="@drawable/me_character_back" />
+            app:srcCompat="@drawable/me_character_back"
+            app:layout_constraintHorizontal_bias="1.0"/>
 
         <ImageView
             android:id="@+id/me_character_back"

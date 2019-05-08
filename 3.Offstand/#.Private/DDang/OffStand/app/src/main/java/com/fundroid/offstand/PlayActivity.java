@@ -95,6 +95,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // 잔여 게임
 
 
+    // 만땅 - 게임 결과 화면
+    FrameLayout result_back;
+    ImageView result_title1;
+    ImageView result_title2;
+    ImageView result_content1;
+    ImageView result_content2;
+    ImageView result_shadow;
+    ImageView result_rebutton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,6 +190,25 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         initTouchListener();
 
         initButton(true);
+
+        // 만땅 - 셋팅
+        result_back = (FrameLayout) findViewById(R.id.fragment_container_play_result);
+        result_title1 = (ImageView) findViewById(R.id.play_result_title1);
+        result_title2 = (ImageView) findViewById(R.id.play_result_title2);
+        result_content1 = (ImageView) findViewById(R.id.play_result_content1);
+        result_content2 = (ImageView) findViewById(R.id.play_result_content2);
+        result_shadow = (ImageView) findViewById(R.id.play_result_shadow);
+        result_rebutton = (ImageView) findViewById(R.id.play_result_ReButton);
+
+
+        // 만땅 - 기존에 안보이게 셋팅
+        result_back.setVisibility(View.GONE);
+        result_title1.setVisibility(View.GONE);
+        result_title2.setVisibility(View.GONE);
+        result_content1.setVisibility(View.GONE);
+        result_content2.setVisibility(View.GONE);
+        result_shadow.setVisibility(View.GONE);
+        result_rebutton.setVisibility(View.GONE);
     }
 
 
@@ -632,6 +660,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     case R.id.play_image_result:
                         image_result.setPressed(false);
                         doResult();
+                        Game_Result();  // 만땅
                         break;
                     case R.id.play_image_jokbo:
                         image_jokbo.setPressed(false);
@@ -671,4 +700,39 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
         return true;
     }
+
+    // 만땅 - 게임 결과 창
+    // 결과보기 눌렀을 경우 Event
+    @OnClick(R.id.play_image_result)
+    public void Game_Result(){
+        Log.d(TAG, "Click Game_Result");
+
+        result_back.setVisibility(View.VISIBLE);
+        result_title1.setVisibility(View.VISIBLE);
+        result_title2.setVisibility(View.VISIBLE);
+        result_content1.setVisibility(View.VISIBLE);
+        result_content2.setVisibility(View.VISIBLE);
+        result_shadow.setVisibility(View.VISIBLE);
+        result_rebutton.setVisibility(View.VISIBLE);
+    }
+
+    // 결과보기 - Re 게임 버튼 눌렀을 경우 Event
+    @OnClick(R.id.play_result_ReButton)
+    public void Game_Result_ReButton(){
+
+        result_back.setVisibility(View.GONE);
+        result_title1.setVisibility(View.GONE);
+        result_title2.setVisibility(View.GONE);
+        result_content1.setVisibility(View.GONE);
+        result_content2.setVisibility(View.GONE);
+        result_shadow.setVisibility(View.GONE);
+        result_rebutton.setVisibility(View.GONE);
+    }
+
+    // 해당 id 뒤에 있는 객체에 대해서 이벤트 처리를 어떻게 할 것인가를 정하는 기능([return] true : 불가능 / false : 가능)
+    @OnTouch(R.id.fragment_container_play_result)
+    public boolean Click_block(){
+        return true;
+    }
+    // 만땅 end
 }
