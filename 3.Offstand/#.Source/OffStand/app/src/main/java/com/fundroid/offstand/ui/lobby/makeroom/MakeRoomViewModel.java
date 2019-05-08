@@ -22,6 +22,7 @@ import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.FEB;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
@@ -37,8 +38,8 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
                 .observeOn(schedulerProvider.ui())
                 .subscribe(result -> {
                     Log.d("lsc", "MakeRoomViewModel result " + result);
-                    switch ((int) result) {
-                        case RESULT_OK:
+                    switch (((ApiBody)result).getNo()) {
+                        case API_ROOM_INFO:
                             getNavigator().goToRoomActivity();
                             break;
                     }

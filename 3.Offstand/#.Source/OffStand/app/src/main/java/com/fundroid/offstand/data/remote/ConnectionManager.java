@@ -77,7 +77,7 @@ public class ConnectionManager {
         }
     }
 
-    public static Observable<Integer> serverProcessor(String apiBodyStr) {
+    public static Observable<ApiBody> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
 
         switch (apiBody.getNo()) {
@@ -94,7 +94,7 @@ public class ConnectionManager {
                 return Observable.zip(
                         sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<Attendee>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList())), newUserServerIndex),
                         broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), newUserServerIndex),
-                        (firstOne, secondOne) -> RESULT_OK
+                        (firstOne, secondOne) -> new ApiBody(API_ROOM_INFO)
                 );
 
             case API_READY:
@@ -111,9 +111,8 @@ public class ConnectionManager {
             case API_SHUFFLE:
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).collect(Collectors.toList()))
                         .flatMap(pair -> {
-                            Log.d("lsc","pair " + pair);
+                            Log.d("lsc", "pair " + pair.second.getCards().first + ", " + pair.second.getCards().second);
                             return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
-//                            return sendMessage(new ApiBody(API_SHUFFLE, pair.second.getCard1(), pair.second.getCard2()), pair.first);
                         });
 
             case API_DIE:
@@ -122,7 +121,7 @@ public class ConnectionManager {
 
             case API_CARD_OPEN:
                 // 모든 유저 카드 오픈 시 방장 게임 시작 버튼 활성화
-                return Observable.just(RESULT_OK);
+                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
 
             case API_OUT:
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
@@ -130,11 +129,12 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             default:
-                return Observable.just(RESULT_API_NOT_DEFINE);
+                Log.d("lsc","serverProcessor default " + apiBody.getNo());
+                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
         }
     }
 
-    private static Observable<Integer> closeServerSocket(int seatNo) {
+    private static Observable<ApiBody> closeServerSocket(int seatNo) {
         return Observable.create(subscriber -> {
             for (int index = 0; index < serverThreads.length; index++) {
                 if (serverThreads[index] != null && serverThreads[index].getAttendee() != null) {
@@ -166,49 +166,45 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
                 serverThreads.get(i).getAttendee().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
-                serverThreads.get(i).getAttendee().setCard1(cards.get(i * 2));
-                serverThreads.get(i).getAttendee().setCard2(cards.get((i * 2) + 1));
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getAttendee()));
             }
-            Log.d("lsc","shuffle 0 " + serverThreads.get(0).getAttendee());
-            Log.d("lsc","shuffle 1 " + serverThreads.get(1).getAttendee());
             subscriber.onComplete();
         });
     }
 
-    public static Observable<Integer> broadcastMessage(ApiBody message) {
+    public static Observable<ApiBody> broadcastMessage(ApiBody message) {
         return Observable.create(subscriber -> {
 
             for (int index = 0; index < serverThreads.length; index++) {
                 if (serverThreads[index] != null)
                     serverThreads[index].getStreamToClient().writeUTF(message.toString());
             }
-            subscriber.onNext(RESULT_OK);
+            subscriber.onNext(message);
         });
     }
 
-    private static Observable<Integer> broadcastMessageExceptOne(ApiBody message, int serverIndex) {
+    private static Observable<ApiBody> broadcastMessageExceptOne(ApiBody message, int serverIndex) {
         return Observable.create(subscriber -> {
             for (int index = 0; index < serverThreads.length; index++) {
                 if (serverThreads[index] != null && index != serverIndex)
                     serverThreads[index].getStreamToClient().writeUTF(message.toString());
             }
-            subscriber.onNext(RESULT_OK);
+            subscriber.onNext(message);
         });
     }
 
-    private static Observable<Integer> sendMessage(ApiBody message, int serverIndex) {
+    private static Observable<ApiBody> sendMessage(ApiBody message, int serverIndex) {
         return Observable.create(subscriber -> {
             serverThreads[serverIndex].getStreamToClient().writeUTF(message.toString());
-            subscriber.onNext(RESULT_OK);
+            subscriber.onNext(message);
         });
     }
 
-    private static Observable<Integer> sendMessage(ApiBody message, ServerThread serverThread) {
-        Log.d("lsc","sendMessage " + message);
+    private static Observable<ApiBody> sendMessage(ApiBody message, ServerThread serverThread) {
+        Log.d("lsc", "sendMessage " + message);
         return Observable.create(subscriber -> {
             serverThread.getStreamToClient().writeUTF(message.toString());
-            subscriber.onNext(RESULT_OK);
+            subscriber.onNext(message);
         });
     }
 

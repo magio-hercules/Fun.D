@@ -51,6 +51,10 @@ public class ApiBody {
         return attendees;
     }
 
+    public ApiBody(Integer no) {
+        this.no = no;
+    }
+
     public ApiBody(Integer no, Attendee attendee) {
         this.no = no;
         this.attendee = attendee;

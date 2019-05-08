@@ -21,6 +21,7 @@ import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.JAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
@@ -33,13 +34,13 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
         getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(message -> {
-                    Log.d("lsc", "FindRoomViewModel message " + message);
-//                    switch ((int) message) {
-//                        case RESULT_OK:
+                .subscribe(result -> {
+                    Log.d("lsc", "FindRoomViewModel result " + result);
+                    switch (((ApiBody)result).getNo()) {
+                        case API_ROOM_INFO:
                             getNavigator().goToRoomActivity();
-//                            break;
-//                    }
+                            break;
+                    }
                 }, onError -> {
                     Log.d("lsc","FindRoomViewModel onError " + onError);
                 })

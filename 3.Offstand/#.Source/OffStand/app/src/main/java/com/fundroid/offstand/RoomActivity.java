@@ -31,7 +31,11 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
 //public class RoomActivity extends AppCompatActivity {
@@ -100,16 +104,23 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room4);
 
-        Log.d("lsc", "test onCreate");
-        //test
         RxEventBus.getInstance().getEvents(String.class)
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                    Log.d("lsc", "test result " + result);
-                    switch ((int) result) {
-                        case RESULT_OK:
+                    Log.d("lsc", "RoomActivity server result " + result);
+                    switch (((ApiBody) result).getNo()) {
+                        case API_READY_BR:
+                            break;
+
+                        case API_READY_CANCEL_BR:
+                            break;
+
+                        case API_SHUFFLE_BR:
+                            break;
+
+                        case API_OUT_BR:
                             break;
                     }
 
