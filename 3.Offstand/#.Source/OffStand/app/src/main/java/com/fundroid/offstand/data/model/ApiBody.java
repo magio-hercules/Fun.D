@@ -1,16 +1,13 @@
 package com.fundroid.offstand.data.model;
 
-import com.annimon.stream.Stream;
 import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedMap;
 
-import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
 public class ApiBody {
 
@@ -79,10 +76,10 @@ public class ApiBody {
     public ApiBody(Integer no, Integer seatNo1OrCardNo1, Integer seatNo2OrCardNo2) {
         this.no = no;
 
-        if (no == API_MOVE) {
+        if (no == API_MOVE_BR) {
             seatNo = seatNo1OrCardNo1;
             seatNo2 = seatNo2OrCardNo2;
-        } else if (no == API_SHUFFLE) {
+        } else if (no == API_SHUFFLE_BR) {
             cardNo1 = seatNo1OrCardNo1;
             cardNo2 = seatNo2OrCardNo2;
         } else {

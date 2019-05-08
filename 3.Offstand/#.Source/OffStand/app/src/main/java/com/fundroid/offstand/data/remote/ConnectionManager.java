@@ -110,10 +110,7 @@ public class ConnectionManager {
 
             case API_SHUFFLE:
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).collect(Collectors.toList()))
-                        .flatMap(pair -> {
-                            Log.d("lsc", "pair " + pair.second.getCards().first + ", " + pair.second.getCards().second);
-                            return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
-                        });
+                        .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
 
             case API_DIE:
                 // 죽지 않은 User가 1명 밖에 안남을 경우 게임 결과 이동
@@ -129,7 +126,7 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             default:
-                Log.d("lsc","serverProcessor default " + apiBody.getNo());
+                Log.d("lsc", "serverProcessor default " + apiBody.getNo());
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
         }
     }
@@ -201,7 +198,6 @@ public class ConnectionManager {
     }
 
     private static Observable<ApiBody> sendMessage(ApiBody message, ServerThread serverThread) {
-        Log.d("lsc", "sendMessage " + message);
         return Observable.create(subscriber -> {
             serverThread.getStreamToClient().writeUTF(message.toString());
             subscriber.onNext(message);

@@ -35,6 +35,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
@@ -623,7 +624,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void test() {
-        ConnectionManager.sendMessage(new ApiBody(API_READY, 3))
+        ConnectionManager.sendMessage(new ApiBody(API_SHUFFLE))
+//        ConnectionManager.sendMessage(new ApiBody(API_READY, 3))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
