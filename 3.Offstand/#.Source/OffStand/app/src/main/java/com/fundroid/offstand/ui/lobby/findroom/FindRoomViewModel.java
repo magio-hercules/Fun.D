@@ -4,9 +4,9 @@ package com.fundroid.offstand.ui.lobby.findroom;
 import android.util.Log;
 
 import com.fundroid.offstand.data.DataManager;
-import com.fundroid.offstand.data.model.Attendee;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
+import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.RxEventBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
@@ -19,9 +19,9 @@ import io.reactivex.Completable;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
-import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.JAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
+import static com.fundroid.offstand.model.User.EnumAvatar.JAN;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
@@ -36,13 +36,13 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 .observeOn(schedulerProvider.ui())
                 .subscribe(result -> {
                     Log.d("lsc", "FindRoomViewModel result " + result);
-                    switch (((ApiBody)result).getNo()) {
+                    switch (((ApiBody) result).getNo()) {
                         case API_ROOM_INFO:
                             getNavigator().goToRoomActivity();
                             break;
                     }
                 }, onError -> {
-                    Log.d("lsc","FindRoomViewModel onError " + onError);
+                    Log.d("lsc", "FindRoomViewModel onError " + onError);
                 })
         );
     }
@@ -51,7 +51,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
         Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
-                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN.getIndex(), 10, 1))))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(false, "이승철", JAN.getIndex(), 10, 1))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(() -> {

@@ -1,5 +1,7 @@
 package com.fundroid.offstand.model;
 
+import androidx.core.util.Pair;
+
 public class User {
 
     public enum EnumStatus {
@@ -36,7 +38,7 @@ public class User {
 
     private int id;
     private int status; // 0(Standby), 1(ready), 2(game), 3(result)
-    private int seat; // 1~10
+    private Integer seat; // 1~10
     private int avatar; // 1~10
     private String name;
 
@@ -49,6 +51,7 @@ public class User {
     // card
     private int card1;
     private int card2;
+    private Pair<Integer, Integer> cards;
 
     // 족보
     private int level;
@@ -59,7 +62,7 @@ public class User {
         new User(-1, false, 0, 0, "");
     }
 
-
+    //deprecated
     public User(int id, boolean host, int seat, int avatar, String name) {
         this.id = id;
         this.host = host;
@@ -73,6 +76,14 @@ public class User {
         this.seat = seat;
         this.avatar = avatar;
         this.name = name;
+    }
+
+    public User(boolean host, String name, int avatar, int win, int lose) {
+        this.host = host;
+        this.name = name;
+        this.avatar = avatar;
+        this.win = win;
+        this.lose = lose;
     }
 
     public void doBan() {
@@ -148,11 +159,11 @@ public class User {
         this.status = status;
     }
 
-    public int getSeat() {
+    public Integer getSeat() {
         return seat;
     }
 
-    public void setSeat(int seat) {
+    public void setSeat(Integer seat) {
         this.seat = seat;
     }
 
@@ -202,6 +213,14 @@ public class User {
 
     public void setCard2(int card2) {
         this.card2 = card2;
+    }
+
+    public Pair<Integer, Integer> getCards() {
+        return cards;
+    }
+
+    public void setCards(Pair<Integer, Integer> cards) {
+        this.cards = cards;
     }
 
     @Override

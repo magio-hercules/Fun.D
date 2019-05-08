@@ -2,7 +2,7 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
-import com.fundroid.offstand.data.model.Attendee;
+import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.utils.rx.RxEventBus;
 
 import java.io.DataInputStream;
@@ -14,7 +14,7 @@ public class ServerThread implements Runnable {
     private Socket socket;
     private DataInputStream streamByClient = null;
     private DataOutputStream streamToClient = null;
-    private Attendee attendee;
+    private User user;
 
     public DataInputStream getStreamByClient() {
         return streamByClient;
@@ -24,12 +24,12 @@ public class ServerThread implements Runnable {
         return streamToClient;
     }
 
-    public Attendee getAttendee() {
-        return attendee;
+    public User getUser() {
+        return user;
     }
 
-    public void setAttendee(Attendee attendee) {
-        this.attendee = attendee;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Socket getSocket() {

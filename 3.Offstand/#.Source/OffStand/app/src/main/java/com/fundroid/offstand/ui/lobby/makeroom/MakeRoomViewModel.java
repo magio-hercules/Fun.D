@@ -5,8 +5,8 @@ import android.util.Log;
 
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
-import com.fundroid.offstand.data.model.Attendee;
 import com.fundroid.offstand.data.remote.ConnectionManager;
+import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.RxEventBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
@@ -20,9 +20,9 @@ import io.reactivex.Single;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
-import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.FEB;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
+import static com.fundroid.offstand.model.User.EnumAvatar.FEB;
 
 public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
@@ -60,7 +60,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
                 .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
-                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB.getIndex(), 1, 10))))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(true, "홍길동", FEB.getIndex(), 1, 10))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.io())
                 .subscribe(() -> {

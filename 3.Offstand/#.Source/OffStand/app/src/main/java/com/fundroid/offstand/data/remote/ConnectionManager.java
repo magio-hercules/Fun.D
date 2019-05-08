@@ -8,7 +8,7 @@ import androidx.core.util.Pair;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
-import com.fundroid.offstand.data.model.Attendee;
+import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -84,16 +84,16 @@ public class ConnectionManager {
             case API_ENTER_ROOM:
                 int newUserServerIndex = -1;
                 for (int index = 0; index < serverThreads.length; index++) {
-                    if (serverThreads[index] != null && serverThreads[index].getAttendee() == null) {
+                    if (serverThreads[index] != null && serverThreads[index].getUser() == null) {
                         newUserServerIndex = index;
-                        apiBody.getAttendee().setSeatNo(index + 1);
-                        serverThreads[index].setAttendee(apiBody.getAttendee());
+                        apiBody.getUser().setSeat(index + 1);
+                        serverThreads[index].setUser(apiBody.getUser());
                     }
                 }
 
                 return Observable.zip(
-                        sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<Attendee>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getAttendee()).collect(Collectors.toList())), newUserServerIndex),
-                        broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getAttendee()), newUserServerIndex),
+                        sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), newUserServerIndex),
+                        broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), newUserServerIndex),
                         (firstOne, secondOne) -> new ApiBody(API_ROOM_INFO)
                 );
 
@@ -137,8 +137,8 @@ public class ConnectionManager {
     private static Observable<ApiBody> closeServerSocket(int seatNo) {
         return Observable.create(subscriber -> {
             for (int index = 0; index < serverThreads.length; index++) {
-                if (serverThreads[index] != null && serverThreads[index].getAttendee() != null) {
-                    if (serverThreads[index].getAttendee().getSeatNo().equals(seatNo)) {
+                if (serverThreads[index] != null && serverThreads[index].getUser() != null) {
+                    if (serverThreads[index].getUser().getSeat().equals(seatNo)) {
                         serverThreads[index].getSocket().close();
                         serverThreads[index] = null;
                         serverCount--;
@@ -157,7 +157,7 @@ public class ConnectionManager {
         });
     }
 
-    public static Observable<Pair<ServerThread, Attendee>> shuffle(ArrayList<ServerThread> serverThreads) {
+    public static Observable<Pair<ServerThread, User>> shuffle(ArrayList<ServerThread> serverThreads) {
         cards.clear();
         for (int i = 1; i < 21; i++) {
             cards.add(i);
@@ -165,8 +165,8 @@ public class ConnectionManager {
         Collections.shuffle(cards);
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
-                serverThreads.get(i).getAttendee().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
-                subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getAttendee()));
+                serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
+                subscriber.onNext(new Pair(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
             subscriber.onComplete();
         });

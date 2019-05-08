@@ -1,6 +1,7 @@
 package com.fundroid.offstand.data.model;
 
 import com.annimon.stream.Stream;
+import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
@@ -16,10 +17,10 @@ public class ApiBody {
     private Integer no;
 
     @Expose
-    private Attendee attendee;
+    private User user;
 
     @Expose
-    private ArrayList<Attendee> attendees;
+    private ArrayList<User> users;
 
     @Expose
     private Integer seatNo;
@@ -43,26 +44,26 @@ public class ApiBody {
         return no;
     }
 
-    public Attendee getAttendee() {
-        return attendee;
+    public User getUser() {
+        return user;
     }
 
-    public ArrayList<Attendee> getAttendees() {
-        return attendees;
+    public ArrayList<User> getUsers() {
+        return users;
     }
 
     public ApiBody(Integer no) {
         this.no = no;
     }
 
-    public ApiBody(Integer no, Attendee attendee) {
+    public ApiBody(Integer no, User user) {
         this.no = no;
-        this.attendee = attendee;
+        this.user = user;
     }
 
-    public ApiBody(Integer no, ArrayList<Attendee> attendees) {
+    public ApiBody(Integer no, ArrayList<User> users) {
         this.no = no;
-        this.attendees = attendees;
+        this.users = users;
     }
 
     public ApiBody(Integer no, Integer seatNo) {
