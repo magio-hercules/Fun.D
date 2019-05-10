@@ -16,15 +16,12 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
-import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
@@ -41,8 +38,6 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
-
-// 한번에 roomMaxAttendee만큼
 
 public class ConnectionManager {
 
@@ -154,7 +149,7 @@ public class ConnectionManager {
         });
     }
 
-    public static Observable<Pair<ServerThread, User>> shuffle(ArrayList<ServerThread> serverThreads) {
+    private static Observable<Pair<ServerThread, User>> shuffle(ArrayList<ServerThread> serverThreads) {
         cards.clear();
         for (int i = 1; i < 21; i++) {
             cards.add(i);
@@ -163,18 +158,18 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
                 serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
-                subscriber.onNext(new Pair(serverThreads.get(i), serverThreads.get(i).getUser()));
+                subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
             subscriber.onComplete();
         });
     }
 
-    public static Observable<ApiBody> broadcastMessage(ApiBody message) {
+    private static Observable<ApiBody> broadcastMessage(ApiBody message) {
         return Observable.create(subscriber -> {
 
-            for (int index = 0; index < serverThreads.length; index++) {
-                if (serverThreads[index] != null)
-                    serverThreads[index].getStreamToClient().writeUTF(message.toString());
+            for (ServerThread serverThread : serverThreads) {
+                if (serverThread != null)
+                    serverThread.getStreamToClient().writeUTF(message.toString());
             }
             subscriber.onNext(message);
         });
@@ -208,6 +203,14 @@ public class ConnectionManager {
         return Completable.create(subscriber -> {
             clientThread.getStreamToServer().writeUTF(message.toString());
             subscriber.onComplete();
+        });
+    }
+
+    public static Completable figureOut(ArrayList<User> users) {
+        return Completable.create(subscriber -> {
+            for(User user : users) {
+//                user.getCards()
+            }
         });
     }
 }

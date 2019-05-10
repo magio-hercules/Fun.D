@@ -6,7 +6,7 @@ public class User {
 
     public enum EnumStatus {
 
-        STANDBY(0), READY(1), INGAME(2), RESULT(3);
+        STANDBY(0), READY(1), INGAME(2), CARDOPEN(3), DIE(4), RESULT(5);
 
         private int enumStatus;
 
@@ -49,8 +49,6 @@ public class User {
     private int rate;
 
     // card
-    private int card1;
-    private int card2;
     private Pair<Integer, Integer> cards;
 
     // 족보
@@ -197,22 +195,6 @@ public class User {
 
     public void setRate(int rate) {
         this.rate = rate;
-    }
-
-    public int getCard1() {
-        return card1;
-    }
-
-    public void setCard1(int card1) {
-        this.card1 = card1;
-    }
-
-    public int getCard2() {
-        return card2;
-    }
-
-    public void setCard2(int card2) {
-        this.card2 = card2;
     }
 
     public Pair<Integer, Integer> getCards() {
