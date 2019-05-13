@@ -1,6 +1,5 @@
 package com.fundroid.offstand.data.remote;
 
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
@@ -8,7 +7,7 @@ import androidx.core.util.Pair;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
-import com.fundroid.offstand.data.model.Card;
+import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 
@@ -21,6 +20,7 @@ import java.util.Collections;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.data.model.Card.setCardValue;
@@ -33,6 +33,8 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
@@ -41,7 +43,9 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.model.User.EnumStatus.CARDOPEN;
 import static com.fundroid.offstand.model.User.EnumStatus.DIE;
 import static com.fundroid.offstand.model.User.EnumStatus.READY;
@@ -49,12 +53,29 @@ import static com.fundroid.offstand.model.User.EnumStatus.STANDBY;
 
 public class ConnectionManager {
 
+    public enum EnumStatus {
+
+        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3);
+
+        private int enumStatus;
+
+        EnumStatus(int enumStatus) {
+            this.enumStatus = enumStatus;
+        }
+
+        public int getEnumStatus() {
+            return enumStatus;
+        }
+    }
+
     private static ServerThread[] serverThreads;
     private static int serverCount;
     private static ClientThread clientThread;
     private static ServerSocket serverSocket;
     private static int roomPort;
     private static int roomMaxUser;
+    private static EnumStatus roomStatus;
+
     private static ArrayList<Integer> cards = new ArrayList<>();
 
     public static Completable createServerThread(int roomPort, int roomMaxUser) {
@@ -63,9 +84,7 @@ public class ConnectionManager {
         return Completable.create(subscriber -> {
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
-//            if ((Stream.of(serverThreads).filter(thread -> thread == null).count()) == roomMaxUser) {
             subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
-//            }
             socketAcceptLoop();
         });
     }
@@ -103,16 +122,21 @@ public class ConnectionManager {
                 // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
                         .andThen(getUserStatus())
-                        .andThen(broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo())));
+                        .concatMap(roomStatus -> setRoomStatus(roomStatus))
+                        .concatMap(result -> broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo())));
 
             case API_READY_CANCEL:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
                         .andThen(getUserStatus())
-                        .andThen(broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo())));
+                        .concatMap(roomStatus -> setRoomStatus(roomStatus))
+                        .concatMap(result -> broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo())));
 
             case API_BAN:
                 return broadcastMessageExceptOne(new ApiBody(API_BAN_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
+
+            case API_MOVE:
+                return broadcastMessage(new ApiBody(API_MOVE_BR, apiBody.getSeatNo(), apiBody.getSeatNo2()));
 
             case API_SHUFFLE:
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).collect(Collectors.toList()))
@@ -189,27 +213,44 @@ public class ConnectionManager {
         return Completable.complete();
     }
 
-    private static Completable getUserStatus() {
-        // 방장 제외한 나머지 User 리스트
-        // 모두 ready 면 방장에게 셔플 가능 api 전송
-        int userCountExceptHost = (int)Stream.of(serverThreads)
-                .filterNot(serverThread -> serverThread == null)
-                .filterNot(serverThread -> serverThread.getUser().isHost())
-                .count();
+    private static Observable<EnumStatus> getUserStatus() {
+        return Observable.create(subscriber -> {
+            // 방장 제외한 나머지 User 리스트
+            // 모두 ready 면 방장에게 셔플 가능 api 전송
+            int userCountExceptHost = (int) Stream.of(serverThreads)
+                    .filterNot(serverThread -> serverThread == null)
+                    .filterNot(serverThread -> serverThread.getUser().isHost())
+                    .count();
 
-        int readyUserCount = (int)Stream.of(serverThreads)
-                .filterNot(serverThread -> serverThread == null)
-                .filterNot(serverThread -> serverThread.getUser().isHost())
-                .filter(serverThread -> serverThread.getUser().getStatus() == READY.getEnumStatus())
-                .count();
+            int readyUserCount = (int) Stream.of(serverThreads)
+                    .filterNot(serverThread -> serverThread == null)
+                    .filterNot(serverThread -> serverThread.getUser().isHost())
+                    .filter(serverThread -> serverThread.getUser().getStatus() == READY.getEnumStatus())
+                    .count();
 
-        Log.d("lsc","getUserStatus userCount " + userCountExceptHost);
-        Log.d("lsc","getUserStatus readyUserCount " + readyUserCount);
-        if(userCountExceptHost == readyUserCount) {
+            if (userCountExceptHost == readyUserCount) {
+                roomStatus = EnumStatus.SHUFFLE_AVAILABLE;
+            } else {
+                roomStatus = EnumStatus.SHUFFLE_NOT_AVAILABLE;
+            }
 
+            subscriber.onNext(roomStatus);
+        });
+    }
+
+    private static Observable<ApiBody> setRoomStatus(EnumStatus roomStatus) {
+        //Todo : Wifi Direct 연동 후, Room DTO 랑 연결하자 RoomStatus
+        switch (roomStatus) {
+            case SHUFFLE_AVAILABLE:
+                return sendMessage(new ApiBody(API_SHUFFLE_AVAILABLE), serverThreads[0]);
+
+            case SHUFFLE_NOT_AVAILABLE:
+                return sendMessage(new ApiBody(API_SHUFFLE_NOT_AVAILABLE), serverThreads[0]);
+
+            default:
+                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
         }
 
-        return Completable.complete();
     }
 
     private static Observable<Pair<ServerThread, User>> shuffle(ArrayList<ServerThread> serverThreads) {
@@ -223,6 +264,7 @@ public class ConnectionManager {
                 serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
+            roomStatus = EnumStatus.INGAME;
             subscriber.onComplete();
         });
     }
