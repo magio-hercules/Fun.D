@@ -2,6 +2,9 @@ package com.fundroid.offstand.model;
 
 import androidx.core.util.Pair;
 
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+
 public class User {
 
     public enum EnumStatus {
@@ -37,9 +40,15 @@ public class User {
     private boolean host;
 
     private int id;
+
+    @Expose
     private int status; // 0(Standby), 1(ready), 2(game), 3(result)
+
+    @Expose
     private Integer seat; // 1~10
+
     private int avatar; // 1~10
+
     private String name;
 
     // 전적
@@ -49,11 +58,15 @@ public class User {
     private int rate;
 
     // card
+    @Expose
     private Pair<Integer, Integer> cards;
 
     // 족보
-    private int level;
-    private int level_score;
+    @Expose
+    private int cardLevel;
+
+    @Expose
+    private int cardSum;
 
 
     public User() {
@@ -133,20 +146,20 @@ public class User {
         this.draw = draw;
     }
 
-    public int getLevel() {
-        return level;
+    public int getCardLevel() {
+        return cardLevel;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setCardLevel(int cardLevel) {
+        this.cardLevel = cardLevel;
     }
 
-    public int getLevel_score() {
-        return level_score;
+    public int getCardSum() {
+        return cardSum;
     }
 
-    public void setLevel_score(int level_score) {
-        this.level_score = level_score;
+    public void setCardSum(int cardSum) {
+        this.cardSum = cardSum;
     }
 
     public int getStatus() {
@@ -207,13 +220,14 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "host=" + host +
-                ", id=" + id +
-                ", seat=" + seat +
-                ", avatar=" + avatar +
-                ", name='" + name + '\'' +
-                '}';
+//        return "User{" +
+//                "host=" + host +
+//                ", id=" + id +
+//                ", seat=" + seat +
+//                ", avatar=" + avatar +
+//                ", name='" + name + '\'' +
+//                '}';
+        return new Gson().toJson(this);
     }
 }
 

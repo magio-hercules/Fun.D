@@ -8,6 +8,7 @@ import androidx.core.util.Pair;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
+import com.fundroid.offstand.data.model.Card;
 import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 
@@ -22,6 +23,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
+import static com.fundroid.offstand.data.model.Card.setCardValue;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
@@ -29,6 +31,8 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
@@ -38,6 +42,10 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
+import static com.fundroid.offstand.model.User.EnumStatus.CARDOPEN;
+import static com.fundroid.offstand.model.User.EnumStatus.DIE;
+import static com.fundroid.offstand.model.User.EnumStatus.READY;
+import static com.fundroid.offstand.model.User.EnumStatus.STANDBY;
 
 public class ConnectionManager {
 
@@ -74,7 +82,6 @@ public class ConnectionManager {
 
     public static Observable<ApiBody> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
-
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
                 int newUserServerIndex = -1;
@@ -94,10 +101,14 @@ public class ConnectionManager {
 
             case API_READY:
                 // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
-                return broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo()));
+                return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
+                        .andThen(getUserStatus())
+                        .andThen(broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo())));
 
             case API_READY_CANCEL:
-                return broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo()));
+                return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
+                        .andThen(getUserStatus())
+                        .andThen(broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo())));
 
             case API_BAN:
                 return broadcastMessageExceptOne(new ApiBody(API_BAN_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
@@ -109,11 +120,14 @@ public class ConnectionManager {
 
             case API_DIE:
                 // 죽지 않은 User가 1명 밖에 안남을 경우 게임 결과 이동
-                return broadcastMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo()));
+                return setUserStatus(apiBody.getNo(), apiBody.getSeatNo()).andThen(broadcastMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo())));
 
             case API_CARD_OPEN:
-                // 모든 유저 카드 오픈 시 방장 게임 시작 버튼 활성화
+                // 모든 유저 카드 오픈 시 방장 게임 결과 버튼 활성화
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
+
+            case API_GAME_RESULT:
+                return Observable.just(new ApiBody(API_GAME_RESULT_BR, 1));
 
             case API_OUT:
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
@@ -121,8 +135,7 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             default:
-                Log.d("lsc", "serverProcessor default " + apiBody.getNo());
-                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
+                return Observable.just(apiBody);
         }
     }
 
@@ -147,6 +160,56 @@ public class ConnectionManager {
             new Thread(clientThread).start();
             subscriber.onComplete();
         });
+    }
+
+    private static Completable setUserStatus(int apiNo, int seatNo) {
+        for (ServerThread serverThread : Stream.of(serverThreads).filter(serverThread -> serverThread != null).collect(Collectors.toList())) {
+            if (serverThread.getUser().getSeat().equals(seatNo)) {
+                switch (apiNo) {
+                    case API_READY:
+                        serverThread.getUser().setStatus(READY.getEnumStatus());
+                        break;
+
+                    case API_READY_CANCEL:
+                        serverThread.getUser().setStatus(STANDBY.getEnumStatus());
+                        break;
+
+                    case API_CARD_OPEN:
+                        serverThread.getUser().setStatus(CARDOPEN.getEnumStatus());
+                        break;
+
+                    case API_DIE:
+                        serverThread.getUser().setStatus(DIE.getEnumStatus());
+                        break;
+                }
+            }
+        }
+
+
+        return Completable.complete();
+    }
+
+    private static Completable getUserStatus() {
+        // 방장 제외한 나머지 User 리스트
+        // 모두 ready 면 방장에게 셔플 가능 api 전송
+        int userCountExceptHost = (int)Stream.of(serverThreads)
+                .filterNot(serverThread -> serverThread == null)
+                .filterNot(serverThread -> serverThread.getUser().isHost())
+                .count();
+
+        int readyUserCount = (int)Stream.of(serverThreads)
+                .filterNot(serverThread -> serverThread == null)
+                .filterNot(serverThread -> serverThread.getUser().isHost())
+                .filter(serverThread -> serverThread.getUser().getStatus() == READY.getEnumStatus())
+                .count();
+
+        Log.d("lsc","getUserStatus userCount " + userCountExceptHost);
+        Log.d("lsc","getUserStatus readyUserCount " + readyUserCount);
+        if(userCountExceptHost == readyUserCount) {
+
+        }
+
+        return Completable.complete();
     }
 
     private static Observable<Pair<ServerThread, User>> shuffle(ArrayList<ServerThread> serverThreads) {
@@ -208,8 +271,9 @@ public class ConnectionManager {
 
     public static Completable figureOut(ArrayList<User> users) {
         return Completable.create(subscriber -> {
-            for(User user : users) {
+            for (User user : users) {
 //                user.getCards()
+                setCardValue(user.getCards());
             }
         });
     }

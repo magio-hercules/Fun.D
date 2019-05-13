@@ -624,8 +624,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void test() {
-        ConnectionManager.sendMessage(new ApiBody(API_SHUFFLE))
-//        ConnectionManager.sendMessage(new ApiBody(API_READY, 3))
+//        ConnectionManager.sendMessage(new ApiBody(API_SHUFFLE))
+        ConnectionManager.sendMessage(new ApiBody(API_READY, 1))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
