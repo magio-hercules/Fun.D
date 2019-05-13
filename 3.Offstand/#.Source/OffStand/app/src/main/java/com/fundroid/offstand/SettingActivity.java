@@ -31,8 +31,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
     static SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
-    static String userNameCheck = sharedPreferences.getString("userName", "");
-
     EditText userName;
 
     ImageView setting_character;
@@ -108,8 +106,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
         userName.setText(sharedPreferences.getString("userName", ""));
         setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
-
-        userNameCheck = sharedPreferences.getString("userName","");
 
 
         sharedPreferences.getString("userName","");
