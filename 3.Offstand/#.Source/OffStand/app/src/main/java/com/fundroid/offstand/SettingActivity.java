@@ -28,10 +28,10 @@ import butterknife.OnTouch;
 public class SettingActivity extends AppCompatActivity implements View.OnTouchListener {
     static final String TAG = "[SETTING]";
 
-    static String userNameCheck = "";
-
-    SharedPreferences sharedPreferences;
+    static SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+
+    static String userNameCheck = sharedPreferences.getString("userName", "");
 
     EditText userName;
 
