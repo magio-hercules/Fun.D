@@ -29,12 +29,12 @@ public class Client {
  * 한줄로 정리해서 보내기
  *
  * 대기실 입장
- * {"attendee":{"avatar":3,"lose":5,"name":"테스트","status":0,"win":1},"no":1}
+ * {"user":{"avatar":3,"lose":5,"name":"테스트","status":0,"win":1},"no":1}
  *
  * 레디
  * {"no":4,"seatNo":2}
- * 레디
- *  * {"no":4,"seatNo":2}
+ * 레디 취소
+ * {"no":6,"seatNo":2}
  * 죽기
  * {"no":9,"seatNo":2}
  * 카드 오픈
