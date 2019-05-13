@@ -15,8 +15,6 @@
         android:id="@+id/layout_lobby"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         tools:context=".ui.lobby.LobbyActivity">
 
         <androidx.constraintlayout.widget.Guideline
@@ -288,6 +286,7 @@
         // TextView Guide End
 
         // 통계화면 가이드 라인 Start
+
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_stats_item_left"
             android:layout_width="wrap_content"
@@ -367,12 +366,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            app:layout_constraintTop_toTopOf="@id/guide_h_5"
             app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
-            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
             app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
-            app:srcCompat="@drawable/me_character_back"
-            app:layout_constraintHorizontal_bias="1.0"/>
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
+            app:layout_constraintTop_toTopOf="@id/guide_h_5"
+            app:srcCompat="@drawable/me_character_back" />
 
         <ImageView
             android:id="@+id/me_character_back"
@@ -415,7 +414,11 @@
             app:layout_constraintBottom_toBottomOf="@+id/guide_h_nameText_bottom"
             app:layout_constraintLeft_toLeftOf="@+id/guide_v_nameText_left"
             app:layout_constraintRight_toRightOf="@+id/guide_v_nameText_right"
-            app:layout_constraintTop_toTopOf="@+id/guide_h_nameText_top" />
+            app:layout_constraintTop_toTopOf="@+id/guide_h_nameText_top">
+
+            <requestFocus />
+
+        </EditText>
 
         <ImageView
             android:id="@+id/setting_Shadow"
@@ -454,7 +457,7 @@
             app:layout_constraintLeft_toLeftOf="@id/guide_leftButton_left"
             app:layout_constraintRight_toRightOf="@id/guide_leftButton_right"
             app:layout_constraintTop_toTopOf="@id/guide_commonButton_top"
-            app:srcCompat="@drawable/button_setting_left"/>
+            app:srcCompat="@drawable/button_setting_left" />
 
         <ImageView
             android:id="@+id/setting_RightButton"
@@ -467,7 +470,7 @@
             app:layout_constraintLeft_toLeftOf="@id/guide_rightButton_left"
             app:layout_constraintRight_toRightOf="@id/guide_rightButton_right"
             app:layout_constraintTop_toTopOf="@id/guide_commonButton_top"
-            app:srcCompat="@drawable/button_setting_right"/>
+            app:srcCompat="@drawable/button_setting_right" />
 
         <ImageView
             android:id="@+id/setting_stats"
@@ -506,6 +509,7 @@
             app:layout_constraintTop_toTopOf="@id/guide_h_5" />
 
         // 개인 통계 Start
+
         <FrameLayout
             android:id="@+id/fragment_container_stats"
             android:layout_width="0dp"
@@ -515,72 +519,111 @@
             app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
-            app:layout_constraintTop_toTopOf="@id/guide_h_5"/>
+            app:layout_constraintTop_toTopOf="@id/guide_h_5" />
 
         <ImageView
             android:id="@+id/setting_stats_title"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
+            android:src="@drawable/me_stats_title"
             android:tag="BUTTON"
             android:visibility="visible"
-            android:src="@drawable/me_stats_title"
             app:layout_constraintBottom_toBottomOf="@id/guide_name_bottom"
             app:layout_constraintLeft_toLeftOf="@id/guide_name_left"
             app:layout_constraintRight_toRightOf="@id/guide_name_right"
             app:layout_constraintTop_toTopOf="@id/guide_name_top" />
+
 
         <ImageView
             android:id="@+id/setting_stats_total"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
+            android:src="@drawable/me_stats_total"
             android:tag="BUTTON"
             android:visibility="visible"
-            android:src="@drawable/me_stats_total"
             app:layout_constraintBottom_toBottomOf="@id/guide_stats_total_bottom"
             app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
             app:layout_constraintRight_toRightOf="@id/guide_stats_item_right"
             app:layout_constraintTop_toTopOf="@id/guide_stats_total_top" />
+
+        <!--가이드 라인 수정 할 것-->
+        <TextView
+            android:id="@+id/setting_stats_total_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center|right"
+            android:text="hihihihi"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_total_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_total_top" />
+
 
         <ImageView
             android:id="@+id/setting_stats_win"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
+            android:src="@drawable/me_stats_win"
             android:tag="BUTTON"
             android:visibility="visible"
-            android:src="@drawable/me_stats_win"
-            app:layout_constraintTop_toTopOf="@id/guide_stats_win_top"
             app:layout_constraintBottom_toBottomOf="@id/guide_stats_win_bottom"
             app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
-            app:layout_constraintRight_toRightOf="@id/guide_stats_item_right" />
+            app:layout_constraintRight_toRightOf="@id/guide_stats_item_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_win_top" />
+
+        <TextView
+            android:id="@+id/setting_stats_win_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center|right"
+            android:text="hihihihi"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_win_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_win_top" />
 
         <ImageView
             android:id="@+id/setting_stats_per"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
+            android:src="@drawable/me_stats_per"
             android:tag="BUTTON"
             android:visibility="visible"
-            android:src="@drawable/me_stats_per"
-            app:layout_constraintTop_toTopOf="@id/guide_stats_per_top"
             app:layout_constraintBottom_toBottomOf="@id/guide_stats_per_bottom"
             app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
-            app:layout_constraintRight_toRightOf="@id/guide_stats_item_right" />
+            app:layout_constraintRight_toRightOf="@id/guide_stats_item_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_per_top" />
+
+        <TextView
+            android:id="@+id/setting_stats_per_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center|right"
+            android:text="hihihihi"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_per_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_per_top" />
 
         <ImageView
             android:id="@+id/setting_stats_save"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
+            android:src="@drawable/me_btn_save"
             android:tag="BUTTON"
             android:visibility="visible"
-            android:src="@drawable/me_btn_save"
-            app:layout_constraintTop_toTopOf="@id/guide_stats_save_top"
             app:layout_constraintBottom_toBottomOf="@id/guide_stats_save_bottom"
             app:layout_constraintLeft_toLeftOf="@id/guide_stats_back_left"
-            app:layout_constraintRight_toRightOf="@id/guide_stats_back_right"/>
+            app:layout_constraintRight_toRightOf="@id/guide_stats_back_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_save_top" />
         // 개인 통계 End
 
     </androidx.constraintlayout.widget.ConstraintLayout>
