@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
@@ -192,7 +194,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
                 editor.putString("userName", input);
                 editor.commit();
 
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                startActivity(new Intent(getApplicationContext(), LobbyActivity.class));
             }
         });
 

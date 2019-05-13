@@ -8,6 +8,8 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
+
 import java.io.IOException;
 
 import pl.droidsonroids.gif.AnimationListener;
@@ -46,8 +48,8 @@ public class SplashActivity extends AppCompatActivity {
                                 startActivity(settingIntent);
                                 finish();
                             } else {
-                                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-                                startActivity(mainIntent);
+                                Intent LobbyIntent = new Intent(SplashActivity.this, LobbyActivity.class);
+                                startActivity(LobbyIntent);
                                 finish();
                             }
                         }
