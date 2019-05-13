@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,14 +26,16 @@ import butterknife.OnTouch;
 public class SettingActivity extends AppCompatActivity implements View.OnTouchListener {
     static final String TAG = "[SETTING]";
 
+    static String userNameCheck = "";
+
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
     EditText userName;
 
-    ImageView setting_Character;
-    ImageView setting_RightButton;
-    ImageView setting_LeftButton;
+    ImageView setting_character;
+    ImageView setting_rightButton;
+    ImageView setting_leftButton;
     ImageView setting_stats;
     ImageView setting_save;
 
@@ -60,9 +63,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
         userName = (EditText) findViewById(R.id.userName);
 
-        setting_Character = (ImageView) findViewById(R.id.setting_Character);
-        setting_LeftButton = (ImageView) findViewById(R.id.setting_LeftButton);
-        setting_RightButton = (ImageView) findViewById(R.id.setting_RightButton);
+        setting_character = (ImageView) findViewById(R.id.setting_Character);
+        setting_leftButton = (ImageView) findViewById(R.id.setting_LeftButton);
+        setting_rightButton = (ImageView) findViewById(R.id.setting_RightButton);
         setting_stats = (ImageView) findViewById(R.id.setting_stats);
         setting_save = (ImageView) findViewById(R.id.setting_save);
 
@@ -91,7 +94,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_stats_win_text.setVisibility(View.GONE);
         setting_stats_per_text.setVisibility(View.GONE);
 
-        int[] Character = {R.drawable.me_character_1, R.drawable.me_character_2,
+        int[] character = {R.drawable.me_character_1, R.drawable.me_character_2,
                 R.drawable.me_character_5, R.drawable.me_character_8, R.drawable.me_character_9};
 
 
@@ -101,8 +104,13 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         mp = MediaPlayer.create(SettingActivity.this, R.raw.mp3_1);
 
 
-        userName.setText(sharedPreferences.getString("UserName", ""));
-        setting_Character.setImageResource(Character[sharedPreferences.getInt("Character", 0)]);
+        userName.setText(sharedPreferences.getString("userName", ""));
+        setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
+
+        userNameCheck = sharedPreferences.getString("userName","");
+
+
+        sharedPreferences.getString("userName","");
 
         //총게임수, 승수수, 승률
         sharedPreferences.getInt("total",0);
@@ -140,34 +148,34 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
             }
         });
 
-        setting_LeftButton.setOnClickListener(new View.OnClickListener() {
+        setting_leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int i = sharedPreferences.getInt("Character", 0);
+                int i = sharedPreferences.getInt("character", 0);
                 if (i > 0) {
                     i--;
                 } else {
-                    i = Character.length - 1;
+                    i = character.length - 1;
                 }
-                editor.putInt("Character", i);
+                editor.putInt("character", i);
                 editor.commit();
-                setting_Character.setImageResource(Character[sharedPreferences.getInt("Character", 0)]);
+                setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
             }
         });
 
-        setting_RightButton.setOnClickListener(new View.OnClickListener() {
+        setting_rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                int i = sharedPreferences.getInt("Character", 0);
-                if (i < Character.length - 1) {
+                int i = sharedPreferences.getInt("character", 0);
+                if (i < character.length - 1) {
                     i++;
                 } else {
                     i = 0;
                 }
-                editor.putInt("Character", i);
+                editor.putInt("character", i);
                 editor.commit();
-                setting_Character.setImageResource(Character[sharedPreferences.getInt("Character", 0)]);
+                setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
             }
         });
 
@@ -181,7 +189,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
                 userName.setFocusable(false);
                 userName.setFocusableInTouchMode(true);
-                editor.putString("UserName", input);
+                editor.putString("userName", input);
                 editor.commit();
 
                 startActivity(new Intent(getApplicationContext(), MainActivity.class));

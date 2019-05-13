@@ -14,7 +14,6 @@ import pl.droidsonroids.gif.AnimationListener;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
-
 public class SplashActivity extends AppCompatActivity {
     static final String TAG = "[SPLASH]";
 
@@ -24,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
 
         try {
             GifImageView gifImageView = (GifImageView) findViewById(R.id.GifImageView);
@@ -39,9 +39,17 @@ public class SplashActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-                            startActivity(mainIntent);
-                            finish();
+                            //0513 -> SettingActivity에 이름값이 "" 이면 Setting 이동 아니면 MainActivity로 이동
+
+                            if ("" == SettingActivity.userNameCheck) {
+                                Intent settingIntent = new Intent(SplashActivity.this, SettingActivity.class);
+                                startActivity(settingIntent);
+                                finish();
+                            } else {
+                                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                                startActivity(mainIntent);
+                                finish();
+                            }
                         }
                     }, 1500);
                 }

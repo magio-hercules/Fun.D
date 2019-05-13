@@ -152,8 +152,8 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void goToSettingActivity() {
-        Intent intent = new Intent(LobbyActivity.this, SettingActivity.class);
-        startActivity(intent);
+
+
     }
 
     @Override
@@ -172,4 +172,10 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         Log.e("lsc", "LobbyActivity handleError " + throwable.getMessage());
     }
 
+    @OnClick(R.id.btn_me_setting)
+    public void Setting(){
+        Log.e("KYJ", "CLICK!! ");
+        Intent intent = new Intent(LobbyActivity.this, SettingActivity.class);
+        startActivity(intent);
+    }
 }
