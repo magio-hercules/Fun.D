@@ -9,7 +9,9 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
+import com.fundroid.offstand.MainActivity;
 import com.fundroid.offstand.R;
+import com.fundroid.offstand.SettingActivity;
 import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.receiver.WifiDirectReceiver;
@@ -27,6 +29,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import butterknife.OnClick;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -166,4 +170,10 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         Log.e("lsc", "LobbyActivity handleError " + throwable.getMessage());
     }
 
+    @OnClick(R.id.btn_me_setting)
+    public void Setting(){
+        Log.e("KYJ", "CLICK!! ");
+        Intent intent = new Intent(LobbyActivity.this, SettingActivity.class);
+        startActivity(intent);
+    }
 }

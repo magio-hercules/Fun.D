@@ -115,6 +115,7 @@
             app:layout_constraintBottom_toBottomOf="@id/guide_h_100"/>
 
         <ImageView
+            android:id="@+id/btn_me_setting"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{() -> viewModel.goToSetting()}"
