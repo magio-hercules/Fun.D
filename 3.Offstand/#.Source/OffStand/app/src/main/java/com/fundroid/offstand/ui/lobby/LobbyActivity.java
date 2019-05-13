@@ -152,6 +152,8 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void goToSettingActivity() {
+
+
     }
 
     @Override
