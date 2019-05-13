@@ -52,7 +52,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
     public void makeRoomClick() {
         //Test
-        createSocket(ROOM_PORT, 2);
+        createSocket(ROOM_PORT, 4);
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {
