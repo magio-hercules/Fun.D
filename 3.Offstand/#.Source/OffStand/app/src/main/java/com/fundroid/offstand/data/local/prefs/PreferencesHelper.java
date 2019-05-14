@@ -18,4 +18,24 @@ package com.fundroid.offstand.data.local.prefs;
 
 public interface PreferencesHelper {
 
+    String getUserName();
+
+    void setUserName(String userName);
+
+    int getUserAvatar();
+
+    void setUserAvatar(int avatar);
+
+    int getUserWin();
+
+    void setUserWin(int win);
+
+    int getUserTotal();
+
+    void setUserTotal(int total);
+
+    float getUserRate();
+
+    void setUserRate(float rate);
+
 }

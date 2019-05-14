@@ -7,7 +7,7 @@ public class AppConstant {
     public static final String FRAGMENT_MAKE_ROOM = "FRAGMENT_MAKE_ROOM";
 
     //data
-    public static final String PREF_NAME = "OFFSTAND_PREF";
+    public static final String PREF_NAME = "version";
 
     //network
     public static final int ROOM_PORT = 8080;

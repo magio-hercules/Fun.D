@@ -10,14 +10,14 @@ public class Client {
 
         try {
             //서버 접속
-            Socket socket = new Socket("192.168.0.10", 8080);
+            Socket socket = new Socket("192.168.0.3", 8080);
             System.out.println("클라이언트 소켓 " + socket.getLocalPort());
             while (true) {
-                streamByServer = new DataInputStream(socket.getInputStream());
+//                streamByServer = new DataInputStream(socket.getInputStream());
                 streamToServer = new DataOutputStream(socket.getOutputStream());
                 System.out.println("Client >> ");
                 streamToServer.writeUTF(scanner.nextLine());
-                System.out.println("Server : " + streamByServer.readUTF());
+//                System.out.println("Server : " + streamByServer.readUTF());
             }
         } catch (Exception e) {
             System.out.println("클라이언트 실패 " + e.getMessage());

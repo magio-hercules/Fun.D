@@ -154,7 +154,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     public void goToSettingActivity() {
         Intent intent = new Intent(LobbyActivity.this, SettingActivity.class);
         startActivity(intent);
-
     }
 
     @Override
