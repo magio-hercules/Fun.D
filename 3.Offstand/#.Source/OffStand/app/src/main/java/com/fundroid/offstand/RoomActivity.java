@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
@@ -27,9 +28,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -48,6 +52,9 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     static final String TAG = "[ROOM]";
 
     static final int MAX_USER_COUNT = 4;
+
+    @Inject
+    DataManager dataManager;
 
     SharedPreferences sharedPreferences;
 
@@ -115,7 +122,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room4);
-
+        AndroidInjection.inject(this);
         RxEventBus.getInstance().getEvents(String.class)
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .observeOn(AndroidSchedulers.mainThread())

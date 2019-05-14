@@ -52,10 +52,8 @@ public class User {
     private String name;
 
     // 전적
+    private int total;
     private int win;
-    private int lose;
-    private int draw;
-    private int rate;
 
     // card
     @Expose
@@ -89,12 +87,12 @@ public class User {
         this.name = name;
     }
 
-    public User(boolean host, String name, int avatar, int win, int lose) {
+    public User(boolean host, String name, int avatar, int total, int win) {
         this.host = host;
         this.name = name;
         this.avatar = avatar;
+        this.total = total;
         this.win = win;
-        this.lose = lose;
     }
 
     public void doBan() {
@@ -136,14 +134,6 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getDraw() {
-        return draw;
-    }
-
-    public void setDraw(int draw) {
-        this.draw = draw;
     }
 
     public int getCardLevel() {
@@ -194,20 +184,12 @@ public class User {
         this.win = win;
     }
 
-    public int getLose() {
-        return lose;
+    public int getTotal() {
+        return total;
     }
 
-    public void setLose(int lose) {
-        this.lose = lose;
-    }
-
-    public int getRate() {
-        return rate;
-    }
-
-    public void setRate(int rate) {
-        this.rate = rate;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
     public Pair<Integer, Integer> getCards() {

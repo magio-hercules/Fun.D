@@ -66,14 +66,4 @@ public class AppDataManager implements DataManager {
     public void setUserTotal(int total) {
         mPreferencesHelper.setUserTotal(total);
     }
-
-    @Override
-    public float getUserRate() {
-        return mPreferencesHelper.getUserRate();
-    }
-
-    @Override
-    public void setUserRate(float rate) {
-        mPreferencesHelper.setUserRate(rate);
-    }
 }

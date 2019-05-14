@@ -1,5 +1,6 @@
 package com.fundroid.offstand.di.builder;
 
+import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.SettingActivity;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.ui.lobby.findroom.FindRoomFragmentProvider;
@@ -20,5 +21,8 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector()
     abstract SettingActivity bindSettingActivity();
+
+    @ContributesAndroidInjector()
+    abstract RoomActivity bindRoomActivity();
 
 }

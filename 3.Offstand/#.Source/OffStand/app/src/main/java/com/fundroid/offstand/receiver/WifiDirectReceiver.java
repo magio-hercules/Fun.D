@@ -11,6 +11,7 @@ import android.util.Log;
 import com.fundroid.offstand.service.WifiP2pService;
 
 import dagger.android.AndroidInjection;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 
 
 public class WifiDirectReceiver extends BroadcastReceiver {

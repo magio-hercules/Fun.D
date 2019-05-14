@@ -34,8 +34,4 @@ public interface PreferencesHelper {
 
     void setUserTotal(int total);
 
-    float getUserRate();
-
-    void setUserRate(float rate);
-
 }

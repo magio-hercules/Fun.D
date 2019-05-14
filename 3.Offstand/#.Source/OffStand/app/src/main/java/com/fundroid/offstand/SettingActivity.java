@@ -109,7 +109,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        mp = MediaPlayer.create(SettingActivity.this, R.raw.mp3_1);
+        mp = MediaPlayer.create(SettingActivity.this, R.raw.abstract_click);
 
 
         userName.setText(sharedPreferences.getString("userName", ""));

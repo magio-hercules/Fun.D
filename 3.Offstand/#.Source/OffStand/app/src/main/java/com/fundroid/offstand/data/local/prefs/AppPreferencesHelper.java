@@ -29,7 +29,6 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String PREF_KEY_AVATAR = "character";
     private static final String PREF_KEY_TOTAL = "total";
     private static final String PREF_KEY_WIN = "win";
-    private static final String PREF_KEY_RATE = "per";
 
     private final SharedPreferences mPrefs;
 
@@ -78,13 +77,4 @@ public class AppPreferencesHelper implements PreferencesHelper {
         mPrefs.edit().putInt(PREF_KEY_TOTAL, total).apply();
     }
 
-    @Override
-    public float getUserRate() {
-        return mPrefs.getFloat(PREF_KEY_RATE, -1);
-    }
-
-    @Override
-    public void setUserRate(float rate) {
-        mPrefs.edit().putFloat(PREF_KEY_RATE, rate).apply();
-    }
 }

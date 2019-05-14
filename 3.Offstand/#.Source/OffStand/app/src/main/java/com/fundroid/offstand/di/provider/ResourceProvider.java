@@ -2,10 +2,14 @@ package com.fundroid.offstand.di.provider;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 
 import androidx.annotation.ArrayRes;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.RawRes;
 import androidx.annotation.StringRes;
+
+import com.fundroid.offstand.R;
 
 public class ResourceProvider {
     private final Context context;
@@ -28,5 +32,14 @@ public class ResourceProvider {
     public String getString(@StringRes int resId, Object... formatArgs) {
         return context.getString(resId, formatArgs);
     }
+
+    public void testClick() {
+//        MediaPlayer test = MediaPlayer.create(context, R.raw.Abstract_Click);
+//        test.prepare();
+//        test.setOnCompletionListener(mp -> test.s {
+//        });
+//        test.start();
+    }
+
 
 }
