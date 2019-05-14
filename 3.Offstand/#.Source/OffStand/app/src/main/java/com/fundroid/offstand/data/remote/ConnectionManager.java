@@ -122,13 +122,13 @@ public class ConnectionManager {
                 // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
                         .andThen(getUserStatus())
-                        .concatMap(ConnectionManager::setRoomStatus)
+                        .concatMap(roomStatus -> setRoomStatus(roomStatus))
                         .concatMap(result -> broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo())));
 
             case API_READY_CANCEL:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
                         .andThen(getUserStatus())
-                        .concatMap(ConnectionManager::setRoomStatus)
+                        .concatMap(roomStatus -> setRoomStatus(roomStatus))
                         .concatMap(result -> broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo())));
 
             case API_BAN:

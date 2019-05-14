@@ -51,7 +51,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
         Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
-                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(false, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserWin(), 1))))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(false, "이승철", JAN.getIndex(), 10, 1))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(() -> {

@@ -37,7 +37,7 @@ public class AppModule {
     @Provides
     @Singleton
     static SharedPreferences provideSharedPreferences(Context context) {
-        return context.getSharedPreferences(providePreferenceName(), Context.MODE_PRIVATE);
+        return context.getSharedPreferences(context.getString(R.string.shared_preferences), Context.MODE_PRIVATE);
     }
 
     @Provides
@@ -48,7 +48,7 @@ public class AppModule {
 
     @Provides
     @PreferenceInfo
-    static String providePreferenceName() {
+    String providePreferenceName() {
         return AppConstant.PREF_NAME;
     }
 

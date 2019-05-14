@@ -25,66 +25,10 @@ import javax.inject.Inject;
 
 public class AppPreferencesHelper implements PreferencesHelper {
 
-    private static final String PREF_KEY_USER_NAME = "userName";
-    private static final String PREF_KEY_AVATAR = "character";
-    private static final String PREF_KEY_TOTAL = "total";
-    private static final String PREF_KEY_WIN = "win";
-    private static final String PREF_KEY_RATE = "per";
-
     private final SharedPreferences mPrefs;
 
     @Inject
     public AppPreferencesHelper(Context context, @PreferenceInfo String prefFileName) {
         mPrefs = context.getSharedPreferences(prefFileName, Context.MODE_PRIVATE);
-    }
-
-    @Override
-    public String getUserName() {
-        return mPrefs.getString(PREF_KEY_USER_NAME, null);
-    }
-
-    @Override
-    public void setUserName(String userName) {
-        mPrefs.edit().putString(PREF_KEY_USER_NAME, userName).apply();
-    }
-
-    @Override
-    public int getUserAvatar() {
-        return mPrefs.getInt(PREF_KEY_AVATAR, -1);
-    }
-
-    @Override
-    public void setUserAvatar(int avatar) {
-        mPrefs.edit().putInt(PREF_KEY_AVATAR, avatar).apply();
-    }
-
-    @Override
-    public int getUserWin() {
-        return mPrefs.getInt(PREF_KEY_WIN, -1);
-    }
-
-    @Override
-    public void setUserWin(int win) {
-        mPrefs.edit().putInt(PREF_KEY_WIN, win).apply();
-    }
-
-    @Override
-    public int getUserTotal() {
-        return mPrefs.getInt(PREF_KEY_TOTAL, -1);
-    }
-
-    @Override
-    public void setUserTotal(int total) {
-        mPrefs.edit().putInt(PREF_KEY_TOTAL, total).apply();
-    }
-
-    @Override
-    public float getUserRate() {
-        return mPrefs.getFloat(PREF_KEY_RATE, -1);
-    }
-
-    @Override
-    public void setUserRate(float rate) {
-        mPrefs.edit().putFloat(PREF_KEY_RATE, rate).apply();
     }
 }
