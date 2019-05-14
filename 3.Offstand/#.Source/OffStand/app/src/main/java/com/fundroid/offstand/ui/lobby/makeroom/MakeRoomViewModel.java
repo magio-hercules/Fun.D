@@ -12,17 +12,15 @@ import com.fundroid.offstand.utils.rx.RxEventBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Completable;
-import io.reactivex.Single;
+import javax.inject.Inject;
 
-import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
+import io.reactivex.Completable;
+
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
-import static com.fundroid.offstand.model.User.EnumAvatar.FEB;
 
 public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 

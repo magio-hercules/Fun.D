@@ -19,11 +19,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import dagger.android.AndroidInjection;
 
 public class SettingActivity extends AppCompatActivity implements View.OnTouchListener {
     static final String TAG = "[SETTING]";
@@ -55,11 +59,15 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
     // 음악플레이
     static MediaPlayer mp;
 
+    @Inject
+    DataManager dataManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
+        AndroidInjection.inject(this);
 
         userName = (EditText) findViewById(R.id.userName);
 
