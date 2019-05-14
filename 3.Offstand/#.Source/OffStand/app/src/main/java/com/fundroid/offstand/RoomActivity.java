@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,8 @@ import com.fundroid.offstand.utils.rx.RxEventBus;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -31,6 +34,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
@@ -42,6 +46,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 //public class RoomActivity extends AppCompatActivity {
 
     static final String TAG = "[ROOM]";
+
+    static final int MAX_USER_COUNT = 4;
+
+    SharedPreferences sharedPreferences;
 
     // org
     @BindView(R.id.btn_table)
@@ -68,6 +76,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     ImageView image_exit;
     @BindView(R.id.room_image_ban)
     ImageView image_ban;
+    @BindView(R.id.room_image_ready)
+    ImageView image_ready;
 
     @BindView(R.id.room_avatar_1)
     ImageView image_avatar_1;
@@ -97,6 +107,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
     User currentUser;
     User[] allUser;
+    ArrayList<User> users;
     // end of real
 
 
@@ -110,24 +121,40 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                    Log.d("lsc", "RoomActivity server result " + result);
-                    switch (((ApiBody) result).getNo()) {
+                    Log.d(TAG, "RoomActivity server result " + result);
+                    ApiBody apiBody = ((ApiBody) result);
+                    switch (apiBody.getNo()) {
+                        case API_ENTER_ROOM_TO_OTHER:
+                            Log.d(TAG, "RoomActivity onCreate API_ENTER_ROOM_TO_OTHER");
+                            User curUser = ((ApiBody) result).getUser();
+                            Log.d(TAG, curUser.toString());
+                            addUser(curUser);
+                            drawUser(curUser);
+                            break;
+
                         case API_READY_BR:
+                            doReady(apiBody.getSeatNo(), true);
                             break;
 
                         case API_READY_CANCEL_BR:
+                            doReady(apiBody.getSeatNo(), false);
                             break;
 
                         case API_SHUFFLE_BR:
+                            Intent intent = new Intent(RoomActivity.this, PlayActivity.class);
+                            startActivity(intent);
+                            finish();
+
                             break;
 
                         case API_OUT_BR:
+                            doBan(apiBody.getSeatNo());
                             break;
                     }
 
                 }, onError -> {
-                    Log.d("lsc", "test onError " + onError);
-                }, () -> Log.d("lsc", "test onCompleted"));
+                    Log.d(TAG, "test onError " + onError);
+                }, () -> Log.d(TAG, "test onCompleted"));
 
 
         // 버터나이프 사용
@@ -151,14 +178,27 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         btn_3.setOnDragListener(this);
         btn_4.setOnDragListener(this);
 
+        sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
+
         initListener();
 
         // TODO: 방장인지 체크
         // 방만들기로 들어오는 경우 true, 아니면 false
-        bHost = true;
+        // 방만들기, 방찾기에서 extra로 보내줘야 함
+        Intent intent = getIntent();
+        boolean isHost = intent.getBooleanExtra("HOST", true);
+
+        // TODO: test
+        isHost = true;
+        if (isHost) {
+            bHost = true;
+        } else {
+            bHost = false;
+        }
 
         initRoom();
-        initUser();
+//        initUser();
+        initUser_org();
 
         for (int i = 1; i < nUserCount + 1; i++) {
             drawUser(allUser[i]);
@@ -246,10 +286,13 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         Log.d(TAG, "room_image_start");
 
                         image_start.setPressed(false);
-                        if (nReadyCount != 4) {
+                        if (nReadyCount != nUserCount) {
                             Toast.makeText(getApplicationContext(), "모든 유저가 준비완료 되어야 합니다.", Toast.LENGTH_SHORT).show();
                         } else {
-                            Toast.makeText(getApplicationContext(), "시작하기 (셔플)", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "시작하기 (셔플)", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RoomActivity.this, PlayActivity.class);
+                            startActivity(intent);
+                            finish();
                         }
                         break;
                     case R.id.room_image_ban:
@@ -306,12 +349,15 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 return true;
 
             case DragEvent.ACTION_DRAG_ENTERED:
-                Log.d(TAG, "ACTION_DRAG_ENTERED : " + targetTag);
+//                Log.d(TAG, "ACTION_DRAG_ENTERED : " + targetTag);
 
                 if (target == selectedAvatar) {
                     return false;
                 }
-
+                if (!bHost) {
+                    Log.d(TAG, "방장만 할 수 있음");
+                    return false;
+                }
                 if (targetTag.equals("AVATAR")) {
                     String clipData = event.getClipDescription().getLabel().toString();
                     Log.d(TAG, "clipData : " + clipData);
@@ -332,8 +378,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 return true;
 
             case DragEvent.ACTION_DRAG_EXITED:
-                Log.d(TAG, "ACTION_DRAG_EXITED : " + targetTag);
-
+//                Log.d(TAG, "ACTION_DRAG_EXITED : " + targetTag);
+                if (!bHost) {
+                    Log.d(TAG, "방장만 할 수 있음");
+                    return false;
+                }
                 if (targetTag.equals("AVATAR")) {
                     ClipDescription clipDesc = (ClipDescription) event.getClipDescription();
                     if (clipDesc == null) {
@@ -356,12 +405,15 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 return true;
 
             case DragEvent.ACTION_DRAG_ENDED:
-                Log.d(TAG, "ACTION_DRAG_ENDED : " + targetTag);
-
+//                Log.d(TAG, "ACTION_DRAG_ENDED : " + targetTag);
+                if (!bHost) {
+                    Log.d(TAG, "방장만 할 수 있음");
+                    return false;
+                }
                 if (targetTag.equals("AVATAR")) {
                     ClipDescription clipDesc = (ClipDescription) event.getClipDescription();
                     if (clipDesc == null) {
-                        Log.d(TAG, "clipDesc is null");
+//                        Log.d(TAG, "clipDesc is null");
                         return false;
                     }
 
@@ -381,6 +433,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 return true;
 
             case DragEvent.ACTION_DROP:
+                if (!bHost) {
+                    Log.d(TAG, "방장만 할 수 있음");
+                    return false;
+                }
                 // selected가 선택된 놈, target이 드랍된 놈
                 selected = (ImageView) event.getLocalState();
                 selectedTag = selected.getTag().toString();
@@ -403,6 +459,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             doBan(selected);
                             break;
                     }
+                } else if (targetTag.equals("TAG")) {
+                    switch (target.getId()) {
+                        case R.id.room_image_ready:
+                            doReady(selected);
+                            break;
+                    }
                 } else {
                     Log.d(TAG, "ACTION_DROP else");
                 }
@@ -417,10 +479,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     private void initListener() {
         image_start.setOnTouchListener(this);
         image_ban.setOnTouchListener(this);
+        image_ready.setOnTouchListener(this);
         image_exit.setOnTouchListener(this);
 
         image_start.setOnDragListener(this);
         image_ban.setOnDragListener(this);
+        image_ready.setOnDragListener(this);
         image_exit.setOnDragListener(this);
 
         image_avatar_1.setOnTouchListener(this);
@@ -456,17 +520,95 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
 //        currentUser = new User(id, bHost, seatNo, avatarId, name);
 
+        // TODO :
+        // host은 본인 정보만 초기화
+        // client 는 host로부터 전달받은 user 정보를 이용하여 초기화 한다
+
         allUser = new User[nUserCount + 1];
-        for (int i = 1; i < nUserCount + 1; i++) {
-            allUser[i] = new User(i, bHost, i, i, name + i);
-            bHost = false;
+        User curUser;
+//        if (false)
+//            for (int i = 1; i < nUserCount + 1; i++) {
+//                for (int j = 0; j < users.size(); j++) {
+//                    curUser = users.get(j);
+//    //                if (curUser.getSeat() == i) { // User
+//                    if (curUser.getAvatar() != 0) { // User
+//                        allUser[i] = new User(curUser.getSeat(), curUser.isHost(), curUser.getSeat(), curUser.getAvatar(), curUser.getName());
+//                    } else { // dummy
+//                        allUser[i] = new User(i, false, i, 0, "");
+//                    }
+//                }
+//            }
+//        else
+            for (int i = 1; i < nUserCount + 1; i++) {
+                if (users.size() + 1 > i) { // user
+                    curUser = users.get(i-1);
+                    if (curUser.getAvatar() != 0) {
+                        allUser[i] = new User(curUser.getSeat(), curUser.isHost(), curUser.getSeat(), curUser.getAvatar(), curUser.getName());
+                    } else { // dummy
+                        allUser[i] = new User(i, false, i, 0, "");
+                    }
+                } else { // dummy
+                    allUser[i] = new User(i, false, i, 0, "");
+                }
+            }
+
+        if (users.size() == 1) {
+            bHost = true; // 방장
+            nReadyCount++;
         }
-        bHost = true; // 방장
 
 //        currentUser = allUser[1];
 //        Log.d(TAG, currentUser.toString());
     }
 
+    private void initUser_org() {
+        // TODO: 방설정과 개인설정 값을 조회할수 있어야 함
+
+        // id : host는 0, client는 host가 지정한 id
+        int id = 0;
+        // seatNo : host는 1의 위치, client는 host가 지정한 위치
+        int seatNo = 1;
+
+        // TODO :
+        // host은 본인 정보만 초기화
+        // client 는 host로부터 전달받은 user 정보를 이용하여 초기화 한다
+
+        allUser = new User[MAX_USER_COUNT + 1];
+
+        // 유저정보 획득
+        String userName = sharedPreferences.getString("userName", "");
+        int avatarId = sharedPreferences.getInt("character", 0);
+        Log.d(TAG, "sharedPreferences 조회결과 (userName: " + userName + ", avatarId: " + avatarId + ")");
+        bHost = true; // 방장
+        allUser[1] = new User(1, bHost, 1, avatarId, userName);
+
+        for (int i = 2; i < MAX_USER_COUNT + 1; i++) {
+//            allUser[i] = new User(i, bHost, i, i, name + i);
+            allUser[i] = new User(i, false, i, 0, "");
+        }
+
+        nReadyCount++;
+    }
+
+    private void addUser(User user) {
+        Log.d(TAG, "addUser : " + user.toString());
+
+        if (user.getAvatar() == 0) {
+            Log.d(TAG, "addUser avatar is 0");
+        }
+        int seatNo = user.getSeat();
+        allUser[seatNo] = new User(user.getSeat(), user.isHost(), user.getSeat(), user.getAvatar(), user.getName());
+    }
+
+    private void deleteUser(int seat) {
+        Log.d(TAG, "deleteUser seat : " + seat);
+
+        User user = allUser[seat];
+        if (user.getAvatar() == 0) {
+            Log.d(TAG, "addUser avatar is 0");
+        }
+        user.doBan();
+    }
 
     private void drawUser(User user) {
         // seatNo
@@ -474,16 +616,29 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
         int imageId = getResourceId("id", "room_avatar_" + seat);
         int nameId = getResourceId("id", "room_name_" + seat);
+        int tagId = getResourceId("id", "room_avatar_tag_" + seat);
 
         ImageView imageView = (ImageView) findViewById(imageId);
+        ImageView tagView = (ImageView) findViewById(tagId);
         TextView textView = (TextView) findViewById(nameId);
 
         // 아바타 표시
         int avatarId = user.getAvatar();
         if (avatarId != 0) {
+            imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(getResourceId("drawable", "avatar_" + avatarId));
+
+            // 방장인 경우 방장표시, client이면 ready인지 판단하여 표시
+            if (user.isHost()) {
+                tagView.setVisibility(View.VISIBLE);
+                tagView.setImageResource(getResourceId("drawable", "tag_host"));
+            } else if (user.getStatus() == 1) {
+                tagView.setVisibility(View.VISIBLE);
+                tagView.setImageResource(getResourceId("drawable", "tag_ready"));
+            }
         } else {
             imageView.setImageResource(0);
+            tagView.setVisibility(View.INVISIBLE);
         }
 
         // 이름 표시
@@ -586,15 +741,54 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         user2.user = temp;
     }
 
+    private void doReady(int seat, boolean flag) {
+        Log.d(TAG, "doReady int param (seat: " + seat + ")");
+        User user = allUser[seat];
+        if (!user.getName().equals("")) {
+            user.doReady(flag);
+            drawUser(user);
+            nReadyCount++;
+            Log.d(TAG, "Ready 상태 : " + nReadyCount);
+            Toast.makeText(getApplicationContext(), "준비", Toast.LENGTH_SHORT).show();
+        }
+    }
 
     private void doReady(ImageView selected) {
-        Log.d(TAG, "doReady");
-        Toast.makeText(getApplicationContext(), "준비", Toast.LENGTH_SHORT).show();
+        int selectedSeat = getSeatNo(selected);
+        Log.d(TAG, "doReady ImageView param (seat: " + selectedSeat + ")");
+        User user = allUser[selectedSeat];
+        if (!user.getName().equals("")) {
+            if (user.isHost()) {
+                Toast.makeText(getApplicationContext(), "방장은 언제나 준비중", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            user.doReady(true);
+            drawUser(user);
+            nReadyCount++;
+            Log.d(TAG, "Ready 상태 : " + nReadyCount);
+//            Toast.makeText(getApplicationContext(), "준비", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void doBan(int seat) {
+        Log.d(TAG, "doBan int param (seat: " + seat + ")");
+        User user = allUser[seat];
+        if (!user.getName().equals("")) {
+            if (user.isHost()) {
+                Toast.makeText(getApplicationContext(), "방장은 나갈수 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            user.doBan();
+            drawUser(user);
+//            Toast.makeText(getApplicationContext(), "내보내기", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void doBan(ImageView selected) {
-        Log.d(TAG, "doBan");
         int selectedSeat = getSeatNo(selected);
+        Log.d(TAG, "doBan ImageView param (seat: " + selectedSeat + ")");
         User user = allUser[selectedSeat];
         if (!user.getName().equals("")) {
             if (user.isHost()) {
@@ -604,18 +798,19 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
             user.doBan();
             drawUser(user);
-            Toast.makeText(getApplicationContext(), "내보내기", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getApplicationContext(), "내보내기", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void doEnterUser(String name, int seatNo, int avatar) {
         Log.d(TAG, "User 입장");
 
-
 //        "name" : "쫑미니",
 //                "seatNo" : 3,
 //                "avatar" : 4
 
+        // seatNo 위치에 user가 비어있는지 확인 후
+        // allUser에 user 정보를 추가 후 drawUser
     }
 
     public static void start(Context context) {

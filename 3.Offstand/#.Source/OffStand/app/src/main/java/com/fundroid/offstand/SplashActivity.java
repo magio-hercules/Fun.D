@@ -1,12 +1,15 @@
 package com.fundroid.offstand;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
 
 import java.io.IOException;
 
@@ -24,7 +27,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-
         try {
             GifImageView gifImageView = (GifImageView) findViewById(R.id.GifImageView);
 //        gifImageView.setImageResource(R.drawable.splash_gif);
@@ -41,13 +43,13 @@ public class SplashActivity extends AppCompatActivity {
                         public void run() {
                             //0513 -> SettingActivity에 이름값이 "" 이면 Setting 이동 아니면 MainActivity로 이동
 
-                            if ("" == SettingActivity.userNameCheck) {
+                            if ("" == getSharedPreferences("version", MODE_PRIVATE).getString("userName", "")) {
                                 Intent settingIntent = new Intent(SplashActivity.this, SettingActivity.class);
                                 startActivity(settingIntent);
                                 finish();
                             } else {
-                                Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-                                startActivity(mainIntent);
+                                Intent LobbyIntent = new Intent(SplashActivity.this, LobbyActivity.class);
+                                startActivity(LobbyIntent);
                                 finish();
                             }
                         }

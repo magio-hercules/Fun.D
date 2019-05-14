@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SplashActivity"
+            android:name=".ui.lobby.LobbyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <!--<intent-filter>
@@ -39,7 +39,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
-            android:name=".ui.lobby.LobbyActivity"
+            android:name=".SplashActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
