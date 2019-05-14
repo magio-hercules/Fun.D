@@ -107,8 +107,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         userName.setText(sharedPreferences.getString("userName", ""));
         setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
 
+        String AAA = "";
         userNameCheck = sharedPreferences.getString("userName","");
-
 
         sharedPreferences.getString("userName","");
 
