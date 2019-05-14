@@ -185,8 +185,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         btn_3.setOnDragListener(this);
         btn_4.setOnDragListener(this);
 
-        sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
-
         initListener();
 
         // TODO: 방장인지 체크
@@ -583,18 +581,20 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         allUser = new User[MAX_USER_COUNT + 1];
 
         // 유저정보 획득
-        String userName = sharedPreferences.getString("userName", "");
-        int avatarId = sharedPreferences.getInt("character", 0);
-        Log.d(TAG, "sharedPreferences 조회결과 (userName: " + userName + ", avatarId: " + avatarId + ")");
+        String userName = dataManager.getUserName();
+        int avatarId = dataManager.getUserAvatar();
+        int total = dataManager.getUserTotal();
+        int win = dataManager.getUserWin();
+        Log.d(TAG, "sharedPreferences 조회결과 (userName: " + userName + ", avatarId: " + avatarId + ", total: " + total + ", win: " + win + ")");
+
+        allUser[1] = new User(1, bHost, userName, avatarId, total, win);
         bHost = true; // 방장
-        allUser[1] = new User(1, bHost, 1, avatarId, userName);
+        nReadyCount++;
 
         for (int i = 2; i < MAX_USER_COUNT + 1; i++) {
 //            allUser[i] = new User(i, bHost, i, i, name + i);
-            allUser[i] = new User(i, false, i, 0, "");
+            allUser[i] = new User(i, false, "", 0, 0, 0);
         }
-
-        nReadyCount++;
     }
 
     private void addUser(User user) {
@@ -604,7 +604,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
             Log.d(TAG, "addUser avatar is 0");
         }
         int seatNo = user.getSeat();
-        allUser[seatNo] = new User(user.getSeat(), user.isHost(), user.getSeat(), user.getAvatar(), user.getName());
+//        allUser[seatNo] = new User(user.getSeat(), user.isHost(), user.getSeat(), user.getAvatar(), user.getName());
+        allUser[seatNo] = new User(seatNo, user.isHost(), user.getName(), user.getAvatar(), user.getTotal(), user.getWin());
     }
 
     private void deleteUser(int seat) {
@@ -833,6 +834,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 .subscribe(() -> {
 
                 }, onError -> {
+                    onError.printStackTrace();
                 });
     }
 }

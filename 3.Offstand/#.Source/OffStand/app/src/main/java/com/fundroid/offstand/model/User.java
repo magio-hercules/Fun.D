@@ -87,8 +87,14 @@ public class User {
         this.name = name;
     }
 
-    public User(boolean host, String name, int avatar, int total, int win) {
+    public User(int seat, boolean host, String name, int avatar, int total, int win) {
+        this.seat = seat;
         this.host = host;
+        if (host) {
+            this.status = 1;
+        } else {
+            this.status = 0;
+        }
         this.name = name;
         this.avatar = avatar;
         this.total = total;
