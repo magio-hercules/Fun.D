@@ -103,20 +103,10 @@ public class ConnectionManager {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
-                int newUserServerIndex = -1;
-                for (int index = 0; index < serverThreads.length; index++) {
-                    if (serverThreads[index] != null && serverThreads[index].getUser() == null) {
-                        newUserServerIndex = index;
-                        apiBody.getUser().setSeat(index + 1);
-                        serverThreads[index].setUser(apiBody.getUser());
-                    }
-                }
-
-                return Observable.zip(
-                        sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), newUserServerIndex),
-                        broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), newUserServerIndex),
-                        (firstOne, secondOne) -> new ApiBody(API_ROOM_INFO)
-                );
+                return setUserSeatNo(apiBody)
+                        .flatMap(userServerIndex -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), userServerIndex),
+                        broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), userServerIndex),
+                        (firstOne, secondOne) -> firstOne));
 
             case API_READY:
                 // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
@@ -161,6 +151,20 @@ public class ConnectionManager {
             default:
                 return Observable.just(apiBody);
         }
+    }
+
+    private static Observable<Integer> setUserSeatNo(ApiBody apiBody) {
+        return Observable.create(subscriber -> {
+            int newUserServerIndex = -1;
+            for (int index = 0; index < serverThreads.length; index++) {
+                if (serverThreads[index] != null && serverThreads[index].getUser() == null) {
+                    newUserServerIndex = index;
+                    apiBody.getUser().setSeat(index + 1);
+                    serverThreads[index].setUser(apiBody.getUser());
+                    subscriber.onNext(newUserServerIndex);
+                }
+            }
+        });
     }
 
     private static Observable<ApiBody> closeServerSocket(int seatNo) {

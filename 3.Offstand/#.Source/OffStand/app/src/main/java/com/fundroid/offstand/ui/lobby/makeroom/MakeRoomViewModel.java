@@ -8,13 +8,11 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
 
 import io.reactivex.Completable;
 
@@ -30,7 +28,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         super(dataManager, schedulerProvider);
         this.schedulerProvider = schedulerProvider;
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(String.class)
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())

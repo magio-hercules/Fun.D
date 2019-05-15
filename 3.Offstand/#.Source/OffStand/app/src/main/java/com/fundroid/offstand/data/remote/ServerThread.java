@@ -3,7 +3,7 @@ package com.fundroid.offstand.data.remote;
 import android.util.Log;
 
 import com.fundroid.offstand.model.User;
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -47,7 +47,7 @@ public class ServerThread implements Runnable {
                 streamByClient = new DataInputStream(socket.getInputStream());
                 streamToClient = new DataOutputStream(socket.getOutputStream());
                 String message = streamByClient.readUTF();
-                RxEventBus.getInstance().sendEvent(message);
+                PublishSubjectBus.getInstance().sendEvent(message);
                 Log.d("lsc", "클라이언트 -> 서버 " + message);
             }
         } catch (IOException e) {

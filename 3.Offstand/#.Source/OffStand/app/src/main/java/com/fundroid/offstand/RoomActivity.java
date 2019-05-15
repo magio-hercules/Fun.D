@@ -22,7 +22,8 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.model.UserWrapper;
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
+import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -37,13 +38,12 @@ import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
@@ -123,7 +123,15 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room4);
         AndroidInjection.inject(this);
-        RxEventBus.getInstance().getEvents(String.class)
+        ReplaySubjectBus.getInstance().getEvents(ArrayList.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(apiBody -> {
+                            Log.d(TAG, "RoomActivity replay apiBody " + apiBody);
+                        }, onError -> Log.d(TAG, "RoomActivity replay onError " + onError)
+                        , () -> Log.d(TAG, "RoomActivity replay onCompleted"));
+
+        PublishSubjectBus.getInstance().getEvents(String.class)
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -131,6 +139,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                     Log.d(TAG, "RoomActivity server result " + result);
                     ApiBody apiBody = ((ApiBody) result);
                     switch (apiBody.getNo()) {
+
+                        case API_ROOM_INFO:
+                            break;
+
                         case API_ENTER_ROOM_TO_OTHER:
                             Log.d(TAG, "RoomActivity onCreate API_ENTER_ROOM_TO_OTHER");
                             User curUser = ((ApiBody) result).getUser();
@@ -544,18 +556,18 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 //                }
 //            }
 //        else
-            for (int i = 1; i < nUserCount + 1; i++) {
-                if (users.size() + 1 > i) { // user
-                    curUser = users.get(i-1);
-                    if (curUser.getAvatar() != 0) {
-                        allUser[i] = new User(curUser.getSeat(), curUser.isHost(), curUser.getSeat(), curUser.getAvatar(), curUser.getName());
-                    } else { // dummy
-                        allUser[i] = new User(i, false, i, 0, "");
-                    }
+        for (int i = 1; i < nUserCount + 1; i++) {
+            if (users.size() + 1 > i) { // user
+                curUser = users.get(i - 1);
+                if (curUser.getAvatar() != 0) {
+                    allUser[i] = new User(curUser.getSeat(), curUser.isHost(), curUser.getSeat(), curUser.getAvatar(), curUser.getName());
                 } else { // dummy
                     allUser[i] = new User(i, false, i, 0, "");
                 }
+            } else { // dummy
+                allUser[i] = new User(i, false, i, 0, "");
             }
+        }
 
         if (users.size() == 1) {
             bHost = true; // 방장
@@ -828,7 +840,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void test() {
 //        ConnectionManager.sendMessage(new ApiBody(API_SHUFFLE))
-        ConnectionManager.sendMessage(new ApiBody(API_READY, 1))
+        ConnectionManager.sendMessage(new ApiBody(API_READY, 2))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {

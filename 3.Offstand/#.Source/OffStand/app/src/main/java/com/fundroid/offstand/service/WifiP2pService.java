@@ -8,7 +8,7 @@ import android.net.wifi.p2p.WifiP2pManager;
 import android.os.IBinder;
 import android.util.Log;
 
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 
 import androidx.annotation.Nullable;
 import dagger.android.AndroidInjection;
@@ -44,12 +44,12 @@ public class WifiP2pService extends Service implements WifiP2pManager.ChannelLis
     @Override
     public void onConnectionInfoAvailable(WifiP2pInfo info) {
         Log.d("lsc", "WifiP2pService onConnectionInfoAvailable " + info.groupOwnerAddress + ", isGroupOwner " + info.isGroupOwner + ", wifiP2pInfo.groupFormed " + info.groupFormed);
-        RxEventBus.getInstance().sendEvent(info);
+        PublishSubjectBus.getInstance().sendEvent(info);
     }
 
     @Override
     public void onPeersAvailable(WifiP2pDeviceList peers) {
         Log.d("lsc", "WifiP2pService onPeersAvailable");
-        RxEventBus.getInstance().sendEvent(peers);
+        PublishSubjectBus.getInstance().sendEvent(peers);
     }
 }
