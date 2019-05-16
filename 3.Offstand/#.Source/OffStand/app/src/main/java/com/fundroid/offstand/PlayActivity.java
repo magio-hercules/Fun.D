@@ -25,6 +25,9 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -599,8 +602,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doExit() {
         Log.d(TAG, "doExit");
-        // TODO : 로비로 이동하도록 변경
-        Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+        Intent intent = new Intent(PlayActivity.this, LobbyActivity.class);
         startActivity(intent);
         finish();
     }
@@ -621,8 +623,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doResult() {
         Log.d(TAG, "doResult");
-        // TODO :
-        Toast.makeText(getApplicationContext(), "게임 결과 연결해주세요", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "게임 결과 연결해주세요", Toast.LENGTH_SHORT).show();
+        Game_Result();  // 만땅
     }
 
     private void doJokbo() {
@@ -671,7 +673,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     case R.id.play_image_result:
                         image_result.setPressed(false);
                         doResult();
-                        Game_Result();  // 만땅
                         break;
                     case R.id.play_image_jokbo:
                         image_jokbo.setPressed(false);
