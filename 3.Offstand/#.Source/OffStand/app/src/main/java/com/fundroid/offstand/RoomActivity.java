@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -278,6 +279,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 switch (v.getId()) {
                     case R.id.room_image_start:
                         Log.d(TAG, "room_image_start (nReadyCount: " + nReadyCount + ", nUserCount: " + nUserCount + ")");
+                        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
 
                         image_start.setPressed(false);
                         if (nReadyCount != nUserCount) {
@@ -305,6 +307,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         doSendMessage(apiNo, currentUser.getSeat());
                         break;
                     case R.id.room_image_ban:
+                        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
+
                         Log.d(TAG, "room_image_ban");
 
                         if (!bHost) {
@@ -315,6 +319,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         Toast.makeText(getApplicationContext(), "강퇴시킬 유저를 끌어다놓으세요.", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.room_image_exit:
+                        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
+
                         Log.d(TAG, "room_image_exit");
 
                         image_exit.setPressed(false);
@@ -860,6 +866,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void doBan(ImageView selected) {
+        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
+
         int selectedSeat = getSeatNo(selected);
         Log.d(TAG, "doBan ImageView param (seat: " + selectedSeat + ")");
         User user = allUser[selectedSeat];
@@ -888,7 +896,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doSendMessage(int apiNo, int seatNo1) {
         Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " + -1 + ")");
-        int[] arr = {seatNo1};
+        int[] arr = {seatNo1, -1};
         doSendMessage(apiNo, arr);
     }
 

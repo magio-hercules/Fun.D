@@ -3,6 +3,7 @@ package com.fundroid.offstand.ui.lobby;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -152,6 +153,8 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void goToSettingActivity() {
+        MediaPlayer.create(LobbyActivity.this, R.raw.mouth_interface_button).start();
+
         Intent intent = new Intent(LobbyActivity.this, SettingActivity.class);
         startActivity(intent);
     }

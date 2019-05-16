@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -651,30 +652,44 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.d(TAG, "ACTION_UP");
                 switch (v.getId()) {
                     case R.id.play_image_setting:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_setting.setPressed(false);
                         doSetting();
                         break;
                     case R.id.play_image_exit:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_exit.setPressed(false);
                         doExit();
                         break;
                     case R.id.play_image_open:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_open.setPressed(false);
                         openCard();
                         break;
                     case R.id.play_image_re:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_re.setPressed(false);
                         doRestart();
                         break;
                     case R.id.play_image_die:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_die).start();
+
                         image_die.setPressed(false);
                         doDie();
                         break;
                     case R.id.play_image_result:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_result.setPressed(false);
                         doResult();
                         break;
                     case R.id.play_image_jokbo:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_jokbo.setPressed(false);
                         doJokbo();
                         break;
