@@ -1,9 +1,13 @@
 package com.fundroid.offstand.ui.lobby.main;
 
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 
 import com.fundroid.offstand.BR;
+import com.fundroid.offstand.PlayActivity;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.databinding.FragmentMainBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
@@ -77,6 +81,20 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void makeRoom() {
+//        MediaPlayer.create(getActivity().getApplicationContext(), R.raw.mouth_interface_button).start();
+
+        // [만땅] SoundPool Test - Start
+        // 한참을 연구해봤다..그래서 디버깅을 걸어보았는데...이상하게 중단점 지정하고 디버깅하면 소리가 난다 ㅋㅋㅋㅋㅋ뭐지?
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .build();
+
+        SoundPool sp = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(8).build();
+        int soundID = sp.load(getActivity().getApplicationContext(), R.raw.mouth_interface_button, 1);
+        sp.play(soundID, 1f, 1f, 0, 0,1f);
+        // [만땅] SoundPool Test - End
+
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .addToBackStack(FRAGMENT_MAKE_ROOM)
