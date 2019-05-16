@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.model.UserWrapper;
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
 
@@ -300,6 +302,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.d(TAG, "ACTION_UP");
                 switch (v.getId()) {
                     case R.id.room_image_start:
+                        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
+
                         Log.d(TAG, "room_image_start");
 
                         image_start.setPressed(false);
@@ -313,12 +317,16 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         }
                         break;
                     case R.id.room_image_ban:
+                        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
+
                         Log.d(TAG, "room_image_ban");
 
                         image_ban.setPressed(false);
                         Toast.makeText(getApplicationContext(), "강퇴시킬 유저를 끌어다놓으세요.", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.room_image_exit:
+                        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
+
                         Log.d(TAG, "room_image_exit");
 
                         image_exit.setPressed(false);
@@ -807,6 +815,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void doBan(ImageView selected) {
+        MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
+
         int selectedSeat = getSeatNo(selected);
         Log.d(TAG, "doBan ImageView param (seat: " + selectedSeat + ")");
         User user = allUser[selectedSeat];

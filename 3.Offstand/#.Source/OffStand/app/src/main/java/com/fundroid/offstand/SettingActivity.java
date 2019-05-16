@@ -56,9 +56,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
     TextView setting_stats_win_text;
     TextView setting_stats_per_text;
 
-    // 음악플레이
-    static MediaPlayer mp;
-
     @Inject
     DataManager dataManager;
 
@@ -109,9 +106,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
-        mp = MediaPlayer.create(SettingActivity.this, R.raw.abstract_click);
-
-
         userName.setText(sharedPreferences.getString("userName", ""));
         setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
 
@@ -157,6 +151,8 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
+
                 int i = sharedPreferences.getInt("character", 0);
                 if (i > 0) {
                     i--;
@@ -172,6 +168,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_rightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
                 int i = sharedPreferences.getInt("character", 0);
                 if (i < character.length - 1) {
@@ -188,7 +185,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mp.start();
+                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
+
+                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
                 Toast.makeText(getApplicationContext(), "저장완료", Toast.LENGTH_LONG).show();
 
                 String input = userName.getText().toString();
@@ -222,6 +221,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
     @OnClick(R.id.setting_stats)
     public void Stats_Click() {
+        MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
         state_back.setVisibility(View.VISIBLE);
         stats_title.setVisibility(View.VISIBLE);
@@ -238,6 +238,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
     @OnClick(R.id.setting_stats_save)
     public void Save_Click() {
+        MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
         state_back.setVisibility(View.GONE);
         stats_title.setVisibility(View.GONE);
