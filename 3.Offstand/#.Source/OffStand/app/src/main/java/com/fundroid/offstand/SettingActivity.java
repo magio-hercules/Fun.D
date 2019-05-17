@@ -129,7 +129,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
         setting_stats_total_text.setText("" + sharedPreferences.getInt("total", 0));
         setting_stats_win_text.setText("" + sharedPreferences.getInt("win", 0));
-        setting_stats_per_text.setText("" + (int) (sharedPreferences.getFloat("per", 0)));
+        setting_stats_per_text.setText("" + (int) (sharedPreferences.getFloat("per", 0)) + "%");
 
 
         // 커서를 끝에 위치시키기
@@ -194,7 +194,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
             public void onClick(View v) {
                 MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
-                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
                 Toast.makeText(getApplicationContext(), "저장완료", Toast.LENGTH_LONG).show();
 
                 String input = userName.getText().toString();
