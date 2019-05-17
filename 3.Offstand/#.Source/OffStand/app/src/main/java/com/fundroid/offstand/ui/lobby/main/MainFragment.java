@@ -92,7 +92,14 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
         SoundPool sp = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(8).build();
         int soundID = sp.load(getActivity().getApplicationContext(), R.raw.mouth_interface_button, 1);
-        sp.play(soundID, 1f, 1f, 0, 0,1f);
+//        sp.play(soundID, 1f, 1f, 0, 0,1f);
+
+        sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+            @Override
+            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                sp.play(soundID, 1f, 1f, 0, 0,1f);
+            }
+        });
         // [만땅] SoundPool Test - End
 
         getBaseActivity().getSupportFragmentManager()
