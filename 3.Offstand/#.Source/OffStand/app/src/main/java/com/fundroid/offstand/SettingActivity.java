@@ -2,6 +2,7 @@ package com.fundroid.offstand;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.MediaPlayer;
@@ -110,30 +111,36 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
 
 
-        sharedPreferences.getString("userName","");
+        sharedPreferences.getString("userName", "");
 
         //총게임수, 승수수, 승률
-        sharedPreferences.getInt("total",0);
-        sharedPreferences.getInt("win",0);
-        sharedPreferences.getFloat("per",0);
+        sharedPreferences.getInt("total", 0);
+        sharedPreferences.getInt("win", 0);
+        sharedPreferences.getFloat("per", 0);
 
-        editor.putInt("total",5);
+        editor.putInt("total", 5);
         editor.commit();
 
-        editor.putInt("win",3);
+        editor.putInt("win", 3);
         editor.commit();
 
-        editor.putFloat("per", (new Float(sharedPreferences.getInt("win",0)) / new Float(sharedPreferences.getInt("total",0)))*100);
+        editor.putFloat("per", (new Float(sharedPreferences.getInt("win", 0)) / new Float(sharedPreferences.getInt("total", 0))) * 100);
         editor.commit();
 
-        setting_stats_total_text.setText(""+sharedPreferences.getInt("total",0));
-        setting_stats_win_text.setText(""+sharedPreferences.getInt("win",0));
-        setting_stats_per_text.setText(""+(int)(sharedPreferences.getFloat("per",0)));
+        setting_stats_total_text.setText("" + sharedPreferences.getInt("total", 0));
+        setting_stats_win_text.setText("" + sharedPreferences.getInt("win", 0));
+        setting_stats_per_text.setText("" + (int) (sharedPreferences.getFloat("per", 0)));
 
 
         // 커서를 끝에 위치시키기
         userName.setSelection(userName.length());
 
+        if (userName.getText().toString().length() == 0) {
+
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+
+        }
 
         userName.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
