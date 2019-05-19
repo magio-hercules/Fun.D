@@ -208,14 +208,14 @@ public class User {
 
     @Override
     public String toString() {
-//        return "User{" +
-//                "host=" + host +
-//                ", id=" + id +
-//                ", seat=" + seat +
-//                ", avatar=" + avatar +
-//                ", name='" + name + '\'' +
-//                '}';
-        return new Gson().toJson(this);
+        return "User{" +
+                "host=" + host +
+                ", id=" + id +
+                ", seat=" + seat +
+                ", avatar=" + avatar +
+                ", name='" + name + '\'' +
+                '}';
+//        return new Gson().toJson(this);
     }
 }
 

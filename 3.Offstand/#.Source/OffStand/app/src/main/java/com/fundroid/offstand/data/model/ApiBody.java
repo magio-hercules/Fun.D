@@ -6,6 +6,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
 
+import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
@@ -76,7 +77,7 @@ public class ApiBody {
     public ApiBody(Integer no, Integer seatNo1OrCardNo1, Integer seatNo2OrCardNo2) {
         this.no = no;
 
-        if (no == API_MOVE_BR) {
+        if (no == API_MOVE || no == API_MOVE_BR) {
             seatNo = seatNo1OrCardNo1;
             seatNo2 = seatNo2OrCardNo2;
         } else if (no == API_SHUFFLE_BR) {

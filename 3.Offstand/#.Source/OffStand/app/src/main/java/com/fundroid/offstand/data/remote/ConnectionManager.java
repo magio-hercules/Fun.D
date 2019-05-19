@@ -1,6 +1,8 @@
 package com.fundroid.offstand.data.remote;
 
 
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
@@ -104,9 +106,9 @@ public class ConnectionManager {
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
                 return setUserSeatNo(apiBody)
-                        .flatMap(userServerIndex -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), userServerIndex),
-                        broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), userServerIndex),
-                        (firstOne, secondOne) -> firstOne));
+                        .flatMap(userServerIndex -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), userServerIndex),
+                                broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), userServerIndex),
+                                (firstOne, secondOne) -> firstOne));
 
             case API_READY:
                 // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
@@ -126,10 +128,11 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             case API_MOVE:
-                return broadcastMessage(new ApiBody(API_MOVE_BR, apiBody.getSeatNo(), apiBody.getSeatNo2()));
+                return setUserSeatNo(apiBody.getSeatNo(), apiBody.getSeatNo2())
+                        .andThen(broadcastMessage(new ApiBody(API_MOVE_BR, apiBody.getSeatNo(), apiBody.getSeatNo2())));
 
             case API_SHUFFLE:
-                return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).filter(serverThread -> serverThread != null).collect(Collectors.toList()))
+                return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
                         .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
 
             case API_DIE:
@@ -190,8 +193,36 @@ public class ConnectionManager {
         });
     }
 
+    private static Completable setUserSeatNo(int selectedSeat, int targetSeat) {
+        boolean isTargetSeatEmpty = Stream.of(serverThreads).withoutNulls().filter(serverThread -> serverThread.getUser().getSeat().equals(targetSeat)).count() == 0;
+        if (isTargetSeatEmpty) {
+            for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().collect(Collectors.toList())) {
+                if (serverThread.getUser().getSeat().equals(selectedSeat)) {
+                    serverThread.getUser().setSeat(targetSeat);
+                }
+            }
+        } else {
+            for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().collect(Collectors.toList())) {
+                if (serverThread.getUser().getSeat().equals(selectedSeat)) {
+                    serverThread.getUser().setSeat(-1);
+                }
+            }
+            for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().collect(Collectors.toList())) {
+                if (serverThread.getUser().getSeat().equals(targetSeat)) {
+                    serverThread.getUser().setSeat(selectedSeat);
+                }
+            }
+            for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().collect(Collectors.toList())) {
+                if (serverThread.getUser().getSeat().equals(-1)) {
+                    serverThread.getUser().setSeat(targetSeat);
+                }
+            }
+        }
+        return Completable.complete();
+    }
+
     private static Completable setUserStatus(int apiNo, int seatNo) {
-        for (ServerThread serverThread : Stream.of(serverThreads).filter(serverThread -> serverThread != null).collect(Collectors.toList())) {
+        for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().collect(Collectors.toList())) {
             if (serverThread.getUser().getSeat().equals(seatNo)) {
                 switch (apiNo) {
                     case API_READY:
@@ -212,7 +243,6 @@ public class ConnectionManager {
                 }
             }
         }
-
 
         return Completable.complete();
     }
