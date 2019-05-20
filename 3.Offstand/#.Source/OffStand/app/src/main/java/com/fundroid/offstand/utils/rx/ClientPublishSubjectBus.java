@@ -3,20 +3,20 @@ package com.fundroid.offstand.utils.rx;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-public class PublishSubjectBus {
+public class ClientPublishSubjectBus {
 
-    private static PublishSubjectBus publishSubjectBus;
+    private static ClientPublishSubjectBus clientPublishSubjectBus;
     private final PublishSubject<Object> publishSubject;
 
-    private PublishSubjectBus() {
+    private ClientPublishSubjectBus() {
         publishSubject = PublishSubject.create();
     }
 
-    public static PublishSubjectBus getInstance() {
-        if(publishSubjectBus == null) {
-            publishSubjectBus = new PublishSubjectBus();
+    public static ClientPublishSubjectBus getInstance() {
+        if(clientPublishSubjectBus == null) {
+            clientPublishSubjectBus = new ClientPublishSubjectBus();
         }
-        return publishSubjectBus;
+        return clientPublishSubjectBus;
     }
 
     public void sendEvent(Object object) {

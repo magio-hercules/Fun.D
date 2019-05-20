@@ -91,6 +91,6 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     @Override
     public void goToRoomActivity() {
         RoomActivity.start(getContext());
-        getActivity().finish();
+//        getActivity().finish();
     }
 }

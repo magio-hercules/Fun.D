@@ -90,6 +90,6 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     @Override
     public void goToRoomActivity() {
         RoomActivity.start(getContext());
-        getActivity().finish();
+//        getActivity().finish();
     }
 }

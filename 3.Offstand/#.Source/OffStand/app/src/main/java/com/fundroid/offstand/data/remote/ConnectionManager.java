@@ -101,12 +101,21 @@ public class ConnectionManager {
         }
     }
 
+    private static ArrayList<User> swapToFirst(ArrayList<User> users, int seatNo) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getSeat() == seatNo) {
+                Collections.swap(users, 0, i);
+            }
+        }
+        return users;
+    }
+
     public static Observable<ApiBody> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
                 return setUserSeatNo(apiBody)
-                        .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), seatNo),
+                        .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, swapToFirst((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()), seatNo)), seatNo),
                                 broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), seatNo),
                                 (firstOne, secondOne) -> firstOne));
 
@@ -166,7 +175,7 @@ public class ConnectionManager {
                     serverThread.setUser(apiBody.getUser());
                     subscriber.onNext(seatNo);
                 } else {
-                    if(serverThread.getUser().getSeat() == seatNo) {
+                    if (serverThread.getUser().getSeat() == seatNo) {
                         seatNo += 1;
                     }
                 }
@@ -325,7 +334,7 @@ public class ConnectionManager {
     private static Observable<ApiBody> broadcastMessageExceptOne(ApiBody message, int seatNo) {
         return Observable.create(subscriber -> {
 
-            for(ServerThread serverThread : Stream.of(serverThreads).withoutNulls().filterNot(serverThread -> serverThread.getUser().getSeat() == seatNo).collect(Collectors.toList())) {
+            for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().filterNot(serverThread -> serverThread.getUser().getSeat() == seatNo).collect(Collectors.toList())) {
                 serverThread.getStreamToClient().writeUTF(message.toString());
             }
             subscriber.onNext(message);
@@ -334,6 +343,7 @@ public class ConnectionManager {
 
     private static Observable<ApiBody> sendMessage(ApiBody message, int seatNo) {
         return Observable.create(subscriber -> {
+
             Stream.of(serverThreads)
                     .withoutNulls()
                     .filter(serverThread -> serverThread.getUser().getSeat() == seatNo)

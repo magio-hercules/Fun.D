@@ -3,7 +3,7 @@ package com.fundroid.offstand.data.model;
 import android.net.wifi.p2p.WifiP2pDevice;
 import android.util.Log;
 
-import com.fundroid.offstand.utils.rx.PublishSubjectBus;
+import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
 public class Room extends WifiP2pDevice {
 
@@ -49,7 +49,7 @@ public class Room extends WifiP2pDevice {
 
     public void enterRoom() {
         Log.d("lsc", "Room enterRoom");
-        PublishSubjectBus.getInstance().sendEvent(this);
+        ClientPublishSubjectBus.getInstance().sendEvent(this);
     }
 
 }
