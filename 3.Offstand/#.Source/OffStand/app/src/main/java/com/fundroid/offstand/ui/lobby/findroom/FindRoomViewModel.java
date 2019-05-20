@@ -79,4 +79,10 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     public void onNavBackClick() {
         getNavigator().goBack();
     }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        Log.d("lsc","FindRoomVIewModel onCleared");
+    }
 }
