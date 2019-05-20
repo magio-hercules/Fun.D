@@ -3,6 +3,7 @@ package com.fundroid.offstand.core;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 
+import com.facebook.stetho.Stetho;
 import com.fundroid.offstand.di.component.DaggerAppComponent;
 
 import javax.inject.Inject;
@@ -32,5 +33,11 @@ public class OffStandApplication extends DaggerApplication {
     @Override
     protected AndroidInjector<? extends DaggerApplication> applicationInjector() {
         return DaggerAppComponent.builder().create(this);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Stetho.initializeWithDefaults(this);
     }
 }

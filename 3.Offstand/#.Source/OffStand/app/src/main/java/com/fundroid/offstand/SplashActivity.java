@@ -1,6 +1,7 @@
 package com.fundroid.offstand;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,12 +9,13 @@ import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
+
 import java.io.IOException;
 
 import pl.droidsonroids.gif.AnimationListener;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
-
 
 public class SplashActivity extends AppCompatActivity {
     static final String TAG = "[SPLASH]";
@@ -39,9 +41,17 @@ public class SplashActivity extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
-                            startActivity(mainIntent);
-                            finish();
+                            //0513 -> SettingActivity에 이름값이 "" 이면 Setting 이동 아니면 MainActivity로 이동
+
+                            if ("" == getSharedPreferences("version", MODE_PRIVATE).getString("userName", "")) {
+                                Intent settingIntent = new Intent(SplashActivity.this, SettingActivity.class);
+                                startActivity(settingIntent);
+                                finish();
+                            } else {
+                                Intent LobbyIntent = new Intent(SplashActivity.this, LobbyActivity.class);
+                                startActivity(LobbyIntent);
+                                finish();
+                            }
                         }
                     }, 1500);
                 }

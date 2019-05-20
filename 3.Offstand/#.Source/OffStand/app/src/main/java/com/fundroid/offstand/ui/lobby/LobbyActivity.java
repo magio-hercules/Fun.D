@@ -3,13 +3,16 @@ package com.fundroid.offstand.ui.lobby;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
+import com.fundroid.offstand.MainActivity;
 import com.fundroid.offstand.R;
+import com.fundroid.offstand.SettingActivity;
 import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.receiver.WifiDirectReceiver;
@@ -27,6 +30,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import butterknife.OnClick;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -148,6 +153,10 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void goToSettingActivity() {
+        MediaPlayer.create(LobbyActivity.this, R.raw.mouth_interface_button).start();
+
+        Intent intent = new Intent(LobbyActivity.this, SettingActivity.class);
+        startActivity(intent);
     }
 
     @Override

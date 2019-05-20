@@ -45,6 +45,19 @@
         app:srcCompat="@drawable/button_room_start" />
 
     <ImageView
+        android:id="@+id/room_image_ready"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_button_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_button_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_button_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_button_e"
+        app:srcCompat="@drawable/button_room_ready" />
+
+    <ImageView
         android:id="@+id/room_image_ban"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -102,16 +115,18 @@
         app:layout_constraintTop_toTopOf="@id/guide_h_name_1"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_name_2"
         app:srcCompat="@drawable/room_nametag" />
+
     <TextView
         android:id="@+id/room_name_1"
-        android:layout_width="0dp" android:layout_height="0dp"
-        android:textSize="16sp"
-        android:text=""
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:textAlignment="center"
+        android:textSize="14sp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_text_2"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_1"
         app:layout_constraintRight_toRightOf="@id/guide_v_name_text_2"
-        app:layout_constraintTop_toTopOf="@id/guide_h_name_text_1"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_name_text_2"/>
+        app:layout_constraintTop_toTopOf="@id/guide_h_name_text_1" />
 
     <ImageView
         android:id="@+id/room_avatar_2"
@@ -144,7 +159,7 @@
     <TextView
         android:id="@+id/room_name_2"
         android:layout_width="0dp" android:layout_height="0dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:text=""
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_3"
@@ -183,7 +198,7 @@
     <TextView
         android:id="@+id/room_name_3"
         android:layout_width="0dp" android:layout_height="0dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:text=""
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_1"
@@ -222,7 +237,7 @@
     <TextView
         android:id="@+id/room_name_4"
         android:layout_width="0dp" android:layout_height="0dp"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:text=""
         android:textAlignment="center"
         app:layout_constraintLeft_toLeftOf="@id/guide_v_name_text_3"
@@ -245,7 +260,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/room_image_ready"
+        android:id="@+id/room_image_ready_tag"
         android:layout_width="68dp"
         android:layout_height="80dp"
         android:scaleType="fitXY"

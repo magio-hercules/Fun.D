@@ -1,25 +1,27 @@
 package com.fundroid.offstand.ui.lobby.makeroom;
 
 
+import android.media.MediaPlayer;
 import android.util.Log;
 
+import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
-import com.fundroid.offstand.data.model.Attendee;
 import com.fundroid.offstand.data.remote.ConnectionManager;
+import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
-import com.google.gson.Gson;
 
 import java.net.InetAddress;
+import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Single;
+import io.reactivex.Completable;
 
-import static com.fundroid.offstand.core.AppConstant.RESULT_OK;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
-import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.FEB;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
@@ -29,17 +31,14 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         super(dataManager, schedulerProvider);
         this.schedulerProvider = schedulerProvider;
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(String.class)
+                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .flatMap(json -> {
-                    Log.d("lsc", "MakeRoomViewModel flatMap " + json);
-                    return ConnectionManager.serverProcessor((String) json);
-                })
                 .subscribe(result -> {
                     Log.d("lsc", "MakeRoomViewModel result " + result);
-                    switch ((int) result) {
-                        case RESULT_OK:
+                    switch (((ApiBody) result).getNo()) {
+                        case API_ROOM_INFO:
                             getNavigator().goToRoomActivity();
                             break;
                     }
@@ -50,58 +49,43 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         );
     }
 
-    private Single<Integer> serverThreadObservable(int roomPort, int roomMaxAttendee) {
-        return ConnectionManager.createServerThread(roomPort, roomMaxAttendee);
-    }
-
     public void makeRoomClick() {
         //Test
-        createSocket(ROOM_PORT, 5);
+        createSocket(ROOM_PORT, 4);
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {
-        Log.d("lsc", "MakeRoomViewModel createSocket");
-        getCompositeDisposable().add(serverThreadObservable(roomPort, roomMaxAttendee)
-                .flatMap(userCount -> ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT))
-                .flatMap(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("홍길동", FEB, 1, 10))))
+        getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
+                .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
+                .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(1,true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
                 .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(result -> {
-                    Log.d("lsc", "MakeRoomViewModel createSocket result " + result);
+                .observeOn(schedulerProvider.io())
+                .subscribe(() -> {
+                    Log.d("lsc", "MakeRoomViewModel createSocket result ");
                 }, onError -> {
                     Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
                 })
         );
     }
 
-//    public void createSocket(int roomPort, int roomMaxAttendee) {
-//        Log.d("lsc", "MakeRoomViewModel createSocket");
-//        getCompositeDisposable().add(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN, 10, 1)))
-//                .concatWith(serverThreadObservable(roomPort, roomMaxAttendee).flatMap(userCount -> ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT)))
-//                .subscribeOn(schedulerProvider.io())
-//                .observeOn(schedulerProvider.ui())
-//                .subscribe(message -> {
-//                    Log.d("lsc", "MakeRoomViewModel createSocket message " + message);
-//                }, onError -> {
-//                    Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
-//                }));
-//    }
 
     private void enterRoom(InetAddress roomAddress, int roomPort) {
         Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(onNext -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom onNext " + onNext);
+                .subscribe(() -> {
+                    Log.d("lsc", "MakeRoomViewModel enterRoom onNext ");
                 }, onError -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError.getMessage());
+                    Log.d("lsc", "MakeRoomViewModel enterRoom onError " + onError.getMessage());
                 }));
 
     }
 
     public void onNavBackClick() {
         getNavigator().goBack();
+
     }
 
     @Override

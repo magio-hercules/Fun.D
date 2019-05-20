@@ -1,31 +1,33 @@
 package com.fundroid.offstand.data.model;
 
-import com.annimon.stream.Stream;
+import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.SortedMap;
 
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
 public class ApiBody {
 
     private Integer no;
 
     @Expose
-    private Attendee attendee;
+    private User user;
 
     @Expose
-    private ArrayList<Attendee> attendees;
+    private ArrayList<User> users;
 
     @Expose
     private Integer seatNo;
 
     @Expose
     private Integer seatNo2;
+
+    @Expose
+    private Integer[] seatNos;
 
     @Expose
     private Integer cardNo1;
@@ -40,22 +42,26 @@ public class ApiBody {
         return no;
     }
 
-    public Attendee getAttendee() {
-        return attendee;
+    public User getUser() {
+        return user;
     }
 
-    public ArrayList<Attendee> getAttendees() {
-        return attendees;
+    public ArrayList<User> getUsers() {
+        return users;
     }
 
-    public ApiBody(Integer no, Attendee attendee) {
+    public ApiBody(Integer no) {
         this.no = no;
-        this.attendee = attendee;
     }
 
-    public ApiBody(Integer no, ArrayList<Attendee> attendees) {
+    public ApiBody(Integer no, User user) {
         this.no = no;
-        this.attendees = attendees;
+        this.user = user;
+    }
+
+    public ApiBody(Integer no, ArrayList<User> users) {
+        this.no = no;
+        this.users = users;
     }
 
     public ApiBody(Integer no, Integer seatNo) {
@@ -63,21 +69,43 @@ public class ApiBody {
         this.seatNo = seatNo;
     }
 
+    public ApiBody(Integer no, Integer[] seatNos) {
+        this.no = no;
+        this.seatNos = seatNos;
+    }
+
     public ApiBody(Integer no, Integer seatNo1OrCardNo1, Integer seatNo2OrCardNo2) {
         this.no = no;
 
-        if (no == API_MOVE) {
+        if (no == API_MOVE || no == API_MOVE_BR) {
             seatNo = seatNo1OrCardNo1;
             seatNo2 = seatNo2OrCardNo2;
-        } else if (no == API_SHUFFLE) {
+        } else if (no == API_SHUFFLE_BR) {
             cardNo1 = seatNo1OrCardNo1;
             cardNo2 = seatNo2OrCardNo2;
         } else {
             //error
         }
+    }
 
-        this.seatNo = seatNo;
+    public Integer getSeatNo() {
+        return seatNo;
+    }
 
+    public Integer getSeatNo2() {
+        return seatNo2;
+    }
+
+    public Integer getCardNo1() {
+        return cardNo1;
+    }
+
+    public Integer getCardNo2() {
+        return cardNo2;
+    }
+
+    public Integer[] getSeatNos() {
+        return seatNos;
     }
 
     @Override

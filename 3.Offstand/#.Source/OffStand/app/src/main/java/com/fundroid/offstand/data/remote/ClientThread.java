@@ -2,7 +2,7 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+
+import static com.fundroid.offstand.core.AppConstant.SOCKET_TIMEOUT;
 
 public class ClientThread implements Runnable {
     private Socket socket;
@@ -27,7 +29,6 @@ public class ClientThread implements Runnable {
     }
 
     public ClientThread(Socket socket, InetAddress serverIp, int serverPort) {
-        Log.i("lsc", "ClientThread constructor " + Thread.currentThread().getId());
         this.socket = socket;
         this.serverIp = serverIp;
         this.serverPort = serverPort;
@@ -35,17 +36,14 @@ public class ClientThread implements Runnable {
 
     @Override
     public void run() {
-        Log.d("lsc", "ClientThread 1");
         try {
-            socket.connect(new InetSocketAddress(serverIp, serverPort), 30000);
+            socket.connect(new InetSocketAddress(serverIp, serverPort), SOCKET_TIMEOUT);
             while (true) {
-                Log.d("lsc", "ClientThread 2");
                 streamByServer = new DataInputStream(socket.getInputStream());
-                Log.d("lsc", "ClientThread 3");
                 streamToServer = new DataOutputStream(socket.getOutputStream());
                 String message = streamByServer.readUTF();
-                RxEventBus.getInstance().sendEvent(message);
-                Log.d("lsc", "ClientThread 4 " + message);
+                PublishSubjectBus.getInstance().sendEvent(message);
+                Log.d("lsc", "서버 -> 클라이언트 " + message);
 
             }
         } catch (IOException e) {

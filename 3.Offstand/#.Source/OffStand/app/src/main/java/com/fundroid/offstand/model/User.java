@@ -1,36 +1,77 @@
 package com.fundroid.offstand.model;
 
+import androidx.core.util.Pair;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.Expose;
+
 public class User {
+
+    public enum EnumStatus {
+
+        STANDBY(0), READY(1), INGAME(2), CARDOPEN(3), DIE(4), RESULT(5);
+
+        private int enumStatus;
+
+        EnumStatus(int enumStatus) {
+            this.enumStatus = enumStatus;
+        }
+
+        public int getEnumStatus() {
+            return enumStatus;
+        }
+    }
+
+    public enum EnumAvatar {
+        JAN(1), FEB(2), MAR(3), APR(4), MAY(5), JUN(6), JUL(7), AUG(8), SEP(9), OCT(10);
+
+        private int index;
+
+        EnumAvatar(int index) {
+            this.index = index;
+        }
+
+        public int getIndex() {
+            return index;
+        }
+    }
 
     // 방장
     private boolean host;
 
     private int id;
+
+    @Expose
     private int status; // 0(Standby), 1(ready), 2(game), 3(result)
-    private int seat; // 1~10
+
+    @Expose
+    private Integer seat; // 1~10
+
     private int avatar; // 1~10
+
     private String name;
 
     // 전적
+    private int total;
     private int win;
-    private int lose;
-    private int draw;
-    private int rate;
 
     // card
-    private int card1;
-    private int card2;
+    @Expose
+    private Pair<Integer, Integer> cards;
 
     // 족보
-    private int level;
-    private int level_score;
+    @Expose
+    private int cardLevel;
+
+    @Expose
+    private int cardSum;
 
 
     public User() {
         new User(-1, false, 0, 0, "");
     }
 
-
+    //deprecated
     public User(int id, boolean host, int seat, int avatar, String name) {
         this.id = id;
         this.host = host;
@@ -44,6 +85,20 @@ public class User {
         this.seat = seat;
         this.avatar = avatar;
         this.name = name;
+    }
+
+    public User(int seat, boolean host, String name, int avatar, int total, int win) {
+        this.seat = seat;
+        this.host = host;
+        if (host) {
+            this.status = 1;
+        } else {
+            this.status = 0;
+        }
+        this.name = name;
+        this.avatar = avatar;
+        this.total = total;
+        this.win = win;
     }
 
     public void doBan() {
@@ -87,28 +142,20 @@ public class User {
         this.name = name;
     }
 
-    public int getDraw() {
-        return draw;
+    public int getCardLevel() {
+        return cardLevel;
     }
 
-    public void setDraw(int draw) {
-        this.draw = draw;
+    public void setCardLevel(int cardLevel) {
+        this.cardLevel = cardLevel;
     }
 
-    public int getLevel() {
-        return level;
+    public int getCardSum() {
+        return cardSum;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public int getLevel_score() {
-        return level_score;
-    }
-
-    public void setLevel_score(int level_score) {
-        this.level_score = level_score;
+    public void setCardSum(int cardSum) {
+        this.cardSum = cardSum;
     }
 
     public int getStatus() {
@@ -119,11 +166,11 @@ public class User {
         this.status = status;
     }
 
-    public int getSeat() {
+    public Integer getSeat() {
         return seat;
     }
 
-    public void setSeat(int seat) {
+    public void setSeat(Integer seat) {
         this.seat = seat;
     }
 
@@ -143,36 +190,20 @@ public class User {
         this.win = win;
     }
 
-    public int getLose() {
-        return lose;
+    public int getTotal() {
+        return total;
     }
 
-    public void setLose(int lose) {
-        this.lose = lose;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public int getRate() {
-        return rate;
+    public Pair<Integer, Integer> getCards() {
+        return cards;
     }
 
-    public void setRate(int rate) {
-        this.rate = rate;
-    }
-
-    public int getCard1() {
-        return card1;
-    }
-
-    public void setCard1(int card1) {
-        this.card1 = card1;
-    }
-
-    public int getCard2() {
-        return card2;
-    }
-
-    public void setCard2(int card2) {
-        this.card2 = card2;
+    public void setCards(Pair<Integer, Integer> cards) {
+        this.cards = cards;
     }
 
     @Override
@@ -184,6 +215,7 @@ public class User {
                 ", avatar=" + avatar +
                 ", name='" + name + '\'' +
                 '}';
+//        return new Gson().toJson(this);
     }
 }
 

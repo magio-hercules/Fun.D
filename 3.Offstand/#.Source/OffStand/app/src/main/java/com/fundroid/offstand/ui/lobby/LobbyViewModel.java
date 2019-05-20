@@ -13,7 +13,7 @@ import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.di.provider.ResourceProvider;
 import com.fundroid.offstand.ui.base.BaseViewModel;
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
@@ -31,7 +31,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         this.wifiP2pManager = wifiP2pManager;
         this.channel = channel;
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(WifiP2pDeviceList.class)
+        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(
                         peers -> {
@@ -51,7 +51,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                 )
         );
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(WifiP2pDeviceList.class)
+        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(
                         peers -> {
@@ -71,7 +71,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                 )
         );
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(WifiP2pInfo.class)
+        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(WifiP2pInfo.class)
                 .filter(info -> !(((WifiP2pInfo) info).isGroupOwner))
                 .subscribeOn(schedulerProvider.io())
                 .subscribe(
@@ -82,7 +82,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                 )
         );
 
-//        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+//        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(String.class)
 //                .subscribeOn(schedulerProvider.io())
 //                .observeOn(schedulerProvider.ui())
 //                .subscribe(message -> getNavigator().showToast((String) message))
@@ -145,9 +145,9 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(onNext -> {
+                .subscribe(() -> {
                     Log.d("lsc", "LobbyViewModel enterRoom thread " + Thread.currentThread().getName());
-                    Log.d("lsc", "LobbyViewModel enterRoom onNext " + onNext);
+                    Log.d("lsc", "LobbyViewModel enterRoom onNext ");
 //                            Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
                 }, onError -> {
                     Log.d("lsc", "enterRoom onError " + onError.getMessage());

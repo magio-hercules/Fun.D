@@ -10,7 +10,7 @@ public class Client {
 
         try {
             //서버 접속
-            Socket socket = new Socket("192.168.40.14", 8080);
+            Socket socket = new Socket("192.168.0.3", 8080);
             System.out.println("클라이언트 소켓 " + socket.getLocalPort());
             while (true) {
                 streamByServer = new DataInputStream(socket.getInputStream());
@@ -27,6 +27,22 @@ public class Client {
 
 /**
  * 한줄로 정리해서 보내기
- * { "no": 1,"client": {"name": "Mr.Moon","character": 3,"win": 15,"lose": 15,"winningRate": 50.0}}     2. 대기실 입장
- * { "no": 3,"seatNo": 3}                                                                               2. 레디
+ *
+ * 대기실 입장
+ * {"user":{"avatar":3,"lose":5,"name":"테스트","status":0,"win":1},"no":1}
+ *
+ * 레디
+ * {"no":4,"seatNo":2}
+ * 레디 취소
+ * {"no":6,"seatNo":2}
+ * 죽기
+ * {"no":9,"seatNo":2}
+ * 카드 오픈
+ * {"no":11,"seatNo":2}
+ * 셔플
+ * {"no":14}
+ * 나가기
+ * {"no":13,"seatNo":2}
+ * 레디 취소
+ * {"no":15,"seatNo":2}
  */

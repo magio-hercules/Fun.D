@@ -3,27 +3,27 @@ package com.fundroid.offstand.utils.rx;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
-public class RxEventBus {
+public class PublishSubjectBus {
 
-    private static RxEventBus rxEventBus;
+    private static PublishSubjectBus publishSubjectBus;
     private final PublishSubject<Object> publishSubject;
 
-    private RxEventBus() {
+    private PublishSubjectBus() {
         publishSubject = PublishSubject.create();
     }
 
-    public static RxEventBus getInstance() {
-        if(rxEventBus == null) {
-            rxEventBus = new RxEventBus();
+    public static PublishSubjectBus getInstance() {
+        if(publishSubjectBus == null) {
+            publishSubjectBus = new PublishSubjectBus();
         }
-        return rxEventBus;
+        return publishSubjectBus;
     }
 
     public void sendEvent(Object object) {
         publishSubject.onNext(object);
     }
 
-    public Observable getEvents(Class tClass) {
+    public <T> Observable getEvents(Class<T> tClass) {
         return publishSubject.ofType(tClass);
     }
 

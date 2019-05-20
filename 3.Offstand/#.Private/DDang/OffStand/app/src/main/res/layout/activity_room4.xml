@@ -92,7 +92,7 @@
         app:layout_constraintTop_toTopOf="@id/guide_h_name_1"
         app:layout_constraintBottom_toBottomOf="@id/guide_h_name_2"
         app:srcCompat="@drawable/room_nametag" />
-    <TextView
+    <EditText
         android:id="@+id/room_name_1"
         android:layout_width="0dp" android:layout_height="0dp"
         android:textSize="16sp"

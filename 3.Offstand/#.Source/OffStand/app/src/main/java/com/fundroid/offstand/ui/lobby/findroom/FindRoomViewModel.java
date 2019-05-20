@@ -4,19 +4,23 @@ package com.fundroid.offstand.ui.lobby.findroom;
 import android.util.Log;
 
 import com.fundroid.offstand.data.DataManager;
-import com.fundroid.offstand.data.model.Attendee;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
+import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
+import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Completable;
 
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
-import static com.fundroid.offstand.data.model.Attendee.EnumAvatar.JAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
@@ -26,11 +30,19 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
         super(dataManager, schedulerProvider);
         this.schedulerProvider = schedulerProvider;
 
-        getCompositeDisposable().add(RxEventBus.getInstance().getEvents(String.class)
+        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(String.class)
+                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(message -> {
-                    Log.d("lsc", "FindRoomViewModel message " + message);
+                .subscribe(result -> {
+                    switch (((ApiBody) result).getNo()) {
+                        case API_ROOM_INFO:
+                            ReplaySubjectBus.getInstance().sendEvent(((ApiBody)result).getUsers());
+                            getNavigator().goToRoomActivity();
+                            break;
+                    }
+                }, onError -> {
+                    Log.d("lsc", "FindRoomViewModel onError " + onError);
                 })
         );
     }
@@ -38,11 +50,12 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     private void enterRoom(InetAddress roomAddress, int roomPort) {
         Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
-                .flatMap(result -> ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new Attendee("이승철", JAN, 10, 1))))
+                .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(0, false, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
-                .subscribe(result -> {
-                    Log.d("lsc", "FindRoomViewModel enterRoom result " + result);
+                .subscribe(() -> {
+                    Log.d("lsc", "FindRoomViewModel enterRoom result");
                 }, onError -> {
                     Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError);
                 }));
@@ -50,7 +63,8 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 40, (byte) 197};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 40, (byte) 34};
+//        byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
         InetAddress addr = null;
         try {
             addr = InetAddress.getByAddress(ipAddr);

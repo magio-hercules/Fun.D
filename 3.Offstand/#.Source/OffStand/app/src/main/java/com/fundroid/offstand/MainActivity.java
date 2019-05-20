@@ -61,8 +61,8 @@ public class MainActivity extends AppCompatActivity {
         ConnectionManager.createServerThread(ROOM_PORT, 5)
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.io())
-                .subscribe(message -> {
-                    Log.d(TAG, "createSocket message " + message);
+                .subscribe(() -> {
+                    Log.d(TAG, "createSocket message ");
                 }, onError -> {
                     Log.d(TAG, "createSocket onError " + onError.getMessage());
                 });
@@ -71,22 +71,22 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.button_client)
     public void connectSocket() {
 
-        new Thread(() -> {
-            try {
-                ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(Schedulers.io())
-                        .subscribe(onNext -> {
-                            Log.d(TAG, "enterRoom thread " + Thread.currentThread().getName());
-                            Log.d(TAG, "enterRoom onNext " + onNext);
-                            //                            Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
-                        }, onError -> {
-                            Log.d(TAG, "enterRoom onError " + onError.getMessage());
-                        });
-            } catch (UnknownHostException e) {
-                Log.e("lsc","e " + e.getMessage());
-            }
-        }).start();
+//        new Thread(() -> {
+//            try {
+//                ConnectionManager.createClientThread(InetAddress.getLocalHost(), ROOM_PORT)
+//                        .subscribeOn(Schedulers.io())
+//                        .observeOn(Schedulers.io())
+//                        .subscribe(onNext -> {
+//                            Log.d(TAG, "enterRoom thread " + Thread.currentThread().getName());
+//                            Log.d(TAG, "enterRoom onNext " + onNext);
+//                            //                            Toast.makeText(context, onNext, Toast.LENGTH_SHORT).show();
+//                        }, onError -> {
+//                            Log.d(TAG, "enterRoom onError " + onError.getMessage());
+//                        });
+//            } catch (UnknownHostException e) {
+//                Log.e("lsc","e " + e.getMessage());
+//            }
+//        }).start();
 
 
 

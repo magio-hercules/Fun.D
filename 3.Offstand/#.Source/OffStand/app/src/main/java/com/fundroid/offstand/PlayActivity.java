@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +26,9 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.fundroid.offstand.ui.lobby.LobbyActivity;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,13 +37,15 @@ import butterknife.OnTouch;
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
     static final String TAG = "[PLAY]";
 
-    @BindView(R.id.play_image_card1)
+//    @BindView(R.id.play_image_card0)
+    ImageView image0;
+//    @BindView(R.id.play_image_card1)
     ImageView image1;
-    @BindView(R.id.play_image_card2)
+//    @BindView(R.id.play_image_card2)
     ImageView image2;
-    @BindView(R.id.play_image_card3)
+//    @BindView(R.id.play_image_card3)
     ImageView image3;
-    @BindView(R.id.play_image_card4)
+//    @BindView(R.id.play_image_card4)
     ImageView image4;
 
     @BindView(R.id.text_card1)
@@ -96,8 +102,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // 잔여 게임
 
 
+    // 만땅 - 게임 결과 화면
+    FrameLayout result_back;
+    ImageView result_title1;
+    ImageView result_title2;
+    ImageView result_content1;
+    ImageView result_content2;
+    ImageView result_shadow;
+    ImageView result_rebutton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
@@ -105,6 +122,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         ButterKnife.bind(this);
 
         initShuffle();
+
+        initCardImage();
 
         button_reset.setEnabled(false);
 
@@ -129,7 +148,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+//                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
                 gestureDetector.onTouchEvent(event);
 
                 switch (event.getAction()) {
@@ -181,9 +200,26 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         initListener();
 
-        initTouchListener();
-
         initButton(true);
+
+        // 만땅 - 셋팅
+        result_back = (FrameLayout) findViewById(R.id.fragment_container_play_result);
+        result_title1 = (ImageView) findViewById(R.id.play_result_title1);
+        result_title2 = (ImageView) findViewById(R.id.play_result_title2);
+        result_content1 = (ImageView) findViewById(R.id.play_result_content1);
+        result_content2 = (ImageView) findViewById(R.id.play_result_content2);
+        result_shadow = (ImageView) findViewById(R.id.play_result_shadow);
+        result_rebutton = (ImageView) findViewById(R.id.play_result_ReButton);
+
+
+        // 만땅 - 기존에 안보이게 셋팅
+        result_back.setVisibility(View.GONE);
+        result_title1.setVisibility(View.GONE);
+        result_title2.setVisibility(View.GONE);
+        result_content1.setVisibility(View.GONE);
+        result_content2.setVisibility(View.GONE);
+        result_shadow.setVisibility(View.GONE);
+        result_rebutton.setVisibility(View.GONE);
     }
 
 
@@ -300,8 +336,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             ani_view1_y = createSpringAnimation(image1, SpringAnimation.Y, image4.getY(),
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
 
-            org_x = image1.getX();
-            org_y = image1.getY();
+            org_x = image0.getX();
+            org_y = image0.getY();
 
             ret_view1_x = createSpringAnimation(image1, SpringAnimation.X, org_x,
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
@@ -315,8 +351,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                     makeRandomNumber();
 
+//                    image1.setImageResource(getResourceId("drawable", "card_" + card1));
+//                    image2.setImageResource(R.drawable.card_back);
                     image1.setImageResource(getResourceId("drawable", "card_" + card1));
+                    Log.d("[PLAY]", "Reset 완료11");
                     image2.setImageResource(R.drawable.card_back);
+                    Log.d("[PLAY]", "Reset 완료22");
                 }
             });
         }
@@ -337,8 +377,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             ani_view2_y = createSpringAnimation(image2, SpringAnimation.Y, image3.getY(),
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
 
-            org_x = image2.getX();
-            org_y = image2.getY();
+            org_x = image0.getX();
+            org_y = image0.getY();
 
             ret_view2_x = createSpringAnimation(image2, SpringAnimation.X, org_x,
                     SpringForce.STIFFNESS_LOW, SpringForce.DAMPING_RATIO_LOW_BOUNCY);
@@ -348,9 +388,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             yAnimation.addEndListener(new DynamicAnimation.OnAnimationEndListener() {
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
-                if (bCheck) {
-                    changeCard();
-                }
+                    if (bCheck) {
+                        changeCard();
+                    }
                 }
             });
         }
@@ -379,6 +419,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    private void initCardImage() {
+        image0 = (ImageView) findViewById(R.id.play_image_card0);
+        image1 = (ImageView) findViewById(R.id.play_image_card1);
+        image2 = (ImageView) findViewById(R.id.play_image_card2);
+        image3 = (ImageView) findViewById(R.id.play_image_card3);
+        image4 = (ImageView) findViewById(R.id.play_image_card4);
+    }
 
     private void initShuffle() {
         ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
@@ -429,47 +476,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         image_jokbo.setOnDragListener(this);
     }
 
-
-    // TODO : 제거
-    private void initTouchListener() {
-//        touchListener =  new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//                View.DragShadowBuilder mShadow = new View.DragShadowBuilder(v);
-//                ClipData.Item item = new ClipData.Item(v.getTag().toString());
-//                String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
-//                ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
-//
-//                int eventPadTouch = event.getAction();
-//
-//                switch (event.getAction()) {
-//                    case MotionEvent.ACTION_DOWN:
-//                        Log.d(TAG, "ACTION_DOWN");
-////
-//                        break;
-//                    case MotionEvent.ACTION_UP:
-//                        Log.d(TAG, "ACTION_UP");
-//                        switch (v.getId()) {
-//                            case R.id.play_image_setting:
-//                                image_setting.setPressed(false);
-//                                Toast.makeText(getApplicationContext(), "세팅 기능 실행", Toast.LENGTH_SHORT).show();
-//                                break;
-//                            case R.id.play_image_open:
-//                                image_open.setPressed(false);
-//                                openCard();
-//                                break;
-//                        }
-//                        break;
-//                    case MotionEvent.ACTION_MOVE:
-//                        break;
-//                }
-//                return true;
-//            }
-//        };
-//
-//        image_setting.setOnTouchListener(touchListener);
-//        image_open.setOnTouchListener(touchListener);
-    }
 
     private int getResourceId(String type, String name) {
         // use case
@@ -525,6 +531,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         bCheck = false;
         image1.setImageResource(R.drawable.card_back);
         image2.setImageResource(R.drawable.card_back);
+
         image3.setImageResource(0);
         image4.setImageResource(0);
         text1.setText("첫번째 패 : ");
@@ -596,8 +603,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doExit() {
         Log.d(TAG, "doExit");
-        // TODO : 로비로 이동하도록 변경
-        Intent intent = new Intent(PlayActivity.this, MainActivity.class);
+        Intent intent = new Intent(PlayActivity.this, LobbyActivity.class);
         startActivity(intent);
         finish();
     }
@@ -605,7 +611,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void doRestart() {
         Log.d(TAG, "doRestart");
         // TODO :
-        Toast.makeText(getApplicationContext(), "RE 게임", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "RE 게임", Toast.LENGTH_SHORT).show();
 
         resetCard();
     }
@@ -618,8 +624,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doResult() {
         Log.d(TAG, "doResult");
-        // TODO :
-        Toast.makeText(getApplicationContext(), "게임 결과 연결해주세요", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "게임 결과 연결해주세요", Toast.LENGTH_SHORT).show();
+        Game_Result();  // 만땅
     }
 
     private void doJokbo() {
@@ -646,30 +652,44 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 Log.d(TAG, "ACTION_UP");
                 switch (v.getId()) {
                     case R.id.play_image_setting:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_setting.setPressed(false);
                         doSetting();
                         break;
                     case R.id.play_image_exit:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_exit.setPressed(false);
                         doExit();
                         break;
                     case R.id.play_image_open:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_open.setPressed(false);
                         openCard();
                         break;
                     case R.id.play_image_re:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_re.setPressed(false);
                         doRestart();
                         break;
                     case R.id.play_image_die:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_die).start();
+
                         image_die.setPressed(false);
                         doDie();
                         break;
                     case R.id.play_image_result:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_result.setPressed(false);
                         doResult();
                         break;
                     case R.id.play_image_jokbo:
+                        MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
+
                         image_jokbo.setPressed(false);
                         doJokbo();
                         break;
@@ -707,4 +727,39 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
         return true;
     }
+
+    // 만땅 - 게임 결과 창
+    // 결과보기 눌렀을 경우 Event
+    @OnClick(R.id.play_image_result)
+    public void Game_Result(){
+        Log.d(TAG, "Click Game_Result");
+
+        result_back.setVisibility(View.VISIBLE);
+        result_title1.setVisibility(View.VISIBLE);
+        result_title2.setVisibility(View.VISIBLE);
+        result_content1.setVisibility(View.VISIBLE);
+        result_content2.setVisibility(View.VISIBLE);
+        result_shadow.setVisibility(View.VISIBLE);
+        result_rebutton.setVisibility(View.VISIBLE);
+    }
+
+    // 결과보기 - Re 게임 버튼 눌렀을 경우 Event
+    @OnClick(R.id.play_result_ReButton)
+    public void Game_Result_ReButton(){
+
+        result_back.setVisibility(View.GONE);
+        result_title1.setVisibility(View.GONE);
+        result_title2.setVisibility(View.GONE);
+        result_content1.setVisibility(View.GONE);
+        result_content2.setVisibility(View.GONE);
+        result_shadow.setVisibility(View.GONE);
+        result_rebutton.setVisibility(View.GONE);
+    }
+
+    // 해당 id 뒤에 있는 객체에 대해서 이벤트 처리를 어떻게 할 것인가를 정하는 기능([return] true : 불가능 / false : 가능)
+    @OnTouch(R.id.fragment_container_play_result)
+    public boolean Click_block(){
+        return true;
+    }
+    // 만땅 end
 }

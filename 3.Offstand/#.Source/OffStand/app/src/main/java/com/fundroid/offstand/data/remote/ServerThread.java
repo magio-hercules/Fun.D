@@ -2,8 +2,10 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
-import com.fundroid.offstand.data.model.Attendee;
-import com.fundroid.offstand.utils.rx.RxEventBus;
+import androidx.annotation.NonNull;
+
+import com.fundroid.offstand.model.User;
+import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -14,7 +16,7 @@ public class ServerThread implements Runnable {
     private Socket socket;
     private DataInputStream streamByClient = null;
     private DataOutputStream streamToClient = null;
-    private Attendee attendee;
+    private User user;
 
     public DataInputStream getStreamByClient() {
         return streamByClient;
@@ -24,31 +26,31 @@ public class ServerThread implements Runnable {
         return streamToClient;
     }
 
-    public Attendee getAttendee() {
-        return attendee;
+    public User getUser() {
+        return user;
     }
 
-    public void setAttendee(Attendee attendee) {
-        this.attendee = attendee;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 
     public ServerThread(Socket socket) {
-        Log.i("lsc", "ServerThread constructor " + Thread.currentThread().getName());
         this.socket = socket;
     }
 
     @Override
     public void run() {
-        Log.d("lsc", "ServerThread 1 " + Thread.currentThread().getName());
         try {
             while (true) {
-                Log.d("lsc", "ServerThread 2 " + Thread.currentThread().getName());
                 streamByClient = new DataInputStream(socket.getInputStream());
-                Log.d("lsc", "ServerThread 3 " + Thread.currentThread().getName());
                 streamToClient = new DataOutputStream(socket.getOutputStream());
                 String message = streamByClient.readUTF();
-                RxEventBus.getInstance().sendEvent(message);
-                Log.d("lsc", "ServerThread 4 " + message);
+                PublishSubjectBus.getInstance().sendEvent(message);
+                Log.d("lsc", "클라이언트 -> 서버 " + message);
             }
         } catch (IOException e) {
             Log.e("lsc", "ServerThread e " + e.getMessage() + ", " + Thread.currentThread().getName());
@@ -56,4 +58,10 @@ public class ServerThread implements Runnable {
 
     }
 
+    @Override
+    public String toString() {
+        return "ServerThread{" +
+                "user=" + user +
+                '}';
+    }
 }

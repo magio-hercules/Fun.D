@@ -1,0 +1,633 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.fundroid.offstand.ui.lobby.LobbyViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_lobby"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.lobby.LobbyActivity">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_background_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.014" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_background_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.986" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_setting_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.812" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_setting_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.931" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_setting_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.037" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_setting_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.104" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_setting_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.0705" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_setting_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.8715" />
+
+        //-- 만땅 가이드 라인 Start
+        // Name
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_name_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.259" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_name_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.318" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_name_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.225" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_name_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.775" />
+
+        // Shadow
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_Shadow_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.676" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_Shadow_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.715" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_Shadow_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.236" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_Shadow_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.763" />
+
+        // Character
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_character_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.355" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_character_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.692" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_character_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.306" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_character_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.692" />
+
+        // Left_Button, Right_Button
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_commonButton_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.453" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_commonButton_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.596" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_leftButton_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.113" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_leftButton_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.24" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_rightButton_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.76" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_rightButton_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.887" />
+
+        // Stats, Save
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_save_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.791" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_save_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.85" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.145" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.492" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_save_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.508" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_save_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.855" />
+
+        // TextView Guide Start
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_nameText_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.393" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_nameText_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.607" />
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_nameText_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.272" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_nameText_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.304" />
+
+        // TextView Guide End
+
+        // 통계화면 가이드 라인 Start
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_item_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.125" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_item_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.875" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_total_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.39" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_total_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.449" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_win_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.496" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_win_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.555" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_per_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.603" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_per_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.662" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_back_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.326" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_stats_back_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.673" />
+        // 통계화면 가이드 라인 End
+        //-- 만땅 가이드 라인 End
+
+        <include layout="@layout/activity_background" />
+
+        <ImageView
+            android:id="@+id/image_background_table"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+            app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
+            app:layout_constraintTop_toTopOf="@id/guide_h_5"
+            app:srcCompat="@drawable/me_character_back" />
+
+        <ImageView
+            android:id="@+id/me_character_back"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_character_back"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_character_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_character_left"
+            app:layout_constraintRight_toRightOf="@id/guide_character_right"
+            app:layout_constraintTop_toTopOf="@id/guide_character_top" />
+
+        <ImageView
+            android:id="@+id/setting_Name"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_character_name"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_name_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_name_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_name_top" />
+
+        <EditText
+            android:id="@+id/userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:lines="1"
+            android:maxLength="8"
+            android:singleLine="true"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="@+id/guide_h_nameText_bottom"
+            app:layout_constraintLeft_toLeftOf="@+id/guide_v_nameText_left"
+            app:layout_constraintRight_toRightOf="@+id/guide_v_nameText_right"
+            app:layout_constraintTop_toTopOf="@+id/guide_h_nameText_top">
+
+            <requestFocus />
+
+        </EditText>
+
+        <ImageView
+            android:id="@+id/setting_Shadow"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_character_shadow"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_Shadow_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_Shadow_left"
+            app:layout_constraintRight_toRightOf="@id/guide_Shadow_right"
+            app:layout_constraintTop_toTopOf="@id/guide_Shadow_top" />
+
+        <ImageView
+            android:id="@+id/setting_Character"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_character_1"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_character_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_character_left"
+            app:layout_constraintRight_toRightOf="@id/guide_character_right"
+            app:layout_constraintTop_toTopOf="@id/guide_character_top" />
+
+        <ImageView
+            android:id="@+id/setting_LeftButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_commonButton_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_leftButton_left"
+            app:layout_constraintRight_toRightOf="@id/guide_leftButton_right"
+            app:layout_constraintTop_toTopOf="@id/guide_commonButton_top"
+            app:srcCompat="@drawable/button_setting_left" />
+
+        <ImageView
+            android:id="@+id/setting_RightButton"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_commonButton_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_rightButton_left"
+            app:layout_constraintRight_toRightOf="@id/guide_rightButton_right"
+            app:layout_constraintTop_toTopOf="@id/guide_commonButton_top"
+            app:srcCompat="@drawable/button_setting_right" />
+
+        <ImageView
+            android:id="@+id/setting_stats"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_btn_stats"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_save_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_left"
+            app:layout_constraintRight_toRightOf="@id/guide_stats_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_save_top" />
+
+        <ImageView
+            android:id="@+id/setting_save"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_btn_save"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_save_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_save_left"
+            app:layout_constraintRight_toRightOf="@id/guide_save_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_save_top" />
+
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+            app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
+            app:layout_constraintTop_toTopOf="@id/guide_h_5" />
+
+        // 개인 통계 Start
+
+        <FrameLayout
+            android:id="@+id/fragment_container_stats"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="#CC000000"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
+            app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
+            app:layout_constraintTop_toTopOf="@id/guide_h_5" />
+
+        <ImageView
+            android:id="@+id/setting_stats_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_stats_title"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_name_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_name_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_name_top" />
+
+
+        <ImageView
+            android:id="@+id/setting_stats_total"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_stats_total"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_total_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_stats_item_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_total_top" />
+
+        <!--가이드 라인 수정 할 것-->
+        <TextView
+            android:id="@+id/setting_stats_total_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center|right"
+            android:text="hihihihi"
+            android:visibility="visible"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_total_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_total_top" />
+
+
+        <ImageView
+            android:id="@+id/setting_stats_win"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_stats_win"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_win_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_stats_item_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_win_top" />
+
+        <TextView
+            android:id="@+id/setting_stats_win_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center|right"
+            android:text="hihihihi"
+            android:visibility="visible"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_win_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_win_top" />
+
+        <ImageView
+            android:id="@+id/setting_stats_per"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_stats_per"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_per_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_stats_item_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_per_top" />
+
+        <TextView
+            android:id="@+id/setting_stats_per_text"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="center|right"
+            android:text="hihihihi"
+            android:visibility="visible"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_per_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_item_left"
+            app:layout_constraintRight_toRightOf="@id/guide_name_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_per_top" />
+
+        <ImageView
+            android:id="@+id/setting_stats_save"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/me_btn_save"
+            android:tag="BUTTON"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_stats_save_bottom"
+            app:layout_constraintLeft_toLeftOf="@id/guide_stats_back_left"
+            app:layout_constraintRight_toRightOf="@id/guide_stats_back_right"
+            app:layout_constraintTop_toTopOf="@id/guide_stats_save_top" />
+        // 개인 통계 End
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

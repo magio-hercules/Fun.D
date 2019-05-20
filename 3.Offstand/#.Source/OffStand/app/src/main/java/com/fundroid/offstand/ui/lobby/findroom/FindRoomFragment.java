@@ -21,6 +21,7 @@ import android.view.View;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
+import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
@@ -84,5 +85,11 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
 
     private void initViews() {
 
+    }
+
+    @Override
+    public void goToRoomActivity() {
+        RoomActivity.start(getContext());
+        getActivity().finish();
     }
 }

@@ -35,6 +35,10 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
+            android:name=".SettingActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
             android:name=".ui.lobby.LobbyActivity"
             android:screenOrientation="portrait">
             <!--<intent-filter>
