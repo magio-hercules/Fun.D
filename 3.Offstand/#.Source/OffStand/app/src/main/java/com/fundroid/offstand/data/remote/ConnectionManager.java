@@ -106,8 +106,8 @@ public class ConnectionManager {
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
                 return setUserSeatNo(apiBody)
-                        .flatMap(userServerIndex -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), userServerIndex),
-                                broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), userServerIndex),
+                        .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), seatNo),
+                                broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), seatNo),
                                 (firstOne, secondOne) -> firstOne));
 
             case API_READY:
@@ -152,19 +152,23 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             default:
-                return Observable.just(apiBody);
+                Log.d("lsc", "ConnectionManager default api " + apiBody);
+                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
         }
     }
 
     private static Observable<Integer> setUserSeatNo(ApiBody apiBody) {
         return Observable.create(subscriber -> {
-            int newUserServerIndex = -1;
-            for (int index = 0; index < serverThreads.length; index++) {
-                if (serverThreads[index] != null && serverThreads[index].getUser() == null) {
-                    newUserServerIndex = index;
-                    apiBody.getUser().setSeat(index + 1);
-                    serverThreads[index].setUser(apiBody.getUser());
-                    subscriber.onNext(newUserServerIndex);
+            int seatNo = 1;
+            for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().collect(Collectors.toList())) {
+                if (serverThread.getUser() == null) {
+                    apiBody.getUser().setSeat(seatNo);
+                    serverThread.setUser(apiBody.getUser());
+                    subscriber.onNext(seatNo);
+                } else {
+                    if(serverThread.getUser().getSeat() == seatNo) {
+                        seatNo += 1;
+                    }
                 }
             }
         });
@@ -217,6 +221,10 @@ public class ConnectionManager {
                     serverThread.getUser().setSeat(targetSeat);
                 }
             }
+        }
+        Log.d("lsc", "ConnectionManager after size " + serverThreads.length);
+        for (int i = 0; i < serverThreads.length; i++) {
+            Log.d("lsc", "ConnectionManager after setUserSeatNo " + serverThreads[i] + ", i : " + i);
         }
         return Completable.complete();
     }
@@ -314,19 +322,26 @@ public class ConnectionManager {
         });
     }
 
-    private static Observable<ApiBody> broadcastMessageExceptOne(ApiBody message, int serverIndex) {
+    private static Observable<ApiBody> broadcastMessageExceptOne(ApiBody message, int seatNo) {
         return Observable.create(subscriber -> {
-            for (int index = 0; index < serverThreads.length; index++) {
-                if (serverThreads[index] != null && index != serverIndex)
-                    serverThreads[index].getStreamToClient().writeUTF(message.toString());
+
+            for(ServerThread serverThread : Stream.of(serverThreads).withoutNulls().filterNot(serverThread -> serverThread.getUser().getSeat() == seatNo).collect(Collectors.toList())) {
+                serverThread.getStreamToClient().writeUTF(message.toString());
             }
             subscriber.onNext(message);
         });
     }
 
-    private static Observable<ApiBody> sendMessage(ApiBody message, int serverIndex) {
+    private static Observable<ApiBody> sendMessage(ApiBody message, int seatNo) {
         return Observable.create(subscriber -> {
-            serverThreads[serverIndex].getStreamToClient().writeUTF(message.toString());
+            Stream.of(serverThreads)
+                    .withoutNulls()
+                    .filter(serverThread -> serverThread.getUser().getSeat() == seatNo)
+                    .findFirst()
+                    .get()
+                    .getStreamToClient()
+                    .writeUTF(message.toString());
+
             subscriber.onNext(message);
         });
     }

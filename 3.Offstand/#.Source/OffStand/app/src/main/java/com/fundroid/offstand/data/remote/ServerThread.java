@@ -2,6 +2,8 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.utils.rx.PublishSubjectBus;
 
@@ -56,4 +58,10 @@ public class ServerThread implements Runnable {
 
     }
 
+    @Override
+    public String toString() {
+        return "ServerThread{" +
+                "user=" + user +
+                '}';
+    }
 }

@@ -915,7 +915,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    Log.d(TAG, "doSendMessage success");
+                    Log.d(TAG, "doSendMessage success " + apiBody);
                 }, onError -> {
                     onError.printStackTrace();
                 });
