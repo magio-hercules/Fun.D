@@ -120,9 +120,9 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
                 );
 
         // 배경음악
-        mp = MediaPlayer.create(this, R.raw.lone_wolf);
-        mp.setLooping(true);
-        mp.start();
+//        mp = MediaPlayer.create(this, R.raw.lone_wolf);
+//        mp.setLooping(true);
+//        mp.start();
     }
 
     @Override
