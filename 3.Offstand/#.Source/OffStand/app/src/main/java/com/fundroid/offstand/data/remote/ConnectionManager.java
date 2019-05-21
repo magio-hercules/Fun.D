@@ -120,7 +120,6 @@ public class ConnectionManager {
                                 (firstOne, secondOne) -> firstOne));
 
             case API_READY:
-                // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
                         .andThen(getUserStatus())
                         .concatMap(ConnectionManager::setRoomStatus)
@@ -326,7 +325,19 @@ public class ConnectionManager {
             default:
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
         }
+    }
 
+    public static Completable figureOut(ArrayList<User> users) {
+        return Completable.create(subscriber -> {
+//            Stream.of(users)
+//                    .filter(user -> user.getStatus() == INGAME.getEnumStatus())
+//                    .map(setCard)
+
+            for (User user : users) {
+//                user.getCards()
+                setCardValue(user.getCards());
+            }
+        });
     }
 
     private static Observable<Pair<ServerThread, User>> shuffle(ArrayList<ServerThread> serverThreads) {
@@ -393,15 +404,6 @@ public class ConnectionManager {
         return Completable.create(subscriber -> {
             clientThread.getStreamToServer().writeUTF(message.toString());
             subscriber.onComplete();
-        });
-    }
-
-    public static Completable figureOut(ArrayList<User> users) {
-        return Completable.create(subscriber -> {
-            for (User user : users) {
-//                user.getCards()
-                setCardValue(user.getCards());
-            }
         });
     }
 }

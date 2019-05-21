@@ -67,22 +67,9 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     }
 
 
-    private void enterRoom(InetAddress roomAddress, int roomPort) {
-        Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
-        getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(() -> {
-                    Log.d("lsc", "MakeRoomViewModel enterRoom onNext ");
-                }, onError -> {
-                    Log.d("lsc", "MakeRoomViewModel enterRoom onError " + onError.getMessage());
-                }));
-
-    }
 
     public void onNavBackClick() {
         getNavigator().goBack();
-
     }
 
     @Override
