@@ -325,14 +325,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.357" />
+        app:layout_constraintGuide_percent="0.358" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_result_content2_rank2_card_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.442" />
+        app:layout_constraintGuide_percent="0.443" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_result_content2_rank3_card_top"
