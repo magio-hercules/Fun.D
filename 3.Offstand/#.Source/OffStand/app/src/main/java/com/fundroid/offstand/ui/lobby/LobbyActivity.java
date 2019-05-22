@@ -82,6 +82,9 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         context.startActivity(intent);
     }
 
+    // 배경음악 - 출처 : https://www.youtube.com/audiolibrary/music - Lone Wolf
+    private  static MediaPlayer mp;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,6 +118,11 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
                         },
                         this::handleError
                 );
+
+        // 배경음악
+//        mp = MediaPlayer.create(this, R.raw.lone_wolf);
+//        mp.setLooping(true);
+//        mp.start();
     }
 
     @Override

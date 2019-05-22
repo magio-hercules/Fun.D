@@ -24,8 +24,9 @@ import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.model.UserWrapper;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
-import com.fundroid.offstand.utils.rx.PublishSubjectBus;
+import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
+import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -548,10 +549,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         int curUserIndex = 1;
         for (int i = 1; i < MAX_USER_COUNT + 1; i++) {
             if (i < users.size() + 1) { // user
-                curUser = users.get(i-1);
+                curUser = users.get(i - 1);
                 if (curUser.getAvatar() != 0) {
                     allUser[i] = new User(curUser.getSeat(), curUser.isHost(), curUser.getName(),
-                                          curUser.getAvatar(), curUser.getTotal(), curUser.getWin());
+                            curUser.getAvatar(), curUser.getTotal(), curUser.getWin());
                     if (curUser.getName().equals(userName) && curUser.getAvatar() == avatarId) {
                         curUserIndex = i;
                     }
@@ -900,11 +901,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         doSendMessage(apiNo, arr);
     }
 
-//    private void doSendMessage(int apiNo, int seatNo1,  int seatNo2) {
+    //    private void doSendMessage(int apiNo, int seatNo1,  int seatNo2) {
     private void doSendMessage(int apiNo, int[] arrSeat) {
         int seatNo1 = arrSeat[0];
         int seatNo2 = arrSeat[1];
-        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " +seatNo2 + ")");
+        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " + seatNo2 + ")");
         ApiBody apiBody;
         if (seatNo2 == -1) {
             apiBody = new ApiBody(apiNo, seatNo1);
@@ -930,71 +931,71 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         Log.d(TAG, "initRX");
 
         ReplaySubjectBus.getInstance().getEvents(ArrayList.class)
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.computation())
-            .subscribe(userList -> {
-                        Log.d(TAG, "RoomActivity replay apiBody " + userList);
-                        initUser((ArrayList<User>)userList);
-                        drawUser();
-                    }, onError -> Log.d(TAG, "RoomActivity replay onError " + onError)
-                    , () -> Log.d(TAG, "RoomActivity replay onCompleted"));
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.computation())
+                .subscribe(userList -> {
+                            Log.d(TAG, "RoomActivity replay apiBody " + userList);
+                            initUser((ArrayList<User>) userList);
+                            drawUser();
+                        }, onError -> Log.d(TAG, "RoomActivity replay onError " + onError)
+                        , () -> Log.d(TAG, "RoomActivity replay onCompleted"));
 
 
-        PublishSubjectBus.getInstance().getEvents(String.class)
-            .flatMap(json -> ConnectionManager.serverProcessor((String) json))
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeOn(Schedulers.io())
-            .subscribe(result -> {
-                Log.d(TAG, "RoomActivity server result " + result);
-                ApiBody apiBody = ((ApiBody) result);
-                switch (apiBody.getNo()) {
+        ClientPublishSubjectBus.getInstance().getEvents(String.class)
+                .map(json -> new Gson().fromJson((String) json, ApiBody.class))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(result -> {
+                    Log.d(TAG, "RoomActivity server result " + result);
+                    ApiBody apiBody = ((ApiBody) result);
+                    switch (apiBody.getNo()) {
 
-                    case API_ROOM_INFO:
-                        break;
+                        case API_ROOM_INFO:
+                            break;
 
-                    case API_ENTER_ROOM_TO_OTHER:
-                        Log.d(TAG, "RoomActivity onCreate API_ENTER_ROOM_TO_OTHER");
-                        User curUser = ((ApiBody) result).getUser();
-                        Log.d(TAG, curUser.toString());
-                        addUser(curUser);
-                        drawUser(curUser);
-                        break;
+                        case API_ENTER_ROOM_TO_OTHER:
+                            Log.d(TAG, "RoomActivity onCreate API_ENTER_ROOM_TO_OTHER");
+                            User curUser = ((ApiBody) result).getUser();
+                            Log.d(TAG, curUser.toString());
+                            addUser(curUser);
+                            drawUser(curUser);
+                            break;
 
-                    case API_READY_BR:
-                        doReady(apiBody.getSeatNo(), true);
-                        break;
+                        case API_READY_BR:
+                            doReady(apiBody.getSeatNo(), true);
+                            break;
 
-                    case API_READY_CANCEL_BR:
-                        doReady(apiBody.getSeatNo(), false);
-                        break;
+                        case API_READY_CANCEL_BR:
+                            doReady(apiBody.getSeatNo(), false);
+                            break;
 
-                    case API_SHUFFLE_BR:
-                        Intent intent = new Intent(RoomActivity.this, PlayActivity.class);
-                        startActivity(intent);
-                        finish();
-                        break;
+                        case API_SHUFFLE_BR:
+                            Intent intent = new Intent(RoomActivity.this, PlayActivity.class);
+                            startActivity(intent);
+                            finish();
+                            break;
 
-                    case API_MOVE_BR:
-                        doChange(apiBody.getSeatNo(), apiBody.getSeatNo2());
-                        break;
+                        case API_MOVE_BR:
+                            doChange(apiBody.getSeatNo(), apiBody.getSeatNo2());
+                            break;
 
-                    case API_BAN_BR:
-                    case API_OUT_BR:
-                        doBan(apiBody.getSeatNo());
-                        break;
+                        case API_BAN_BR:
+                        case API_OUT_BR:
+                            doBan(apiBody.getSeatNo());
+                            break;
 
-                    case API_SHUFFLE_AVAILABLE:
-                        bReadyShuffle = true;
-                        break;
+                        case API_SHUFFLE_AVAILABLE:
+                            bReadyShuffle = true;
+                            break;
 
-                    case API_SHUFFLE_NOT_AVAILABLE:
-                        bReadyShuffle = false;
-                        break;
-                }
+                        case API_SHUFFLE_NOT_AVAILABLE:
+                            bReadyShuffle = false;
+                            break;
+                    }
 
-            }, onError -> {
-                Log.d(TAG, "test onError " + onError);
-            }, () -> Log.d(TAG, "test onCompleted"));
+                }, onError -> {
+                    Log.d(TAG, "test onError " + onError);
+                }, () -> Log.d(TAG, "test onCompleted"));
     }
 
     private void test() {

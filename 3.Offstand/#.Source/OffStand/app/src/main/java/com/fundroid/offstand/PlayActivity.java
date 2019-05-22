@@ -105,9 +105,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // 만땅 - 게임 결과 화면
     FrameLayout result_back;
     ImageView result_title1;
-    ImageView result_title2;
+//    ImageView result_title2;
     ImageView result_content1;
+    ImageView result_content1_card1;
+    ImageView result_content1_card2;
     ImageView result_content2;
+    ImageView result_content2_rank2_card1;
+    ImageView result_content2_rank2_card2;
+    ImageView result_content2_rank3_card1;
+    ImageView result_content2_rank3_card2;
+    ImageView result_content2_rank4_card1;
+    ImageView result_content2_rank4_card2;
+    ImageView result_left_button;
+    ImageView result_right_button;
     ImageView result_shadow;
     ImageView result_rebutton;
 
@@ -205,9 +215,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // 만땅 - 셋팅
         result_back = (FrameLayout) findViewById(R.id.fragment_container_play_result);
         result_title1 = (ImageView) findViewById(R.id.play_result_title1);
-        result_title2 = (ImageView) findViewById(R.id.play_result_title2);
+//        result_title2 = (ImageView) findViewById(R.id.play_result_title2);
         result_content1 = (ImageView) findViewById(R.id.play_result_content1);
+        result_content1_card1 = (ImageView) findViewById(R.id.play_result_content1_card1);
+        result_content1_card2 = (ImageView) findViewById(R.id.play_result_content1_card2);
         result_content2 = (ImageView) findViewById(R.id.play_result_content2);
+        result_content2_rank2_card1 = (ImageView) findViewById(R.id.play_result_rank2_card1);
+        result_content2_rank2_card2 = (ImageView) findViewById(R.id.play_result_rank2_card2);
+        result_content2_rank3_card1 = (ImageView) findViewById(R.id.play_result_rank3_card1);
+        result_content2_rank3_card2 = (ImageView) findViewById(R.id.play_result_rank3_card2);
+        result_content2_rank4_card1 = (ImageView) findViewById(R.id.play_result_rank4_card1);
+        result_content2_rank4_card2 = (ImageView) findViewById(R.id.play_result_rank4_card2);
+        result_left_button = (ImageView) findViewById(R.id.play_result_left_button);
+        result_right_button = (ImageView) findViewById(R.id.play_result_right_button);
         result_shadow = (ImageView) findViewById(R.id.play_result_shadow);
         result_rebutton = (ImageView) findViewById(R.id.play_result_ReButton);
 
@@ -215,9 +235,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // 만땅 - 기존에 안보이게 셋팅
         result_back.setVisibility(View.GONE);
         result_title1.setVisibility(View.GONE);
-        result_title2.setVisibility(View.GONE);
+//        result_title2.setVisibility(View.GONE);
         result_content1.setVisibility(View.GONE);
+        result_content1_card1.setVisibility(View.GONE);
+        result_content1_card2.setVisibility(View.GONE);
         result_content2.setVisibility(View.GONE);
+        result_content2_rank2_card1 .setVisibility(View.GONE);
+        result_content2_rank2_card2 .setVisibility(View.GONE);
+        result_content2_rank3_card1 .setVisibility(View.GONE);
+        result_content2_rank3_card2 .setVisibility(View.GONE);
+        result_content2_rank4_card1 .setVisibility(View.GONE);
+        result_content2_rank4_card2 .setVisibility(View.GONE);
+        result_left_button.setVisibility(View.GONE);
+        result_right_button.setVisibility(View.GONE);
         result_shadow.setVisibility(View.GONE);
         result_rebutton.setVisibility(View.GONE);
     }
@@ -736,22 +766,105 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         result_back.setVisibility(View.VISIBLE);
         result_title1.setVisibility(View.VISIBLE);
-        result_title2.setVisibility(View.VISIBLE);
+//        result_title2.setVisibility(View.VISIBLE);
         result_content1.setVisibility(View.VISIBLE);
-        result_content2.setVisibility(View.VISIBLE);
+        result_content1_card1.setVisibility(View.VISIBLE);
+        result_content1_card2.setVisibility(View.VISIBLE);
+//        result_content2.setVisibility(View.VISIBLE);
+//        result_content2_rank2_card1.setVisibility(View.VISIBLE);
+//        result_content2_rank2_card2.setVisibility(View.VISIBLE);
+//        result_content2_rank3_card1.setVisibility(View.VISIBLE);
+//        result_content2_rank3_card2.setVisibility(View.VISIBLE);
+//        result_content2_rank4_card1.setVisibility(View.VISIBLE);
+//        result_content2_rank4_card2.setVisibility(View.VISIBLE);
+        result_left_button.setVisibility(View.VISIBLE);
+        result_right_button.setVisibility(View.VISIBLE);
         result_shadow.setVisibility(View.VISIBLE);
         result_rebutton.setVisibility(View.VISIBLE);
     }
 
-    // 결과보기 - Re 게임 버튼 눌렀을 경우 Event
+    // 결과보기 - 화살표(왼쪽, 오른쪽) 눌렀을 경우
+    @OnClick(R.id.play_result_left_button)
+    public void Game_Result_Left(){
+        if(result_content1.getVisibility() == View.VISIBLE){
+            // result_1
+            result_content1.setVisibility(View.GONE);
+            result_content1_card1.setVisibility(View.GONE);
+            result_content1_card2.setVisibility(View.GONE);
+
+            // result_2
+            result_content2.setVisibility(View.VISIBLE);
+            result_content2_rank2_card1.setVisibility(View.VISIBLE);
+            result_content2_rank2_card2.setVisibility(View.VISIBLE);
+            result_content2_rank3_card1.setVisibility(View.VISIBLE);
+            result_content2_rank3_card2.setVisibility(View.VISIBLE);
+            result_content2_rank4_card1.setVisibility(View.VISIBLE);
+            result_content2_rank4_card2.setVisibility(View.VISIBLE);
+        }
+        else{
+            // result_1
+            result_content1.setVisibility(View.VISIBLE);
+            result_content1_card1.setVisibility(View.VISIBLE);
+            result_content1_card2.setVisibility(View.VISIBLE);
+
+            // result_2
+            result_content2.setVisibility(View.GONE);
+            result_content2_rank2_card1.setVisibility(View.GONE);
+            result_content2_rank2_card2.setVisibility(View.GONE);
+            result_content2_rank3_card1.setVisibility(View.GONE);
+            result_content2_rank3_card2.setVisibility(View.GONE);
+            result_content2_rank4_card1.setVisibility(View.GONE);
+            result_content2_rank4_card2.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.play_result_right_button)
+    public void Game_Result_Right(){
+        if(result_content1.getVisibility() == View.VISIBLE){
+            // result_1
+            result_content1.setVisibility(View.GONE);
+            result_content1_card1.setVisibility(View.GONE);
+            result_content1_card2.setVisibility(View.GONE);
+
+            // result_2
+            result_content2.setVisibility(View.VISIBLE);
+            result_content2_rank2_card1.setVisibility(View.VISIBLE);
+            result_content2_rank2_card2.setVisibility(View.VISIBLE);
+            result_content2_rank3_card1.setVisibility(View.VISIBLE);
+            result_content2_rank3_card2.setVisibility(View.VISIBLE);
+            result_content2_rank4_card1.setVisibility(View.VISIBLE);
+            result_content2_rank4_card2.setVisibility(View.VISIBLE);
+        }
+        else{
+            // result_1
+            result_content1.setVisibility(View.VISIBLE);
+            result_content1_card1.setVisibility(View.VISIBLE);
+            result_content1_card2.setVisibility(View.VISIBLE);
+
+            // result_2
+            result_content2.setVisibility(View.GONE);
+            result_content2_rank2_card1.setVisibility(View.GONE);
+            result_content2_rank2_card2.setVisibility(View.GONE);
+            result_content2_rank3_card1.setVisibility(View.GONE);
+            result_content2_rank3_card2.setVisibility(View.GONE);
+            result_content2_rank4_card1.setVisibility(View.GONE);
+            result_content2_rank4_card2.setVisibility(View.GONE);
+        }
+    }
+
+    // 결과보기 - Back 버튼 눌렀을 경우 Event
     @OnClick(R.id.play_result_ReButton)
     public void Game_Result_ReButton(){
 
         result_back.setVisibility(View.GONE);
         result_title1.setVisibility(View.GONE);
-        result_title2.setVisibility(View.GONE);
+//        result_title2.setVisibility(View.GONE);
         result_content1.setVisibility(View.GONE);
+        result_content1_card1.setVisibility(View.GONE);
+        result_content1_card2.setVisibility(View.GONE);
         result_content2.setVisibility(View.GONE);
+        result_left_button.setVisibility(View.GONE);
+        result_right_button.setVisibility(View.GONE);
         result_shadow.setVisibility(View.GONE);
         result_rebutton.setVisibility(View.GONE);
     }

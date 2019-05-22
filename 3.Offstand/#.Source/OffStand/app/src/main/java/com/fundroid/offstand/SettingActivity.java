@@ -5,7 +5,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -158,7 +160,23 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
+//                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
+
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build();
+
+                SoundPool sp = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(8).build();
+                int soundID = sp.load(SettingActivity.this, R.raw.mouth_interface_button, 1);
+                //sp.play(soundID, 1f, 1f, 0, 0,1f);
+
+                sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+                    @Override
+                    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+                        sp.play(soundID, 1f, 1f, 0, 0,1f);
+                    }
+                });
 
                 int i = sharedPreferences.getInt("character", 0);
                 if (i > 0) {

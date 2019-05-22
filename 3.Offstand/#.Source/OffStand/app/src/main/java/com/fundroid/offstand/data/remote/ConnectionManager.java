@@ -34,6 +34,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
@@ -50,6 +51,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.model.User.EnumStatus.CARDOPEN;
 import static com.fundroid.offstand.model.User.EnumStatus.DIE;
+import static com.fundroid.offstand.model.User.EnumStatus.INGAME;
 import static com.fundroid.offstand.model.User.EnumStatus.READY;
 import static com.fundroid.offstand.model.User.EnumStatus.STANDBY;
 
@@ -74,14 +76,12 @@ public class ConnectionManager {
     private static int serverCount;
     private static ClientThread clientThread;
     private static ServerSocket serverSocket;
-    private static int roomPort;
     private static int roomMaxUser;
-    private static EnumStatus roomStatus;
+    private static EnumStatus roomStatus = EnumStatus.SHUFFLE_NOT_AVAILABLE;
 
     private static ArrayList<Integer> cards = new ArrayList<>();
 
     public static Completable createServerThread(int roomPort, int roomMaxUser) {
-        ConnectionManager.roomPort = roomPort;
         ConnectionManager.roomMaxUser = roomMaxUser;
         return Completable.create(subscriber -> {
             serverSocket = new ServerSocket(roomPort);
@@ -101,17 +101,25 @@ public class ConnectionManager {
         }
     }
 
+    private static ArrayList<User> swapToFirst(ArrayList<User> users, int seatNo) {
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).getSeat() == seatNo) {
+                Collections.swap(users, 0, i);
+            }
+        }
+        return users;
+    }
+
     public static Observable<ApiBody> serverProcessor(String apiBodyStr) {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
                 return setUserSeatNo(apiBody)
-                        .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())), seatNo),
+                        .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, swapToFirst((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()), seatNo)), seatNo),
                                 broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), seatNo),
                                 (firstOne, secondOne) -> firstOne));
 
             case API_READY:
-                // 모든 유저 레디 시 방장 게임 시작 버튼 활성화
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
                         .andThen(getUserStatus())
                         .concatMap(ConnectionManager::setRoomStatus)
@@ -136,12 +144,16 @@ public class ConnectionManager {
                         .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
 
             case API_DIE:
-                // 죽지 않은 User가 1명 밖에 안남을 경우 게임 결과 이동
-                return setUserStatus(apiBody.getNo(), apiBody.getSeatNo()).andThen(broadcastMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo())));
+                return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
+                        .andThen(getUserStatus())
+                        .concatMap(ConnectionManager::setRoomStatus)
+                        .concatMap(result -> broadcastMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo())));
 
             case API_CARD_OPEN:
-                // 모든 유저 카드 오픈 시 방장 게임 결과 버튼 활성화
-                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
+                return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
+                        .andThen(getUserStatus())
+                        .concatMap(ConnectionManager::setRoomStatus)
+                        .concatMap(result -> Observable.just(new ApiBody(RESULT_API_NOT_DEFINE)));
 
             case API_GAME_RESULT:
                 return Observable.just(new ApiBody(API_GAME_RESULT_BR, 1));
@@ -166,7 +178,7 @@ public class ConnectionManager {
                     serverThread.setUser(apiBody.getUser());
                     subscriber.onNext(seatNo);
                 } else {
-                    if(serverThread.getUser().getSeat() == seatNo) {
+                    if (serverThread.getUser().getSeat() == seatNo) {
                         seatNo += 1;
                     }
                 }
@@ -260,22 +272,40 @@ public class ConnectionManager {
             // 방장 제외한 나머지 User 리스트
             // 모두 ready 면 방장에게 셔플 가능 api 전송
             int userCountExceptHost = (int) Stream.of(serverThreads)
-                    .filterNot(serverThread -> serverThread == null)
+                    .withoutNulls()
                     .filterNot(serverThread -> serverThread.getUser().isHost())
                     .count();
 
             int readyUserCount = (int) Stream.of(serverThreads)
-                    .filterNot(serverThread -> serverThread == null)
+                    .withoutNulls()
                     .filterNot(serverThread -> serverThread.getUser().isHost())
                     .filter(serverThread -> serverThread.getUser().getStatus() == READY.getEnumStatus())
                     .count();
 
-            if (userCountExceptHost == readyUserCount) {
-                roomStatus = EnumStatus.SHUFFLE_AVAILABLE;
-            } else {
-                roomStatus = EnumStatus.SHUFFLE_NOT_AVAILABLE;
-            }
+            int inGameUserCount = (int) Stream.of(serverThreads) // 게임 시작 후 카드 오픈 or DIE or 나가기를 하지 않은 User 카운트
+                    .withoutNulls()
+                    .filterNot(serverThread -> serverThread.getUser().isHost())
+                    .filter(serverThread -> serverThread.getUser().getStatus() == INGAME.getEnumStatus())
+                    .count();
 
+            switch (roomStatus) {
+                case SHUFFLE_NOT_AVAILABLE:
+                case SHUFFLE_AVAILABLE:
+                    if (userCountExceptHost == readyUserCount) {
+                        roomStatus = EnumStatus.SHUFFLE_AVAILABLE;
+                    } else {
+                        roomStatus = EnumStatus.SHUFFLE_NOT_AVAILABLE;
+                    }
+                    break;
+
+                case INGAME:
+                    if (inGameUserCount == 0) {
+                        roomStatus = EnumStatus.GAME_RESULT_AVAILABLE;
+                    } else {
+                        roomStatus = EnumStatus.INGAME;
+                    }
+                    break;
+            }
             subscriber.onNext(roomStatus);
         });
     }
@@ -289,10 +319,25 @@ public class ConnectionManager {
             case SHUFFLE_NOT_AVAILABLE:
                 return sendMessage(new ApiBody(API_SHUFFLE_NOT_AVAILABLE), serverThreads[0]);
 
+            case GAME_RESULT_AVAILABLE:
+                return sendMessage(new ApiBody(API_GAME_RESULT_AVAILABLE), serverThreads[0]);
+
             default:
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
         }
+    }
 
+    public static Completable figureOut(ArrayList<User> users) {
+        return Completable.create(subscriber -> {
+//            Stream.of(users)
+//                    .filter(user -> user.getStatus() == INGAME.getEnumStatus())
+//                    .map(setCard)
+
+            for (User user : users) {
+//                user.getCards()
+                setCardValue(user.getCards());
+            }
+        });
     }
 
     private static Observable<Pair<ServerThread, User>> shuffle(ArrayList<ServerThread> serverThreads) {
@@ -304,6 +349,7 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
                 serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
+                serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
             roomStatus = EnumStatus.INGAME;
@@ -325,7 +371,7 @@ public class ConnectionManager {
     private static Observable<ApiBody> broadcastMessageExceptOne(ApiBody message, int seatNo) {
         return Observable.create(subscriber -> {
 
-            for(ServerThread serverThread : Stream.of(serverThreads).withoutNulls().filterNot(serverThread -> serverThread.getUser().getSeat() == seatNo).collect(Collectors.toList())) {
+            for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().filterNot(serverThread -> serverThread.getUser().getSeat() == seatNo).collect(Collectors.toList())) {
                 serverThread.getStreamToClient().writeUTF(message.toString());
             }
             subscriber.onNext(message);
@@ -334,6 +380,7 @@ public class ConnectionManager {
 
     private static Observable<ApiBody> sendMessage(ApiBody message, int seatNo) {
         return Observable.create(subscriber -> {
+
             Stream.of(serverThreads)
                     .withoutNulls()
                     .filter(serverThread -> serverThread.getUser().getSeat() == seatNo)
@@ -357,15 +404,6 @@ public class ConnectionManager {
         return Completable.create(subscriber -> {
             clientThread.getStreamToServer().writeUTF(message.toString());
             subscriber.onComplete();
-        });
-    }
-
-    public static Completable figureOut(ArrayList<User> users) {
-        return Completable.create(subscriber -> {
-            for (User user : users) {
-//                user.getCards()
-                setCardValue(user.getCards());
-            }
         });
     }
 }

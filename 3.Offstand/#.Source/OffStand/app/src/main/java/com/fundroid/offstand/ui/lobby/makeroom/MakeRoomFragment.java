@@ -25,6 +25,7 @@ import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.databinding.FragmentMakeRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
+import com.fundroid.offstand.ui.lobby.LobbyViewModel;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -40,6 +41,7 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     ViewModelProviderFactory viewModelProviderFactory;
 
     private MakeRoomViewModel makeRoomViewModel;
+    private LobbyViewModel lobbyViewModel;
 
     private FragmentMakeRoomBinding fragmentMakeRoomBinding;
 
@@ -81,6 +83,8 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fragmentMakeRoomBinding = getViewDataBinding();
+        lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
+        fragmentMakeRoomBinding.setLobbyViewModel(lobbyViewModel);
         initViews();
     }
 
@@ -91,6 +95,10 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     @Override
     public void goToRoomActivity() {
         RoomActivity.start(getContext());
-        getActivity().finish();
+        getBaseActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .remove(this)
+                .commit();
     }
 }

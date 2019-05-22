@@ -1,18 +1,16 @@
 package com.fundroid.offstand.ui.lobby.makeroom;
 
 
-import android.media.MediaPlayer;
 import android.util.Log;
 
-import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
-import com.fundroid.offstand.ui.lobby.LobbyActivity;
-import com.fundroid.offstand.utils.rx.PublishSubjectBus;
+import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
+import com.google.gson.Gson;
 
 import java.net.InetAddress;
 import java.util.concurrent.TimeUnit;
@@ -30,9 +28,8 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     public MakeRoomViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
         this.schedulerProvider = schedulerProvider;
-
-        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(String.class)
-                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
+        getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
+                .map(json -> new Gson().fromJson((String) json, ApiBody.class))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(result -> {
@@ -58,7 +55,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
                 .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
-                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(1,true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(1, true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.io())
                 .subscribe(() -> {
@@ -70,22 +67,9 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     }
 
 
-    private void enterRoom(InetAddress roomAddress, int roomPort) {
-        Log.d("lsc", "FindRoomViewModel enterRoom " + roomAddress);
-        getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
-                .subscribe(() -> {
-                    Log.d("lsc", "MakeRoomViewModel enterRoom onNext ");
-                }, onError -> {
-                    Log.d("lsc", "MakeRoomViewModel enterRoom onError " + onError.getMessage());
-                }));
-
-    }
 
     public void onNavBackClick() {
         getNavigator().goBack();
-
     }
 
     @Override

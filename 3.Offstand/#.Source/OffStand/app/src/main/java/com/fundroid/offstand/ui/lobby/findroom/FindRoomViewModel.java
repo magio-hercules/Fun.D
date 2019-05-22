@@ -8,9 +8,10 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
-import com.fundroid.offstand.utils.rx.PublishSubjectBus;
+import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
+import com.google.gson.Gson;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -30,11 +31,12 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
         super(dataManager, schedulerProvider);
         this.schedulerProvider = schedulerProvider;
 
-        getCompositeDisposable().add(PublishSubjectBus.getInstance().getEvents(String.class)
-                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
+        getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
+                .map(json -> new Gson().fromJson((String) json, ApiBody.class))
                 .subscribeOn(schedulerProvider.io())
                 .observeOn(schedulerProvider.ui())
                 .subscribe(result -> {
+                    Log.d("lsc","FindRoomViewModel result " + result);
                     switch (((ApiBody) result).getNo()) {
                         case API_ROOM_INFO:
                             ReplaySubjectBus.getInstance().sendEvent(((ApiBody)result).getUsers());
@@ -63,7 +65,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 40, (byte) 34};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 3};
 //        byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
         InetAddress addr = null;
         try {
@@ -76,5 +78,11 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
     public void onNavBackClick() {
         getNavigator().goBack();
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        Log.d("lsc","FindRoomVIewModel onCleared");
     }
 }
