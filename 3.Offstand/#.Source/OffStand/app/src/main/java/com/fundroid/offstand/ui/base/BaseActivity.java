@@ -6,10 +6,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.fundroid.offstand.R;
 import com.fundroid.offstand.utils.CommonUtils;
 
 import androidx.annotation.LayoutRes;
@@ -59,15 +61,17 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
 
     @Override
     public void onFragmentDetached(String tag) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(tag);
-        if (fragment != null) {
-            fragmentManager
-                    .beginTransaction()
-                    .disallowAddToBackStack()
-                    .remove(fragment)
-                    .commitNow();
-        }
+        Log.d("lsc","BaseActivity onFragmentDetached tag " + tag);
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        Fragment fragment = fragmentManager.findFragmentByTag(tag);
+//        if (fragment != null) {
+//            fragmentManager
+//                    .beginTransaction()
+//                    .disallowAddToBackStack()
+//                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+//                    .remove(fragment)
+//                    .commitNow();
+//        }
     }
 
 

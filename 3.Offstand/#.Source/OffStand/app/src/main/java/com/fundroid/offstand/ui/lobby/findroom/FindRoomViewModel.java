@@ -25,16 +25,13 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
-    private SchedulerProvider schedulerProvider;
-
     public FindRoomViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
-        this.schedulerProvider = schedulerProvider;
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
                 .map(json -> new Gson().fromJson((String) json, ApiBody.class))
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(result -> {
                     Log.d("lsc","FindRoomViewModel result " + result);
                     switch (((ApiBody) result).getNo()) {
@@ -54,8 +51,8 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
                 .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(0, false, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(() -> {
                     Log.d("lsc", "FindRoomViewModel enterRoom result");
                 }, onError -> {
@@ -65,7 +62,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 3};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 33};
 //        byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
         InetAddress addr = null;
         try {

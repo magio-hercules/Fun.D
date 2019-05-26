@@ -136,6 +136,7 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             case API_MOVE:
+                Log.d("lsc","ConnectionManager API_MOVE");
                 return setUserSeatNo(apiBody.getSeatNo(), apiBody.getSeatNo2())
                         .andThen(broadcastMessage(new ApiBody(API_MOVE_BR, apiBody.getSeatNo(), apiBody.getSeatNo2())));
 
@@ -234,10 +235,10 @@ public class ConnectionManager {
                 }
             }
         }
-        Log.d("lsc", "ConnectionManager after size " + serverThreads.length);
-        for (int i = 0; i < serverThreads.length; i++) {
-            Log.d("lsc", "ConnectionManager after setUserSeatNo " + serverThreads[i] + ", i : " + i);
-        }
+//        Log.d("lsc", "ConnectionManager after size " + serverThreads.length);
+//        for (int i = 0; i < serverThreads.length; i++) {
+//            Log.d("lsc", "ConnectionManager after setUserSeatNo " + serverThreads[i] + ", i : " + i);
+//        }
         return Completable.complete();
     }
 
@@ -358,6 +359,7 @@ public class ConnectionManager {
     }
 
     private static Observable<ApiBody> broadcastMessage(ApiBody message) {
+        Log.d("lsc","ConnectionManager broadcastMessage " + message);
         return Observable.create(subscriber -> {
 
             for (ServerThread serverThread : serverThreads) {

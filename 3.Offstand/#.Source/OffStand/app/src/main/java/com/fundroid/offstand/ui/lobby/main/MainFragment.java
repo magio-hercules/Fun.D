@@ -104,7 +104,9 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .addToBackStack(FRAGMENT_MAKE_ROOM)
+//                .addToBackStack(FRAGMENT_MAKE_ROOM)
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, MakeRoomFragment.newInstance(), MakeRoomFragment.TAG)
                 .commit();
     }
@@ -113,7 +115,9 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     public void findRoom() {
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .addToBackStack(FRAGMENT_FIND_ROOM)
+//                .addToBackStack(FRAGMENT_FIND_ROOM)
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, FindRoomFragment.newInstance(), FindRoomFragment.TAG)
                 .commit();
     }

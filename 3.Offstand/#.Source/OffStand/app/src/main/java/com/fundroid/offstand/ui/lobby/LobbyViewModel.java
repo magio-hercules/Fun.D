@@ -25,22 +25,20 @@ import java.net.UnknownHostException;
 
 public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
-    private SchedulerProvider schedulerProvider;
     private WifiP2pManager wifiP2pManager;
     private WifiP2pManager.Channel channel;
     private ResourceProvider resourceProvider;
 
     public LobbyViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider);
-        this.schedulerProvider = schedulerProvider;
         this.wifiP2pManager = wifiP2pManager;
         this.channel = channel;
         this.resourceProvider = resourceProvider;
 
         getCompositeDisposable().add(ServerPublishSubjectBus.getInstance().getEvents(String.class)
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(result -> {
                     Log.d("lsc", "LobbyViewModel result " + result);
                 }, onError -> {
@@ -49,7 +47,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         );
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
-                .subscribeOn(schedulerProvider.io())
+                .subscribeOn(getSchedulerProvider().io())
                 .subscribe(
                         peers -> {
                             Log.d("lsc", "LobbyViewModel peers " + ((WifiP2pDeviceList) peers).getDeviceList());
@@ -69,7 +67,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         );
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
-                .subscribeOn(schedulerProvider.io())
+                .subscribeOn(getSchedulerProvider().io())
                 .subscribe(
                         peers -> {
                             Log.d("lsc", "LobbyViewModel peers " + ((WifiP2pDeviceList) peers).getDeviceList());
@@ -160,8 +158,8 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     public void enterRoom(InetAddress roomAddress, int roomPort) {
         Log.d("lsc", "LobbyViewModel enterRoom " + roomAddress);
         getCompositeDisposable().add(ConnectionManager.createClientThread(roomAddress, roomPort)
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(() -> {
                     Log.d("lsc", "LobbyViewModel enterRoom thread " + Thread.currentThread().getName());
                     Log.d("lsc", "LobbyViewModel enterRoom onNext ");

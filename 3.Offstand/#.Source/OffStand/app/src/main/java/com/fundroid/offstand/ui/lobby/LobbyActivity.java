@@ -18,6 +18,7 @@ import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.receiver.WifiDirectReceiver;
 import com.fundroid.offstand.ui.base.BaseActivity;
 import com.fundroid.offstand.ui.lobby.main.MainFragment;
+import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
@@ -27,6 +28,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,7 +85,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     }
 
     // 배경음악 - 출처 : https://www.youtube.com/audiolibrary/music - Lone Wolf
-    private  static MediaPlayer mp;
+    private static MediaPlayer mp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -171,6 +173,35 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     public void onRepositoriesChanged(List<Room> rooms) {
 //        RoomAdapter adapter = (RoomAdapter) activityLobbyBinding.rvRoom.getAdapter();
 //        adapter.setDatas(rooms);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.d("lsc", "LobbyActivity onBackPressed");
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentByTag(MakeRoomFragment.TAG);
+        if (fragment == null) {
+            Log.d("lsc", "LobbyActivity onBackPressed if");
+            super.onBackPressed();
+        } else {
+            Log.d("lsc", "LobbyActivity onBackPressed else");
+            onFragmentDetached(MakeRoomFragment.TAG);
+        }
+    }
+
+    @Override
+    public void onFragmentDetached(String tag) {
+        Log.d("lsc", "LobbyActivity onFragmentDetached tag " + tag);
+        Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                    .remove(fragment)
+                    .commitNow();
+        }
     }
 
     @Override

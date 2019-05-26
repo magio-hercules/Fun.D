@@ -17,6 +17,7 @@
 package com.fundroid.offstand.ui.lobby.makeroom;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.fundroid.offstand.BR;
@@ -85,11 +86,6 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
         fragmentMakeRoomBinding = getViewDataBinding();
         lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
         fragmentMakeRoomBinding.setLobbyViewModel(lobbyViewModel);
-        initViews();
-    }
-
-    private void initViews() {
-
     }
 
     @Override
