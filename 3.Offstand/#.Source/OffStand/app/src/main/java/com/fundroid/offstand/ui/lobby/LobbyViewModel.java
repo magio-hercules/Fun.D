@@ -23,6 +23,8 @@ import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import io.reactivex.Completable;
+
 public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
     private WifiP2pManager wifiP2pManager;
@@ -47,43 +49,24 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         );
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
-                .subscribeOn(getSchedulerProvider().io())
-                .subscribe(
-                        peers -> {
-                            Log.d("lsc", "LobbyViewModel peers " + ((WifiP2pDeviceList) peers).getDeviceList());
-                            getNavigator().onRepositoriesChanged(Stream.of(((WifiP2pDeviceList) peers).getDeviceList())
-                                    .filter(wifiP2pDevice -> wifiP2pDevice.deviceName.contains(resourceProvider.getString(R.string.key_room_prefix)))
-                                    .map(wifiP2pDevice -> new Room(wifiP2pDevice.deviceName.substring(resourceProvider.getString(R.string.key_room_prefix).length()), wifiP2pDevice.deviceAddress))
-                                    .collect(Collectors.toList())
-                            );
-                        },
-                        error -> {
-                            getNavigator().handleError((Throwable) error);
-                        },
-                        () -> {
+                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribe(
+                                peers -> {
+//                            Log.d("lsc", "LobbyViewModel peers " + ((WifiP2pDeviceList) peers).getDeviceList());
+                                    Log.d("lsc", "LobbyViewModel peers " + ((WifiP2pDeviceList) peers).getDeviceList().size());
+//                            getNavigator().onRepositoriesChanged(Stream.of(((WifiP2pDeviceList) peers).getDeviceList())
+//                                    .filter(wifiP2pDevice -> wifiP2pDevice.deviceName.contains(resourceProvider.getString(R.string.key_room_prefix)))
+//                                    .map(wifiP2pDevice -> new Room(wifiP2pDevice.deviceName.substring(resourceProvider.getString(R.string.key_room_prefix).length()), wifiP2pDevice.deviceAddress))
+//                                    .collect(Collectors.toList())
+//                            );
+                                },
+                                error -> {
+                                    getNavigator().handleError((Throwable) error);
+                                },
+                                () -> {
 
-                        }
-                )
-        );
-
-        getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
-                .subscribeOn(getSchedulerProvider().io())
-                .subscribe(
-                        peers -> {
-                            Log.d("lsc", "LobbyViewModel peers " + ((WifiP2pDeviceList) peers).getDeviceList());
-                            getNavigator().onRepositoriesChanged(Stream.of(((WifiP2pDeviceList) peers).getDeviceList())
-                                    .filter(wifiP2pDevice -> wifiP2pDevice.deviceName.contains(resourceProvider.getString(R.string.key_room_prefix)))
-                                    .map(wifiP2pDevice -> new Room(wifiP2pDevice.deviceName.substring(resourceProvider.getString(R.string.key_room_prefix).length()), wifiP2pDevice.deviceAddress))
-                                    .collect(Collectors.toList())
-                            );
-                        },
-                        error -> {
-                            getNavigator().handleError((Throwable) error);
-                        },
-                        () -> {
-
-                        }
-                )
+                                }
+                        )
         );
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(WifiP2pInfo.class)
@@ -97,47 +80,78 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
                 )
         );
 
-//        getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
-//                .subscribeOn(schedulerProvider.io())
-//                .observeOn(schedulerProvider.ui())
-//                .subscribe(message -> getNavigator().showToast((String) message))
-//        );
     }
 
-    public void discoverPeers() {
-        Log.d("lsc", "LobbyViewModel discover");
-        wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                Log.d("lsc", "LobbyViewModel discoverPeers onSuccess");
-            }
+//    public void discoverPeers() {
+//        wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+//            @Override
+//            public void onSuccess() {
+//                Log.d("lsc", "LobbyViewModel discoverPeers onSuccess");
+//            }
+//
+//            @Override
+//            public void onFailure(int reason) {
+//                Log.d("lsc", "LobbyViewModel discoverPeers onFailure " + reason);
+//            }
+//
+//        });
+//    }
 
-            @Override
-            public void onFailure(int reason) {
-                Log.d("lsc", "LobbyViewModel discoverPeers onFailure " + reason);
-            }
+     private Completable discoverPeers() {
+        return Completable.create(subscriber -> {
+            wifiP2pManager.discoverPeers(channel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d("lsc", "LobbyViewModel discoverPeers onSuccess");
+                    subscriber.onComplete();
+                }
 
+                @Override
+                public void onFailure(int reason) {
+                    Log.d("lsc", "LobbyViewModel discoverPeers onFailure " + reason);
+                    subscriber.onError(new Throwable("reasonCode : " + reason));
+                }
+
+            });
         });
-    }
+     }
 
-    public void stopPeerDiscovery() {
-        Log.d("lsc","stopPeerDiscovery " + (wifiP2pManager == null));
-        wifiP2pManager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
-            @Override
-            public void onSuccess() {
-                Log.d("lsc", "LobbyViewModel stopPeerDiscovery onSuccess");
-            }
+//    public void stopPeerDiscovery() {
+//        wifiP2pManager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
+//            @Override
+//            public void onSuccess() {
+//                Log.d("lsc", "LobbyViewModel stopPeerDiscovery onSuccess");
+//            }
+//
+//            @Override
+//            public void onFailure(int reason) {
+//                Log.d("lsc", "LobbyViewModel stopPeerDiscovery onFailure " + reason);
+//            }
+//        });
+//    }
 
-            @Override
-            public void onFailure(int reason) {
-                Log.d("lsc", "LobbyViewModel stopPeerDiscovery onFailure " + reason);
-            }
+    private Completable stopPeerDiscovery() {
+        return Completable.create(subscriber -> {
+            wifiP2pManager.stopPeerDiscovery(channel, new WifiP2pManager.ActionListener() {
+                @Override
+                public void onSuccess() {
+                    Log.d("lsc", "LobbyViewModel stopPeerDiscovery onSuccess");
+                    subscriber.onComplete();
+                }
+
+                @Override
+                public void onFailure(int reason) {
+                    Log.d("lsc", "LobbyViewModel stopPeerDiscovery onFailure " + reason);
+                    subscriber.onError(new Throwable("reasonCode : " + reason));
+                }
+            });
         });
     }
 
     public void refresh() {
-        stopPeerDiscovery();
-        discoverPeers();
+        Log.d("lsc","LobbyViewModel refresh");
+//        stopPeerDiscovery();
+//        discoverPeers();
     }
 
     public void goToSetting() {
@@ -171,7 +185,6 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     }
 
     public void createGroup() {
-        Log.d("lsc", "LobbyViewModel createGroup " + (wifiP2pManager == null));
 //        testBoolean = true;
         try {
             Method setDeviceName = wifiP2pManager.getClass().getMethod("setDeviceName", WifiP2pManager.Channel.class, String.class, WifiP2pManager.ActionListener.class);
@@ -201,6 +214,21 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
             @Override
             public void onFailure(int reason) {
                 Log.d("lsc", "LobbyViewModel createGroup onFailure " + reason);
+            }
+        });
+    }
+
+    public void removeGroup() {
+//        testBoolean = false;
+        wifiP2pManager.removeGroup(channel, new WifiP2pManager.ActionListener() {
+            @Override
+            public void onSuccess() {
+                Log.d("lsc", "RoomInfoViewModel removeGroup onSuccess");
+            }
+
+            @Override
+            public void onFailure(int reason) {
+                Log.d("lsc", "RoomInfoViewModel removeGroup onFailure " + reason);
             }
         });
     }

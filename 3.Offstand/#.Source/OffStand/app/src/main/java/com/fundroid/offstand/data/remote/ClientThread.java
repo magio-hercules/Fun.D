@@ -48,6 +48,7 @@ public class ClientThread implements Runnable {
             }
         } catch (IOException e) {
             Log.e("lsc","ClientThread error " + e.getMessage());
+
         }
 
     }

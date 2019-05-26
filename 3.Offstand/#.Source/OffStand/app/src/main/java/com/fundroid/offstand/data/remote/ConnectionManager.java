@@ -136,7 +136,6 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             case API_MOVE:
-                Log.d("lsc","ConnectionManager API_MOVE");
                 return setUserSeatNo(apiBody.getSeatNo(), apiBody.getSeatNo2())
                         .andThen(broadcastMessage(new ApiBody(API_MOVE_BR, apiBody.getSeatNo(), apiBody.getSeatNo2())));
 
