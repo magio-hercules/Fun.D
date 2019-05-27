@@ -85,7 +85,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     }
 
     // 배경음악 - 출처 : https://www.youtube.com/audiolibrary/music - Lone Wolf
-    private static MediaPlayer mp;
+//    private static MediaPlayer mp;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
