@@ -49,6 +49,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 import static com.fundroid.offstand.model.User.EnumStatus.CARDOPEN;
 import static com.fundroid.offstand.model.User.EnumStatus.DIE;
 import static com.fundroid.offstand.model.User.EnumStatus.INGAME;
@@ -156,12 +157,18 @@ public class ConnectionManager {
                         .concatMap(result -> Observable.just(new ApiBody(RESULT_API_NOT_DEFINE)));
 
             case API_GAME_RESULT:
-                return Observable.just(new ApiBody(API_GAME_RESULT_BR, 1));
+                return Observable.just(new ApiBody(API_GAME_RESULT_BR, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())));
 
             case API_OUT:
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
                 return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
+
+            case API_TEST:
+                for (User user :  Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
+                    Log.d("lsc","user " + user);
+                }
+                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
 
             default:
                 Log.d("lsc", "ConnectionManager default api " + apiBody);
@@ -358,7 +365,7 @@ public class ConnectionManager {
     }
 
     private static Observable<ApiBody> broadcastMessage(ApiBody message) {
-        Log.d("lsc","ConnectionManager broadcastMessage " + message);
+        Log.d("lsc", "ConnectionManager broadcastMessage " + message);
         return Observable.create(subscriber -> {
 
             for (ServerThread serverThread : serverThreads) {

@@ -210,12 +210,14 @@ public class User {
     public String toString() {
         return "User{" +
                 "host=" + host +
-                ", id=" + id +
+                ", status=" + status +
                 ", seat=" + seat +
                 ", avatar=" + avatar +
                 ", name='" + name + '\'' +
+                ", cards=" + cards +
+                ", cardLevel=" + cardLevel +
+                ", cardSum=" + cardSum +
                 '}';
-//        return new Gson().toJson(this);
     }
 }
 

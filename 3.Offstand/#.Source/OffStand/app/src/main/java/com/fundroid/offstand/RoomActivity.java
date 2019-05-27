@@ -57,6 +57,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
 //public class RoomActivity extends AppCompatActivity {
@@ -197,6 +198,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
             return;
         }
         view.setSelected(true);
+    }
+
+    @OnClick(R.id.room_test_server)
+    public void test(View v) {
+        test();
     }
 
     @Override
@@ -999,8 +1005,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void test() {
-//        ConnectionManager.sendMessage(new ApiBody(API_SHUFFLE))
-        ConnectionManager.sendMessage(new ApiBody(API_READY, 2))
+        ConnectionManager.sendMessage(new ApiBody(API_TEST))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {

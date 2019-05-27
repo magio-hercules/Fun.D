@@ -4,6 +4,7 @@ import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.fundroid.offstand.BR;
@@ -101,7 +102,6 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
             }
         });
         // [만땅] SoundPool Test - End
-
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
 //                .addToBackStack(FRAGMENT_MAKE_ROOM)

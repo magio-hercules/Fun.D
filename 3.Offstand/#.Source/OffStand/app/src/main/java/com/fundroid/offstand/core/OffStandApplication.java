@@ -39,5 +39,9 @@ public class OffStandApplication extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
+
+
     }
+
+
 }
