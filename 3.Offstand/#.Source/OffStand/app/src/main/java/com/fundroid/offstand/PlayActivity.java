@@ -240,12 +240,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         result_content1_card1.setVisibility(View.GONE);
         result_content1_card2.setVisibility(View.GONE);
         result_content2.setVisibility(View.GONE);
-        result_content2_rank2_card1 .setVisibility(View.GONE);
-        result_content2_rank2_card2 .setVisibility(View.GONE);
-        result_content2_rank3_card1 .setVisibility(View.GONE);
-        result_content2_rank3_card2 .setVisibility(View.GONE);
-        result_content2_rank4_card1 .setVisibility(View.GONE);
-        result_content2_rank4_card2 .setVisibility(View.GONE);
+        result_content2_rank2_card1.setVisibility(View.GONE);
+        result_content2_rank2_card2.setVisibility(View.GONE);
+        result_content2_rank3_card1.setVisibility(View.GONE);
+        result_content2_rank3_card2.setVisibility(View.GONE);
+        result_content2_rank4_card1.setVisibility(View.GONE);
+        result_content2_rank4_card2.setVisibility(View.GONE);
         result_left_button.setVisibility(View.GONE);
         result_right_button.setVisibility(View.GONE);
         result_shadow.setVisibility(View.GONE);
@@ -862,7 +862,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         result_content1.setVisibility(View.GONE);
         result_content1_card1.setVisibility(View.GONE);
         result_content1_card2.setVisibility(View.GONE);
+
         result_content2.setVisibility(View.GONE);
+        result_content2_rank2_card1.setVisibility(View.GONE);
+        result_content2_rank2_card2.setVisibility(View.GONE);
+        result_content2_rank3_card1.setVisibility(View.GONE);
+        result_content2_rank3_card2.setVisibility(View.GONE);
+        result_content2_rank4_card1.setVisibility(View.GONE);
+        result_content2_rank4_card2.setVisibility(View.GONE);
+
         result_left_button.setVisibility(View.GONE);
         result_right_button.setVisibility(View.GONE);
         result_shadow.setVisibility(View.GONE);
