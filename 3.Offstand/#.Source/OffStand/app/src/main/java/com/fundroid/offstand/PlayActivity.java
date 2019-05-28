@@ -28,6 +28,7 @@ import androidx.dynamicanimation.animation.SpringForce;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
+import com.fundroid.offstand.ui.lobby.main.MainFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -764,23 +765,28 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     public void Game_Result(){
         Log.d(TAG, "Click Game_Result");
 
-        result_back.setVisibility(View.VISIBLE);
-        result_title1.setVisibility(View.VISIBLE);
-//        result_title2.setVisibility(View.VISIBLE);
-        result_content1.setVisibility(View.VISIBLE);
-        result_content1_card1.setVisibility(View.VISIBLE);
-        result_content1_card2.setVisibility(View.VISIBLE);
-//        result_content2.setVisibility(View.VISIBLE);
-//        result_content2_rank2_card1.setVisibility(View.VISIBLE);
-//        result_content2_rank2_card2.setVisibility(View.VISIBLE);
-//        result_content2_rank3_card1.setVisibility(View.VISIBLE);
-//        result_content2_rank3_card2.setVisibility(View.VISIBLE);
-//        result_content2_rank4_card1.setVisibility(View.VISIBLE);
-//        result_content2_rank4_card2.setVisibility(View.VISIBLE);
-        result_left_button.setVisibility(View.VISIBLE);
-        result_right_button.setVisibility(View.VISIBLE);
-        result_shadow.setVisibility(View.VISIBLE);
-        result_rebutton.setVisibility(View.VISIBLE);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.fragment_container, MainFragment.newInstance(), MainFragment.TAG)
+                .commit();
+//
+//        result_back.setVisibility(View.VISIBLE);
+//        result_title1.setVisibility(View.VISIBLE);
+////        result_title2.setVisibility(View.VISIBLE);
+//        result_content1.setVisibility(View.VISIBLE);
+//        result_content1_card1.setVisibility(View.VISIBLE);
+//        result_content1_card2.setVisibility(View.VISIBLE);
+////        result_content2.setVisibility(View.VISIBLE);
+////        result_content2_rank2_card1.setVisibility(View.VISIBLE);
+////        result_content2_rank2_card2.setVisibility(View.VISIBLE);
+////        result_content2_rank3_card1.setVisibility(View.VISIBLE);
+////        result_content2_rank3_card2.setVisibility(View.VISIBLE);
+////        result_content2_rank4_card1.setVisibility(View.VISIBLE);
+////        result_content2_rank4_card2.setVisibility(View.VISIBLE);
+//        result_left_button.setVisibility(View.VISIBLE);
+//        result_right_button.setVisibility(View.VISIBLE);
+//        result_shadow.setVisibility(View.VISIBLE);
+//        result_rebutton.setVisibility(View.VISIBLE);
     }
 
     // 결과보기 - 화살표(왼쪽, 오른쪽) 눌렀을 경우
