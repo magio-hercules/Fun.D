@@ -5,10 +5,18 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 /**
@@ -20,6 +28,9 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class GameResultFragment extends Fragment {
+
+    @BindView(R.id.play_image_result) ImageView image_result;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -60,11 +71,18 @@ public class GameResultFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        // 버터나이프 사용
+        ButterKnife.bind(getActivity());
+
+//        image_result.setOnTouchListener((View.OnTouchListener) getActivity());
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_gameresult, container, false);
     }
@@ -76,16 +94,16 @@ public class GameResultFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        if (context instanceof OnFragmentInteractionListener) {
+//            mListener = (OnFragmentInteractionListener) context;
+//        } else {
+//            throw new RuntimeException(context.toString()
+//                    + " must implement OnFragmentInteractionListener");
+//        }
+//    }
 
     @Override
     public void onDetach() {
@@ -106,5 +124,21 @@ public class GameResultFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    @OnClick(R.id.play_result_ReButton)
+    public void Game_Result_ReButton(){
+        Log.d("kyj", "exit fragment");
+
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.hide(this).commit();
+
+//        GameResultFragment fragment = (GameResultFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_play_result);
+//        fragment = new GameResultFragment();
+//
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.hide(fragment);
+//        ft.commit();
     }
 }

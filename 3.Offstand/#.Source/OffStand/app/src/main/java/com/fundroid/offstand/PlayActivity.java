@@ -25,6 +25,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
@@ -215,42 +217,42 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         // 만땅 - 셋팅
         result_back = (FrameLayout) findViewById(R.id.fragment_container_play_result);
-        result_title1 = (ImageView) findViewById(R.id.play_result_title1);
-//        result_title2 = (ImageView) findViewById(R.id.play_result_title2);
-        result_content1 = (ImageView) findViewById(R.id.play_result_content1);
-        result_content1_card1 = (ImageView) findViewById(R.id.play_result_content1_card1);
-        result_content1_card2 = (ImageView) findViewById(R.id.play_result_content1_card2);
-        result_content2 = (ImageView) findViewById(R.id.play_result_content2);
-        result_content2_rank2_card1 = (ImageView) findViewById(R.id.play_result_rank2_card1);
-        result_content2_rank2_card2 = (ImageView) findViewById(R.id.play_result_rank2_card2);
-        result_content2_rank3_card1 = (ImageView) findViewById(R.id.play_result_rank3_card1);
-        result_content2_rank3_card2 = (ImageView) findViewById(R.id.play_result_rank3_card2);
-        result_content2_rank4_card1 = (ImageView) findViewById(R.id.play_result_rank4_card1);
-        result_content2_rank4_card2 = (ImageView) findViewById(R.id.play_result_rank4_card2);
-        result_left_button = (ImageView) findViewById(R.id.play_result_left_button);
-        result_right_button = (ImageView) findViewById(R.id.play_result_right_button);
-        result_shadow = (ImageView) findViewById(R.id.play_result_shadow);
-        result_rebutton = (ImageView) findViewById(R.id.play_result_ReButton);
+//        result_title1 = (ImageView) findViewById(R.id.play_result_title1);
+////        result_title2 = (ImageView) findViewById(R.id.play_result_title2);
+//        result_content1 = (ImageView) findViewById(R.id.play_result_content1);
+//        result_content1_card1 = (ImageView) findViewById(R.id.play_result_content1_card1);
+//        result_content1_card2 = (ImageView) findViewById(R.id.play_result_content1_card2);
+//        result_content2 = (ImageView) findViewById(R.id.play_result_content2);
+//        result_content2_rank2_card1 = (ImageView) findViewById(R.id.play_result_rank2_card1);
+//        result_content2_rank2_card2 = (ImageView) findViewById(R.id.play_result_rank2_card2);
+//        result_content2_rank3_card1 = (ImageView) findViewById(R.id.play_result_rank3_card1);
+//        result_content2_rank3_card2 = (ImageView) findViewById(R.id.play_result_rank3_card2);
+//        result_content2_rank4_card1 = (ImageView) findViewById(R.id.play_result_rank4_card1);
+//        result_content2_rank4_card2 = (ImageView) findViewById(R.id.play_result_rank4_card2);
+//        result_left_button = (ImageView) findViewById(R.id.play_result_left_button);
+//        result_right_button = (ImageView) findViewById(R.id.play_result_right_button);
+//        result_shadow = (ImageView) findViewById(R.id.play_result_shadow);
+//        result_rebutton = (ImageView) findViewById(R.id.play_result_ReButton);
 
 
         // 만땅 - 기존에 안보이게 셋팅
         result_back.setVisibility(View.GONE);
-        result_title1.setVisibility(View.GONE);
-//        result_title2.setVisibility(View.GONE);
-        result_content1.setVisibility(View.GONE);
-        result_content1_card1.setVisibility(View.GONE);
-        result_content1_card2.setVisibility(View.GONE);
-        result_content2.setVisibility(View.GONE);
-        result_content2_rank2_card1.setVisibility(View.GONE);
-        result_content2_rank2_card2.setVisibility(View.GONE);
-        result_content2_rank3_card1.setVisibility(View.GONE);
-        result_content2_rank3_card2.setVisibility(View.GONE);
-        result_content2_rank4_card1.setVisibility(View.GONE);
-        result_content2_rank4_card2.setVisibility(View.GONE);
-        result_left_button.setVisibility(View.GONE);
-        result_right_button.setVisibility(View.GONE);
-        result_shadow.setVisibility(View.GONE);
-        result_rebutton.setVisibility(View.GONE);
+//        result_title1.setVisibility(View.GONE);
+////        result_title2.setVisibility(View.GONE);
+//        result_content1.setVisibility(View.GONE);
+//        result_content1_card1.setVisibility(View.GONE);
+//        result_content1_card2.setVisibility(View.GONE);
+//        result_content2.setVisibility(View.GONE);
+//        result_content2_rank2_card1.setVisibility(View.GONE);
+//        result_content2_rank2_card2.setVisibility(View.GONE);
+//        result_content2_rank3_card1.setVisibility(View.GONE);
+//        result_content2_rank3_card2.setVisibility(View.GONE);
+//        result_content2_rank4_card1.setVisibility(View.GONE);
+//        result_content2_rank4_card2.setVisibility(View.GONE);
+//        result_left_button.setVisibility(View.GONE);
+//        result_right_button.setVisibility(View.GONE);
+//        result_shadow.setVisibility(View.GONE);
+//        result_rebutton.setVisibility(View.GONE);
     }
 
 
@@ -765,12 +767,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     public void Game_Result(){
         Log.d(TAG, "Click Game_Result");
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, MainFragment.newInstance(), MainFragment.TAG)
-                .commit();
-//
-//        result_back.setVisibility(View.VISIBLE);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragment_container_play_result, new GameResultFragment()).commit();
+
+        result_back.setVisibility(View.VISIBLE);
 //        result_title1.setVisibility(View.VISIBLE);
 ////        result_title2.setVisibility(View.VISIBLE);
 //        result_content1.setVisibility(View.VISIBLE);
@@ -790,98 +791,98 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     // 결과보기 - 화살표(왼쪽, 오른쪽) 눌렀을 경우
-    @OnClick(R.id.play_result_left_button)
-    public void Game_Result_Left(){
-        if(result_content1.getVisibility() == View.VISIBLE){
-            // result_1
-            result_content1.setVisibility(View.GONE);
-            result_content1_card1.setVisibility(View.GONE);
-            result_content1_card2.setVisibility(View.GONE);
+//    @OnClick(R.id.play_result_left_button)
+//    public void Game_Result_Left(){
+//        if(result_content1.getVisibility() == View.VISIBLE){
+//            // result_1
+////            result_content1.setVisibility(View.GONE);
+////            result_content1_card1.setVisibility(View.GONE);
+////            result_content1_card2.setVisibility(View.GONE);
+////
+////            // result_2
+////            result_content2.setVisibility(View.VISIBLE);
+////            result_content2_rank2_card1.setVisibility(View.VISIBLE);
+////            result_content2_rank2_card2.setVisibility(View.VISIBLE);
+////            result_content2_rank3_card1.setVisibility(View.VISIBLE);
+////            result_content2_rank3_card2.setVisibility(View.VISIBLE);
+////            result_content2_rank4_card1.setVisibility(View.VISIBLE);
+////            result_content2_rank4_card2.setVisibility(View.VISIBLE);
+//        }
+//        else{
+//            // result_1
+////            result_content1.setVisibility(View.VISIBLE);
+////            result_content1_card1.setVisibility(View.VISIBLE);
+////            result_content1_card2.setVisibility(View.VISIBLE);
+////
+////            // result_2
+////            result_content2.setVisibility(View.GONE);
+////            result_content2_rank2_card1.setVisibility(View.GONE);
+////            result_content2_rank2_card2.setVisibility(View.GONE);
+////            result_content2_rank3_card1.setVisibility(View.GONE);
+////            result_content2_rank3_card2.setVisibility(View.GONE);
+////            result_content2_rank4_card1.setVisibility(View.GONE);
+////            result_content2_rank4_card2.setVisibility(View.GONE);
+//        }
+//    }
 
-            // result_2
-            result_content2.setVisibility(View.VISIBLE);
-            result_content2_rank2_card1.setVisibility(View.VISIBLE);
-            result_content2_rank2_card2.setVisibility(View.VISIBLE);
-            result_content2_rank3_card1.setVisibility(View.VISIBLE);
-            result_content2_rank3_card2.setVisibility(View.VISIBLE);
-            result_content2_rank4_card1.setVisibility(View.VISIBLE);
-            result_content2_rank4_card2.setVisibility(View.VISIBLE);
-        }
-        else{
-            // result_1
-            result_content1.setVisibility(View.VISIBLE);
-            result_content1_card1.setVisibility(View.VISIBLE);
-            result_content1_card2.setVisibility(View.VISIBLE);
-
-            // result_2
-            result_content2.setVisibility(View.GONE);
-            result_content2_rank2_card1.setVisibility(View.GONE);
-            result_content2_rank2_card2.setVisibility(View.GONE);
-            result_content2_rank3_card1.setVisibility(View.GONE);
-            result_content2_rank3_card2.setVisibility(View.GONE);
-            result_content2_rank4_card1.setVisibility(View.GONE);
-            result_content2_rank4_card2.setVisibility(View.GONE);
-        }
-    }
-
-    @OnClick(R.id.play_result_right_button)
-    public void Game_Result_Right(){
-        if(result_content1.getVisibility() == View.VISIBLE){
-            // result_1
-            result_content1.setVisibility(View.GONE);
-            result_content1_card1.setVisibility(View.GONE);
-            result_content1_card2.setVisibility(View.GONE);
-
-            // result_2
-            result_content2.setVisibility(View.VISIBLE);
-            result_content2_rank2_card1.setVisibility(View.VISIBLE);
-            result_content2_rank2_card2.setVisibility(View.VISIBLE);
-            result_content2_rank3_card1.setVisibility(View.VISIBLE);
-            result_content2_rank3_card2.setVisibility(View.VISIBLE);
-            result_content2_rank4_card1.setVisibility(View.VISIBLE);
-            result_content2_rank4_card2.setVisibility(View.VISIBLE);
-        }
-        else{
-            // result_1
-            result_content1.setVisibility(View.VISIBLE);
-            result_content1_card1.setVisibility(View.VISIBLE);
-            result_content1_card2.setVisibility(View.VISIBLE);
-
-            // result_2
-            result_content2.setVisibility(View.GONE);
-            result_content2_rank2_card1.setVisibility(View.GONE);
-            result_content2_rank2_card2.setVisibility(View.GONE);
-            result_content2_rank3_card1.setVisibility(View.GONE);
-            result_content2_rank3_card2.setVisibility(View.GONE);
-            result_content2_rank4_card1.setVisibility(View.GONE);
-            result_content2_rank4_card2.setVisibility(View.GONE);
-        }
-    }
+//    @OnClick(R.id.play_result_right_button)
+//    public void Game_Result_Right(){
+//        if(result_content1.getVisibility() == View.VISIBLE){
+//            // result_1
+//            result_content1.setVisibility(View.GONE);
+//            result_content1_card1.setVisibility(View.GONE);
+//            result_content1_card2.setVisibility(View.GONE);
+//
+//            // result_2
+//            result_content2.setVisibility(View.VISIBLE);
+//            result_content2_rank2_card1.setVisibility(View.VISIBLE);
+//            result_content2_rank2_card2.setVisibility(View.VISIBLE);
+//            result_content2_rank3_card1.setVisibility(View.VISIBLE);
+//            result_content2_rank3_card2.setVisibility(View.VISIBLE);
+//            result_content2_rank4_card1.setVisibility(View.VISIBLE);
+//            result_content2_rank4_card2.setVisibility(View.VISIBLE);
+//        }
+//        else{
+//            // result_1
+//            result_content1.setVisibility(View.VISIBLE);
+//            result_content1_card1.setVisibility(View.VISIBLE);
+//            result_content1_card2.setVisibility(View.VISIBLE);
+//
+//            // result_2
+//            result_content2.setVisibility(View.GONE);
+//            result_content2_rank2_card1.setVisibility(View.GONE);
+//            result_content2_rank2_card2.setVisibility(View.GONE);
+//            result_content2_rank3_card1.setVisibility(View.GONE);
+//            result_content2_rank3_card2.setVisibility(View.GONE);
+//            result_content2_rank4_card1.setVisibility(View.GONE);
+//            result_content2_rank4_card2.setVisibility(View.GONE);
+//        }
+//    }
 
     // 결과보기 - Back 버튼 눌렀을 경우 Event
-    @OnClick(R.id.play_result_ReButton)
-    public void Game_Result_ReButton(){
-
-        result_back.setVisibility(View.GONE);
-        result_title1.setVisibility(View.GONE);
-//        result_title2.setVisibility(View.GONE);
-        result_content1.setVisibility(View.GONE);
-        result_content1_card1.setVisibility(View.GONE);
-        result_content1_card2.setVisibility(View.GONE);
-
-        result_content2.setVisibility(View.GONE);
-        result_content2_rank2_card1.setVisibility(View.GONE);
-        result_content2_rank2_card2.setVisibility(View.GONE);
-        result_content2_rank3_card1.setVisibility(View.GONE);
-        result_content2_rank3_card2.setVisibility(View.GONE);
-        result_content2_rank4_card1.setVisibility(View.GONE);
-        result_content2_rank4_card2.setVisibility(View.GONE);
-
-        result_left_button.setVisibility(View.GONE);
-        result_right_button.setVisibility(View.GONE);
-        result_shadow.setVisibility(View.GONE);
-        result_rebutton.setVisibility(View.GONE);
-    }
+//    @OnClick(R.id.play_result_ReButton)
+//    public void Game_Result_ReButton(){
+//
+//        result_back.setVisibility(View.GONE);
+//        result_title1.setVisibility(View.GONE);
+////        result_title2.setVisibility(View.GONE);
+//        result_content1.setVisibility(View.GONE);
+//        result_content1_card1.setVisibility(View.GONE);
+//        result_content1_card2.setVisibility(View.GONE);
+//
+//        result_content2.setVisibility(View.GONE);
+//        result_content2_rank2_card1.setVisibility(View.GONE);
+//        result_content2_rank2_card2.setVisibility(View.GONE);
+//        result_content2_rank3_card1.setVisibility(View.GONE);
+//        result_content2_rank3_card2.setVisibility(View.GONE);
+//        result_content2_rank4_card1.setVisibility(View.GONE);
+//        result_content2_rank4_card2.setVisibility(View.GONE);
+//
+//        result_left_button.setVisibility(View.GONE);
+//        result_right_button.setVisibility(View.GONE);
+//        result_shadow.setVisibility(View.GONE);
+//        result_rebutton.setVisibility(View.GONE);
+//    }
 
     // 해당 id 뒤에 있는 객체에 대해서 이벤트 처리를 어떻게 할 것인가를 정하는 기능([return] true : 불가능 / false : 가능)
     @OnTouch(R.id.fragment_container_play_result)

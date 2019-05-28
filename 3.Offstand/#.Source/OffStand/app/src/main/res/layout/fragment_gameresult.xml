@@ -308,14 +308,9 @@
     // 게임 결과 창
     <FrameLayout
         android:id="@+id/fragment_container_play_result"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#CC000000"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_7"
-        app:layout_constraintEnd_toEndOf="@id/guide_v_background_e"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@id/guide_v_background_s"
-        app:layout_constraintTop_toTopOf="@id/guide_h_5" />
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000" />
 
     <ImageView
         android:id="@+id/play_result_title1"
