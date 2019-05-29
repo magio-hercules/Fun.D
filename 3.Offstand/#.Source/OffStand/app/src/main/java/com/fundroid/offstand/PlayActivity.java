@@ -44,6 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
@@ -900,7 +901,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
     // 만땅 end
 
-    @OnClick({R.id.play_test_game_result, R.id.play_test_die, R.id.play_test_server,R.id.play_test_card_open})
+    @OnClick({R.id.play_test_game_result, R.id.play_test_die, R.id.play_test_server, R.id.play_test_card_open, R.id.play_test_out})
     public void test(View v) {
         int testApi = -1;
         int seatNo = -1;
@@ -911,19 +912,24 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             case R.id.play_test_card_open:
                 testApi = API_CARD_OPEN;
-                seatNo = 2;
+                seatNo = 1;
                 break;
 
             case R.id.play_test_die:
                 testApi = API_DIE;
-                seatNo = 2;
+                seatNo = 1;
                 break;
 
             case R.id.play_test_server:
                 testApi = API_TEST;
                 break;
+
+            case R.id.play_test_out:
+                testApi = API_OUT;
+                seatNo = 1;
+                break;
         }
-        if(seatNo == -1) {
+        if (seatNo == -1) {
             ConnectionManager.sendMessage(new ApiBody(testApi))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())

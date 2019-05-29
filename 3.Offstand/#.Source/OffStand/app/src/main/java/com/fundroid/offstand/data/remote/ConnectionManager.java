@@ -163,7 +163,9 @@ public class ConnectionManager {
 
             case API_OUT:
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
-                return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
+                return getUserStatus()
+                        .concatMap(ConnectionManager::setRoomStatus)
+                        .concatMap(result -> broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo()))
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             case API_TEST:
@@ -293,7 +295,6 @@ public class ConnectionManager {
 
             int inGameUserCount = (int) Stream.of(serverThreads) // 게임 시작 후 카드 오픈 or DIE or 나가기를 하지 않은 User 카운트
                     .withoutNulls()
-                    .filterNot(serverThread -> serverThread.getUser().isHost())
                     .filter(serverThread -> serverThread.getUser().getStatus() == INGAME.getEnumStatus())
                     .count();
 
