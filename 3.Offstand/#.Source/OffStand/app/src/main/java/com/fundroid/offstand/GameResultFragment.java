@@ -1,21 +1,19 @@
 package com.fundroid.offstand;
 
-import android.content.Context;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
@@ -29,7 +27,10 @@ import butterknife.OnClick;
  */
 public class GameResultFragment extends Fragment {
 
-    @BindView(R.id.play_image_result) ImageView image_result;
+
+    @BindView(R.id.play_result_ReButton)
+    ImageView play_result_ReButton;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,6 +45,8 @@ public class GameResultFragment extends Fragment {
 
     public GameResultFragment() {
         // Required empty public constructor
+
+        Log.d("MSMS", "1");
     }
 
     /**
@@ -56,6 +59,7 @@ public class GameResultFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static GameResultFragment newInstance(String param1, String param2) {
+        Log.d("MSMS", "2");
         GameResultFragment fragment = new GameResultFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -67,6 +71,8 @@ public class GameResultFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("MSMS", "3");
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -75,24 +81,33 @@ public class GameResultFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("MSMS", "4");
+        View view = inflater.inflate(R.layout.fragment_gameresult, container, false);
 
-        // 버터나이프 사용
-        ButterKnife.bind(getActivity());
+        ImageView play_result_ReButton = (ImageView) view.findViewById(R.id.play_result_ReButton);
 
-//        image_result.setOnTouchListener((View.OnTouchListener) getActivity());
+        play_result_ReButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("MSMS", "5");
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.remove(getTargetFragment()).commit();
 
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_gameresult, container, false);
+            }
+        });
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+//    // TODO: Rename method, update argument and hook method into UI event
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
 
 //    @Override
 //    public void onAttach(Context context) {
@@ -107,6 +122,7 @@ public class GameResultFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        Log.d("MSMS", "5");
         super.onDetach();
         mListener = null;
     }
@@ -122,17 +138,19 @@ public class GameResultFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
+
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
     @OnClick(R.id.play_result_ReButton)
-    public void Game_Result_ReButton(){
+    public void Game_Result_ReButton() {
+        Log.d("MSMS", "6");
         Log.d("kyj", "exit fragment");
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.hide(this).commit();
+
+
+//        fragmentTransaction.remove(this).commit();
 
 //        GameResultFragment fragment = (GameResultFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_play_result);
 //        fragment = new GameResultFragment();
