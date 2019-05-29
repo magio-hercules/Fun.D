@@ -157,7 +157,9 @@ public class ConnectionManager {
                         .concatMap(result -> Observable.just(new ApiBody(RESULT_API_NOT_DEFINE)));
 
             case API_GAME_RESULT:
-                return Observable.just(new ApiBody(API_GAME_RESULT_BR, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())));
+                return figureOut((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
+                        .andThen(Observable.just(new ApiBody(API_GAME_RESULT_BR, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))));
+
 
             case API_OUT:
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
@@ -165,8 +167,8 @@ public class ConnectionManager {
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
 
             case API_TEST:
-                for (User user :  Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
-                    Log.d("lsc","user " + user);
+                for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
+                    Log.d("lsc", "user " + user);
                 }
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
 
@@ -342,6 +344,7 @@ public class ConnectionManager {
 
             for (User user : users) {
 //                user.getCards()
+                Log.d("lsc", "figureOut " + user);
                 setCardValue(user.getCards());
             }
         });
@@ -355,7 +358,11 @@ public class ConnectionManager {
         Collections.shuffle(cards);
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
-                serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
+                if (cards.get(i * 2) < cards.get(i * 2) + 1) {
+                    serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
+                } else {
+                    serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
+                }
                 serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }

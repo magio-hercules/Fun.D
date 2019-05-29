@@ -29,6 +29,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.fundroid.offstand.data.model.ApiBody;
+import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.ui.lobby.main.MainFragment;
 
@@ -36,19 +38,26 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
     static final String TAG = "[PLAY]";
 
-//    @BindView(R.id.play_image_card0)
+    //    @BindView(R.id.play_image_card0)
     ImageView image0;
-//    @BindView(R.id.play_image_card1)
+    //    @BindView(R.id.play_image_card1)
     ImageView image1;
-//    @BindView(R.id.play_image_card2)
+    //    @BindView(R.id.play_image_card2)
     ImageView image2;
-//    @BindView(R.id.play_image_card3)
+    //    @BindView(R.id.play_image_card3)
     ImageView image3;
-//    @BindView(R.id.play_image_card4)
+    //    @BindView(R.id.play_image_card4)
     ImageView image4;
 
     @BindView(R.id.text_card1)
@@ -108,7 +117,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // 만땅 - 게임 결과 화면
     FrameLayout result_back;
     ImageView result_title1;
-//    ImageView result_title2;
+    //    ImageView result_title2;
     ImageView result_content1;
     ImageView result_content1_card1;
     ImageView result_content1_card2;
@@ -184,11 +193,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                         yAnimation.cancel();
                         break;
                     case MotionEvent.ACTION_UP:
-                        int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
-                        Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
+                        int gap = startY > (int) event.getRawY() ? startY - (int) event.getRawY() : (int) event.getRawY() - startY;
+                        Log.d(TAG, "viewHeight/2 : " + (viewHeight / 2) + ", gap : " + gap);
 
                         // 패가 절반이상 까진경우
-                        if (viewHeight/2 < gap) {
+                        if (viewHeight / 2 < gap) {
                             Log.d(TAG, "패가 절반이상 까진경우");
 //                            openAnimation.start();
                             bCheck = true;
@@ -260,11 +269,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             R.id.button_reset
 //            R.id.button_shuffle,
 //            R.id.button_random,
-             })
+    })
     public void onClickButton(View view) {
         Log.d(TAG, "clicked 22");
 
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.button_reset:
                 resetCard();
                 break;
@@ -353,7 +362,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                                         float stiffness,
                                                         float dampingRatio) {
         SpringAnimation animation = new SpringAnimation(view, property);
-        SpringForce springForce = new  SpringForce(finalPosition);
+        SpringForce springForce = new SpringForce(finalPosition);
         springForce.setStiffness(stiffness);
         springForce.setDampingRatio(dampingRatio);
         animation.setSpring(springForce);
@@ -533,7 +542,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             tempIndex++;
             bCheck = false;
-        } else  if (tempIndex == 2){
+        } else if (tempIndex == 2) {
             text2.setText("두번째 패 : " + card2);
             tempIndex = 1;
             bCheck = false;
@@ -606,16 +615,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         String val = "";
         int tempNum = n1;
-        if (tempNum/11 > 0) {
-            val = String.valueOf(tempNum%10 == 0 ? 10 : tempNum%10) + "_2";
+        if (tempNum / 11 > 0) {
+            val = String.valueOf(tempNum % 10 == 0 ? 10 : tempNum % 10) + "_2";
         } else {
             val = String.valueOf(tempNum) + "_1";
         }
         card1 = val;
 
         tempNum = n2;
-        if (tempNum/11 > 0) {
-            val = String.valueOf(tempNum%10 == 0 ? 10 : tempNum%10) + "_2";
+        if (tempNum / 11 > 0) {
+            val = String.valueOf(tempNum % 10 == 0 ? 10 : tempNum % 10) + "_2";
         } else {
             val = String.valueOf(tempNum) + "_1";
         }
@@ -736,7 +745,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
-        ImageView target = (ImageView)v;
+        ImageView target = (ImageView) v;
         String targetTag = target.getTag().toString();
 
         switch (event.getAction()) {
@@ -764,7 +773,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // 만땅 - 게임 결과 창
     // 결과보기 눌렀을 경우 Event
     @OnClick(R.id.play_image_result)
-    public void Game_Result(){
+    public void Game_Result() {
         Log.d(TAG, "Click Game_Result");
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -886,8 +895,46 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     // 해당 id 뒤에 있는 객체에 대해서 이벤트 처리를 어떻게 할 것인가를 정하는 기능([return] true : 불가능 / false : 가능)
     @OnTouch(R.id.fragment_container_play_result)
-    public boolean Click_block(){
+    public boolean Click_block() {
         return true;
     }
     // 만땅 end
+
+    @OnClick({R.id.play_test_game_result, R.id.play_test_die, R.id.play_test_server,R.id.play_test_card_open})
+    public void test(View v) {
+        int testApi = -1;
+        int seatNo = -1;
+        switch (v.getId()) {
+            case R.id.play_test_game_result:
+                testApi = API_GAME_RESULT;
+                break;
+
+            case R.id.play_test_card_open:
+                testApi = API_CARD_OPEN;
+                seatNo = 2;
+                break;
+
+            case R.id.play_test_die:
+                testApi = API_DIE;
+                seatNo = 2;
+                break;
+
+            case R.id.play_test_server:
+                testApi = API_TEST;
+                break;
+        }
+        if(seatNo == -1) {
+            ConnectionManager.sendMessage(new ApiBody(testApi))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        } else {
+            ConnectionManager.sendMessage(new ApiBody(testApi, seatNo))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe();
+        }
+
+    }
+
 }

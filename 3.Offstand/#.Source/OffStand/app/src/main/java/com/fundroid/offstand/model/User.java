@@ -5,6 +5,8 @@ import androidx.core.util.Pair;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import java.util.Collections;
+
 public class User {
 
     public enum EnumStatus {
