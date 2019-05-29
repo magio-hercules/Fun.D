@@ -49,7 +49,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
 
     @Override
     public int getUserAvatar() {
-        return mPrefs.getInt(PREF_KEY_AVATAR, -1);
+        return mPrefs.getInt(PREF_KEY_AVATAR, 1);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
 
     @Override
     public int getUserWin() {
-        return mPrefs.getInt(PREF_KEY_WIN, -1);
+        return mPrefs.getInt(PREF_KEY_WIN, 0);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
 
     @Override
     public int getUserTotal() {
-        return mPrefs.getInt(PREF_KEY_TOTAL, -1);
+        return mPrefs.getInt(PREF_KEY_TOTAL, 0);
     }
 
     @Override

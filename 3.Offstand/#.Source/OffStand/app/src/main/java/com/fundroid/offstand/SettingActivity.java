@@ -63,6 +63,7 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
     DataManager dataManager;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,33 +108,52 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
                 R.drawable.me_character_5, R.drawable.me_character_8, R.drawable.me_character_9};
 
 
-        sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
+//        sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
+//        editor = sharedPreferences.edit();
 
-        userName.setText(sharedPreferences.getString("userName", ""));
-        setting_character.setImageResource(character[sharedPreferences.getInt("character", 1)]);
-        characterState = sharedPreferences.getInt("character", 1 );
 
-        sharedPreferences.getString("userName", "");
+//        userName.setText(sharedPreferences.getString("userName", ""));
+        userName.setText(dataManager.getUserName());
+
+//        setting_character.setImageResource(character[sharedPreferences.getInt("character", 1)]);
+        setting_character.setImageResource(character[dataManager.getUserAvatar()]);
+
+//        characterState = sharedPreferences.getInt("character", 1 );
+        characterState = dataManager.getUserAvatar();
+
+//        sharedPreferences.getString("userName", "");
+
 
         //총게임수, 승수수, 승률
-        sharedPreferences.getInt("total", 0);
-        sharedPreferences.getInt("win", 0);
-        sharedPreferences.getFloat("per", 0);
+//        sharedPreferences.getInt("total", 0);
+//        sharedPreferences.getInt("win", 0);
+//        sharedPreferences.getFloat("per", 0);
 
-        editor.putInt("total", 5);
-        editor.commit();
 
-        editor.putInt("win", 3);
-        editor.commit();
 
-        editor.putFloat("per", (new Float(sharedPreferences.getInt("win", 0)) / new Float(sharedPreferences.getInt("total", 0))) * 100);
-        editor.commit();
 
-        setting_stats_total_text.setText("" + sharedPreferences.getInt("total", 0));
-        setting_stats_win_text.setText("" + sharedPreferences.getInt("win", 0));
-        setting_stats_per_text.setText("" + (int) (sharedPreferences.getFloat("per", 0)) + "%");
 
+//        editor.putInt("total", 5);
+//        editor.commit();
+        dataManager.setUserTotal(5);
+
+
+//        editor.putInt("win", 3);
+//        editor.commit();
+        dataManager.setUserWin(3);
+
+
+//        editor.putFloat("per", (new Float(sharedPreferences.getInt("win", 0)) / new Float(sharedPreferences.getInt("total", 0))) * 100);
+//        editor.commit();
+
+
+//        setting_stats_total_text.setText("" + sharedPreferences.getInt("total", 0));
+//        setting_stats_win_text.setText("" + sharedPreferences.getInt("win", 0));
+//        setting_stats_per_text.setText("" + (int) (sharedPreferences.getFloat("per", 0)) + "%");
+
+        setting_stats_total_text.setText(""+ dataManager.getUserTotal());
+        setting_stats_win_text.setText(""+ dataManager.getUserWin());
+        setting_stats_per_text.setText(""+ (int)(((float)dataManager.getUserWin() / (float)dataManager.getUserTotal()) * 100) + "%");
 
         // 커서를 끝에 위치시키기
         userName.setSelection(userName.length());
@@ -222,9 +242,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
                 userName.setFocusable(false);
                 userName.setFocusableInTouchMode(true);
-                editor.putInt("character", characterState);
-                editor.putString("userName", input);
-                editor.commit();
+
+                dataManager.setUserAvatar(characterState);
+                dataManager.setUserName(input);
+//                editor.putInt("character", characterState);
+//                editor.putString("userName", input);
+//                editor.commit();
 
                 startActivity(new Intent(getApplicationContext(), LobbyActivity.class));
             }
