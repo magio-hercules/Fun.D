@@ -338,14 +338,9 @@ public class ConnectionManager {
 
     public static Completable figureOut(ArrayList<User> users) {
         return Completable.create(subscriber -> {
-//            Stream.of(users)
-//                    .filter(user -> user.getStatus() == INGAME.getEnumStatus())
-//                    .map(setCard)
-
-            for (User user : users) {
-//                user.getCards()
+            for (User user : Stream.of(users).filter(user -> user.getStatus() == CARDOPEN.getEnumStatus()).toList()) {
+                setCardValue(user);
                 Log.d("lsc", "figureOut " + user);
-                setCardValue(user.getCards());
             }
         });
     }

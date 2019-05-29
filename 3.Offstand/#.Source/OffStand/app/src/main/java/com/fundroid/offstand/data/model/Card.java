@@ -3,6 +3,9 @@ package com.fundroid.offstand.data.model;
 
 import androidx.core.util.Pair;
 
+import com.fundroid.offstand.model.User;
+
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 
 public class Card {
@@ -48,90 +51,123 @@ public class Card {
         }
     }
 
-    public static Observable<Pair<Integer, Integer>> setCardValue(Pair<Integer, Integer> levelAndSum) {
-
-        return Observable.just(levelAndSum);
+    //Todo 땡잡이랑 암행어사 sum?
+    public static Completable setCardValue(User user) {
+        return checkLevel0(user)
+                .andThen(checkLevel10(user))
+                .andThen(checkLeve2(user))
+                .andThen(checkLeve9(user))
+                .andThen(checkLeve4(user))
+                .andThen(checkLeve1(user))
+                .andThen(checkLeve7(user))
+                .andThen(checkLeve6(user))
+                .andThen(checkLeve5(user));
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLevel0(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLevel10(User user) {
+        if (user.getCards().first.equals(EnumCard.THREE_KWANG) && user.getCards().second.equals(EnumCard.EIGHT_KWANG)) {
+            user.setCardLevel(EnumCardLevel.LEVEL10.getCardLevel());
+            user.setCardSum(30);
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve9(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLeve2(User user) {
+        if (user.getCards().first.equals(EnumCard.FOUR_MUNG) && user.getCards().second.equals(EnumCard.SEVEN_MUNG)) {
+            user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
+            user.setCardSum(-1);
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve8(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLeve9(User user) {
+        if (user.getCards().first.equals(EnumCard.ONE_KWANG) && (user.getCards().second.equals(EnumCard.THREE_KWANG) || user.getCards().second.equals(EnumCard.EIGHT_KWANG))) {
+            user.setCardLevel(EnumCardLevel.LEVEL9.getCardLevel());
+            user.setCardSum(29);    // 일삼광땡, 일팔광땡 같이 나올 경우가 없음
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve7(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLeve4(User user) {
+        if (user.getCards().first.equals(EnumCard.FOUR_MUNG) && user.getCards().second.equals(EnumCard.NINE_MUNG)) {
+            user.setCardLevel(EnumCardLevel.LEVEL4.getCardLevel());
+            user.setCardSum(27);
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve6(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLeve1(User user) {
+        if (user.getCards().first.equals(EnumCard.THREE_KWANG) && user.getCards().second.equals(EnumCard.EIGHT_KWANG)) {
+            user.setCardLevel(EnumCardLevel.LEVEL1.getCardLevel());
+            user.setCardSum(-1);
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve5(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLeve7(User user) {
+        if (user.getCards().first % 10 == user.getCards().second % 10) {
+            if(user.getCards().first.equals(EnumCard.TEN_MUNG)) {
+                user.setCardLevel(EnumCardLevel.LEVEL8.getCardLevel());
+            } else {
+                user.setCardLevel(EnumCardLevel.LEVEL7.getCardLevel());
+            }
+            user.setCardSum(user.getCards().first + 16);
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve4(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLeve6(User user) {
+        if (user.getCards().first % 10 == 1) {
+            user.setCardLevel(EnumCardLevel.LEVEL6.getCardLevel());
+            switch (user.getCards().second % 10) {
+                case 2:
+                    user.setCardSum(15);
+                    break;
+                case 4:
+                    user.setCardSum(14);
+                    break;
+                case 9:
+                    user.setCardSum(13);
+                    break;
+                case 0:
+                    user.setCardSum(12);
+                    break;
+                default:
+                    user.setCardLevel(EnumCardLevel.LEVEL0.getCardLevel());
+                    user.setCardSum((user.getCards().first + user.getCards().second) % 10);
+                    break;
+            }
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve3(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.THREE_KWANG.getCardNo() && cards.second == EnumCard.EIGHT_KWANG.getCardNo()) || (cards.first == EnumCard.EIGHT_KWANG.getCardNo() && cards.second == EnumCard.THREE_KWANG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL10.getCardLevel(), 30);
-        } else {
-
+    private static Completable checkLeve5(User user) {
+        if (user.getCards().first % 10 == 4) {
+            user.setCardLevel(EnumCardLevel.LEVEL5.getCardLevel());
+            switch (user.getCards().second % 10) {
+                case 9:
+                    user.setCardLevel(EnumCardLevel.LEVEL3.getCardLevel());
+                    user.setCardSum(16);
+                    break;
+                case 0:
+                    user.setCardSum(11);
+                    break;
+                case 6:
+                    user.setCardSum(10);
+                    break;
+                default:
+                    user.setCardLevel(EnumCardLevel.LEVEL0.getCardLevel());
+                    user.setCardSum((user.getCards().first + user.getCards().second) % 10);
+                    break;
+            }
         }
-        return Observable.just(cards);
+        return Completable.complete();
     }
 
-    public static Observable<Pair<Integer, Integer>> checkLeve2(Pair<Integer, Integer> cards) {
-        if ((cards.first == EnumCard.FOUR_MUNG.getCardNo() && cards.second == EnumCard.SEVEN_MUNG.getCardNo()) || (cards.first == EnumCard.SEVEN_MUNG.getCardNo() && cards.second == EnumCard.FOUR_MUNG.getCardNo())) {
-            new Pair<>(EnumCardLevel.LEVEL2.getCardLevel(), 30);
-        } else {
-
-        }
-        return Observable.just(cards);
+    private static Completable checkLevel0(User user) {
+        user.setCardLevel(EnumCardLevel.LEVEL0.getCardLevel());
+        user.setCardSum((user.getCards().first + user.getCards().second) % 10);
+        return Completable.complete();
     }
 
 }
