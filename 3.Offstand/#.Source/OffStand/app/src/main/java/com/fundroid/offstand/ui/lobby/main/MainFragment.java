@@ -13,6 +13,7 @@ import com.fundroid.offstand.R;
 import com.fundroid.offstand.databinding.FragmentMainBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
 import com.fundroid.offstand.ui.lobby.findroom.FindRoomFragment;
+import com.fundroid.offstand.ui.lobby.guide.GuideFragment;
 import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
@@ -124,6 +125,13 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void guide() {
-
+        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).pause();
+        getBaseActivity().getSupportFragmentManager()
+                .beginTransaction()
+//                .addToBackStack(FRAGMENT_FIND_ROOM)
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .add(R.id.fragment_container, GuideFragment.newInstance(), GuideFragment.TAG)
+                .commit();
     }
 }

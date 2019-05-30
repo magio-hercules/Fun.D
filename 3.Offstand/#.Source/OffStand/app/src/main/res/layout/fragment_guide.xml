@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.fundroid.offstand.ui.lobby.guide.GuideViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true">
+
+        <!-- Vertical -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_bg_main_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.014" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_bg_main_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.986" />
+        <!-- end of Vertical -->
+
+
+        <!-- Horizontal -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_bg_main_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.146" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_bg_main_lower_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.925" />
+        <!-- end of Horizontal -->
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_bg_main_lower_e"
+            app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"
+            app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"
+            app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/guide" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
