@@ -44,6 +44,7 @@ import io.reactivex.schedulers.Schedulers;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
@@ -168,15 +169,15 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         // 방만들기로 들어오는 경우 true, 아니면 false
         // 방만들기, 방찾기에서 extra로 보내줘야 함
         Intent intent = getIntent();
-        boolean isHost = intent.getBooleanExtra("HOST", true);
 
         // TODO: test
-        isHost = true;
-        if (isHost) {
-            bHost = true;
-        } else {
-            bHost = false;
-        }
+        //        boolean isHost = intent.getBooleanExtra("HOST", true);
+//        isHost = true;
+//        if (isHost) {
+//            bHost = true;
+//        } else {
+//            bHost = false;
+//        }
 
         initRoom();
         initUser();
@@ -553,30 +554,36 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
         User curUser;
         int curUserIndex = 1;
-        for (int i = 1; i < MAX_USER_COUNT + 1; i++) {
-            if (i < users.size() + 1) { // user
-                curUser = users.get(i - 1);
-                if (curUser.getAvatar() != 0) {
-                    allUser[i] = new User(curUser.getSeat(), curUser.isHost(), curUser.getName(),
-                            curUser.getAvatar(), curUser.getTotal(), curUser.getWin());
-                    if (curUser.getName().equals(userName) && curUser.getAvatar() == avatarId) {
-                        curUserIndex = i;
-                    }
-                } else { // dummy
-                    allUser[i] = new User(i, false, i, 0, "");
+        int tSeat = -1;
+
+        // User
+        for (int i = 1; i < users.size() + 1; i++) {
+            curUser = users.get(i - 1);
+            tSeat = curUser.getSeat();
+            if (curUser.getAvatar() != 0) {
+                allUser[tSeat] = new User(tSeat, curUser.isHost(), curUser.getName(),
+                        curUser.getAvatar(), curUser.getTotal(), curUser.getWin());
+                if (curUser.getName().equals(userName) && curUser.getAvatar() == avatarId) {
+                    curUserIndex = tSeat;
                 }
-            } else { // dummy
-                allUser[i] = new User(i, false, "", 0, 0, 0);
             }
         }
 
-        bHost = false;
+        // dummy
+        for (int i = 1; i < MAX_USER_COUNT + 1; i++) {
+            curUser = allUser[i];
+            if (curUser.getAvatar() == 0) {
+                allUser[i] = new User(i, false, "", 0, 0, 0);
+            }
+            Log.d(TAG, i + "번째 유저 : " + curUser.toString());
+        }
 
+        bHost = false;
         nUserCount = users.size();
         Log.d(TAG, "nUserCount is " + nUserCount);
 
         currentUser = allUser[curUserIndex];
-        Log.d(TAG, currentUser.toString());
+        Log.d(TAG, "curUser : " + currentUser.toString());
 
         // for client
         image_start.setVisibility(View.INVISIBLE);
@@ -596,8 +603,9 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         int win = dataManager.getUserWin();
         Log.d(TAG, "sharedPreferences 조회결과 (userName: " + userName + ", avatarId: " + avatarId + ", total: " + total + ", win: " + win + ")");
 
-        allUser[1] = new User(1, bHost, userName, avatarId, total, win);
         bHost = true; // 방장
+        allUser[1] = new User(1, bHost, userName, avatarId, total, win);
+
         nReadyCount++;
 
         for (int i = 2; i < MAX_USER_COUNT + 1; i++) {
@@ -708,9 +716,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     private void doExit() {
         Log.d(TAG, "doExit");
         doSendMessage(API_OUT, currentUser.getSeat());
-        Intent intent = new Intent(RoomActivity.this, LobbyActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     private boolean isHost(ImageView selected) {
@@ -749,12 +754,21 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         allUser[targetSeat] = wrapper2.user;
 
         Log.d(TAG, "변경 후");
-        Log.d(TAG, allUser[selectedSeat].toString());
-        Log.d(TAG, allUser[targetSeat].toString());
-
         // seat만 변경되는 것이므로 seat값은 재지정
         allUser[selectedSeat].setSeat(selectedSeat);
         allUser[targetSeat].setSeat(targetSeat);
+        Log.d(TAG, allUser[selectedSeat].toString());
+        Log.d(TAG, allUser[targetSeat].toString());
+
+        int curUserSeat = currentUser.getSeat();
+        Log.d(TAG, "curUserSeat : " + curUserSeat);
+        if (curUserSeat == seatNo1) {
+            currentUser = allUser[selectedSeat];
+            Log.d(TAG, "currentUser : " + currentUser.toString());
+        } else if (curUserSeat == seatNo2) {
+            currentUser = allUser[targetSeat];
+            Log.d(TAG, "currentUser : " + currentUser.toString());
+        }
 
         drawUser(allUser[selectedSeat]);
         drawUser(allUser[targetSeat]);
@@ -902,7 +916,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void doSendMessage(int apiNo, int seatNo1) {
-        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " + -1 + ")");
+//        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " + -1 + ")");
         int[] arr = {seatNo1, -1};
         doSendMessage(apiNo, arr);
     }
@@ -977,8 +991,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_SHUFFLE_BR:
                             Intent intent = new Intent(RoomActivity.this, PlayActivity.class);
+                            intent.putExtra("isHost", currentUser.isHost());
+                            intent.putExtra("seatNum", currentUser.getSeat());
+                            intent.putExtra("card1", apiBody.getCardNo1());
+                            intent.putExtra("card2", apiBody.getCardNo2());
                             startActivity(intent);
-                            finish();
+                            finishAffinity();
                             break;
 
                         case API_MOVE_BR:
@@ -986,8 +1004,13 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             break;
 
                         case API_BAN_BR:
-                        case API_OUT_BR:
                             doBan(apiBody.getSeatNo());
+                            break;
+
+                        case API_OUT_BR:
+                            intent = new Intent(RoomActivity.this, LobbyActivity.class);
+                            startActivity(intent);
+                            finish();
                             break;
 
                         case API_SHUFFLE_AVAILABLE:

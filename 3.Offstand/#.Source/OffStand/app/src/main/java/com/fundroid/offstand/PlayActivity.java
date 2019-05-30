@@ -1,11 +1,15 @@
 package com.fundroid.offstand;
 
-import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.net.wifi.p2p.WifiP2pManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -17,6 +21,11 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.annotation.SuppressLint;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.dynamicanimation.animation.DynamicAnimation;
@@ -29,7 +38,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
-
+import com.fundroid.offstand.ui.lobby.main.MainFragment;
+import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
+import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
+import com.google.gson.Gson;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -38,11 +50,28 @@ import butterknife.OnClick;
 import butterknife.OnTouch;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import pl.droidsonroids.gif.AnimationListener;
+import pl.droidsonroids.gif.GifDrawable;
+import pl.droidsonroids.gif.GifImageView;
 
+import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
@@ -58,6 +87,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     ImageView image3;
     //    @BindView(R.id.play_image_card4)
     ImageView image4;
+
+    @BindView(R.id.play_image_card_die)
+    ImageView image_card_die;
+
 
     @BindView(R.id.text_card1)
     TextView text1;
@@ -103,8 +136,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private int tempIndex = 1;
     private boolean bCheck = false;
 
+    private boolean isHost = false;
+    private int seatNum = -1;
     private String card1, card2;
-
 
     // TODO
     // 참여인원
@@ -146,16 +180,33 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // 버터나이프 사용
         ButterKnife.bind(this);
 
+        Intent intent = new Intent(this.getIntent());
+        int tNum1, tNum2;
+        isHost =  intent.getBooleanExtra("isHost", false);
+        seatNum = intent.getIntExtra("seatNum", -1);
+        tNum1 = intent.getIntExtra("card1", -1);
+        tNum2 = intent.getIntExtra("card2", -1);
+        card1 = calcRandomNumber(tNum1);
+        card2 = calcRandomNumber(tNum2);
+        Log.d(TAG, "isHost : " + isHost);
+        Log.d(TAG, "seatNum : " + seatNum);
+        Log.d(TAG, "Card1 : " + card1);
+        Log.d(TAG, "Card2 : " + card2);
+
         initShuffle();
 
+        initRX();
+
         initCardImage();
+
+//        makeRandomNumber();
+
 
         button_reset.setEnabled(false);
 
         image1.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView1);
         image2.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView2);
 
-        makeRandomNumber();
         image1.setImageResource(getResourceId("drawable", "card_" + card1));
 
         image2.setOnTouchListener(new View.OnTouchListener() {
@@ -196,11 +247,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                         yAnimation.cancel();
                         break;
                     case MotionEvent.ACTION_UP:
-                        int gap = startY > (int) event.getRawY() ? startY - (int) event.getRawY() : (int) event.getRawY() - startY;
-                        Log.d(TAG, "viewHeight/2 : " + (viewHeight / 2) + ", gap : " + gap);
+                        int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
+                        Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
 
                         // 패가 절반이상 까진경우
-                        if (viewHeight / 2 < gap) {
+                        if (viewHeight/2 < gap) {
                             Log.d(TAG, "패가 절반이상 까진경우");
 //                            openAnimation.start();
                             bCheck = true;
@@ -394,7 +445,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
                     Log.d(TAG, "Reset 완료");
 
-                    makeRandomNumber();
+//                    makeRandomNumber();
 
 //                    image1.setImageResource(getResourceId("drawable", "card_" + card1));
 //                    image2.setImageResource(R.drawable.card_back);
@@ -461,6 +512,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             image_die.setVisibility(View.VISIBLE);
             image_result.setVisibility(View.VISIBLE);
             image_jokbo.setVisibility(View.VISIBLE);
+
+            // TODO : RE게임 회색 버튼으로 변경 필요
+//            isHost = false;
+            if (!isHost) {
+//                image_re.setImageResource(R.drawable.card_die);
+                image_re.setImageResource(R.drawable.room_ban_dis);
+                image_result.setImageResource(R.drawable.room_ban_dis);
+            }
         }
     }
 
@@ -473,17 +532,42 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void initShuffle() {
-        ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
-        if (fragment == null) {
-            // Make new fragment to show this selection.
-            fragment = new ShuffleFragment();
+        Log.d(TAG, "initShuffle");
 
-            // Execute a transaction, replacing any existing fragment
-            // with this one inside the frame.
-            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.room_shuffle_frame, fragment);
-//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-            ft.commit();
+//        ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
+//        if (fragment == null) {
+//            // Make new fragment to show this selection.
+//            fragment = new ShuffleFragment();
+//
+//            // Execute a transaction, replacing any existing fragment
+//            // with this one inside the frame.
+//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//            ft.replace(R.id.room_shuffle_frame, fragment);
+////            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+//            ft.commit();
+//        }
+
+        try {
+            Log.d(TAG, "initShuffle 1");
+
+            GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
+            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_3);
+            Log.d(TAG, "initShuffle 2");
+            gifImageView.setImageDrawable(gifDrawable);
+            Log.d(TAG, "initShuffle 3");
+
+            gifDrawable.addAnimationListener(new AnimationListener() {
+                @Override
+                public void onAnimationCompleted(int loopNumber) {
+                    Log.d(TAG, "Shuffle onAnimationCompleted");
+                    gifImageView.setVisibility(View.GONE);
+                    gifDrawable.recycle();
+                }
+            });
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -557,6 +641,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             ani_view1_x.start();
             ani_view1_y.start();
 
+            doSendMessage(API_CARD_OPEN, seatNum);
+
             initButton(false);
         }
     }
@@ -576,6 +662,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         bCheck = false;
         image1.setImageResource(R.drawable.card_back);
         image2.setImageResource(R.drawable.card_back);
+
+        image_card_die.setVisibility(View.GONE);
 
         image3.setImageResource(0);
         image4.setImageResource(0);
@@ -637,6 +725,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         Log.d(TAG, "Card2 : " + card2);
     }
 
+    private String calcRandomNumber(int number) {
+        int tempNum = number;
+        String retVal = "";
+        if (tempNum / 11 > 0) {
+            retVal = String.valueOf(tempNum % 10 == 0 ? 10 : tempNum % 10) + "_2";
+        } else {
+            retVal = String.valueOf(tempNum) + "_1";
+        }
+        return retVal;
+    }
 
     private void doSetting() {
         Log.d(TAG, "doSetting");
@@ -658,19 +756,20 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // TODO :
 //        Toast.makeText(getApplicationContext(), "RE 게임", Toast.LENGTH_SHORT).show();
 
-        resetCard();
+//        resetCard();
+        doSendMessage(API_SHUFFLE);
     }
 
     private void doDie() {
         Log.d(TAG, "doDie");
-        // TODO :
-        Toast.makeText(getApplicationContext(), "DIE", Toast.LENGTH_SHORT).show();
+        doSendMessage(API_DIE, seatNum);
     }
 
     private void doResult() {
         Log.d(TAG, "doResult");
 //        Toast.makeText(getApplicationContext(), "게임 결과 연결해주세요", Toast.LENGTH_SHORT).show();
-        Game_Result();  // 만땅
+//        Game_Result();  // 만땅
+        doSendMessage(API_GAME_RESULT);
     }
 
     private void doJokbo() {
@@ -956,6 +1055,81 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     .subscribe();
         }
 
+    }
+
+
+    private void doSendMessage(int apiNo) {
+//        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " + seatNo2 + ")");
+        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ")");
+        ApiBody apiBody;
+        apiBody = new ApiBody(apiNo);
+
+        ConnectionManager.sendMessage(apiBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Log.d(TAG, "doSendMessage success " + apiBody);
+                }, onError -> {
+                    onError.printStackTrace();
+                });
+    }
+
+    private void doSendMessage(int apiNo, int seatNo1) {
+//        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " + seatNo2 + ")");
+        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ")");
+        ApiBody apiBody;
+        apiBody = new ApiBody(apiNo, seatNo1);
+
+        ConnectionManager.sendMessage(apiBody)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Log.d(TAG, "doSendMessage success " + apiBody);
+                }, onError -> {
+                    onError.printStackTrace();
+                });
+    }
+
+
+    private void initRX() {
+        Log.d(TAG, "initRX");
+
+        ClientPublishSubjectBus.getInstance().getEvents(String.class)
+                .map(json -> new Gson().fromJson((String) json, ApiBody.class))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(result -> {
+                    Log.d(TAG, "PlayActivity server result " + result);
+                    ApiBody apiBody = ((ApiBody) result);
+                    switch (apiBody.getNo()) {
+                        case API_SHUFFLE_BR:
+                            resetCard();
+
+                            card1 = calcRandomNumber(apiBody.getCardNo1());
+                            card2 = calcRandomNumber(apiBody.getCardNo2());
+                            Log.d(TAG, "Card1 : " + card1);
+                            Log.d(TAG, "Card2 : " + card2);
+                            break;
+
+
+                        case API_DIE_BR:
+                            image1.setImageResource(R.drawable.card_die);
+                            image2.setImageResource(R.drawable.card_die);
+                            image_card_die.setVisibility(View.VISIBLE);
+                            break;
+
+                        case API_GAME_RESULT_BR:
+                            Game_Result();
+                            break;
+
+                        case API_GAME_RESULT_AVAILABLE:
+                            // TODO : 방장이면 게임 결과 버튼 활성화
+                            break;
+                    }
+
+                }, onError -> {
+                    Log.d(TAG, "test onError " + onError);
+                }, () -> Log.d(TAG, "test onCompleted"));
     }
 
 }

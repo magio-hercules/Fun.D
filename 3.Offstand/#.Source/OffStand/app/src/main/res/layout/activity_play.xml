@@ -60,6 +60,19 @@
         app:layout_constraintTop_toBottomOf="@id/play_test_game_result" />
 
     <!-- Vertical -->
+
+  <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_shuffle_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.0" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_shuffle_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="1.0" />
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_background_s"
         android:layout_width="wrap_content"
@@ -101,6 +114,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.692" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_die_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.177" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_card_die_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.877" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_v_card_result1_s"
@@ -192,6 +218,19 @@
     <!-- Horizontal -->
 
     <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_shuffle_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.0" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_shuffle_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
+    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_dashboard_s"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -218,6 +257,19 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.707" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_card_die_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.4" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_card_die_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.692" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guide_h_setting_s"
@@ -573,17 +625,17 @@
         app:layout_constraintTop_toTopOf="@id/guide_h_open_s"
         app:srcCompat="@drawable/button_play_open" />
 
-    <ImageView
-        android:id="@+id/play_image_dashboard"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="fitXY"
-        android:tag="BUTTON"
-        app:layout_constraintBottom_toBottomOf="@id/guide_h_dashboard_e"
-        app:layout_constraintLeft_toLeftOf="@id/guide_v_dashboard_s"
-        app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"
-        app:layout_constraintTop_toTopOf="@id/guide_h_dashboard_s"
-        app:srcCompat="@drawable/play_dashboard" />
+    <!--<ImageView-->
+        <!--android:id="@+id/play_image_dashboard"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:tag="BUTTON"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_dashboard_e"-->
+        <!--app:layout_constraintLeft_toLeftOf="@id/guide_v_dashboard_s"-->
+        <!--app:layout_constraintRight_toRightOf="@id/guide_v_setting_e"-->
+        <!--app:layout_constraintTop_toTopOf="@id/guide_h_dashboard_s"-->
+        <!--app:srcCompat="@drawable/play_dashboard" />-->
 
     <ImageView
         android:id="@+id/play_image_card0"
@@ -641,6 +693,16 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_v_card_result2_s"
         app:layout_constraintRight_toRightOf="@id/guide_v_card_result2_e"
         app:layout_constraintTop_toTopOf="@id/guide_h_card_s" />
+
+    <ImageView
+        android:id="@+id/play_image_card_die"
+        android:layout_width="0dp" android:layout_height="0dp"
+        android:scaleType="fitXY" android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_card_die_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_card_die_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_card_die_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_card_die_e"
+        app:srcCompat="@drawable/die_image" />
 
     <!-- end of contents -->
 
@@ -737,6 +799,14 @@
         app:layout_constraintRight_toRightOf="@id/guide_v_end"
         app:layout_constraintTop_toTopOf="@id/guide_h_4" />
 
+    <pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif_shuffle"
+        android:scaleType="fitXY"
+        android:layout_width="0dp" android:layout_height="0dp"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_shuffle_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_shuffle_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_shuffle_s"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_shuffle_e" />
 
     <!-- temp -->
     <FrameLayout
