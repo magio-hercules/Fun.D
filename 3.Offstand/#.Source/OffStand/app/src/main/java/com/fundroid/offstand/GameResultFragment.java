@@ -1,5 +1,6 @@
 package com.fundroid.offstand;
 
+import android.content.Context;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -30,6 +31,8 @@ public class GameResultFragment extends Fragment {
 
     @BindView(R.id.play_result_ReButton)
     ImageView play_result_ReButton;
+
+    PlayActivity playActivity;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -84,22 +87,26 @@ public class GameResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         Log.d("MSMS", "4");
-        View view = inflater.inflate(R.layout.fragment_gameresult, container, false);
 
-        ImageView play_result_ReButton = (ImageView) view.findViewById(R.id.play_result_ReButton);
+        ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_gameresult,container,false);
+
+        ImageView play_result_ReButton = (ImageView) rootview.findViewById(R.id.play_result_ReButton);
 
         play_result_ReButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("MSMS", "5");
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.remove(getTargetFragment()).commit();
+
+                playActivity.Game_Reslut_Close();
+
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.remove(getTargetFragment()).commit();
 
             }
         });
 
-        return view;
+        return rootview;
     }
 
 //    // TODO: Rename method, update argument and hook method into UI event
@@ -109,22 +116,26 @@ public class GameResultFragment extends Fragment {
 //        }
 //    }
 
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        playActivity = (PlayActivity) getActivity();
+
 //        if (context instanceof OnFragmentInteractionListener) {
 //            mListener = (OnFragmentInteractionListener) context;
 //        } else {
 //            throw new RuntimeException(context.toString()
 //                    + " must implement OnFragmentInteractionListener");
 //        }
-//    }
+    }
 
     @Override
     public void onDetach() {
         Log.d("MSMS", "5");
         super.onDetach();
-        mListener = null;
+
+        //mListener = null;
     }
 
     /**

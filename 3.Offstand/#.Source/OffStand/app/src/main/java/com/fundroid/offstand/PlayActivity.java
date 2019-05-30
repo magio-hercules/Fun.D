@@ -1,11 +1,10 @@
 package com.fundroid.offstand;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
-import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.DragEvent;
@@ -19,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Random;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
@@ -32,7 +29,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
-import com.fundroid.offstand.ui.lobby.main.MainFragment;
+
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -113,7 +111,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // 잔여 시간
     // 진행 게임
     // 잔여 게임
-
+    FragmentManager fragmentManager;
+    GameResultFragment fragment;
 
     // 만땅 - 게임 결과 화면
     FrameLayout result_back;
@@ -134,12 +133,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     ImageView result_shadow;
     ImageView result_rebutton;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
+
+        fragment = new GameResultFragment();
 
         // 버터나이프 사용
         ButterKnife.bind(this);
@@ -771,6 +773,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         return true;
     }
 
+    public void Game_Reslut_Close() {
+
+        result_back.setVisibility(View.GONE);
+
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .remove(fragment)
+                    .commitNow();
+        }
+    }
+
     // 만땅 - 게임 결과 창
     // 결과보기 눌렀을 경우 Event
     @OnClick(R.id.play_image_result)
@@ -779,7 +794,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container_play_result, new GameResultFragment()).commit();
+        fragmentTransaction.replace(R.id.fragment_container_play_result, fragment).commit();
 
         result_back.setVisibility(View.VISIBLE);
 //        result_title1.setVisibility(View.VISIBLE);
