@@ -28,6 +28,21 @@ import butterknife.OnClick;
  */
 public class GameResultFragment extends Fragment {
 
+    // 만땅 - 필요한 요소 선언
+    ImageView play_result_title1;
+    ImageView play_result_content1;
+    ImageView play_result_content1_card1;
+    ImageView play_result_content1_card2;
+    ImageView play_result_content2;
+    ImageView play_result_rank2_card1;
+    ImageView play_result_rank2_card2;
+    ImageView play_result_rank3_card1;
+    ImageView play_result_rank3_card2;
+    ImageView play_result_rank4_card1;
+    ImageView play_result_rank4_card2;
+    ImageView play_result_left_button;
+    ImageView play_result_right_button;
+    ImageView play_result_shadow;
 
     @BindView(R.id.play_result_ReButton)
     ImageView play_result_ReButton;
@@ -89,6 +104,115 @@ public class GameResultFragment extends Fragment {
         Log.d("MSMS", "4");
 
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_gameresult,container,false);
+
+        // 만땅 - 초기화
+        play_result_title1 = (ImageView) rootview.findViewById(R.id.play_result_title1);
+        play_result_content1 = (ImageView) rootview.findViewById(R.id.play_result_content1);
+        play_result_content1_card1 = (ImageView) rootview.findViewById(R.id.play_result_content1_card1);
+        play_result_content1_card2 = (ImageView) rootview.findViewById(R.id.play_result_content1_card2);
+        play_result_content2 = (ImageView) rootview.findViewById(R.id.play_result_content2);
+        play_result_rank2_card1 = (ImageView) rootview.findViewById(R.id.play_result_rank2_card1);
+        play_result_rank2_card2 = (ImageView) rootview.findViewById(R.id.play_result_rank2_card2);
+        play_result_rank3_card1 = (ImageView) rootview.findViewById(R.id.play_result_rank3_card1);
+        play_result_rank3_card2 = (ImageView) rootview.findViewById(R.id.play_result_rank3_card2);
+        play_result_rank4_card1 = (ImageView) rootview.findViewById(R.id.play_result_rank4_card1);
+        play_result_rank4_card2 = (ImageView) rootview.findViewById(R.id.play_result_rank4_card2);
+        play_result_left_button = (ImageView) rootview.findViewById(R.id.play_result_left_button);
+        play_result_right_button = (ImageView) rootview.findViewById(R.id.play_result_right_button);
+        play_result_shadow = (ImageView) rootview.findViewById(R.id.play_result_shadow);
+
+        // 만땅 - 기본 셋팅
+        play_result_title1.setVisibility(rootview.VISIBLE);
+        play_result_content1.setVisibility(rootview.VISIBLE);
+        play_result_content1_card1.setVisibility(rootview.VISIBLE);
+        play_result_content1_card2.setVisibility(rootview.VISIBLE);
+        play_result_content2.setVisibility(rootview.GONE);
+        play_result_rank2_card1.setVisibility(rootview.GONE);
+        play_result_rank2_card2.setVisibility(rootview.GONE);
+        play_result_rank3_card1.setVisibility(rootview.GONE);
+        play_result_rank3_card2.setVisibility(rootview.GONE);
+        play_result_rank4_card1.setVisibility(rootview.GONE);
+        play_result_rank4_card2.setVisibility(rootview.GONE);
+        play_result_left_button.setVisibility(rootview.VISIBLE);
+        play_result_right_button.setVisibility(rootview.VISIBLE);
+        play_result_shadow.setVisibility(rootview.VISIBLE);
+
+        // 결과보기 - 화살표(왼쪽, 오른쪽) 눌렀을 경우
+        play_result_left_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("kyj", "left button");
+
+                if(play_result_content1.getVisibility() == View.VISIBLE){
+                    // result_1
+                    play_result_content1.setVisibility(View.GONE);
+                    play_result_content1_card1.setVisibility(View.GONE);
+                    play_result_content1_card2.setVisibility(View.GONE);
+
+                    // result_2
+                    play_result_content2.setVisibility(View.VISIBLE);
+                    play_result_rank2_card1.setVisibility(View.VISIBLE);
+                    play_result_rank2_card2.setVisibility(View.VISIBLE);
+                    play_result_rank3_card1.setVisibility(View.VISIBLE);
+                    play_result_rank3_card2.setVisibility(View.VISIBLE);
+                    play_result_rank4_card1.setVisibility(View.VISIBLE);
+                    play_result_rank4_card2.setVisibility(View.VISIBLE);
+                }
+                else{
+                    // result_1
+                    play_result_content1.setVisibility(View.VISIBLE);
+                    play_result_content1_card1.setVisibility(View.VISIBLE);
+                    play_result_content1_card2.setVisibility(View.VISIBLE);
+
+                    // result_2
+                    play_result_content2.setVisibility(View.GONE);
+                    play_result_rank2_card1.setVisibility(View.GONE);
+                    play_result_rank2_card2.setVisibility(View.GONE);
+                    play_result_rank3_card1.setVisibility(View.GONE);
+                    play_result_rank3_card2.setVisibility(View.GONE);
+                    play_result_rank4_card1.setVisibility(View.GONE);
+                    play_result_rank4_card2.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        play_result_right_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("kyj", "right button");
+
+                if(play_result_content1.getVisibility() == View.VISIBLE){
+                    // result_1
+                    play_result_content1.setVisibility(View.GONE);
+                    play_result_content1_card1.setVisibility(View.GONE);
+                    play_result_content1_card2.setVisibility(View.GONE);
+
+                    // result_2
+                    play_result_content2.setVisibility(View.VISIBLE);
+                    play_result_rank2_card1.setVisibility(View.VISIBLE);
+                    play_result_rank2_card2.setVisibility(View.VISIBLE);
+                    play_result_rank3_card1.setVisibility(View.VISIBLE);
+                    play_result_rank3_card2.setVisibility(View.VISIBLE);
+                    play_result_rank4_card1.setVisibility(View.VISIBLE);
+                    play_result_rank4_card2.setVisibility(View.VISIBLE);
+                }
+                else{
+                    // result_1
+                    play_result_content1.setVisibility(View.VISIBLE);
+                    play_result_content1_card1.setVisibility(View.VISIBLE);
+                    play_result_content1_card2.setVisibility(View.VISIBLE);
+
+                    // result_2
+                    play_result_content2.setVisibility(View.GONE);
+                    play_result_rank2_card1.setVisibility(View.GONE);
+                    play_result_rank2_card2.setVisibility(View.GONE);
+                    play_result_rank3_card1.setVisibility(View.GONE);
+                    play_result_rank3_card2.setVisibility(View.GONE);
+                    play_result_rank4_card1.setVisibility(View.GONE);
+                    play_result_rank4_card2.setVisibility(View.GONE);
+                }
+            }
+        });
 
         ImageView play_result_ReButton = (ImageView) rootview.findViewById(R.id.play_result_ReButton);
 
