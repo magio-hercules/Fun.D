@@ -259,6 +259,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Button
+        android:id="@+id/room_test_server"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TEST"
+        app:layout_constraintStart_toEndOf="@id/room_test_add_user"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ImageView
         android:id="@+id/room_image_ready_tag"
         android:layout_width="68dp"

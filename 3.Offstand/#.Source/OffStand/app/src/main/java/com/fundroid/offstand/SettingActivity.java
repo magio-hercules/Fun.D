@@ -5,9 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioAttributes;
 import android.media.MediaPlayer;
-import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -59,8 +57,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
     TextView setting_stats_win_text;
     TextView setting_stats_per_text;
 
+    int characterState;
+
     @Inject
     DataManager dataManager;
+
 
 
     @Override
@@ -102,37 +103,57 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_stats_win_text.setVisibility(View.GONE);
         setting_stats_per_text.setVisibility(View.GONE);
 
-        int[] character = {R.drawable.me_character_1, R.drawable.me_character_2,
+
+        final int[] character = {0, R.drawable.me_character_1, R.drawable.me_character_2,
                 R.drawable.me_character_5, R.drawable.me_character_8, R.drawable.me_character_9};
 
 
-        sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-
-        userName.setText(sharedPreferences.getString("userName", ""));
-        setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
+//        sharedPreferences = getSharedPreferences("version", MODE_PRIVATE);
+//        editor = sharedPreferences.edit();
 
 
-        sharedPreferences.getString("userName", "");
+//        userName.setText(sharedPreferences.getString("userName", ""));
+        userName.setText(dataManager.getUserName());
+
+//        setting_character.setImageResource(character[sharedPreferences.getInt("character", 1)]);
+        setting_character.setImageResource(character[dataManager.getUserAvatar()]);
+
+//        characterState = sharedPreferences.getInt("character", 1 );
+        characterState = dataManager.getUserAvatar();
+
+//        sharedPreferences.getString("userName", "");
+
 
         //총게임수, 승수수, 승률
-        sharedPreferences.getInt("total", 0);
-        sharedPreferences.getInt("win", 0);
-        sharedPreferences.getFloat("per", 0);
+//        sharedPreferences.getInt("total", 0);
+//        sharedPreferences.getInt("win", 0);
+//        sharedPreferences.getFloat("per", 0);
 
-        editor.putInt("total", 5);
-        editor.commit();
 
-        editor.putInt("win", 3);
-        editor.commit();
 
-        editor.putFloat("per", (new Float(sharedPreferences.getInt("win", 0)) / new Float(sharedPreferences.getInt("total", 0))) * 100);
-        editor.commit();
 
-        setting_stats_total_text.setText("" + sharedPreferences.getInt("total", 0));
-        setting_stats_win_text.setText("" + sharedPreferences.getInt("win", 0));
-        setting_stats_per_text.setText("" + (int) (sharedPreferences.getFloat("per", 0)) + "%");
 
+//        editor.putInt("total", 5);
+//        editor.commit();
+        dataManager.setUserTotal(5);
+
+
+//        editor.putInt("win", 3);
+//        editor.commit();
+        dataManager.setUserWin(3);
+
+
+//        editor.putFloat("per", (new Float(sharedPreferences.getInt("win", 0)) / new Float(sharedPreferences.getInt("total", 0))) * 100);
+//        editor.commit();
+
+
+//        setting_stats_total_text.setText("" + sharedPreferences.getInt("total", 0));
+//        setting_stats_win_text.setText("" + sharedPreferences.getInt("win", 0));
+//        setting_stats_per_text.setText("" + (int) (sharedPreferences.getFloat("per", 0)) + "%");
+
+        setting_stats_total_text.setText(""+ dataManager.getUserTotal());
+        setting_stats_win_text.setText(""+ dataManager.getUserWin());
+        setting_stats_per_text.setText(""+ (int)(((float)dataManager.getUserWin() / (float)dataManager.getUserTotal())) * 100 + "%");
 
         // 커서를 끝에 위치시키기
         userName.setSelection(userName.length());
@@ -160,33 +181,34 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
         setting_leftButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
+                MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
-                AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                        .build();
+//                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+//                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+//                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+//                        .build();
+//
+//                SoundPool sp = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(8).build();
+//                int soundID = sp.load(SettingActivity.this, R.raw.mouth_interface_button, 1);
+//                //sp.play(soundID, 1f, 1f, 0, 0,1f);
+//
+//                sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+//                    @Override
+//                    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
+//                        sp.play(soundID, 1f, 1f, 0, 0,1f);
+//                    }
+//                });
 
-                SoundPool sp = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(8).build();
-                int soundID = sp.load(SettingActivity.this, R.raw.mouth_interface_button, 1);
-                //sp.play(soundID, 1f, 1f, 0, 0,1f);
+                Log.d("MSMS","AAA"+characterState);
 
-                sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-                    @Override
-                    public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                        sp.play(soundID, 1f, 1f, 0, 0,1f);
-                    }
-                });
-
-                int i = sharedPreferences.getInt("character", 0);
-                if (i > 0) {
-                    i--;
+                if (characterState > 1) {
+                    characterState--;
                 } else {
-                    i = character.length - 1;
+                    characterState = character.length-1;
                 }
-                editor.putInt("character", i);
-                editor.commit();
-                setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
+                Log.d("MSMS","BBB"+characterState);
+
+                setting_character.setImageResource(character[characterState]);
             }
         });
 
@@ -195,15 +217,17 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
             public void onClick(View v) {
                 MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
-                int i = sharedPreferences.getInt("character", 0);
-                if (i < character.length - 1) {
-                    i++;
+                Log.d("MSMS","AAA"+characterState);
+
+
+                if (characterState < character.length-1) {
+                    characterState++;
                 } else {
-                    i = 0;
+                    characterState = 1;
                 }
-                editor.putInt("character", i);
-                editor.commit();
-                setting_character.setImageResource(character[sharedPreferences.getInt("character", 0)]);
+                Log.d("MSMS","BBB"+characterState);
+
+                setting_character.setImageResource(character[characterState]);
             }
         });
 
@@ -218,8 +242,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
                 userName.setFocusable(false);
                 userName.setFocusableInTouchMode(true);
-                editor.putString("userName", input);
-                editor.commit();
+
+                dataManager.setUserAvatar(characterState);
+                dataManager.setUserName(input);
+//                editor.putInt("character", characterState);
+//                editor.putString("userName", input);
+//                editor.commit();
 
                 startActivity(new Intent(getApplicationContext(), LobbyActivity.class));
             }

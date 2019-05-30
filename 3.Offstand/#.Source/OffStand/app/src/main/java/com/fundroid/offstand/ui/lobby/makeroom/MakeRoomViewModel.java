@@ -23,15 +23,12 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
-    private SchedulerProvider schedulerProvider;
-
     public MakeRoomViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
         super(dataManager, schedulerProvider);
-        this.schedulerProvider = schedulerProvider;
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
                 .map(json -> new Gson().fromJson((String) json, ApiBody.class))
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.ui())
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
                 .subscribe(result -> {
                     Log.d("lsc", "MakeRoomViewModel result " + result);
                     switch (((ApiBody) result).getNo()) {
@@ -56,8 +53,8 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
                 .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
                 .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(1, true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
-                .subscribeOn(schedulerProvider.io())
-                .observeOn(schedulerProvider.io())
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().io())
                 .subscribe(() -> {
                     Log.d("lsc", "MakeRoomViewModel createSocket result ");
                 }, onError -> {
@@ -75,6 +72,6 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     @Override
     protected void onCleared() {
         super.onCleared();
-        Log.d("lsc", "FindRoomViewModel enterRoom onCleared");
+        Log.d("lsc", "MakeRoomViewModel enterRoom onCleared");
     }
 }

@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameResultFragment">
+
+
+    // 만땅 Layout - Start
+    // 공통(왼쪽, 오른쪽)
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1471125" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_background_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.014" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_h_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.923" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_v_background_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.986" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.102" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.896" />
+
+    // 결과창 - 이번 한 결과 title
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_title1_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.222" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_title1_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.264" />
+
+    // 결과창 - 이번 한 결과 content
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.275" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.719" />
+
+    // 결과창 - 1등 card
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_card_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.407" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_card_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.599" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_card1_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.254" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_card1_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.474" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_card2_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.525" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_card2_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.745" />
+
+    // 결과창2 card
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank2_card_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.358" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank2_card_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.443" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank3_card_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.480" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank3_card_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.565" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank4_card_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.603" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank4_card_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.688" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_card1_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.638" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_card1_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.735" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_card2_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.748" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_card2_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.845" />
+
+    // 결과창 - 그림자
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.700" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.743" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.048" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_shadow_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.950" />
+
+    // 결과창 - RE 게임 버튼
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.791" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.850" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.326" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_ReRutton_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.673" />
+
+    // 결과창 - 화살표 버튼
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_change_button_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.454" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_change_button_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.554" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_change_left_button_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.033" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_change_left_button_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.117" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_change_right_button_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.875" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_change_right_button_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.959" />
+    // 만땅 Layout - End
+
+
+    // 게임 결과 창
+    <FrameLayout
+        android:id="@+id/fragment_container_play_result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CC000000" />
+
+    <ImageView
+        android:id="@+id/play_result_title1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_title1_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_title1_top"
+        app:srcCompat="@drawable/result_title1" />
+
+    <ImageView
+        android:id="@+id/play_result_shadow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_shadow_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_shadow_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_shadow_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_shadow_top"
+        app:srcCompat="@drawable/result_shadow" />
+
+    <ImageView
+        android:id="@+id/play_result_content1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content1_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content1_top"
+        app:srcCompat="@drawable/play_result_1" />
+
+    <ImageView
+        android:id="@+id/play_result_content1_card1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content1_rank1_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content1_rank1_card1_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content1_rank1_card1_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content1_rank1_card_top"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_content1_card2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content1_rank1_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content1_rank1_card2_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content1_rank1_card2_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content1_rank1_card_top"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_content2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content1_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content1_top"
+        app:srcCompat="@drawable/play_result_2" />
+
+    <ImageView
+        android:id="@+id/play_result_rank2_card1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank2_card_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank2_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card1_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_card1_right"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_rank2_card2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank2_card_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank2_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card2_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_card2_right"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_rank3_card1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank3_card_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank3_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card1_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_card1_right"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_rank3_card2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank3_card_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank3_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card2_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_card2_right"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_rank4_card1"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank4_card_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank4_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card1_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_card1_right"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_rank4_card2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank4_card_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank4_card_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card2_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_card2_right"
+        app:srcCompat="@drawable/card_die" />
+
+    <ImageView
+        android:id="@+id/play_result_left_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_change_button_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_change_left_button_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_change_left_button_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_change_button_top"
+        app:srcCompat="@drawable/button_setting_left" />
+
+    <ImageView
+        android:id="@+id/play_result_right_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_change_button_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_change_right_button_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_change_right_button_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_change_button_top"
+        app:srcCompat="@drawable/button_setting_right" />
+
+    <ImageView
+        android:id="@+id/play_result_ReButton"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_ReRutton_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_ReRutton_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_ReRutton_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_ReRutton_top"
+        app:srcCompat="@drawable/btn_back" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

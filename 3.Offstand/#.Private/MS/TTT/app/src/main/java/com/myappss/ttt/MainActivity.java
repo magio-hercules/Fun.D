@@ -64,15 +64,15 @@ public class MainActivity extends AppCompatActivity {
         //내꺼 체크 값 돌리기
         int[] myNum = new int[2]; // 배열생성 -> 이건 내꺼만 돌려봄 다른사람들은 그냥 클래스로 받아서 결과확인
         myNum[0] = 1;
-        myNum[1] = 8;
+        myNum[1] = 13;
 
         int[] myNum2 = new int[2]; // 테스트용
         myNum2[0] = 4;
         myNum2[1] = 7;
 
         int[] myNum3 = new int[2]; // 테스트용
-        myNum3[0] = 10;
-        myNum3[1] = 20;
+        myNum3[0] = 18;
+        myNum3[1] = 17;
 
 
         final User[] users = new User[3];
@@ -247,7 +247,11 @@ public class MainActivity extends AppCompatActivity {
 
     public String result(User[] user) { //User.length 만큼  User 정보를 받아서 셋팅 // return 1등
         boolean endFlag = false;
-
+        for(User u : user) {
+            Log.d("lsc","id " + u.id);
+            Log.d("lsc","sum " + u.sum);
+            Log.d("lsc","str " + u.str);
+        }
 
         int max = 0;
         int[] maxId = new int[user.length]; //maxId 체크 하기
@@ -314,13 +318,14 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < user.length; i++) {
             user[i].lose++;
         }
-        return String.valueOf(winNum);
+        return "";
     }
 
     public void draw(User[] users) {
+        Log.d("lsc","draw");
         // 패 다시 돌리는 명령 해주고
         // 그후에 다시 돌리기
-        result(users);
+//        result(users);
     }
 }
 

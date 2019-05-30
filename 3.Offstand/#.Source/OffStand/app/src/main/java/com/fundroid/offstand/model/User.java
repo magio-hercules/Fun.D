@@ -5,6 +5,8 @@ import androidx.core.util.Pair;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 
+import java.util.Collections;
+
 public class User {
 
     public enum EnumStatus {
@@ -210,12 +212,14 @@ public class User {
     public String toString() {
         return "User{" +
                 "host=" + host +
-                ", id=" + id +
+                ", status=" + status +
                 ", seat=" + seat +
                 ", avatar=" + avatar +
                 ", name='" + name + '\'' +
+                ", cards=" + cards +
+                ", cardLevel=" + cardLevel +
+                ", cardSum=" + cardSum +
                 '}';
-//        return new Gson().toJson(this);
     }
 }
 

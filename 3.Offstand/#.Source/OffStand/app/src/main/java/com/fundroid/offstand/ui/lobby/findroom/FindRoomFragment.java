@@ -24,6 +24,7 @@ import com.fundroid.offstand.R;
 import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
+import com.fundroid.offstand.ui.lobby.LobbyViewModel;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -41,6 +42,7 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     ViewModelProviderFactory viewModelProviderFactory;
 
     private FindRoomViewModel findRoomViewModel;
+    private LobbyViewModel lobbyViewModel;
 
     private FragmentFindRoomBinding fragmentFindRoomBinding;
 
@@ -82,6 +84,8 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fragmentFindRoomBinding = getViewDataBinding();
+        lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
+        fragmentFindRoomBinding.setLobbyViewModel(lobbyViewModel);
         initViews();
     }
 

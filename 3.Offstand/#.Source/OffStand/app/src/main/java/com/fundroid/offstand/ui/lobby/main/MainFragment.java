@@ -4,6 +4,7 @@ import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.fundroid.offstand.BR;
@@ -101,10 +102,11 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
             }
         });
         // [만땅] SoundPool Test - End
-
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .addToBackStack(FRAGMENT_MAKE_ROOM)
+//                .addToBackStack(FRAGMENT_MAKE_ROOM)
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, MakeRoomFragment.newInstance(), MakeRoomFragment.TAG)
                 .commit();
     }
@@ -113,7 +115,9 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     public void findRoom() {
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .addToBackStack(FRAGMENT_FIND_ROOM)
+//                .addToBackStack(FRAGMENT_FIND_ROOM)
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, FindRoomFragment.newInstance(), FindRoomFragment.TAG)
                 .commit();
     }

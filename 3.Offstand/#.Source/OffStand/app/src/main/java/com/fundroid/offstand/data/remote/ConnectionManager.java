@@ -49,6 +49,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 import static com.fundroid.offstand.model.User.EnumStatus.CARDOPEN;
 import static com.fundroid.offstand.model.User.EnumStatus.DIE;
 import static com.fundroid.offstand.model.User.EnumStatus.INGAME;
@@ -156,12 +157,22 @@ public class ConnectionManager {
                         .concatMap(result -> Observable.just(new ApiBody(RESULT_API_NOT_DEFINE)));
 
             case API_GAME_RESULT:
-                return Observable.just(new ApiBody(API_GAME_RESULT_BR, 1));
+                return figureOut((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
+                        .andThen(Observable.just(new ApiBody(API_GAME_RESULT_BR, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))));
+
 
             case API_OUT:
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
-                return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
+                return getUserStatus()
+                        .concatMap(ConnectionManager::setRoomStatus)
+                        .concatMap(result -> broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo()))
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
+
+            case API_TEST:
+                for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
+                    Log.d("lsc", "user " + user);
+                }
+                return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
 
             default:
                 Log.d("lsc", "ConnectionManager default api " + apiBody);
@@ -234,10 +245,10 @@ public class ConnectionManager {
                 }
             }
         }
-        Log.d("lsc", "ConnectionManager after size " + serverThreads.length);
-        for (int i = 0; i < serverThreads.length; i++) {
-            Log.d("lsc", "ConnectionManager after setUserSeatNo " + serverThreads[i] + ", i : " + i);
-        }
+//        Log.d("lsc", "ConnectionManager after size " + serverThreads.length);
+//        for (int i = 0; i < serverThreads.length; i++) {
+//            Log.d("lsc", "ConnectionManager after setUserSeatNo " + serverThreads[i] + ", i : " + i);
+//        }
         return Completable.complete();
     }
 
@@ -284,7 +295,6 @@ public class ConnectionManager {
 
             int inGameUserCount = (int) Stream.of(serverThreads) // 게임 시작 후 카드 오픈 or DIE or 나가기를 하지 않은 User 카운트
                     .withoutNulls()
-                    .filterNot(serverThread -> serverThread.getUser().isHost())
                     .filter(serverThread -> serverThread.getUser().getStatus() == INGAME.getEnumStatus())
                     .count();
 
@@ -329,13 +339,9 @@ public class ConnectionManager {
 
     public static Completable figureOut(ArrayList<User> users) {
         return Completable.create(subscriber -> {
-//            Stream.of(users)
-//                    .filter(user -> user.getStatus() == INGAME.getEnumStatus())
-//                    .map(setCard)
-
-            for (User user : users) {
-//                user.getCards()
-                setCardValue(user.getCards());
+            for (User user : Stream.of(users).filter(user -> user.getStatus() == CARDOPEN.getEnumStatus()).toList()) {
+                setCardValue(user);
+                Log.d("lsc", "figureOut " + user);
             }
         });
     }
@@ -348,7 +354,11 @@ public class ConnectionManager {
         Collections.shuffle(cards);
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
-                serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
+                if (cards.get(i * 2) < cards.get(i * 2) + 1) {
+                    serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
+                } else {
+                    serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
+                }
                 serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
@@ -358,6 +368,7 @@ public class ConnectionManager {
     }
 
     private static Observable<ApiBody> broadcastMessage(ApiBody message) {
+        Log.d("lsc", "ConnectionManager broadcastMessage " + message);
         return Observable.create(subscriber -> {
 
             for (ServerThread serverThread : serverThreads) {

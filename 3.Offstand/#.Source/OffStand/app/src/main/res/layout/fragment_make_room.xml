@@ -328,6 +328,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/label_room_name"
+            android:onClick="@{() -> lobbyViewModel.removeGroup()}"
             app:layout_constraintBottom_toBottomOf="@id/guide_h_roomname_e"
             app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
             app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
