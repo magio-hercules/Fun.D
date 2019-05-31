@@ -4,6 +4,7 @@ import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.SettingActivity;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.ui.lobby.findroom.FindRoomFragmentProvider;
+import com.fundroid.offstand.ui.lobby.guide.GuideFragmentProvider;
 import com.fundroid.offstand.ui.lobby.main.MainFragmentProvider;
 import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomFragmentProvider;
 
@@ -16,6 +17,7 @@ public abstract class ActivityBuilder {
     @ContributesAndroidInjector(modules = {
             MakeRoomFragmentProvider.class,
             MainFragmentProvider.class,
+            GuideFragmentProvider.class,
             FindRoomFragmentProvider.class})
     abstract LobbyActivity bindLobbyActivity();
 

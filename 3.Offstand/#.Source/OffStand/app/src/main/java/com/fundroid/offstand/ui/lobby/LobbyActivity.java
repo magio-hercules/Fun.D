@@ -17,6 +17,8 @@ import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.receiver.WifiDirectReceiver;
 import com.fundroid.offstand.ui.base.BaseActivity;
+import com.fundroid.offstand.ui.lobby.findroom.FindRoomFragment;
+import com.fundroid.offstand.ui.lobby.guide.GuideFragment;
 import com.fundroid.offstand.ui.lobby.main.MainFragment;
 import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
@@ -180,8 +182,14 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         super.onBackPressed();
         Log.d("lsc", "LobbyActivity onBackPressed");
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentByTag(MakeRoomFragment.TAG);
-        if (fragment == null) {
+        Fragment fragment1 = fragmentManager.findFragmentByTag(MakeRoomFragment.TAG);
+        Fragment fragment2 = fragmentManager.findFragmentByTag(FindRoomFragment.TAG);
+        Fragment fragment3 = fragmentManager.findFragmentByTag(GuideFragment.TAG);
+        Log.d("lsc", "LobbyActivity onBackPressed fragment1 " + fragment1);
+        Log.d("lsc", "LobbyActivity onBackPressed fragment2 " + fragment2);
+        Log.d("lsc", "LobbyActivity onBackPressed fragment3 " + fragment3);
+
+        if (fragment1 == null) {
             Log.d("lsc", "LobbyActivity onBackPressed if");
             super.onBackPressed();
         } else {

@@ -32,8 +32,6 @@ import javax.inject.Inject;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 
-import static com.fundroid.offstand.core.AppConstant.FRAGMENT_FIND_ROOM;
-
 public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, FindRoomViewModel> implements FindRoomNavigator {
 
     public static final String TAG = FindRoomFragment.class.getSimpleName();
