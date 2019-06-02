@@ -42,6 +42,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.disposables.Disposable;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.fundroid.offstand.utils.CommonUtils.getVisibleFragmentTag;
 
 public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector {
 
@@ -179,22 +180,13 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Log.d("lsc", "LobbyActivity onBackPressed");
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment1 = fragmentManager.findFragmentByTag(MakeRoomFragment.TAG);
-        Fragment fragment2 = fragmentManager.findFragmentByTag(FindRoomFragment.TAG);
-        Fragment fragment3 = fragmentManager.findFragmentByTag(GuideFragment.TAG);
-        Log.d("lsc", "LobbyActivity onBackPressed fragment1 " + fragment1);
-        Log.d("lsc", "LobbyActivity onBackPressed fragment2 " + fragment2);
-        Log.d("lsc", "LobbyActivity onBackPressed fragment3 " + fragment3);
-
-        if (fragment1 == null) {
-            Log.d("lsc", "LobbyActivity onBackPressed if");
+        Log.d("lsc", "LobbyActivity onBackPressed " + getVisibleFragmentTag(this));
+        if(getVisibleFragmentTag(this).equals(MainFragment.TAG)) {
+            Log.d("lsc", "LobbyActivity onBackPressed 1");
             super.onBackPressed();
         } else {
-            Log.d("lsc", "LobbyActivity onBackPressed else");
-            onFragmentDetached(MakeRoomFragment.TAG);
+            Log.d("lsc", "LobbyActivity onBackPressed 2");
+            onFragmentDetached(getVisibleFragmentTag(this));
         }
     }
 
