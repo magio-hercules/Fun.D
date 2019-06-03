@@ -40,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import dagger.android.AndroidInjection;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
@@ -190,6 +191,13 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        clientPublishSubjectBusDisposable.dispose();
+        clientReplaySubjectBusDisposable.dispose();
+    }
+
     @OnClick({R.id.room_image_start,
             R.id.room_image_ready,
             R.id.room_image_ban,
@@ -293,8 +301,8 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         MediaPlayer.create(RoomActivity.this, R.raw.mouth_interface_button).start();
 
                         image_start.setPressed(false);
-                        if (nReadyCount != nUserCount) {
-//                        if (!bReadyShuffle) {
+//                        if (nReadyCount != nUserCount) {
+                        if (!bReadyShuffle) {
                             Toast.makeText(getApplicationContext(), "모든 유저가 완료 되어야 합니다.", Toast.LENGTH_SHORT).show();
                         } else {
 //                            Toast.makeText(getApplicationContext(), "시작하기 (셔플)", Toast.LENGTH_SHORT).show();
@@ -560,6 +568,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         int tSeat = -1;
 
         // User
+        Log.d(TAG, "서버에서 받은 users 정보");
         for (int i = 1; i < users.size() + 1; i++) {
             curUser = users.get(i - 1);
             tSeat = curUser.getSeat();
@@ -569,10 +578,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 if (curUser.getName().equals(userName) && curUser.getAvatar() == avatarId) {
                     curUserIndex = tSeat;
                 }
+                Log.d(TAG, i + "번째 유저 : " + allUser[tSeat].toString());
             }
         }
 
         // dummy
+        Log.d(TAG, "----------------------------");
         for (int i = 1; i < MAX_USER_COUNT + 1; i++) {
             curUser = allUser[i];
             if (curUser.getAvatar() == 0) {
@@ -657,7 +668,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     private void drawUser() {
         Log.d(TAG, "drawUser (nUserCount: " + nUserCount + ")");
 
-        for (int i = 1; i < nUserCount + 1; i++) {
+        for (int i = 1; i < MAX_USER_COUNT + 1; i++) {
             drawUser(allUser[i]);
         }
     }
@@ -950,11 +961,13 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         context.startActivity(intent);
     }
 
+    private Disposable clientPublishSubjectBusDisposable;
+    private Disposable clientReplaySubjectBusDisposable;
 
     private void initRX() {
         Log.d(TAG, "initRX");
 
-        ReplaySubjectBus.getInstance().getEvents(ArrayList.class)
+        clientReplaySubjectBusDisposable = ReplaySubjectBus.getInstance().getEvents(ArrayList.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe(userList -> {
@@ -965,7 +978,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         , () -> Log.d(TAG, "RoomActivity replay onCompleted"));
 
 
-        ClientPublishSubjectBus.getInstance().getEvents(String.class)
+        clientPublishSubjectBusDisposable = ClientPublishSubjectBus.getInstance().getEvents(String.class)
                 .map(json -> new Gson().fromJson((String) json, ApiBody.class))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
