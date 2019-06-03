@@ -3,7 +3,10 @@ package com.fundroid.offstand.data.model;
 
 import androidx.core.util.Pair;
 
+import com.annimon.stream.Stream;
 import com.fundroid.offstand.model.User;
+
+import java.util.ArrayList;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -64,6 +67,11 @@ public class Card {
                 .andThen(checkLeve5(user));
     }
 
+    public static Completable setRank() {
+
+        return Completable.complete();
+    }
+
     private static Completable checkLevel10(User user) {
         if (user.getCards().first.equals(EnumCard.THREE_KWANG) && user.getCards().second.equals(EnumCard.EIGHT_KWANG)) {
             user.setCardLevel(EnumCardLevel.LEVEL10.getCardLevel());
@@ -106,7 +114,7 @@ public class Card {
 
     private static Completable checkLeve7(User user) {
         if (user.getCards().first % 10 == user.getCards().second % 10) {
-            if(user.getCards().first.equals(EnumCard.TEN_MUNG)) {
+            if (user.getCards().first.equals(EnumCard.TEN_MUNG)) {
                 user.setCardLevel(EnumCardLevel.LEVEL8.getCardLevel());
             } else {
                 user.setCardLevel(EnumCardLevel.LEVEL7.getCardLevel());

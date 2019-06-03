@@ -39,7 +39,7 @@ public class ServerThread implements Runnable {
 
     public ServerThread(Socket socket) {
         this.socket = socket;
-        Log.d("lsc","ServerThread constructor");
+        Log.d("lsc","ServerThread constructor " + Thread.currentThread().getName());
     }
 
     @Override

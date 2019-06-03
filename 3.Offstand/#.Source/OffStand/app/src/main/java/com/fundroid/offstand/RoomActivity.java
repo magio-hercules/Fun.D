@@ -1,5 +1,6 @@
 package com.fundroid.offstand;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Context;
@@ -49,6 +50,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL;
@@ -60,6 +62,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
+@SuppressLint("CheckResult")
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
 //public class RoomActivity extends AppCompatActivity {
 
@@ -947,6 +950,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         context.startActivity(intent);
     }
 
+
     private void initRX() {
         Log.d(TAG, "initRX");
 
@@ -1008,9 +1012,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             break;
 
                         case API_OUT_BR:
-                            intent = new Intent(RoomActivity.this, LobbyActivity.class);
-                            startActivity(intent);
-                            finish();
+                            //Todo : API_OUT_BR은 본인이 나갔을 때는 받지 않고 다른 User가 나갔을 때 받음.
+                            doBan(apiBody.getSeatNo());
+//                            intent = new Intent(RoomActivity.this, LobbyActivity.class);
+//                            startActivity(intent);
+//                            finish();
                             break;
 
                         case API_SHUFFLE_AVAILABLE:
@@ -1019,6 +1025,12 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_SHUFFLE_NOT_AVAILABLE:
                             bReadyShuffle = false;
+                            break;
+
+                        case API_OUT_SELF:
+                            //본인이 나갔을 때
+                            LobbyActivity.start(this);
+                            finish();
                             break;
                     }
 

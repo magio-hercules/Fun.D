@@ -1026,12 +1026,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             case R.id.play_test_card_open:
                 testApi = API_CARD_OPEN;
-                seatNo = 1;
+                seatNo = seatNum;
                 break;
 
             case R.id.play_test_die:
                 testApi = API_DIE;
-                seatNo = 1;
+                seatNo = seatNum;
                 break;
 
             case R.id.play_test_server:
@@ -1040,7 +1040,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
             case R.id.play_test_out:
                 testApi = API_OUT;
-                seatNo = 1;
+                seatNo = seatNum;
                 break;
         }
         if (seatNo == -1) {

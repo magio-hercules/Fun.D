@@ -37,17 +37,6 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         this.channel = channel;
         this.resourceProvider = resourceProvider;
 
-        getCompositeDisposable().add(ServerPublishSubjectBus.getInstance().getEvents(String.class)
-                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
-                .subscribe(result -> {
-                    Log.d("lsc", "LobbyViewModel result " + result);
-                }, onError -> {
-                    Log.d("lsc", "LobbyViewModel onError " + onError);
-                }, () -> Log.d("lsc", "LobbyViewModel onCompleted"))
-        );
-
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(
