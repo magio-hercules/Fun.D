@@ -102,8 +102,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     ImageView image_exit;
     @BindView(R.id.room_image_ban)
     ImageView image_ban;
-    @BindView(R.id.room_image_ready_tag)
-    ImageView image_ready_tag;
 
     @BindView(R.id.room_avatar_1)
     ImageView image_avatar_1;
@@ -194,7 +192,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     protected void onDestroy() {
         super.onDestroy();
         clientPublishSubjectBusDisposable.dispose();
-        clientReplaySubjectBusDisposable.dispose();
+        clientBehaviorSubjectBusDisposable.dispose();
     }
 
     @OnClick({R.id.room_image_start,
@@ -209,11 +207,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
             return;
         }
         view.setSelected(true);
-    }
-
-    @OnClick(R.id.room_test_server)
-    public void test(View v) {
-        test();
     }
 
     @Override
@@ -344,7 +337,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                         image_exit.setPressed(false);
 //                        Toast.makeText(getApplicationContext(), "방 나가기", Toast.LENGTH_SHORT).show();
                         doExit();
-//                        test();
 
                         break;
                 }
@@ -505,8 +497,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                     }
                 } else if (targetTag.equals("TAG")) {
                     switch (target.getId()) {
-                        case R.id.room_image_ready_tag:
-                            doReady(selected);
+                        default:
                             break;
                     }
                 } else {
@@ -524,13 +515,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         image_start.setOnTouchListener(this);
         image_ready.setOnTouchListener(this);
         image_ban.setOnTouchListener(this);
-        image_ready_tag.setOnTouchListener(this);
         image_exit.setOnTouchListener(this);
 
         image_start.setOnDragListener(this);
         image_ready.setOnDragListener(this);
         image_ban.setOnDragListener(this);
-        image_ready_tag.setOnDragListener(this);
         image_exit.setOnDragListener(this);
 
         image_avatar_1.setOnTouchListener(this);
@@ -961,20 +950,36 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private Disposable clientPublishSubjectBusDisposable;
-    private Disposable clientReplaySubjectBusDisposable;
+    private Disposable clientBehaviorSubjectBusDisposable;
 
     private void initRX() {
         Log.d(TAG, "initRX");
 
-        clientReplaySubjectBusDisposable = BehaviorSubjectBus.getInstance().getEvents(ArrayList.class)
+        clientBehaviorSubjectBusDisposable = BehaviorSubjectBus.getInstance().getEvents(ArrayList.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
-                .subscribe(userList -> {
-                            Log.d(TAG, "RoomActivity replay apiBody " + userList);
+                .subscribe(result -> {
+                    Log.d(TAG, "RoomActivity behavior apiBody " + result);
+                    ApiBody apiBody = ((ApiBody) result);
+                    switch (apiBody.getNo()) {
+                        case API_ROOM_INFO:
+                            ArrayList<User> userList = apiBody.getUsers();
+                            Log.d(TAG, "RoomActivity behavior apiBody " + userList);
                             initUser((ArrayList<User>) userList);
                             drawUser();
-                        }, onError -> Log.d(TAG, "RoomActivity replay onError " + onError)
-                        , () -> Log.d(TAG, "RoomActivity replay onCompleted"));
+                            break;
+
+                        case API_SHUFFLE_AVAILABLE:
+                            bReadyShuffle = true;
+                            break;
+
+                        case API_SHUFFLE_NOT_AVAILABLE:
+                            bReadyShuffle = false;
+                            break;
+                    }
+                }, onError -> {
+                    Log.d(TAG, "RoomActivity behavior onError " + onError);
+                }, () -> Log.d(TAG, "RoomActivity behavior onCompleted"));
 
 
         clientPublishSubjectBusDisposable = ClientPublishSubjectBus.getInstance().getEvents(String.class)
@@ -985,7 +990,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                     Log.d(TAG, "RoomActivity server result " + result);
                     ApiBody apiBody = ((ApiBody) result);
                     switch (apiBody.getNo()) {
-
                         case API_ROOM_INFO:
                             break;
 
@@ -1051,14 +1055,4 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 }, () -> Log.d(TAG, "test onCompleted"));
     }
 
-    private void test() {
-        ConnectionManager.sendMessage(new ApiBody(API_TEST))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(() -> {
-
-                }, onError -> {
-                    onError.printStackTrace();
-                });
-    }
 }
