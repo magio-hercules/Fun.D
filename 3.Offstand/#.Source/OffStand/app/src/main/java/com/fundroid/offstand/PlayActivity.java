@@ -119,6 +119,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean bCheck = false;
 
     private boolean isHost = false;
+    private boolean enableRegame = false;
+    private boolean enableResult = false;
+    private boolean showResult = false;
     private int seatNum = -1;
     private String card1, card2;
 
@@ -495,13 +498,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             image_result.setVisibility(View.VISIBLE);
             image_jokbo.setVisibility(View.VISIBLE);
 
-            // TODO : RE게임 회색 버튼으로 변경 필요
-//            isHost = false;
-            if (!isHost) {
-//                image_re.setImageResource(R.drawable.card_die);
-                image_re.setImageResource(R.drawable.room_ban_dis);
-                image_result.setImageResource(R.drawable.room_ban_dis);
-            }
+            image_re.setImageResource(R.drawable.play_re_dis);
+            image_result.setImageResource(R.drawable.play_result_dis);
+
+            enableRegame = false;
+            enableResult = false;
+            showResult = false;
         }
     }
 
@@ -535,6 +537,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
             GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_3);
             Log.d(TAG, "initShuffle 2");
+            gifImageView.setVisibility(View.VISIBLE);
             gifImageView.setImageDrawable(gifDrawable);
             Log.d(TAG, "initShuffle 3");
 
@@ -735,11 +738,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doRestart() {
         Log.d(TAG, "doRestart");
-        // TODO :
-//        Toast.makeText(getApplicationContext(), "RE 게임", Toast.LENGTH_SHORT).show();
 
-//        resetCard();
-        doSendMessage(API_SHUFFLE);
+        if (isHost && enableRegame) {
+            doSendMessage(API_SHUFFLE);
+        } else {
+            Log.d(TAG, "this is client");
+        }
     }
 
     private void doDie() {
@@ -749,9 +753,16 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doResult() {
         Log.d(TAG, "doResult");
-//        Toast.makeText(getApplicationContext(), "게임 결과 연결해주세요", Toast.LENGTH_SHORT).show();
-//        Game_Result();  // 만땅
-        doSendMessage(API_GAME_RESULT);
+
+        if (showResult) {
+            Log.d(TAG, "showResult is true");
+            Game_Result();
+        } else if (isHost && enableResult) {
+            Log.d(TAG, "this is host & enableResult is true");
+            doSendMessage(API_GAME_RESULT);
+        } else {
+            Log.d(TAG, "this is client & showResult is false");
+        }
     }
 
     private void doJokbo() {
@@ -869,7 +880,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     // 만땅 - 게임 결과 창
     // 결과보기 눌렀을 경우 Event
-    @OnClick(R.id.play_image_result)
+//    @OnClick(R.id.play_image_result)
     public void Game_Result() {
         Log.d(TAG, "Click Game_Result");
 
@@ -1085,6 +1096,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     ApiBody apiBody = ((ApiBody) result);
                     switch (apiBody.getNo()) {
                         case API_SHUFFLE_BR:
+                            initShuffle();
+
                             resetCard();
 
                             card1 = calcRandomNumber(apiBody.getCardNo1());
@@ -1102,10 +1115,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_GAME_RESULT_BR:
                             Game_Result();
+                            showResult = true;
+                            enableRegame = true;
                             break;
 
                         case API_GAME_RESULT_AVAILABLE:
-                            // TODO : 방장이면 게임 결과 버튼 활성화
+                            if (isHost) {
+                                image_result.setImageResource(R.drawable.button_play_result);
+                                enableResult = true;
+                            }
                             break;
                     }
 
