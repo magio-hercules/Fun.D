@@ -157,7 +157,7 @@ public class ConnectionManager {
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
                         .andThen(getUserStatus())
                         .concatMap(ConnectionManager::setRoomStatus)
-                        .concatMap(result -> broadcastMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo())));
+                        .concatMap(result -> sendMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo()), apiBody.getSeatNo()));
 
             case API_CARD_OPEN:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
@@ -168,7 +168,7 @@ public class ConnectionManager {
             case API_GAME_RESULT:
                 return figureOut((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
                         .andThen(setUserRank())
-                        .andThen(Observable.just(new ApiBody(API_GAME_RESULT_BR, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))));
+                        .andThen(broadcastMessage(new ApiBody(API_GAME_RESULT_BR, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))));
 
 
             case API_OUT:
@@ -187,11 +187,11 @@ public class ConnectionManager {
                 for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
                     Log.d("lsc", "user " + user);
                 }
-                try {
-                    serverSocket.close();
-                } catch (IOException e) {
-                    Log.d("lsc", "api_test e " + e);
-                }
+//                try {
+//                    serverSocket.close();
+//                } catch (IOException e) {
+//                    Log.d("lsc", "api_test e " + e);
+//                }
 
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
 

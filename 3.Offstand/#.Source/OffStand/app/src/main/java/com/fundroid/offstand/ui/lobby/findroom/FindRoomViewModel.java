@@ -36,7 +36,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                     Log.d("lsc","FindRoomViewModel result " + result);
                     switch (((ApiBody) result).getNo()) {
                         case API_ROOM_INFO:
-                            BehaviorSubjectBus.getInstance().sendEvent(((ApiBody)result).getUsers());
+                            BehaviorSubjectBus.getInstance().sendEvent(result);
                             getNavigator().goToRoomActivity();
                             break;
                     }
