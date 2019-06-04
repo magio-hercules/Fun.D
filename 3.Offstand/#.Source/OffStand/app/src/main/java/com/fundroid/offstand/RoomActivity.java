@@ -26,7 +26,7 @@ import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.model.UserWrapper;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
-import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
+import com.fundroid.offstand.utils.rx.BehaviorSubjectBus;
 import com.google.gson.Gson;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,7 +46,6 @@ import io.reactivex.schedulers.Schedulers;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
@@ -967,7 +966,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     private void initRX() {
         Log.d(TAG, "initRX");
 
-        clientReplaySubjectBusDisposable = ReplaySubjectBus.getInstance().getEvents(ArrayList.class)
+        clientReplaySubjectBusDisposable = BehaviorSubjectBus.getInstance().getEvents(ArrayList.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe(userList -> {

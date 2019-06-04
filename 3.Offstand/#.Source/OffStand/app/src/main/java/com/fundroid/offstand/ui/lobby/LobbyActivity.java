@@ -93,7 +93,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lsc", "LobbyActivity onCreate ");
+        Log.v("lsc", "LobbyActivity onCreate ");
         lobbyViewModel.setNavigator(this);
         activityLobbyBinding = getViewDataBinding();
         initViews();
@@ -133,20 +133,21 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("lsc", "LobbyActivity onStart");
+        Log.v("lsc", "LobbyActivity onStart");
         registerReceiver(wifiDirectReceiver, intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("lsc", "LobbyActivity onStop");
+        Log.v("lsc", "LobbyActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.v("lsc", "LobbyActivity onDestroy");
         disposable.dispose();
     }
 

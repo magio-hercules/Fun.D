@@ -4,12 +4,8 @@ import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.media.MediaPlayer;
-import android.net.wifi.p2p.WifiP2pManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -24,25 +20,20 @@ import android.widget.Toast;
 import android.annotation.SuppressLint;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
-import com.fundroid.offstand.ui.lobby.main.MainFragment;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
-import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
 import com.google.gson.Gson;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,24 +45,15 @@ import pl.droidsonroids.gif.AnimationListener;
 import pl.droidsonroids.gif.GifDrawable;
 import pl.droidsonroids.gif.GifImageView;
 
-import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM_TO_OTHER;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
