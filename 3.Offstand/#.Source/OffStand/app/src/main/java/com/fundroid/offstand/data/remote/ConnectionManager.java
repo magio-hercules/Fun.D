@@ -98,7 +98,7 @@ public class ConnectionManager {
             try {
                 socket = serverSocket.accept();
             } catch (IOException e) {
-                Log.e("lsc","socketAcceptLoop e " + e.getMessage());
+                Log.e("lsc", "socketAcceptLoop e " + e.getMessage());
             }
             ServerThread serverThread = new ServerThread(socket);
             serverThreads[serverCount] = serverThread;
@@ -120,10 +120,12 @@ public class ConnectionManager {
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
-                return setUserSeatNo(apiBody)
-                        .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, swapToFirst((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()), seatNo)), seatNo),
-                                broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), seatNo),
-                                (firstOne, secondOne) -> firstOne));
+                return
+                        setUserSeatNo(apiBody)
+                                .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, swapToFirst((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()), seatNo)), seatNo),
+                                        broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), seatNo), (firstOne, secondOne) -> firstOne))
+                                .concatMap(firstOne -> getUserStatus())
+                                .concatMap(ConnectionManager::setRoomStatus);
 
             case API_READY:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
@@ -139,7 +141,9 @@ public class ConnectionManager {
 
             case API_BAN:
                 return broadcastMessageExceptOne(new ApiBody(API_BAN_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
-                        .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
+                        .concatMap(result -> closeServerSocket(apiBody.getSeatNo()))
+                        .concatMap(result -> getUserStatus())
+                        .concatMap(ConnectionManager::setRoomStatus);
 
             case API_MOVE:
                 return setUserSeatNo(apiBody.getSeatNo(), apiBody.getSeatNo2())
@@ -172,10 +176,10 @@ public class ConnectionManager {
                 if (apiBody.getSeatNo().equals(serverThreads[0].getUser().getSeat())) {
                     return closeAllServerSocket();
                 } else {
-                    return getUserStatus()
-                            .concatMap(ConnectionManager::setRoomStatus)
-                            .concatMap(result -> broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo()))
-                            .concatMap(result -> closeServerSocket(apiBody.getSeatNo()));
+                    return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
+                            .concatMap(result -> closeServerSocket(apiBody.getSeatNo()))
+                            .concatMap(result -> getUserStatus())
+                            .concatMap(ConnectionManager::setRoomStatus);
                 }
 
 
@@ -226,6 +230,7 @@ public class ConnectionManager {
                     }
                 }
             }
+            subscriber.onNext(new ApiBody(RESULT_API_NOT_DEFINE));
         });
     }
 
@@ -382,7 +387,7 @@ public class ConnectionManager {
     public static Completable setUserRank() {
         return Completable.create(subscriber -> {
             Collections.sort(Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()));
-            for(User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
+            for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
                 Log.d("lsc", "setUserRank " + user);
             }
             subscriber.onComplete();
@@ -397,7 +402,7 @@ public class ConnectionManager {
         Collections.shuffle(cards);
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
-                Log.d("lsc","shuffle " + cards.get(i * 2) + ", " + cards.get((i * 2) + 1));
+                Log.d("lsc", "shuffle " + cards.get(i * 2) + ", " + cards.get((i * 2) + 1));
                 if (cards.get(i * 2) < cards.get((i * 2) + 1)) {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
                 } else {

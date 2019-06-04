@@ -18,14 +18,14 @@ public final class CommonUtils {
         // This utility class is not publicly instantiable
     }
 
-    public static String getVisibleFragmentTag(FragmentActivity context) {
+    public static String getVisibleFragmentTag(FragmentActivity context, String tagForExceptFragment) {
         for (Fragment fragment : context.getSupportFragmentManager().getFragments())
-            if (!fragment.getTag().equals(MainFragment.TAG)) {
+            if (!fragment.getTag().equals(tagForExceptFragment)) {
                 if (fragment.isVisible()) {
                     return fragment.getTag();
                 }
             }
-        return MainFragment.TAG;
+        return tagForExceptFragment;
     }
 
     public static ProgressDialog showLoadingDialog(Context context) {
