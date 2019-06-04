@@ -181,13 +181,13 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void onBackPressed() {
-        Log.d("lsc", "LobbyActivity onBackPressed " + getVisibleFragmentTag(this));
-        if(getVisibleFragmentTag(this).equals(MainFragment.TAG)) {
+        Log.d("lsc", "LobbyActivity onBackPressed " + getVisibleFragmentTag(this, MainFragment.TAG));
+        if (getVisibleFragmentTag(this, MainFragment.TAG).equals(MainFragment.TAG)) {
             Log.d("lsc", "LobbyActivity onBackPressed 1");
             super.onBackPressed();
         } else {
             Log.d("lsc", "LobbyActivity onBackPressed 2");
-            onFragmentDetached(getVisibleFragmentTag(this));
+            onFragmentDetached(getVisibleFragmentTag(this, MainFragment.TAG));
         }
     }
 
