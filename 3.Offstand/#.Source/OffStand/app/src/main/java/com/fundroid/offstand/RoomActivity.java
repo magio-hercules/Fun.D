@@ -966,7 +966,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
 
         ClientPublishSubjectBus.getInstance().getEvents(String.class)
-                .map(json -> new Gson().fromJson((String) json, ApiBody.class))
+                .map(json -> {
+                    Log.d(TAG, "ClientPublishSubjectBus event " + json);
+                    return new Gson().fromJson((String) json, ApiBody.class);
+                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
@@ -1013,7 +1016,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_OUT_BR:
                             //Todo : API_OUT_BR은 본인이 나갔을 때는 받지 않고 다른 User가 나갔을 때 받음.
-                            doBan(apiBody.getSeatNo());
 //                            intent = new Intent(RoomActivity.this, LobbyActivity.class);
 //                            startActivity(intent);
 //                            finish();
@@ -1028,9 +1030,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                             break;
 
                         case API_OUT_SELF:
-                            //본인이 나갔을 때
-                            LobbyActivity.start(this);
-                            finish();
+                            Log.e("lsc","API_OUT_SELF");
                             break;
                     }
 
