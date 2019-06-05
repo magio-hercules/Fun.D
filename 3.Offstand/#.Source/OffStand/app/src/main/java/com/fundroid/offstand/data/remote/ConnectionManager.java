@@ -9,7 +9,7 @@ import androidx.core.util.Pair;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
-import com.fundroid.offstand.data.model.Room;
+import com.fundroid.offstand.data.model.Card;
 import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 
@@ -60,7 +60,7 @@ public class ConnectionManager {
 
     public enum EnumStatus {
 
-        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3);
+        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3), REGAME(4);
 
         private int enumStatus;
 
@@ -124,26 +124,26 @@ public class ConnectionManager {
                         setUserSeatNo(apiBody)
                                 .flatMap(seatNo -> Observable.zip(sendMessage(new ApiBody(API_ROOM_INFO, swapToFirst((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()), seatNo)), seatNo),
                                         broadcastMessageExceptOne(new ApiBody(API_ENTER_ROOM_TO_OTHER, apiBody.getUser()), seatNo), (firstOne, secondOne) -> firstOne))
-                                .concatMap(firstOne -> getUserStatus())
-                                .concatMap(ConnectionManager::setRoomStatus);
+                                .concatMap(firstOne -> setRoomStatus())
+                                .concatMap(ConnectionManager::sendToHost);
 
             case API_READY:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
-                        .andThen(getUserStatus())
-                        .concatMap(ConnectionManager::setRoomStatus)
+                        .andThen(setRoomStatus())
+                        .concatMap(ConnectionManager::sendToHost)
                         .concatMap(result -> broadcastMessage(new ApiBody(API_READY_BR, apiBody.getSeatNo())));
 
             case API_READY_CANCEL:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
-                        .andThen(getUserStatus())
-                        .concatMap(ConnectionManager::setRoomStatus)
+                        .andThen(setRoomStatus())
+                        .concatMap(ConnectionManager::sendToHost)
                         .concatMap(result -> broadcastMessage(new ApiBody(API_READY_CANCEL_BR, apiBody.getSeatNo())));
 
             case API_BAN:
                 return broadcastMessageExceptOne(new ApiBody(API_BAN_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
                         .concatMap(result -> closeServerSocket(apiBody.getSeatNo()))
-                        .concatMap(result -> getUserStatus())
-                        .concatMap(ConnectionManager::setRoomStatus);
+                        .concatMap(result -> setRoomStatus())
+                        .concatMap(ConnectionManager::sendToHost);
 
             case API_MOVE:
                 return setUserSeatNo(apiBody.getSeatNo(), apiBody.getSeatNo2())
@@ -151,24 +151,26 @@ public class ConnectionManager {
 
             case API_SHUFFLE:
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
+//                        .filter(pair -> pair.second.getStatus() == CARDOPEN.getEnumStatus())  //Todo : REGAME일 경우 CARDOPEN 필터링
                         .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
 
             case API_DIE:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
-                        .andThen(getUserStatus())
-                        .concatMap(ConnectionManager::setRoomStatus)
+                        .andThen(setRoomStatus())
+                        .concatMap(ConnectionManager::sendToHost)
                         .concatMap(result -> sendMessage(new ApiBody(API_DIE_BR, apiBody.getSeatNo()), apiBody.getSeatNo()));
 
             case API_CARD_OPEN:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
-                        .andThen(getUserStatus())
-                        .concatMap(ConnectionManager::setRoomStatus)
+                        .andThen(setRoomStatus())
+                        .concatMap(ConnectionManager::sendToHost)
                         .concatMap(result -> Observable.just(new ApiBody(RESULT_API_NOT_DEFINE)));
 
             case API_GAME_RESULT:
                 return figureOut((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
                         .andThen(setUserRank())
-                        .andThen(broadcastMessage(new ApiBody(API_GAME_RESULT_BR, (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))));
+
+                        .flatMapObservable(users -> broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users)));
 
 
             case API_OUT:
@@ -178,8 +180,8 @@ public class ConnectionManager {
                 } else {
                     return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
                             .concatMap(result -> closeServerSocket(apiBody.getSeatNo()))
-                            .concatMap(result -> getUserStatus())
-                            .concatMap(ConnectionManager::setRoomStatus);
+                            .concatMap(result -> setRoomStatus())
+                            .concatMap(ConnectionManager::sendToHost);
                 }
 
 
@@ -187,12 +189,6 @@ public class ConnectionManager {
                 for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
                     Log.d("lsc", "user " + user);
                 }
-//                try {
-//                    serverSocket.close();
-//                } catch (IOException e) {
-//                    Log.d("lsc", "api_test e " + e);
-//                }
-
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
 
             default:
@@ -282,10 +278,6 @@ public class ConnectionManager {
                 }
             }
         }
-//        Log.d("lsc", "ConnectionManager after size " + serverThreads.length);
-//        for (int i = 0; i < serverThreads.length; i++) {
-//            Log.d("lsc", "ConnectionManager after setUserSeatNo " + serverThreads[i] + ", i : " + i);
-//        }
         return Completable.complete();
     }
 
@@ -315,7 +307,7 @@ public class ConnectionManager {
         return Completable.complete();
     }
 
-    private static Observable<EnumStatus> getUserStatus() {
+    private static Observable<EnumStatus> setRoomStatus() {
         return Observable.create(subscriber -> {
             // 방장 제외한 나머지 User 리스트
             // 모두 ready 면 방장에게 셔플 가능 api 전송
@@ -357,8 +349,7 @@ public class ConnectionManager {
         });
     }
 
-    private static Observable<ApiBody> setRoomStatus(EnumStatus roomStatus) {
-        //Todo : Wifi Direct 연동 후, Room DTO 랑 연결하자 RoomStatus
+    private static Observable<ApiBody> sendToHost(EnumStatus roomStatus) {
         switch (roomStatus) {
             case SHUFFLE_AVAILABLE:
                 return sendMessage(new ApiBody(API_SHUFFLE_AVAILABLE), serverThreads[0]);
@@ -376,7 +367,7 @@ public class ConnectionManager {
 
     public static Completable figureOut(ArrayList<User> users) {
         return Completable.create(subscriber -> {
-            for (User user : Stream.of(users).filter(user -> user.getStatus() == CARDOPEN.getEnumStatus()).toList()) {
+            for (User user : Stream.of(users).filter(user -> user.getStatus() == CARDOPEN.getEnumStatus() || user.getStatus() == DIE.getEnumStatus()).toList()) {
                 setCardValue(user);
                 Log.d("lsc", "figureOut " + user);
             }
@@ -384,17 +375,28 @@ public class ConnectionManager {
         });
     }
 
-    public static Completable setUserRank() {
+    private static Single<ArrayList<User>> setUserRank() {
+        return Single.create(subscriber -> {
+            ArrayList<User> targetUsers = (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList());
+            Collections.sort(targetUsers);
+            Collections.reverse(targetUsers);
+            subscriber.onSuccess(targetUsers);
+        });
+    }
+
+    private static Completable checkRematch(ArrayList<User> users) {
         return Completable.create(subscriber -> {
-            Collections.sort(Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()));
-            for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
-                Log.d("lsc", "setUserRank before " + user);
-            }
-            Collections.reverse(Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()));
-            for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
-                Log.d("lsc", "setUserRank after " + user);
+            //승리자 LEVEL이 3 또는 7일 경우
+            if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
+                roomStatus = EnumStatus.REGAME;
             }
             subscriber.onComplete();
+        });
+    }
+
+    private static Single<ArrayList<User>> setSumRebalance() {
+        return Single.create(subscriber -> {
+
         });
     }
 

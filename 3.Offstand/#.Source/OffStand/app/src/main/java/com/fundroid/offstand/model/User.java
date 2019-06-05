@@ -212,7 +212,6 @@ public class User implements Comparable<User> {
 
     @Override
     public int compareTo(User user) {
-        Log.d("lsc", "user " + user + ", cardSum "  + cardSum);
         return cardSum.compareTo(user.getCardSum());
     }
 
