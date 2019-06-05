@@ -104,7 +104,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
 
         final int[] character = {0, R.drawable.me_character_1, R.drawable.me_character_2,
-                R.drawable.me_character_5, R.drawable.me_character_6, R.drawable.me_character_8,
+                R.drawable.me_character_3, R.drawable.me_character_4,
+                R.drawable.me_character_5, R.drawable.me_character_6,
+                R.drawable.me_character_7, R.drawable.me_character_8,
                 R.drawable.me_character_9, R.drawable.me_character_10};
 
 
