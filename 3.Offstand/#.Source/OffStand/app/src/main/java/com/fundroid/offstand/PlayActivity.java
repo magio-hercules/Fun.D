@@ -1,11 +1,13 @@
 package com.fundroid.offstand;
 
-import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.media.AudioAttributes;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -15,7 +17,6 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
 
@@ -23,12 +24,14 @@ import java.io.IOException;
 import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.Group;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
@@ -51,13 +54,22 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
     static final String TAG = "[PLAY]";
+
+    public static int SOUND_MAX_COUNT = 10;
+    public static int SOUND_BACKGROUND = 0;
+    public static int SOUND_LAUGH = 2;
+    public static int SOUND_THUNDER = 3;
+    public static int SOUND_LUCKY1 = 4;
+    public static int SOUND_LUCKY2 = 5;
+    public static int SOUND_LUCKY3 = 6;
+
+
+
 
     //    @BindView(R.id.play_image_card0)
     ImageView image0;
@@ -72,15 +84,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     @BindView(R.id.play_image_card_die)
     ImageView image_card_die;
-
-
-    @BindView(R.id.text_card1)
-    TextView text1;
-    @BindView(R.id.text_card2)
-    TextView text2;
-
-    @BindView(R.id.button_reset)
-    Button button_reset;
 
     @BindView(R.id.play_image_setting)
     ImageView image_setting;
@@ -128,6 +131,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean bOpenCard = false;
     private boolean bHideCard1 = false, bHideCard2 = false;
     private String card1, card2;
+
+    SoundPool soundPool;
+    int[] soundTrack;
+
 
     // TODO
     // 참여인원
@@ -188,84 +195,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         initCardImage();
 
-//        makeRandomNumber();
-
-
-        button_reset.setEnabled(false);
-
-        image1.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView1);
-        image2.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView2);
-
-        image1.setImageResource(getResourceId("drawable", "card_" + card1));
-
-        image2.setOnTouchListener(new View.OnTouchListener() {
-            private GestureDetector gestureDetector = new GestureDetector(PlayActivity.this, new GestureDetector.SimpleOnGestureListener() {
-                @Override
-                public boolean onDoubleTap(MotionEvent e) {
-                    Log.d(TAG, "onDoubleTap");
-
-                    bCheck = true;
-                    changeCard();
-
-                    return super.onDoubleTap(e);
-                }
-            });
-
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-//                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
-                gestureDetector.onTouchEvent(event);
-
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        if (button_reset.isEnabled()) {
-                            return false;
-                        }
-
-                        viewHeight = v.getHeight();
-                        Log.d(TAG, "v.getHeight() : " + viewHeight);
-                        Log.d(TAG, "v.getY() : " + v.getY());
-                        Log.d(TAG, "event.getRawY() : " + event.getRawY());
-
-                        startY = (int) event.getRawY();
-
-//                        dX = v.getX() - event.getRawX();
-                        dY = v.getY() - event.getRawY();
-                        // cancel animations
-                        xAnimation.cancel();
-                        yAnimation.cancel();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
-                        Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
-
-                        // 패가 절반이상 까진경우
-                        if (viewHeight/2 < gap) {
-                            Log.d(TAG, "패가 절반이상 까진경우");
-//                            openAnimation.start();
-                            bCheck = true;
-                        }
-
-//                        xAnimation.start();
-                        yAnimation.start();
-                        break;
-                    case MotionEvent.ACTION_MOVE:
-                        image2.animate()
-//                                .x(event.getRawX() + dX)
-                                .y(event.getRawY() + dY)
-                                .setDuration(0)
-                                .start();
-                        break;
-                    default:
-                        break;
-                }
-                return true;
-            }
-        });
+        initSound();
 
         initListener();
 
         initButton(true);
+
 
         // 만땅 - 셋팅
         result_back = (FrameLayout) findViewById(R.id.fragment_container_play_result);
@@ -307,33 +242,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 //        result_rebutton.setVisibility(View.GONE);
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
 
-    @OnClick({
-            R.id.button_reset
-//            R.id.button_shuffle,
-//            R.id.button_random,
-    })
-    public void onClickButton(View view) {
-        Log.d(TAG, "clicked 22");
-
-        switch (view.getId()) {
-            case R.id.button_reset:
-                resetCard();
-                break;
-            case R.id.button_shuffle:
-//              Intent intent = new Intent(PlayActivity.this, ShuffleActivity.class);
-//              startActivity(intent);
-                break;
-            case R.id.button_random:
-//              Intent intent = new Intent(MainActivity.this, RandomActivity.class);
-//              startActivity(intent);
-                break;
-//            case R.id.button_open:
-//                openCard();
-//                break;
+        for (int i = 0 ; i < soundTrack.length ; i++) {
+            soundTrack[i] = 0;
         }
-    }
 
+        soundPool.release();
+        soundPool = null;
+    }
 
     @OnClick({
             R.id.play_image_setting,
@@ -363,80 +283,60 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         switch (view.getId()) {
             case R.id.play_image_card3:
                 if (bHideCard2) {
-                    image2.setImageResource(getResourceId("drawable", "card_" + card1));
+                    loadImage(image2, getResourceId("drawable", "card_" + card1));
                     bHideCard2 = false;
                 } else {
-                    image2.setImageResource(R.drawable.card_back);
+                    loadImage(image2, R.drawable.card_back);
                     bHideCard2 = true;
                 }
                 break;
             case R.id.play_image_card4:
                 if (bHideCard1) {
-                    image1.setImageResource(getResourceId("drawable", "card_" + card2));
+                    loadImage(image1, getResourceId("drawable", "card_" + card2));
                     bHideCard1 = false;
                 } else {
-                    image1.setImageResource(R.drawable.card_back);
+                    loadImage(image1, R.drawable.card_back);
                     bHideCard1 = true;
                 }
                 break;
         }
     }
 
+    @OnClick({
+            R.id.play_sound_1,
+            R.id.play_sound_2,
+            R.id.play_sound_3,
+            R.id.play_sound_4,
+            R.id.play_sound_5
+    })
+    public void onClick_sound(Button view) {
+        Log.d(TAG, "onClick_sound");
 
-//    @OnTouch(R.id.ImageView02)
-//    public boolean onTouchView(View v, MotionEvent event) {
-//        switch (event.getAction()) {
-//            case MotionEvent.ACTION_DOWN:
-//                if (button_reset.isEnabled()) {
-//                    return false;
-//                }
-//
-//                viewHeight = v.getHeight();
-//                Log.d(TAG, "v.getHeight() : " + viewHeight);
-//                Log.d(TAG, "v.getY() : " + v.getY());
-//                Log.d(TAG, "event.getRawY() : " + event.getRawY());
-//
-//                startY = (int) event.getRawY();
-//
-////                        dX = v.getX() - event.getRawX();
-//                dY = v.getY() - event.getRawY();
-//                // cancel animations
-//                xAnimation.cancel();
-//                yAnimation.cancel();
-//                break;
-//            case MotionEvent.ACTION_UP:
-//                int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
-//                Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
-//
-//                // 패가 절반이상 까진경우
-//                if (viewHeight/2 < gap) {
-//                    Log.d(TAG, "패가 절반이상 까진경우");
-////                            openAnimation.start();
-//                    bCheck = true;
-//                }
-//
-////                        xAnimation.start();
-//                yAnimation.start();
-//                break;
-//            case MotionEvent.ACTION_MOVE:
-//                image2.animate()
-////                                .x(event.getRawX() + dX)
-//                        .y(event.getRawY() + dY)
-//                        .setDuration(0)
-//                        .start();
-//                break;
-//            default:
-//                break;
-//        }
-//        return true;
-//    }
+        switch (view.getId()) {
+            case R.id.play_sound_1:
+                playSound(SOUND_LAUGH);
+                break;
+            case R.id.play_sound_2:
+                playSound(SOUND_THUNDER);
+                break;
+            case R.id.play_sound_3:
+                playSound(SOUND_LUCKY1);
+                break;
+            case R.id.play_sound_4:
+                playSound(SOUND_LUCKY2);
+                break;
+            case R.id.play_sound_5:
+                playSound(SOUND_LUCKY3);
+                break;
+        }
+    }
 
-
-    public static SpringAnimation createSpringAnimation(View view,
-                                                        DynamicAnimation.ViewProperty property,
-                                                        float finalPosition,
-                                                        float stiffness,
-                                                        float dampingRatio) {
+    public static SpringAnimation createSpringAnimation(
+            View view,
+            DynamicAnimation.ViewProperty property,
+            float finalPosition,
+            float stiffness,
+            float dampingRatio) {
         SpringAnimation animation = new SpringAnimation(view, property);
         SpringForce springForce = new SpringForce(finalPosition);
         springForce.setStiffness(stiffness);
@@ -467,14 +367,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
                     Log.d(TAG, "Reset 완료");
 
-//                    makeRandomNumber();
-
-//                    image1.setImageResource(getResourceId("drawable", "card_" + card1));
-//                    image2.setImageResource(R.drawable.card_back);
-                    image1.setImageResource(getResourceId("drawable", "card_" + card1));
-                    Log.d("[PLAY]", "Reset 완료11");
-                    image2.setImageResource(R.drawable.card_back);
-                    Log.d("[PLAY]", "Reset 완료22");
+                    loadImage(image1, getResourceId("drawable", "card_" + card1));
+                    loadImage(image2, R.drawable.card_back);
                 }
             });
         }
@@ -535,8 +429,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             image_result.setVisibility(View.VISIBLE);
             image_jokbo.setVisibility(View.VISIBLE);
 
-            image_re.setImageResource(R.drawable.play_re_dis);
-            image_result.setImageResource(R.drawable.play_result_dis);
+            loadImage(image_re, R.drawable.play_re_dis);
+            loadImage(image_result, R.drawable.play_result_dis);
 
             enableRegame = false;
             enableResult = false;
@@ -559,6 +453,33 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         image4 = (ImageView) findViewById(R.id.play_image_card4);
     }
 
+    private void initSound() {
+        Log.d(TAG, "initSound");
+
+        soundTrack = new int[SOUND_MAX_COUNT];
+
+        new Handler().postDelayed(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build();
+
+                soundPool = new SoundPool.Builder().setAudioAttributes(audioAttributes).setMaxStreams(3).build();
+
+//        loadSound(SOUND_BACKGROUND, R.raw.pirate_sound_background);
+                loadSound(SOUND_LAUGH, R.raw.play_sound_laugh);
+                loadSound(SOUND_THUNDER, R.raw.play_sound_thunder);
+                loadSound(SOUND_LUCKY1, R.raw.play_sound_lucky1);
+                loadSound(SOUND_LUCKY2, R.raw.play_sound_lucky2);
+                loadSound(SOUND_LUCKY3, R.raw.play_sound_lucky3);
+            }
+        }, 100);
+    }
+
     private void initShuffle() {
         Log.d(TAG, "initShuffle");
 
@@ -578,6 +499,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         try {
             Log.d(TAG, "initShuffle 1");
 
+            Group groupSound = (Group) findViewById(R.id.room_group_sound);
+            groupSound.setVisibility(View.GONE);
+            image_open.setVisibility(View.GONE);
+
             GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
             GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_3);
             Log.d(TAG, "initShuffle 2");
@@ -589,6 +514,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 @Override
                 public void onAnimationCompleted(int loopNumber) {
                     Log.d(TAG, "Shuffle onAnimationCompleted");
+
+                    image_open.setVisibility(View.VISIBLE);
+//                    Group groupSound = (Group) findViewById(R.id.room_group_sound);
+                    groupSound.setVisibility(View.VISIBLE);
+
                     gifImageView.setVisibility(View.GONE);
                     gifDrawable.recycle();
                 }
@@ -617,6 +547,72 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     private void initListener() {
+        image1.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView1);
+        image2.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListenerView2);
+
+        loadImage(image1, getResourceId("drawable", "card_" + card1));
+
+        image2.setOnTouchListener(new View.OnTouchListener() {
+            private GestureDetector gestureDetector = new GestureDetector(PlayActivity.this, new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onDoubleTap(MotionEvent e) {
+                    Log.d(TAG, "onDoubleTap");
+
+                    bCheck = true;
+                    changeCard();
+
+                    return super.onDoubleTap(e);
+                }
+            });
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+//                Log.d(TAG, "Raw event: " + event.getAction() + ", (" + event.getRawX() + ", " + event.getRawY() + ")");
+                gestureDetector.onTouchEvent(event);
+
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        viewHeight = v.getHeight();
+                        Log.d(TAG, "v.getHeight() : " + viewHeight);
+                        Log.d(TAG, "v.getY() : " + v.getY());
+                        Log.d(TAG, "event.getRawY() : " + event.getRawY());
+
+                        startY = (int) event.getRawY();
+
+//                        dX = v.getX() - event.getRawX();
+                        dY = v.getY() - event.getRawY();
+                        // cancel animations
+                        xAnimation.cancel();
+                        yAnimation.cancel();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
+                        Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
+
+                        // 패가 절반이상 까진경우
+                        if (viewHeight/2 < gap) {
+                            Log.d(TAG, "패가 절반이상 까진경우");
+//                            openAnimation.start();
+                            bCheck = true;
+                        }
+
+//                        xAnimation.start();
+                        yAnimation.start();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        image2.animate()
+//                                .x(event.getRawX() + dX)
+                                .y(event.getRawY() + dY)
+                                .setDuration(0)
+                                .start();
+                        break;
+                    default:
+                        break;
+                }
+                return true;
+            }
+        });
+
         image_setting.setOnTouchListener(this);
         image_exit.setOnTouchListener(this);
         image_open.setOnTouchListener(this);
@@ -635,6 +631,26 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
 
+    private void loadSound(int index, int soundId) {
+        Log.d(TAG, "loadSound (index: " + index + ", soundId: " + soundId + ")");
+
+        soundTrack[index] = soundPool.load(PlayActivity.this, soundId, 1);
+    }
+
+    private void playSound(int index) {
+        playSound(index, 1f);
+    }
+
+    private void playSound(int index, float volume) {
+        Log.d(TAG, "playSound (index: " + index + ", volumn: " + volume + ")");
+
+        soundPool.play(soundTrack[index], volume, volume, 0, 0, 1f);
+    }
+
+    private void stopSound(int index) {
+        soundPool.stop(index);
+    }
+
     private int getResourceId(String type, String name) {
         // use case
 //        // image from res/drawable
@@ -649,21 +665,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void changeCard() {
         if (tempIndex == 1) {
-            text1.setText("첫번째 패 : " + card1);
-//            Toast.makeText(this, "3光", Toast.LENGTH_SHORT).show();
-//            image1.setImageResource(R.drawable.card_8_1);
-//            image2.setImageResource(R.drawable.card_3_1);
-            image1.setImageResource(getResourceId("drawable", "card_" + card2));
-            image2.setImageResource(getResourceId("drawable", "card_" + card1));
+            loadImage(image1, getResourceId("drawable", "card_" + card2));
+            loadImage(image2, getResourceId("drawable", "card_" + card1));
 
             tempIndex++;
             bCheck = false;
         } else if (tempIndex == 2) {
-            text2.setText("두번째 패 : " + card2);
             tempIndex = 1;
             bCheck = false;
 
-            button_reset.setEnabled(true);
             // move
             ani_view2_x.start();
             ani_view2_y.start();
@@ -689,20 +699,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         tempIndex = 1;
         bCheck = false;
-        image1.setImageResource(R.drawable.card_back);
-        image2.setImageResource(R.drawable.card_back);
-
-        image3.setImageResource(0);
-        image4.setImageResource(0);
+        loadImage(image1, R.drawable.card_back);
+        loadImage(image2, R.drawable.card_back);
+        loadImage(image3, 0);
+        loadImage(image4, 0);
 
         image3.setVisibility(View.INVISIBLE);
         image4.setVisibility(View.INVISIBLE);
         image_card_die.setVisibility(View.GONE);
-
-        text1.setText("첫번째 패 : ");
-        text2.setText("두번째 패 : ");
-
-        button_reset.setEnabled(false);
 
         ret_view2_x.start();
         ret_view2_y.start();
@@ -789,7 +793,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         if (isHost && enableRegame) {
             doSendMessage(API_SHUFFLE);
         } else {
-            Toast.makeText(getApplicationContext(), "게임결과 확인 후 실행 가능", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "게임결과 확인 후 RE게임 가능", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "this is client || enableRegame is false");
         }
     }
@@ -822,9 +826,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         View.DragShadowBuilder mShadow = new View.DragShadowBuilder(v);
-        ClipData.Item item = new ClipData.Item(v.getTag().toString());
+//        ClipData.Item item = new ClipData.Item(v.getTag().toString());
         String[] mimeTypes = {ClipDescription.MIMETYPE_TEXT_PLAIN};
-        ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
+//        ClipData data = new ClipData(v.getTag().toString(), mimeTypes, item);
 
         int eventPadTouch = event.getAction();
 
@@ -889,7 +893,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     public boolean onDrag(View v, DragEvent event) {
         ImageView target = (ImageView) v;
-        String targetTag = target.getTag().toString();
+//        String targetTag = target.getTag().toString();
 
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
@@ -899,18 +903,23 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 return true;
 
             case DragEvent.ACTION_DRAG_ENTERED:
-                Log.d(TAG, "ACTION_DRAG_ENTERED : " + targetTag);
+//                Log.d(TAG, "ACTION_DRAG_ENTERED : " + targetTag);
                 return true;
 
             case DragEvent.ACTION_DRAG_EXITED:
-                Log.d(TAG, "ACTION_DRAG_EXITED : " + targetTag);
+//                Log.d(TAG, "ACTION_DRAG_EXITED : " + targetTag);
                 return true;
 
             case DragEvent.ACTION_DRAG_ENDED:
-                Log.d(TAG, "ACTION_DRAG_ENDED : " + targetTag);
+//                Log.d(TAG, "ACTION_DRAG_ENDED : " + targetTag);
                 return true;
         }
         return true;
+    }
+
+    private void loadImage(ImageView view, int resId) {
+        Log.d(TAG, "loadImage (resId: " + resId + ")");
+        Glide.with(this).load(resId).into(view);
     }
 
     public void Game_Reslut_Close() {
@@ -1056,48 +1065,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
     // 만땅 end
 
-    @OnClick({R.id.play_test_game_result, R.id.play_test_die, R.id.play_test_server, R.id.play_test_card_open, R.id.play_test_out})
-    public void test(View v) {
-        int testApi = -1;
-        int seatNo = -1;
-        switch (v.getId()) {
-            case R.id.play_test_game_result:
-                testApi = API_GAME_RESULT;
-                break;
-
-            case R.id.play_test_card_open:
-                testApi = API_CARD_OPEN;
-                seatNo = seatNum;
-                break;
-
-            case R.id.play_test_die:
-                testApi = API_DIE;
-                seatNo = seatNum;
-                break;
-
-            case R.id.play_test_server:
-                testApi = API_TEST;
-                break;
-
-            case R.id.play_test_out:
-                testApi = API_OUT;
-                seatNo = seatNum;
-                break;
-        }
-        if (seatNo == -1) {
-            ConnectionManager.sendMessage(new ApiBody(testApi))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
-        } else {
-            ConnectionManager.sendMessage(new ApiBody(testApi, seatNo))
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe();
-        }
-
-    }
-
 
     private void doSendMessage(int apiNo) {
 //        Log.d(TAG, "doSendMessage (apiNo: " + apiNo + ", seatNo1: " + seatNo1 + ", seatNo2: " + seatNo2 + ")");
@@ -1145,7 +1112,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     switch (apiBody.getNo()) {
                         case API_SHUFFLE_BR:
                             initShuffle();
-
                             resetCard();
 
                             card1 = calcRandomNumber(apiBody.getCardNo1());
@@ -1154,29 +1120,28 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                             Log.d(TAG, "Card2 : " + card2);
                             break;
 
-
                         case API_DIE_BR:
-                            image1.setImageResource(R.drawable.card_die);
-                            image2.setImageResource(R.drawable.card_die);
+                            loadImage(image1, R.drawable.card_die);
+                            loadImage(image2, R.drawable.card_die);
 
-                            image3.setVisibility(View.INVISIBLE);
-                            image4.setVisibility(View.INVISIBLE);
                             image_card_die.setVisibility(View.VISIBLE);
 
                             bOpenCard = false;
                             break;
 
                         case API_GAME_RESULT_BR:
+                            if (isHost) {
+                                loadImage(image_re, R.drawable.button_play_re);
+                                enableRegame = true;
+                            }
+
                             Game_Result();
                             showResult = true;
-
-                            image_re.setImageResource(R.drawable.button_play_re);
-                            enableRegame = true;
                             break;
 
                         case API_GAME_RESULT_AVAILABLE:
                             if (isHost) {
-                                image_result.setImageResource(R.drawable.button_play_result);
+                                loadImage(image_result, R.drawable.button_play_result);
                                 enableResult = true;
                             }
                             break;

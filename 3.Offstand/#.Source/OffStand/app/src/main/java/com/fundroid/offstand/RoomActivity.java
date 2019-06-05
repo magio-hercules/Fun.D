@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
@@ -591,6 +592,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         image_start.setVisibility(View.INVISIBLE);
         image_ready.setVisibility(View.VISIBLE);
         image_ban.setImageResource(R.drawable.room_ban_dis);
+//        loadImage(image_ban, R.drawable.room_ban_dis);
     }
 
     // host은 본인 정보만 초기화
@@ -624,7 +626,6 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         // for host
         image_start.setVisibility(View.VISIBLE);
         image_ready.setVisibility(View.INVISIBLE);
-//        image_ban.setImageResource(R.drawable.room_ban_dis);
     }
 
     private void addUser(User user) {
@@ -680,20 +681,26 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         if (avatarId != 0) {
             imageView.setVisibility(View.VISIBLE);
             imageView.setImageResource(getResourceId("drawable", "avatar_" + avatarId));
+//            loadImage(imageView, getResourceId("drawable", "avatar_" + avatarId));
 
             // 방장인 경우 방장표시, client이면 ready인지 판단하여 표시
             if (user.isHost()) {
                 tagView.setVisibility(View.VISIBLE);
                 tagView.setImageResource(getResourceId("drawable", "tag_host"));
+//                loadImage(tagView, getResourceId("drawable", "tag_host"));
             } else if (user.getStatus() == 1) {
                 tagView.setVisibility(View.VISIBLE);
                 tagView.setImageResource(getResourceId("drawable", "tag_ready"));
+//                loadImage(tagView, getResourceId("drawable", "tag_ready"));
             } else if (user.getStatus() == 0) {
                 tagView.setVisibility(View.INVISIBLE);
                 tagView.setImageResource(getResourceId("drawable", "tag_ready"));
+//                loadImage(tagView, getResourceId("drawable", "tag_ready"));
             }
         } else {
             imageView.setImageResource(0);
+//            loadImage(imageView, 0);
+
             tagView.setVisibility(View.INVISIBLE);
         }
 
@@ -942,6 +949,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 }, onError -> {
                     onError.printStackTrace();
                 });
+    }
+
+    private void loadImage(ImageView view, int resId) {
+        Log.d(TAG, "loadImage (resId: " + resId + ")");
+        Glide.with(this).load(resId).into(view);
     }
 
     public static void start(Context context) {
