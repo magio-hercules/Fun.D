@@ -119,10 +119,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean bCheck = false;
 
     private boolean isHost = false;
+    private int seatNum = -1;
+
     private boolean enableRegame = false;
     private boolean enableResult = false;
     private boolean showResult = false;
-    private int seatNum = -1;
+
+    private boolean bOpenCard = false;
+    private boolean bHideCard1 = false, bHideCard2 = false;
     private String card1, card2;
 
     // TODO
@@ -345,6 +349,39 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         view.setSelected(true);
     }
 
+    @OnClick({
+            R.id.play_image_card3,
+            R.id.play_image_card4
+    })
+    public void onClick_hide_card(ImageView view) {
+        Log.d(TAG, "onClick_hide_card");
+
+        if (!bOpenCard) {
+            return;
+        }
+
+        switch (view.getId()) {
+            case R.id.play_image_card3:
+                if (bHideCard2) {
+                    image2.setImageResource(getResourceId("drawable", "card_" + card1));
+                    bHideCard2 = false;
+                } else {
+                    image2.setImageResource(R.drawable.card_back);
+                    bHideCard2 = true;
+                }
+                break;
+            case R.id.play_image_card4:
+                if (bHideCard1) {
+                    image1.setImageResource(getResourceId("drawable", "card_" + card2));
+                    bHideCard1 = false;
+                } else {
+                    image1.setImageResource(R.drawable.card_back);
+                    bHideCard1 = true;
+                }
+                break;
+        }
+    }
+
 
 //    @OnTouch(R.id.ImageView02)
 //    public boolean onTouchView(View v, MotionEvent event) {
@@ -504,6 +541,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             enableRegame = false;
             enableResult = false;
             showResult = false;
+
+            bOpenCard = true;
+            bHideCard1 = false;
+            bHideCard2 = false;
+
+            image3.setVisibility(View.VISIBLE);
+            image4.setVisibility(View.VISIBLE);
         }
     }
 
@@ -648,10 +692,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         image1.setImageResource(R.drawable.card_back);
         image2.setImageResource(R.drawable.card_back);
 
-        image_card_die.setVisibility(View.GONE);
-
         image3.setImageResource(0);
         image4.setImageResource(0);
+
+        image3.setVisibility(View.INVISIBLE);
+        image4.setVisibility(View.INVISIBLE);
+        image_card_die.setVisibility(View.GONE);
+
         text1.setText("첫번째 패 : ");
         text2.setText("두번째 패 : ");
 
@@ -742,7 +789,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         if (isHost && enableRegame) {
             doSendMessage(API_SHUFFLE);
         } else {
-            Log.d(TAG, "this is client");
+            Toast.makeText(getApplicationContext(), "게임결과 확인 후 실행 가능", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "this is client || enableRegame is false");
         }
     }
 
@@ -1110,12 +1158,19 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                         case API_DIE_BR:
                             image1.setImageResource(R.drawable.card_die);
                             image2.setImageResource(R.drawable.card_die);
+
+                            image3.setVisibility(View.INVISIBLE);
+                            image4.setVisibility(View.INVISIBLE);
                             image_card_die.setVisibility(View.VISIBLE);
+
+                            bOpenCard = false;
                             break;
 
                         case API_GAME_RESULT_BR:
                             Game_Result();
                             showResult = true;
+
+                            image_re.setImageResource(R.drawable.button_play_re);
                             enableRegame = true;
                             break;
 
