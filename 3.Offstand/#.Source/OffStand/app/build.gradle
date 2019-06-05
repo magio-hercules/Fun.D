@@ -53,6 +53,7 @@ dependencies {
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0-beta01'
     implementation 'com.jakewharton:butterknife:10.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
     Map<String, String> dependencies = rootProject.ext.dependencies
 
@@ -92,4 +93,7 @@ dependencies {
     //json
     implementation dependencies.gson
 
+    // glide
+    implementation dependencies.glide
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 }
