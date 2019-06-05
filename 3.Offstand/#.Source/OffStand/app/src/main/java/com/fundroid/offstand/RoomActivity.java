@@ -955,7 +955,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
     private void initRX() {
         Log.d(TAG, "initRX");
 
-        clientBehaviorSubjectBusDisposable = BehaviorSubjectBus.getInstance().getEvents(ArrayList.class)
+        clientBehaviorSubjectBusDisposable = BehaviorSubjectBus.getInstance().getEvents(ApiBody.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.computation())
                 .subscribe(result -> {

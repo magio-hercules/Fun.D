@@ -388,7 +388,11 @@ public class ConnectionManager {
         return Completable.create(subscriber -> {
             Collections.sort(Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()));
             for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
-                Log.d("lsc", "setUserRank " + user);
+                Log.d("lsc", "setUserRank before " + user);
+            }
+            Collections.reverse(Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()));
+            for (User user : Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList())) {
+                Log.d("lsc", "setUserRank after " + user);
             }
             subscriber.onComplete();
         });
