@@ -30,7 +30,7 @@ public class SplashActivity extends AppCompatActivity {
         try {
             GifImageView gifImageView = (GifImageView) findViewById(R.id.GifImageView);
 //        gifImageView.setImageResource(R.drawable.splash_gif);
-            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.splash_gif);
+            GifDrawable gifDrawable = new GifDrawable(getResources(), R.raw.splash_gif);
             gifImageView.setImageDrawable(gifDrawable);
 
             gifDrawable.addAnimationListener(new AnimationListener() {

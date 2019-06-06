@@ -177,7 +177,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            android:src="@drawable/bg_lobby"
+            android:src="@raw/bg_lobby"
             app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"
             app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"
             app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s"

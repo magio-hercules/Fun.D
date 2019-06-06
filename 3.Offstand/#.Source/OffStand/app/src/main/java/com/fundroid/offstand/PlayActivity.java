@@ -534,7 +534,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             image_open.setVisibility(View.GONE);
 
             GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
-            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_4);
+//            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_4);
+            GifDrawable gifDrawable = new GifDrawable(getResources(), R.raw.gif_shuffle);
             Log.d(TAG, "initShuffle 2");
             gifImageView.setVisibility(View.VISIBLE);
             gifImageView.setImageDrawable(gifDrawable);
