@@ -82,6 +82,17 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     //    @BindView(R.id.play_image_card4)
     ImageView image4;
 
+    @BindView(R.id.play_sound_bluffing)
+    ImageView play_sound_bluffing;
+    @BindView(R.id.play_sound_1)
+    ImageView play_sound_1;
+    @BindView(R.id.play_sound_2)
+    ImageView play_sound_2;
+    @BindView(R.id.play_sound_3)
+    ImageView play_sound_3;
+    @BindView(R.id.play_sound_4)
+    ImageView play_sound_4;
+
     @BindView(R.id.play_image_card_die)
     ImageView image_card_die;
 
@@ -132,7 +143,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean bHideCard1 = false, bHideCard2 = false;
     private String card1, card2;
 
-    SoundPool soundPool;
+    SoundPool soundPool = null;
     int[] soundTrack;
 
 
@@ -193,7 +204,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         initRX();
 
-        initCardImage();
+        initImage();
 
         initSound();
 
@@ -251,8 +262,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             soundTrack[i] = 0;
         }
 
-        soundPool.release();
-        soundPool = null;
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
     }
 
     @OnClick({
@@ -303,31 +316,39 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @OnClick({
+            R.id.play_sound_bluffing,
             R.id.play_sound_1,
             R.id.play_sound_2,
             R.id.play_sound_3,
-            R.id.play_sound_4,
-            R.id.play_sound_5
+            R.id.play_sound_4
     })
-    public void onClick_sound(Button view) {
+    public void onClick_sound(ImageView view) {
         Log.d(TAG, "onClick_sound");
 
         switch (view.getId()) {
+            case R.id.play_sound_bluffing:
+                Group groupSound = (Group) findViewById(R.id.room_group_sound);
+                if (groupSound.getVisibility() == View.GONE) {
+                    groupSound.setVisibility(View.VISIBLE);
+                } else {
+                    groupSound.setVisibility(View.GONE);
+                }
+                break;
             case R.id.play_sound_1:
                 playSound(SOUND_LAUGH);
                 break;
             case R.id.play_sound_2:
-                playSound(SOUND_THUNDER);
-                break;
-            case R.id.play_sound_3:
                 playSound(SOUND_LUCKY1);
                 break;
-            case R.id.play_sound_4:
+            case R.id.play_sound_3:
                 playSound(SOUND_LUCKY2);
                 break;
-            case R.id.play_sound_5:
+            case R.id.play_sound_4:
                 playSound(SOUND_LUCKY3);
                 break;
+//            case R.id.play_sound_5:
+//                playSound(SOUND_THUNDER);
+//                break;
         }
     }
 
@@ -429,8 +450,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             image_result.setVisibility(View.VISIBLE);
             image_jokbo.setVisibility(View.VISIBLE);
 
-            loadImage(image_re, R.drawable.play_re_dis);
-            loadImage(image_result, R.drawable.play_result_dis);
+//            loadImage(image_re, R.drawable.play_re_dis);
+//            loadImage(image_result, R.drawable.play_result_dis);
+            image_re.setEnabled(false);
+            image_result.setEnabled(false);
 
             enableRegame = false;
             enableResult = false;
@@ -445,12 +468,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    private void initCardImage() {
+    private void initImage() {
         image0 = (ImageView) findViewById(R.id.play_image_card0);
         image1 = (ImageView) findViewById(R.id.play_image_card1);
         image2 = (ImageView) findViewById(R.id.play_image_card2);
         image3 = (ImageView) findViewById(R.id.play_image_card3);
         image4 = (ImageView) findViewById(R.id.play_image_card4);
+
+        play_sound_bluffing.setImageResource(R.drawable.button_play_sound_bluffing);
+        play_sound_1.setImageResource(R.drawable.button_play_sound_1);
+        play_sound_2.setImageResource(R.drawable.button_play_sound_1);
+        play_sound_3.setImageResource(R.drawable.button_play_sound_1);
+        play_sound_4.setImageResource(R.drawable.button_play_sound_1);
     }
 
     private void initSound() {
@@ -472,7 +501,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
 //        loadSound(SOUND_BACKGROUND, R.raw.pirate_sound_background);
                 loadSound(SOUND_LAUGH, R.raw.play_sound_laugh);
-                loadSound(SOUND_THUNDER, R.raw.play_sound_thunder);
+//                loadSound(SOUND_THUNDER, R.raw.play_sound_thunder);
                 loadSound(SOUND_LUCKY1, R.raw.play_sound_lucky1);
                 loadSound(SOUND_LUCKY2, R.raw.play_sound_lucky2);
                 loadSound(SOUND_LUCKY3, R.raw.play_sound_lucky3);
@@ -499,12 +528,13 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         try {
             Log.d(TAG, "initShuffle 1");
 
+            play_sound_bluffing.setVisibility(View.GONE);
             Group groupSound = (Group) findViewById(R.id.room_group_sound);
             groupSound.setVisibility(View.GONE);
             image_open.setVisibility(View.GONE);
 
             GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
-            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_3);
+            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_4);
             Log.d(TAG, "initShuffle 2");
             gifImageView.setVisibility(View.VISIBLE);
             gifImageView.setImageDrawable(gifDrawable);
@@ -517,7 +547,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                     image_open.setVisibility(View.VISIBLE);
 //                    Group groupSound = (Group) findViewById(R.id.room_group_sound);
-                    groupSound.setVisibility(View.VISIBLE);
+                    play_sound_bluffing.setVisibility(View.VISIBLE);
+//                    groupSound.setVisibility(View.VISIBLE);
 
                     gifImageView.setVisibility(View.GONE);
                     gifDrawable.recycle();
@@ -1131,7 +1162,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_GAME_RESULT_BR:
                             if (isHost) {
-                                loadImage(image_re, R.drawable.button_play_re);
+//                                image_re.setImageResource(R.drawable.button_play_re);
+//                                loadImage(image_re, R.drawable.button_play_re);
+                                image_re.setEnabled(true);
                                 enableRegame = true;
                             }
 
@@ -1141,7 +1174,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_GAME_RESULT_AVAILABLE:
                             if (isHost) {
-                                loadImage(image_result, R.drawable.button_play_result);
+//                                image_result.setImageResource(R.drawable.button_play_result);
+//                                loadImage(image_result, R.drawable.button_play_result);
+                                image_result.setEnabled(true);
                                 enableResult = true;
                             }
                             break;
