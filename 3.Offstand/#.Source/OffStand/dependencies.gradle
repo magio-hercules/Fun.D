@@ -11,6 +11,7 @@ ext {
     architectureComponent = '2.0.0-beta01'
     gson = '2.8.5'
     gifDrawable = '1.2.16'
+    glide = '4.9.0'
 
     dependencies = [
             appCompat             : "androidx.appcompat:appcompat:$supportLibrary",
@@ -30,6 +31,7 @@ ext {
             daggerAndroidSupport  : "com.google.dagger:dagger-android-support:$dagger",
             daggerAndroidProccesor: "com.google.dagger:dagger-android-processor:$dagger",
             gson                  : "com.google.code.gson:gson:$gson",
-            gifDrawable           : "pl.droidsonroids.gif:android-gif-drawable:$gifDrawable",
+            glide                 : "com.github.bumptech.glide:glide:$glide",
+            gifDrawable           : "pl.droidsonroids.gif:android-gif-drawable:$gifDrawable"
     ]
 }

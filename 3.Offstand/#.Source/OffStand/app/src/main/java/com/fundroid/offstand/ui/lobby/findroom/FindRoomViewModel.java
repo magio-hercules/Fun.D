@@ -8,8 +8,8 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
+import com.fundroid.offstand.utils.rx.BehaviorSubjectBus;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
-import com.fundroid.offstand.utils.rx.ReplaySubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 import com.google.gson.Gson;
 
@@ -36,7 +36,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                     Log.d("lsc","FindRoomViewModel result " + result);
                     switch (((ApiBody) result).getNo()) {
                         case API_ROOM_INFO:
-                            ReplaySubjectBus.getInstance().sendEvent(((ApiBody)result).getUsers());
+                            BehaviorSubjectBus.getInstance().sendEvent(result);
                             getNavigator().goToRoomActivity();
                             break;
                     }
@@ -62,7 +62,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 4};
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 3};
 //        byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
         InetAddress addr = null;
         try {

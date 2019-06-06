@@ -24,8 +24,7 @@ public interface ApiDefine {
     int API_SHUFFLE_AVAILABLE = 21;     // 게임 시작 가능 host
     int API_SHUFFLE_NOT_AVAILABLE = 22; // 게임 시작 불가능 host
     int API_GAME_RESULT_AVAILABLE = 23; // 결과 전파 가능 host
-    int API_KEEP_ALIVE = 99;            // Keep Alive client
-    int API_TEST = 100;            // test host
-
+    int API_TEST = 100;                 // 서버의 User List 정보 host
+    int API_OUT_SELF = 24;              // 소켓 close시 본인에게 메시지 전달
 
 }

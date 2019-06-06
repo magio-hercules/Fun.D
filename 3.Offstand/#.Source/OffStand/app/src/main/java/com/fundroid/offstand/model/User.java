@@ -1,5 +1,7 @@
 package com.fundroid.offstand.model;
 
+import android.util.Log;
+
 import androidx.core.util.Pair;
 
 import com.google.gson.Gson;
@@ -7,7 +9,7 @@ import com.google.gson.annotations.Expose;
 
 import java.util.Collections;
 
-public class User {
+public class User implements Comparable<User> {
 
     public enum EnumStatus {
 
@@ -66,8 +68,7 @@ public class User {
     private int cardLevel;
 
     @Expose
-    private int cardSum;
-
+    private Integer cardSum;
 
     public User() {
         new User(-1, false, 0, 0, "");
@@ -205,7 +206,13 @@ public class User {
     }
 
     public void setCards(Pair<Integer, Integer> cards) {
+        Log.d("lsc","User setCards cards " + cards.first + ", " + cards.second);
         this.cards = cards;
+    }
+
+    @Override
+    public int compareTo(User user) {
+        return cardSum.compareTo(user.getCardSum());
     }
 
     @Override

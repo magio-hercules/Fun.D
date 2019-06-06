@@ -8,6 +8,7 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
+import com.fundroid.offstand.utils.rx.BehaviorSubjectBus;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 import com.google.gson.Gson;
@@ -20,6 +21,7 @@ import io.reactivex.Completable;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 
 public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
@@ -34,6 +36,10 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
                     switch (((ApiBody) result).getNo()) {
                         case API_ROOM_INFO:
                             getNavigator().goToRoomActivity();
+                            break;
+
+                        case API_SHUFFLE_AVAILABLE:
+                            BehaviorSubjectBus.getInstance().sendEvent(result);
                             break;
                     }
 
@@ -62,7 +68,6 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
                 })
         );
     }
-
 
 
     public void onNavBackClick() {

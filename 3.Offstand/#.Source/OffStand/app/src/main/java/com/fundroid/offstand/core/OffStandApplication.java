@@ -2,15 +2,19 @@ package com.fundroid.offstand.core;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.util.Log;
 
 import com.facebook.stetho.Stetho;
+import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.di.component.DaggerAppComponent;
+import com.fundroid.offstand.utils.rx.ServerPublishSubjectBus;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.DaggerApplication;
+import io.reactivex.schedulers.Schedulers;
 
 public class OffStandApplication extends DaggerApplication {
 
@@ -39,7 +43,14 @@ public class OffStandApplication extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
-
+        ServerPublishSubjectBus.getInstance().getEvents(String.class)
+                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
+                .subscribeOn(Schedulers.io())
+                .subscribe(result -> {
+                    Log.d("lsc", "OffStandApplication result " + result);
+                }, onError -> {
+                    Log.d("lsc", "OffStandApplication onError " + onError);
+                }, () -> Log.d("lsc", "OffStandApplication onCompleted"));
 
     }
 

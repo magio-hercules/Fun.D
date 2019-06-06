@@ -33,20 +33,10 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
     public LobbyViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider);
+        Log.v("lsc","LobbyViewModel Constructor");
         this.wifiP2pManager = wifiP2pManager;
         this.channel = channel;
         this.resourceProvider = resourceProvider;
-
-        getCompositeDisposable().add(ServerPublishSubjectBus.getInstance().getEvents(String.class)
-                .flatMap(json -> ConnectionManager.serverProcessor((String) json))
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().ui())
-                .subscribe(result -> {
-                    Log.d("lsc", "LobbyViewModel result " + result);
-                }, onError -> {
-                    Log.d("lsc", "LobbyViewModel onError " + onError);
-                }, () -> Log.d("lsc", "LobbyViewModel onCompleted"))
-        );
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(WifiP2pDeviceList.class)
                         .subscribeOn(getSchedulerProvider().io())
@@ -236,6 +226,6 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     @Override
     protected void onCleared() {
         super.onCleared();
-        Log.d("lsc", "LobbyViewModel onCleared");
+        Log.v("lsc", "LobbyViewModel onCleared");
     }
 }

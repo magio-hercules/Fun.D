@@ -42,6 +42,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.disposables.Disposable;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static com.fundroid.offstand.utils.CommonUtils.getVisibleFragmentTag;
 
 public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector {
 
@@ -92,7 +93,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("lsc", "LobbyActivity onCreate ");
+        Log.v("lsc", "LobbyActivity onCreate ");
         lobbyViewModel.setNavigator(this);
         activityLobbyBinding = getViewDataBinding();
         initViews();
@@ -132,20 +133,21 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("lsc", "LobbyActivity onStart");
+        Log.v("lsc", "LobbyActivity onStart");
         registerReceiver(wifiDirectReceiver, intentFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("lsc", "LobbyActivity onStop");
+        Log.v("lsc", "LobbyActivity onStop");
         unregisterReceiver(wifiDirectReceiver);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.v("lsc", "LobbyActivity onDestroy");
         disposable.dispose();
     }
 
@@ -179,22 +181,13 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Log.d("lsc", "LobbyActivity onBackPressed");
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment1 = fragmentManager.findFragmentByTag(MakeRoomFragment.TAG);
-        Fragment fragment2 = fragmentManager.findFragmentByTag(FindRoomFragment.TAG);
-        Fragment fragment3 = fragmentManager.findFragmentByTag(GuideFragment.TAG);
-        Log.d("lsc", "LobbyActivity onBackPressed fragment1 " + fragment1);
-        Log.d("lsc", "LobbyActivity onBackPressed fragment2 " + fragment2);
-        Log.d("lsc", "LobbyActivity onBackPressed fragment3 " + fragment3);
-
-        if (fragment1 == null) {
-            Log.d("lsc", "LobbyActivity onBackPressed if");
+        Log.d("lsc", "LobbyActivity onBackPressed " + getVisibleFragmentTag(this, MainFragment.TAG));
+        if (getVisibleFragmentTag(this, MainFragment.TAG).equals(MainFragment.TAG)) {
+            Log.d("lsc", "LobbyActivity onBackPressed 1");
             super.onBackPressed();
         } else {
-            Log.d("lsc", "LobbyActivity onBackPressed else");
-            onFragmentDetached(MakeRoomFragment.TAG);
+            Log.d("lsc", "LobbyActivity onBackPressed 2");
+            onFragmentDetached(getVisibleFragmentTag(this, MainFragment.TAG));
         }
     }
 
