@@ -1,9 +1,14 @@
 package com.fundroid.offstand.ui.lobby.main;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.fundroid.offstand.BR;
@@ -19,6 +24,8 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+
+import pl.droidsonroids.gif.GifDrawable;
 
 public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewModel> implements MainNavigator {
 
@@ -72,7 +79,22 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     }
 
     private void initViews() {
-        Glide.with(this).load(R.raw.bg_lobby).into(fragmentMainBinding.bgMain);
+        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).setLoopCount(0);
+//        Glide.with(this).load(R.raw.bg_lobby).into(fragmentMainBinding.bgMain);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+        Log.v(TAG, "MainFragment onDestroy");
+
+        GifDrawable d = (GifDrawable)fragmentMainBinding.bgMain.getDrawable();
+        if (d != null) {
+            Log.v(TAG, "MainFragment d != null");
+            d.recycle();
+            d = null;
+        }
     }
 
     @Override

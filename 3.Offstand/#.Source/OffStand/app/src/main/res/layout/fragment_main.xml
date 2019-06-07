@@ -172,7 +172,7 @@
 
 
 
-        <!--<pl.droidsonroids.gif.GifImageView
+        <pl.droidsonroids.gif.GifImageView
             android:id="@+id/bg_main"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -181,17 +181,17 @@
             app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"
             app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"
             app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s"
-            app:layout_constraintBottom_toBottomOf="@id/guide_h_bg_main_e" />-->
-
-        <ImageView
-            android:id="@+id/bg_main"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="fitXY"
-            app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"
-            app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s"
             app:layout_constraintBottom_toBottomOf="@id/guide_h_bg_main_e" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/bg_main"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:scaleType="fitXY"-->
+            <!--app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"-->
+            <!--app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"-->
+            <!--app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s"-->
+            <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_bg_main_e" />-->
 
 
         <ImageView
