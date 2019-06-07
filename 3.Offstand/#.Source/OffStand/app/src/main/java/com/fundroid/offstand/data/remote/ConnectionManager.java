@@ -154,8 +154,12 @@ public class ConnectionManager {
                         .flatMap(pair -> {
                             if (roomStatus == EnumStatus.REGAME) {
                                 if (pair.second.getStatus() == CARDOPEN.getEnumStatus()) {
+                                    Log.d("lsc", "REGAME SHUFFLE before " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
+                                    pair.second.setStatus(INGAME.getEnumStatus());
+                                    Log.d("lsc", "REGAME SHUFFLE after " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
                                     return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
                                 } else {
+                                    Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
                                     return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
                                 }
                             } else {
@@ -360,6 +364,8 @@ public class ConnectionManager {
                     roomStatus = EnumStatus.INGAME;
                     break;
             }
+            Log.d("lsc", "setRoomStatus end inGameUserCount " + inGameUserCount);
+            Log.d("lsc", "setRoomStatus end roomStatus " + roomStatus);
             subscriber.onNext(roomStatus);
         });
     }
@@ -455,14 +461,17 @@ public class ConnectionManager {
                 } else {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
                 }
-                if (roomStatus != EnumStatus.REGAME)
+                if (roomStatus != EnumStatus.REGAME) {
                     serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
+                } else {
+
+                }
 
                 //card test
                 // 2P, 3P 동점
-                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
-                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
-                serverThreads.get(2).getUser().setCards(new Pair<>(14, 15));
+//                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
+//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
+//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 15));
                 // 3P 구사
 //                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
 //                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));

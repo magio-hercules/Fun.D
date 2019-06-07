@@ -1001,6 +1001,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
                     Log.d(TAG, "RoomActivity server result " + result);
+                    Log.d("lsc", "RoomActivity server result " + result);
                     ApiBody apiBody = ((ApiBody) result);
                     switch (apiBody.getNo()) {
                         case API_ROOM_INFO:

@@ -825,6 +825,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         if (isHost && enableRegame) {
             doSendMessage(API_SHUFFLE);
+
+            // 방장이 DIE 상태에서 RE게임을 수행할 때
+            image_re.setEnabled(false);
         } else {
             Toast.makeText(getApplicationContext(), "게임결과 확인 후 RE게임 가능", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "this is client || enableRegame is false");
