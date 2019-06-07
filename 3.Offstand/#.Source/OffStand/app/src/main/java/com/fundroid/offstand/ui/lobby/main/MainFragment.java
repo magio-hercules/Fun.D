@@ -1,14 +1,12 @@
 package com.fundroid.offstand.ui.lobby.main;
 
 import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
+import com.bumptech.glide.Glide;
 import com.fundroid.offstand.BR;
-import com.fundroid.offstand.PlayActivity;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.databinding.FragmentMainBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
@@ -21,10 +19,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import pl.droidsonroids.gif.GifDrawable;
-
-import static com.fundroid.offstand.core.AppConstant.FRAGMENT_FIND_ROOM;
-import static com.fundroid.offstand.core.AppConstant.FRAGMENT_MAKE_ROOM;
 
 public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewModel> implements MainNavigator {
 
@@ -78,7 +72,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     }
 
     private void initViews() {
-        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).setLoopCount(0);
+        Glide.with(this).load(R.raw.bg_lobby).into(fragmentMainBinding.bgMain);
     }
 
     @Override
@@ -96,16 +90,10 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
         int soundID = sp.load(getActivity().getApplicationContext(), R.raw.mouth_interface_button, 1);
 //        sp.play(soundID, 1f, 1f, 0, 0,1f);
 
-        sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                sp.play(soundID, 1f, 1f, 0, 0,1f);
-            }
-        });
+        sp.setOnLoadCompleteListener((soundPool, sampleId, status) -> sp.play(soundID, 1f, 1f, 0, 0, 1f));
         // [만땅] SoundPool Test - End
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack(FRAGMENT_MAKE_ROOM)
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, MakeRoomFragment.newInstance(), MakeRoomFragment.TAG)
@@ -116,7 +104,6 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     public void findRoom() {
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack(FRAGMENT_FIND_ROOM)
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, FindRoomFragment.newInstance(), FindRoomFragment.TAG)
@@ -125,10 +112,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void guide() {
-        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).pause();
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack(FRAGMENT_FIND_ROOM)
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, GuideFragment.newInstance(), GuideFragment.TAG)
