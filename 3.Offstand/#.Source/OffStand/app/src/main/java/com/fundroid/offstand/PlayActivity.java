@@ -54,6 +54,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
@@ -1180,6 +1181,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                 image_result.setEnabled(true);
                                 enableResult = true;
                             }
+                            break;
+
+                        case API_OUT_SELF:
+                            //본인이 나갔을 때
+                            LobbyActivity.start(this);
+                            finish();
                             break;
                     }
 

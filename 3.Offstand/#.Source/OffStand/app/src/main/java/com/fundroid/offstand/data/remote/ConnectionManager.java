@@ -150,9 +150,10 @@ public class ConnectionManager {
                         .andThen(broadcastMessage(new ApiBody(API_MOVE_BR, apiBody.getSeatNo(), apiBody.getSeatNo2())));
 
             case API_SHUFFLE:
-                return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
-//                        .filter(pair -> pair.second.getStatus() == CARDOPEN.getEnumStatus())  //Todo : REGAME일 경우 CARDOPEN 필터링
-                        .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
+                return
+                        shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
+                                .filter(pair -> roomStatus == EnumStatus.REGAME ? (pair.second.getStatus() == CARDOPEN.getEnumStatus()) : true)  //Todo : REGAME일 경우 CARDOPEN 필터링
+                                .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
 
             case API_DIE:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
@@ -169,7 +170,7 @@ public class ConnectionManager {
             case API_GAME_RESULT:
                 return figureOut((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
                         .andThen(setUserRank())
-
+                        .flatMap(ConnectionManager::checkRematch)
                         .flatMapObservable(users -> broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users)));
 
 
@@ -344,6 +345,10 @@ public class ConnectionManager {
                         roomStatus = EnumStatus.INGAME;
                     }
                     break;
+
+                case REGAME:
+                    roomStatus = EnumStatus.INGAME;
+                    break;
             }
             subscriber.onNext(roomStatus);
         });
@@ -384,13 +389,18 @@ public class ConnectionManager {
         });
     }
 
-    private static Completable checkRematch(ArrayList<User> users) {
-        return Completable.create(subscriber -> {
+    private static Single<ArrayList<User>> checkRematch(ArrayList<User> users) {
+        return Single.create(subscriber -> {
             //승리자 LEVEL이 3 또는 7일 경우
             if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
                 roomStatus = EnumStatus.REGAME;
             }
-            subscriber.onComplete();
+
+            //카드 급이 같을 경우
+            if (users.get(0).getCardSum() == users.get(1).getCardSum()) {
+                roomStatus = EnumStatus.REGAME;
+            }
+            subscriber.onSuccess(users);
         });
     }
 
@@ -415,6 +425,10 @@ public class ConnectionManager {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
                 }
                 serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
+
+                //card test
+//                serverThreads.get(0).getUser().setCards(new Pair<>(3, 8));
+                //card test end
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
             roomStatus = EnumStatus.INGAME;

@@ -1,10 +1,19 @@
 package com.fundroid.offstand.data.model;
 
 
+import android.util.Log;
+
 import com.fundroid.offstand.model.User;
 
 import io.reactivex.Completable;
 
+import static com.fundroid.offstand.data.model.Card.EnumCard.FOUR;
+import static com.fundroid.offstand.data.model.Card.EnumCard.FOUR_MUNG;
+import static com.fundroid.offstand.data.model.Card.EnumCard.NINE_MUNG;
+import static com.fundroid.offstand.data.model.Card.EnumCard.ONE;
+import static com.fundroid.offstand.data.model.Card.EnumCard.SIX_MUNG;
+import static com.fundroid.offstand.data.model.Card.EnumCard.TEN_MUNG;
+import static com.fundroid.offstand.data.model.Card.EnumCard.TWO_MUNG;
 import static com.fundroid.offstand.model.User.EnumStatus.DIE;
 
 public class Card {
@@ -80,12 +89,13 @@ public class Card {
 
     private static Completable checkLevel1and3(User user) {
         if (user.getCards().first % 10 == 4) {
-            user.setCardLevel(EnumCardLevel.LEVEL1.getCardLevel());
             switch (user.getCards().second % 10) {
                 case 6:
+                    user.setCardLevel(EnumCardLevel.LEVEL1.getCardLevel());
                     user.setCardSum(10);
                     break;
                 case 0:
+                    user.setCardLevel(EnumCardLevel.LEVEL1.getCardLevel());
                     user.setCardSum(11);
                     break;
                 case 9:
@@ -93,34 +103,60 @@ public class Card {
                     user.setCardSum(16);
                     break;
             }
+        } else if (user.getCards().first == SIX_MUNG.getCardNo() && user.getCards().second == FOUR.getCardNo()) {
+            user.setCardLevel(EnumCardLevel.LEVEL1.getCardLevel());
+            user.setCardSum(10);
+        } else if (user.getCards().first == TEN_MUNG.getCardNo() && user.getCards().second == FOUR.getCardNo()) {
+            user.setCardLevel(EnumCardLevel.LEVEL1.getCardLevel());
+            user.setCardSum(11);
+        } else if (user.getCards().first == NINE_MUNG.getCardNo() && user.getCards().second == FOUR.getCardNo()) {
+            user.setCardLevel(EnumCardLevel.LEVEL3.getCardLevel());
+            user.setCardSum(16);
         }
         return Completable.complete();
     }
 
     private static Completable checkLevel2(User user) {
         if (user.getCards().first % 10 == 1) {
-            user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
             switch (user.getCards().second % 10) {
                 case 0:
+                    user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
                     user.setCardSum(12);
                     break;
                 case 9:
+                    user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
                     user.setCardSum(13);
                     break;
                 case 4:
+                    user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
                     user.setCardSum(14);
                     break;
                 case 2:
+                    user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
                     user.setCardSum(15);
                     break;
             }
+        } else if (user.getCards().first == TEN_MUNG.getCardNo() && user.getCards().second == ONE.getCardNo()) {
+            user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
+            user.setCardSum(12);
+        } else if (user.getCards().first == NINE_MUNG.getCardNo() && user.getCards().second == ONE.getCardNo()) {
+            user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
+            user.setCardSum(13);
+        } else if (user.getCards().first == FOUR_MUNG.getCardNo() && user.getCards().second == ONE.getCardNo()) {
+            user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
+            user.setCardSum(14);
+        } else if (user.getCards().first == TWO_MUNG.getCardNo() && user.getCards().second == ONE.getCardNo()) {
+            user.setCardLevel(EnumCardLevel.LEVEL2.getCardLevel());
+            user.setCardSum(15);
         }
+
+
         return Completable.complete();
     }
 
     private static Completable checkLevel4and6(User user) {
         if (user.getCards().first % 10 == user.getCards().second % 10) {
-            if (user.getCards().first.equals(EnumCard.TEN_MUNG)) {
+            if (user.getCards().first.equals(TEN_MUNG.getCardNo())) {
                 user.setCardLevel(EnumCardLevel.LEVEL6.getCardLevel());
                 user.setCardSum(user.getCards().first + 17);
             } else {
@@ -133,7 +169,7 @@ public class Card {
     }
 
     private static Completable checkLevel5(User user) {
-        if (user.getCards().first.equals(EnumCard.THREE_KWANG) && user.getCards().second.equals(EnumCard.SEVEN_MUNG)) {
+        if (user.getCards().first.equals(EnumCard.THREE_KWANG.getCardNo()) && user.getCards().second.equals(EnumCard.SEVEN_MUNG.getCardNo())) {
             user.setCardLevel(EnumCardLevel.LEVEL5.getCardLevel());
             user.setCardSum(26);
         }
@@ -141,7 +177,7 @@ public class Card {
     }
 
     private static Completable checkLevel7(User user) {
-        if (user.getCards().first.equals(EnumCard.FOUR_MUNG) && user.getCards().second.equals(EnumCard.NINE_MUNG)) {
+        if (user.getCards().first.equals(FOUR_MUNG.getCardNo()) && user.getCards().second.equals(NINE_MUNG.getCardNo())) {
             user.setCardLevel(EnumCardLevel.LEVEL7.getCardLevel());
             user.setCardSum(28);
         }
@@ -149,7 +185,7 @@ public class Card {
     }
 
     private static Completable checkLevel8(User user) {
-        if (user.getCards().first.equals(EnumCard.ONE_KWANG) && (user.getCards().second.equals(EnumCard.THREE_KWANG) || user.getCards().second.equals(EnumCard.EIGHT_KWANG))) {
+        if (user.getCards().first.equals(EnumCard.ONE_KWANG.getCardNo()) && (user.getCards().second.equals(EnumCard.THREE_KWANG.getCardNo()) || user.getCards().second.equals(EnumCard.EIGHT_KWANG.getCardNo()))) {
             user.setCardLevel(EnumCardLevel.LEVEL8.getCardLevel());
             user.setCardSum(29);    // 일삼광땡, 일팔광땡 같이 나올 경우가 없음
         }
@@ -157,7 +193,7 @@ public class Card {
     }
 
     private static Completable checkLevel9(User user) {
-        if (user.getCards().first.equals(EnumCard.FOUR_MUNG) && user.getCards().second.equals(EnumCard.SEVEN_MUNG)) {
+        if (user.getCards().first.equals(FOUR_MUNG.getCardNo()) && user.getCards().second.equals(EnumCard.SEVEN_MUNG.getCardNo())) {
             user.setCardLevel(EnumCardLevel.LEVEL9.getCardLevel());
             user.setCardSum(30);
         }
@@ -165,7 +201,7 @@ public class Card {
     }
 
     private static Completable checkLevel10(User user) {
-        if (user.getCards().first.equals(EnumCard.THREE_KWANG) && user.getCards().second.equals(EnumCard.EIGHT_KWANG)) {
+        if (user.getCards().first.equals(EnumCard.THREE_KWANG.getCardNo()) && user.getCards().second.equals(EnumCard.EIGHT_KWANG.getCardNo())) {
             user.setCardLevel(EnumCardLevel.LEVEL10.getCardLevel());
             user.setCardSum(31);
         }
