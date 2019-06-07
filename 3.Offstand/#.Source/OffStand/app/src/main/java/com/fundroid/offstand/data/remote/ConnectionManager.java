@@ -173,8 +173,9 @@ public class ConnectionManager {
                         .concatMap(result -> Observable.just(new ApiBody(RESULT_API_NOT_DEFINE)));
 
             case API_GAME_RESULT:
-                return figureOut((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
-                        .andThen(setUserRank())
+                return setCardSumAndLevel((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
+                        .flatMap(ConnectionManager::setSumRebalance)
+                        .flatMap(users -> sortByUserSum())
                         .flatMap(ConnectionManager::checkRematch)
                         .flatMapObservable(users -> broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users)));
 
@@ -375,21 +376,23 @@ public class ConnectionManager {
         }
     }
 
-    public static Completable figureOut(ArrayList<User> users) {
-        return Completable.create(subscriber -> {
+    public static Single<ArrayList<User>> setCardSumAndLevel(ArrayList<User> users) {
+        return Single.create(subscriber -> {
             for (User user : Stream.of(users).filter(user -> user.getStatus() == CARDOPEN.getEnumStatus() || user.getStatus() == DIE.getEnumStatus()).toList()) {
                 setCardValue(user);
-                Log.d("lsc", "figureOut " + user);
+                Log.d("lsc", "setCardSumAndLevel " + user);
             }
-            subscriber.onComplete();
+            subscriber.onSuccess(users);
         });
     }
 
-    private static Single<ArrayList<User>> setUserRank() {
+    private static Single<ArrayList<User>> sortByUserSum() {
         return Single.create(subscriber -> {
             ArrayList<User> targetUsers = (ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList());
-            Collections.sort(targetUsers);
-            Collections.reverse(targetUsers);
+            if (targetUsers.size() > 1) {
+                Collections.sort(targetUsers);
+                Collections.reverse(targetUsers);
+            }
             subscriber.onSuccess(targetUsers);
         });
     }
@@ -410,16 +413,27 @@ public class ConnectionManager {
                         return loseUser;
                     }).collect(Collectors.toList());
 
-            if (users.get(0).getCardSum() == users.get(1).getCardSum()) {
+            if (users.size() > 1 && users.get(0).getCardSum() == users.get(1).getCardSum()) {
                 roomStatus = EnumStatus.REGAME;
             }
             subscriber.onSuccess(users);
         });
     }
 
-    private static Single<ArrayList<User>> setSumRebalance() {
+    private static Single<ArrayList<User>> setSumRebalance(ArrayList<User> users) {
         return Single.create(subscriber -> {
+            Log.d("lsc", "setSumRebalance start");
+            if (Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL4.getCardLevel()).count() == 0) {
+                Log.d("lsc", "setSumRebalance 땡 없음");
+                Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL5.getCardLevel()).findFirst().ifPresent(level9User -> level9User.setCardSum(0));
+            }
+            if (Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL8.getCardLevel()).count() == 0) {
+                Log.d("lsc", "setSumRebalance 광땡 없음");
+                Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL9.getCardLevel()).findFirst().ifPresent(level9User -> level9User.setCardSum(0));
+            }
 
+            Log.d("lsc", "setSumRebalance end");
+            subscriber.onSuccess(users);
         });
     }
 
@@ -449,6 +463,15 @@ public class ConnectionManager {
 //                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
 //                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
 //                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
+//                // 1P 8땡 2P 땡잡이 3P 구사
+//                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
+//                serverThreads.get(1).getUser().setCards(new Pair<>(3, 7));
+//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
+                // 1P 8땡 2P 땡잡이 3P 멍구사
+                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
+                serverThreads.get(1).getUser().setCards(new Pair<>(3, 7));
+                serverThreads.get(2).getUser().setCards(new Pair<>(4, 9));
+
                 //card test end
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
