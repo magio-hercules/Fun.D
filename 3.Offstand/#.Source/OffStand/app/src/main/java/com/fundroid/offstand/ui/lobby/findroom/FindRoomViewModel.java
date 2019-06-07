@@ -62,8 +62,8 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 3};
-//        byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
+//        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 3};
+        byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
         InetAddress addr = null;
         try {
             addr = InetAddress.getByAddress(ipAddr);

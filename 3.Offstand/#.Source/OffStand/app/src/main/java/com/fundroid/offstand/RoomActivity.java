@@ -564,6 +564,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
             if (curUser.getAvatar() != 0) {
                 allUser[tSeat] = new User(tSeat, curUser.isHost(), curUser.getName(),
                         curUser.getAvatar(), curUser.getTotal(), curUser.getWin());
+                allUser[tSeat].setStatus(curUser.getStatus());
                 if (curUser.getName().equals(userName) && curUser.getAvatar() == avatarId) {
                     curUserIndex = tSeat;
                 }
