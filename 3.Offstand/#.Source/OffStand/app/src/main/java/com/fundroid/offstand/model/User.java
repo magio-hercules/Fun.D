@@ -206,7 +206,7 @@ public class User implements Comparable<User> {
     }
 
     public void setCards(Pair<Integer, Integer> cards) {
-        Log.d("lsc","User setCards cards " + cards.first + ", " + cards.second);
+//        Log.d("lsc","User setCards cards " + cards.first + ", " + cards.second);
         this.cards = cards;
     }
 

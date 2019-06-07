@@ -152,7 +152,12 @@ public class ConnectionManager {
             case API_SHUFFLE:
                 return
                         shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
-                                .filter(pair -> roomStatus == EnumStatus.REGAME ? (pair.second.getStatus() == CARDOPEN.getEnumStatus()) : true)  //Todo : REGAME일 경우 CARDOPEN 필터링
+                                .filter(pair -> {
+                                    Log.d("lsc", "shuffle roomStatus 1 " + roomStatus);
+                                    Log.d("lsc", "shuffle roomStatus 2 " + pair.second.getStatus());
+                                    Log.d("lsc", "shuffle roomStatus 3 " + (pair.second.getStatus() == CARDOPEN.getEnumStatus()));
+                                    return roomStatus == EnumStatus.REGAME ? (pair.second.getStatus() == CARDOPEN.getEnumStatus()) : true;
+                                })  //Todo : REGAME일 경우 CARDOPEN 필터링
                                 .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
 
             case API_DIE:
@@ -396,7 +401,15 @@ public class ConnectionManager {
                 roomStatus = EnumStatus.REGAME;
             }
 
-            //카드 급이 같을 경우
+            //카드 급이 같을 경우 (죽지 않고 동점이 아닌 사람의 STATUS 를 INGAME으로 셋
+            Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser())
+                    .filterNot(user -> user.getStatus() == DIE.getEnumStatus())
+                    .filterNot(user -> users.get(0).getCardSum() == user.getCardSum())
+                    .map(loseUser -> {
+                        loseUser.setStatus(INGAME.getEnumStatus());
+                        return loseUser;
+                    }).collect(Collectors.toList());
+
             if (users.get(0).getCardSum() == users.get(1).getCardSum()) {
                 roomStatus = EnumStatus.REGAME;
             }
@@ -424,10 +437,18 @@ public class ConnectionManager {
                 } else {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
                 }
-                serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
+                if (roomStatus != EnumStatus.REGAME)
+                    serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
 
                 //card test
-//                serverThreads.get(0).getUser().setCards(new Pair<>(3, 8));
+                // 2P, 3P 동점
+//                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
+//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
+//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 15));
+                // 3P 구사
+//                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
+//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
+//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
                 //card test end
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
