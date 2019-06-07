@@ -150,15 +150,19 @@ public class ConnectionManager {
                         .andThen(broadcastMessage(new ApiBody(API_MOVE_BR, apiBody.getSeatNo(), apiBody.getSeatNo2())));
 
             case API_SHUFFLE:
-                return
-                        shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
-                                .filter(pair -> {
-                                    Log.d("lsc", "shuffle roomStatus 1 " + roomStatus);
-                                    Log.d("lsc", "shuffle roomStatus 2 " + pair.second.getStatus());
-                                    Log.d("lsc", "shuffle roomStatus 3 " + (pair.second.getStatus() == CARDOPEN.getEnumStatus()));
-                                    return roomStatus == EnumStatus.REGAME ? (pair.second.getStatus() == CARDOPEN.getEnumStatus()) : true;
-                                })  //Todo : REGAME일 경우 CARDOPEN 필터링
-                                .flatMap(pair -> sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first));
+                return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
+                        .flatMap(pair -> {
+                            if (roomStatus == EnumStatus.REGAME) {
+                                if (pair.second.getStatus() == CARDOPEN.getEnumStatus()) {
+                                    return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
+                                } else {
+                                    return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
+                                }
+                            } else {
+                                return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
+                            }
+
+                        });
 
             case API_DIE:
                 return setUserStatus(apiBody.getNo(), apiBody.getSeatNo())
@@ -445,7 +449,7 @@ public class ConnectionManager {
         Collections.shuffle(cards);
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
-                Log.d("lsc", "shuffle " + cards.get(i * 2) + ", " + cards.get((i * 2) + 1));
+//                Log.d("lsc", "shuffle " + cards.get(i * 2) + ", " + cards.get((i * 2) + 1));
                 if (cards.get(i * 2) < cards.get((i * 2) + 1)) {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
                 } else {
@@ -456,9 +460,9 @@ public class ConnectionManager {
 
                 //card test
                 // 2P, 3P 동점
-//                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
-//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 15));
+                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
+                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
+                serverThreads.get(2).getUser().setCards(new Pair<>(14, 15));
                 // 3P 구사
 //                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
 //                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));

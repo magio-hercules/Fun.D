@@ -47,7 +47,7 @@ public class OffStandApplication extends DaggerApplication {
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                    Log.d("lsc", "OffStandApplication result " + result);
+//                    Log.d("lsc", "/**/OffStandApplication result " + result);
                 }, onError -> {
                     Log.d("lsc", "OffStandApplication onError " + onError);
                 }, () -> Log.d("lsc", "OffStandApplication onCompleted"));

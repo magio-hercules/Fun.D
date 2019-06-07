@@ -98,4 +98,5 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
                 .commit();
         getBaseActivity().finish();
     }
+
 }
