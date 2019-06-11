@@ -18,6 +18,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.widget.VideoView;
@@ -56,6 +57,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
@@ -434,7 +436,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void initButton(boolean bFlag) {
         if (bFlag) {
             image_setting.setVisibility(View.VISIBLE);
-            image_open.setVisibility(View.VISIBLE);
+            // shuffle 효과 중에 보이는 이슈로 인해 INVISIBLE로 변경
+            image_open.setVisibility(View.INVISIBLE);
 
             image_exit.setVisibility(View.INVISIBLE);
             image_re.setVisibility(View.INVISIBLE);
@@ -511,64 +514,66 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void initShuffle() {
         Log.d(TAG, "initShuffle");
 
-//        ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
-//        if (fragment == null) {
-//            // Make new fragment to show this selection.
-//            fragment = new ShuffleFragment();
-//
-//            // Execute a transaction, replacing any existing fragment
-//            // with this one inside the frame.
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.room_shuffle_frame, fragment);
-////            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//            ft.commit();
-//        }
+        play_sound_bluffing.setVisibility(View.GONE);
+        Group groupSound = (Group) findViewById(R.id.room_group_sound);
+        groupSound.setVisibility(View.GONE);
+        image_open.setVisibility(View.GONE);
 
-        try {
-            Log.d(TAG, "initShuffle 1");
+        // 생성한 비디오뷰를 bind
+        VideoView videoView = (VideoView) findViewById(R.id.gif_shuffle);
+        // 비디오뷰를 커스텀하기 위해서 미디어컨트롤러 객체 생성
+        MediaController mediaController = new MediaController(this);
+        // 비디오뷰에 연결
+        mediaController.setAnchorView(videoView);
+        // 안드로이드 res폴더에 raw폴더를 생성 후 재생할 동영상파일을 넣습니다.
+        Uri video = Uri.parse("android.resource://" + getPackageName()+ "/"+R.raw.video_shuffle);
+        /*
+        외부파일의 경우
+        Uri video = Uri.parse("http://해당 url/mp4_file_name.mp4") 와 같이 사용한다.
+        */
 
-            play_sound_bluffing.setVisibility(View.GONE);
-            Group groupSound = (Group) findViewById(R.id.room_group_sound);
-            groupSound.setVisibility(View.GONE);
-            image_open.setVisibility(View.GONE);
+        //비디오뷰의 컨트롤러를 미디어컨트롤로러 사용
+//        videoView.setMediaController(mediaController);
+        //비디오뷰에 재생할 동영상주소를 연결
+        videoView.setVideoURI(video);
+        //비디오뷰를 포커스하도록 지정
+        videoView.requestFocus();
+        //비디오를 처음부터 재생할 때 0으로 시작(파라메터 sec)
+//        videoView.seekTo(200);
+        // 검은색 화면이 깜빡이는 이슈 해결
+        videoView.setZOrderOnTop(true);
+        videoView.setVisibility(View.VISIBLE);
+        //동영상 재생
+        videoView.start();
 
-//            GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
-//            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_4);
-//            GifDrawable gifDrawable = new GifDrawable(getResources(), R.raw.gif_shuffle);
-//            Log.d(TAG, "initShuffle 2");
-//            gifImageView.setVisibility(View.VISIBLE);
-//            gifImageView.setImageDrawable(gifDrawable);
-//            Log.d(TAG, "initShuffle 3");
-//
-//            gifDrawable.addAnimationListener(new AnimationListener() {
-//                @Override
-//                public void onAnimationCompleted(int loopNumber) {
-//                    Log.d(TAG, "Shuffle onAnimationCompleted");
-//
-//                    image_open.setVisibility(View.VISIBLE);
-////                    Group groupSound = (Group) findViewById(R.id.room_group_sound);
-//                    play_sound_bluffing.setVisibility(View.VISIBLE);
-////                    groupSound.setVisibility(View.VISIBLE);
-//
-//                    gifImageView.setVisibility(View.GONE);
-//                    gifDrawable.recycle();
-//                }
-//            });
+        //동영상이 재생준비가 완료되었을 때를 알 수 있는 리스너 (실제 웹에서 영상을 다운받아 출력할 때 많이 사용됨)
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                Log.d(TAG, "initShuffle setOnPreparedListener");
+//                mp.setLooping(true);
+            }
+        });
 
-            VideoView videoView = findViewById(R.id.gif_shuffle);
-            String videoRootPath = "android.resource://" + getPackageName() + "/";
-            videoView.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_shuffle));
-            videoView.start();
-            videoView.setOnCompletionListener(mp -> {
+        //동영상 재생이 완료된 걸 알 수 있는 리스너
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                //동영상 재생이 완료된 후 호출되는 메소드
+//                Toast.makeText(PlayActivity.this,
+//                        "동영상 재생이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "initShuffle setOnCompletionListener");
+
                 image_open.setVisibility(View.VISIBLE);
+//                    Group groupSound = (Group) findViewById(R.id.room_group_sound);
                 play_sound_bluffing.setVisibility(View.VISIBLE);
-                videoView.setVisibility(View.GONE);
-            });
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-        }
-    }
+//                    groupSound.setVisibility(View.VISIBLE);
 
+                videoView.stopPlayback();
+                videoView.setVisibility(View.GONE);
+            }
+        });
+    }
 
     public void finishShuffle() {
         ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
@@ -821,9 +826,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doExit() {
         Log.d(TAG, "doExit");
-        Intent intent = new Intent(PlayActivity.this, LobbyActivity.class);
-        startActivity(intent);
-        finish();
+        doSendMessage(API_OUT, seatNum);
     }
 
     private void doRestart() {
