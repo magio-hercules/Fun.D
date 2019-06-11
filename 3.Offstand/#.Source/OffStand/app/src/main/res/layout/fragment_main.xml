@@ -170,29 +170,15 @@
             app:layout_constraintGuide_percent="0.666" />
         <!-- end of Horizontal -->
 
-
-
-        <pl.droidsonroids.gif.GifImageView
+        <VideoView
             android:id="@+id/bg_main"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            android:src="@raw/bg_lobby"
             app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"
             app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"
             app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s"
             app:layout_constraintBottom_toBottomOf="@id/guide_h_bg_main_e" />
-
-        <!--<ImageView-->
-            <!--android:id="@+id/bg_main"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="0dp"-->
-            <!--android:scaleType="fitXY"-->
-            <!--app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"-->
-            <!--app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"-->
-            <!--app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s"-->
-            <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_bg_main_e" />-->
-
 
         <ImageView
             android:layout_width="0dp"

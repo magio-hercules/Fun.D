@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -79,22 +80,16 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     }
 
     private void initViews() {
-        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).setLoopCount(0);
-//        Glide.with(this).load(R.raw.bg_lobby).into(fragmentMainBinding.bgMain);
+        String videoRootPath = "android.resource://" + getContext().getPackageName() + "/";
+        fragmentMainBinding.bgMain.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_lobby));
+        fragmentMainBinding.bgMain.start();
+        fragmentMainBinding.bgMain.setOnCompletionListener(mp -> fragmentMainBinding.bgMain.start());
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-
         Log.v(TAG, "MainFragment onDestroy");
-
-        GifDrawable d = (GifDrawable)fragmentMainBinding.bgMain.getDrawable();
-        if (d != null) {
-            Log.v(TAG, "MainFragment d != null");
-            d.recycle();
-            d = null;
-        }
     }
 
     @Override
