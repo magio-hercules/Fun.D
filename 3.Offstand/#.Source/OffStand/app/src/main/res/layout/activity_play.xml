@@ -942,7 +942,17 @@
         app:layout_constraintRight_toRightOf="@id/guide_v_end"
         app:layout_constraintTop_toTopOf="@id/guide_h_4" />
 
-    <pl.droidsonroids.gif.GifImageView
+    <!--<pl.droidsonroids.gif.GifImageView
+        android:id="@+id/gif_shuffle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@id/guide_h_shuffle_e"
+        app:layout_constraintLeft_toLeftOf="@id/guide_v_shuffle_s"
+        app:layout_constraintRight_toRightOf="@id/guide_v_shuffle_e"
+        app:layout_constraintTop_toTopOf="@id/guide_h_shuffle_s" />-->
+
+    <VideoView
         android:id="@+id/gif_shuffle"
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -19,6 +20,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
+import android.widget.VideoView;
 
 import java.io.IOException;
 import java.util.Random;
@@ -68,8 +70,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     public static int SOUND_LUCKY1 = 4;
     public static int SOUND_LUCKY2 = 5;
     public static int SOUND_LUCKY3 = 6;
-
-
 
 
     //    @BindView(R.id.play_image_card0)
@@ -190,7 +190,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         Intent intent = new Intent(this.getIntent());
         int tNum1, tNum2;
-        isHost =  intent.getBooleanExtra("isHost", false);
+        isHost = intent.getBooleanExtra("isHost", false);
         seatNum = intent.getIntExtra("seatNum", -1);
         tNum1 = intent.getIntExtra("card1", -1);
         tNum2 = intent.getIntExtra("card2", -1);
@@ -259,7 +259,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         super.onStop();
         Log.d(TAG, "onStop");
 
-        for (int i = 0 ; i < soundTrack.length ; i++) {
+        for (int i = 0; i < soundTrack.length; i++) {
             soundTrack[i] = 0;
         }
 
@@ -488,11 +488,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         soundTrack = new int[SOUND_MAX_COUNT];
 
-        new Handler().postDelayed(new Runnable()
-        {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 AudioAttributes audioAttributes = new AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                         .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -534,31 +532,39 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             groupSound.setVisibility(View.GONE);
             image_open.setVisibility(View.GONE);
 
-            GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
+//            GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
 //            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_4);
-            GifDrawable gifDrawable = new GifDrawable(getResources(), R.raw.gif_shuffle);
-            Log.d(TAG, "initShuffle 2");
-            gifImageView.setVisibility(View.VISIBLE);
-            gifImageView.setImageDrawable(gifDrawable);
-            Log.d(TAG, "initShuffle 3");
+//            GifDrawable gifDrawable = new GifDrawable(getResources(), R.raw.gif_shuffle);
+//            Log.d(TAG, "initShuffle 2");
+//            gifImageView.setVisibility(View.VISIBLE);
+//            gifImageView.setImageDrawable(gifDrawable);
+//            Log.d(TAG, "initShuffle 3");
+//
+//            gifDrawable.addAnimationListener(new AnimationListener() {
+//                @Override
+//                public void onAnimationCompleted(int loopNumber) {
+//                    Log.d(TAG, "Shuffle onAnimationCompleted");
+//
+//                    image_open.setVisibility(View.VISIBLE);
+////                    Group groupSound = (Group) findViewById(R.id.room_group_sound);
+//                    play_sound_bluffing.setVisibility(View.VISIBLE);
+////                    groupSound.setVisibility(View.VISIBLE);
+//
+//                    gifImageView.setVisibility(View.GONE);
+//                    gifDrawable.recycle();
+//                }
+//            });
 
-            gifDrawable.addAnimationListener(new AnimationListener() {
-                @Override
-                public void onAnimationCompleted(int loopNumber) {
-                    Log.d(TAG, "Shuffle onAnimationCompleted");
-
-                    image_open.setVisibility(View.VISIBLE);
-//                    Group groupSound = (Group) findViewById(R.id.room_group_sound);
-                    play_sound_bluffing.setVisibility(View.VISIBLE);
-//                    groupSound.setVisibility(View.VISIBLE);
-
-                    gifImageView.setVisibility(View.GONE);
-                    gifDrawable.recycle();
-                }
+            VideoView videoView = findViewById(R.id.gif_shuffle);
+            String videoRootPath = "android.resource://" + getPackageName() + "/";
+            videoView.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_shuffle));
+            videoView.start();
+            videoView.setOnCompletionListener(mp -> {
+                image_open.setVisibility(View.VISIBLE);
+                play_sound_bluffing.setVisibility(View.VISIBLE);
+                videoView.setVisibility(View.GONE);
             });
         } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -619,11 +625,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                         yAnimation.cancel();
                         break;
                     case MotionEvent.ACTION_UP:
-                        int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
-                        Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
+                        int gap = startY > (int) event.getRawY() ? startY - (int) event.getRawY() : (int) event.getRawY() - startY;
+                        Log.d(TAG, "viewHeight/2 : " + (viewHeight / 2) + ", gap : " + gap);
 
                         // 패가 절반이상 까진경우
-                        if (viewHeight/2 < gap) {
+                        if (viewHeight / 2 < gap) {
                             Log.d(TAG, "패가 절반이상 까진경우");
 //                            openAnimation.start();
                             bCheck = true;
