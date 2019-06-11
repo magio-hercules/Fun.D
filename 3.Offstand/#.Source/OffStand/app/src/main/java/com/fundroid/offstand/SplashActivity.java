@@ -70,6 +70,7 @@ public class SplashActivity extends AppCompatActivity {
         VideoView splash = findViewById(R.id.splash);
         String videoRootPath = "android.resource://" + getPackageName() + "/";
         splash.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_splash));
+        splash.setZOrderOnTop(true);
         splash.start();
         splash.setOnCompletionListener(mp -> {
             new Handler().postDelayed(() -> {

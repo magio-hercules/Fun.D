@@ -1,12 +1,14 @@
 package com.fundroid.offstand.utils;
 
+import android.view.View;
+
+import androidx.databinding.BindingAdapter;
+
 public class BindingAdapters {
 
-    //Todo : 바인딩 어댑터 static interface 말고는 지원 안되는지 확인
-//    @BindingAdapter("addAnimationListener")
-//    public static void addAnimationListener(GifImageView gifImageView) {
-//        GifDrawable gifDrawable = (GifDrawable)gifImageView.getDrawable();
-//        gifDrawable.addAnimationListener(loopNumber -> Log.d("lsc","gifDrawable " + loopNumber));
-//    }
+    @BindingAdapter("onTouch")
+    public static void onTouch(View self, View.OnTouchListener onTouchListener) {
+        self.setOnTouchListener(onTouchListener);
+    }
 
 }

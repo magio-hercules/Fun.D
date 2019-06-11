@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
@@ -83,7 +84,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
         String videoRootPath = "android.resource://" + getContext().getPackageName() + "/";
         fragmentMainBinding.bgMain.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_lobby));
         fragmentMainBinding.bgMain.start();
-        fragmentMainBinding.bgMain.setOnCompletionListener(mp -> fragmentMainBinding.bgMain.start());
+        fragmentMainBinding.bgMain.setOnPreparedListener(mp -> mp.setLooping(true));
     }
 
     @Override
