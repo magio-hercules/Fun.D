@@ -24,7 +24,6 @@ public class BehaviorSubjectBus {
     }
 
     public <T> Observable getEvents(Class<T> tClass) {
-//        Log.d("lsc","BehaviorSubjectBus getEvents " + behaviorSubject.ofType(tClass));
         return behaviorSubject.ofType(tClass);
     }
 

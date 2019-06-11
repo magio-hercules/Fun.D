@@ -11,6 +11,7 @@ import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.model.Card;
 import com.fundroid.offstand.model.User;
+import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -40,6 +41,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_MOVE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_READY_CANCEL;
@@ -99,6 +101,8 @@ public class ConnectionManager {
                 socket = serverSocket.accept();
             } catch (IOException e) {
                 Log.e("lsc", "socketAcceptLoop e " + e.getMessage());
+                ClientPublishSubjectBus.getInstance().sendEvent(new ApiBody(API_OUT_SELF).toString());
+                break;
             }
             ServerThread serverThread = new ServerThread(socket);
             serverThreads[serverCount] = serverThread;
@@ -108,6 +112,7 @@ public class ConnectionManager {
     }
 
     private static ArrayList<User> swapToFirst(ArrayList<User> users, int seatNo) {
+        Log.d("lsc", "ConnectionManager swapToFirst " + users + ", " + seatNo);
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).getSeat() == seatNo) {
                 Collections.swap(users, 0, i);
@@ -117,6 +122,7 @@ public class ConnectionManager {
     }
 
     public static Observable<ApiBody> serverProcessor(String apiBodyStr) {
+        Log.v("lsc", "serverProcessor " + apiBodyStr);
         ApiBody apiBody = new Gson().fromJson(apiBodyStr, ApiBody.class);
         switch (apiBody.getNo()) {
             case API_ENTER_ROOM:
@@ -213,6 +219,7 @@ public class ConnectionManager {
     }
 
     private static Observable<Integer> setUserSeatNo(ApiBody apiBody) {
+        Log.d("lsc", "ConnectionManager setUserSeatNo api " + apiBody);
         return Observable.create(subscriber -> {
             int seatNo = 1;
             for (ServerThread serverThread : Stream.of(serverThreads).withoutNulls().collect(Collectors.toList())) {
@@ -247,15 +254,8 @@ public class ConnectionManager {
 
     private static Observable<ApiBody> closeAllServerSocket() {
         return Observable.create(subscriber -> {
-            for (int index = 0; index < serverThreads.length; index++) {
-                if (serverThreads[index] != null && serverThreads[index].getUser() != null) {
-                    serverThreads[index].getSocket().close();
-                    serverThreads[index] = null;
-                    serverCount--;
-                }
-            }
             serverSocket.close();
-            serverSocket = null;
+            serverCount = 0;
         });
     }
 
@@ -323,6 +323,7 @@ public class ConnectionManager {
     }
 
     private static Observable<EnumStatus> setRoomStatus() {
+        Log.d("lsc", "ConnectionManager setRoomStatus");
         return Observable.create(subscriber -> {
             // 방장 제외한 나머지 User 리스트
             // 모두 ready 면 방장에게 셔플 가능 api 전송
@@ -371,6 +372,7 @@ public class ConnectionManager {
     }
 
     private static Observable<ApiBody> sendToHost(EnumStatus roomStatus) {
+        Log.d("lsc", "sendToHost " + roomStatus);
         switch (roomStatus) {
             case SHUFFLE_AVAILABLE:
                 return sendMessage(new ApiBody(API_SHUFFLE_AVAILABLE), serverThreads[0]);
@@ -432,17 +434,12 @@ public class ConnectionManager {
 
     private static Single<ArrayList<User>> setSumRebalance(ArrayList<User> users) {
         return Single.create(subscriber -> {
-            Log.d("lsc", "setSumRebalance start");
             if (Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL4.getCardLevel()).count() == 0) {
-                Log.d("lsc", "setSumRebalance 땡 없음");
                 Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL5.getCardLevel()).findFirst().ifPresent(level9User -> level9User.setCardSum(0));
             }
             if (Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL8.getCardLevel()).count() == 0) {
-                Log.d("lsc", "setSumRebalance 광땡 없음");
                 Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL9.getCardLevel()).findFirst().ifPresent(level9User -> level9User.setCardSum(0));
             }
-
-            Log.d("lsc", "setSumRebalance end");
             subscriber.onSuccess(users);
         });
     }
@@ -498,8 +495,9 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
 
             for (ServerThread serverThread : serverThreads) {
-                if (serverThread != null)
+                if (serverThread != null) {
                     serverThread.getStreamToClient().writeUTF(message.toString());
+                }
             }
             subscriber.onNext(message);
         });
@@ -517,7 +515,6 @@ public class ConnectionManager {
 
     private static Observable<ApiBody> sendMessage(ApiBody message, int seatNo) {
         return Observable.create(subscriber -> {
-
             Stream.of(serverThreads)
                     .withoutNulls()
                     .filter(serverThread -> serverThread.getUser().getSeat() == seatNo)
