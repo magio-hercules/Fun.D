@@ -41,14 +41,16 @@ public class ClientThread implements Runnable {
         try {
             socket.connect(new InetSocketAddress(serverIp, serverPort), SOCKET_TIMEOUT);
             while (true) {
-                streamByServer = new DataInputStream(socket.getInputStream());
-                streamToServer = new DataOutputStream(socket.getOutputStream());
-                String message = streamByServer.readUTF();
-                ClientPublishSubjectBus.getInstance().sendEvent(message);
-                Log.d("lsc", "서버 -> 클라이언트 " + message);
+                if (socket != null) {
+                    streamByServer = new DataInputStream(socket.getInputStream());
+                    streamToServer = new DataOutputStream(socket.getOutputStream());
+                    String message = streamByServer.readUTF();
+                    ClientPublishSubjectBus.getInstance().sendEvent(message);
+                    Log.d("lsc", "서버 -> 클라이언트 " + message);
+                }
             }
         } catch (IOException e) {
-            Log.e("lsc","ClientThread error " + e.getMessage());
+            Log.e("lsc", "ClientThread error " + e.getMessage());
             ClientPublishSubjectBus.getInstance().sendEvent(new ApiBody(API_OUT_SELF).toString());
         }
 

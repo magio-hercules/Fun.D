@@ -474,8 +474,10 @@ public class ConnectionManager {
 //                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
 //                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
 //                // 1P 8땡 2P 땡잡이 3P 구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(3, 7));
+//                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));//팔땡
+//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 9));//멍구사
+//                serverThreads.get(0).getUser().setCards(new Pair<>(1, 19)); //구삥
+//                serverThreads.get(1).getUser().setCards(new Pair<>(14, 9)); //구사
 //                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
 //                // 1P 8땡 2P 땡잡이 3P 멍구사
 //                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));

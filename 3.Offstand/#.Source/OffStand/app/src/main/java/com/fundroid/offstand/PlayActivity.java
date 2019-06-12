@@ -31,6 +31,7 @@ import androidx.constraintlayout.widget.Group;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -38,13 +39,19 @@ import com.bumptech.glide.Glide;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
+import com.fundroid.offstand.ui.lobby.guide.GuideFragment;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.google.gson.Gson;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import pl.droidsonroids.gif.AnimationListener;
@@ -62,7 +69,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 
-public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
+public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener, HasSupportFragmentInjector {
     static final String TAG = "[PLAY]";
 
     public static int SOUND_MAX_COUNT = 10;
@@ -526,7 +533,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // 비디오뷰에 연결
         mediaController.setAnchorView(videoView);
         // 안드로이드 res폴더에 raw폴더를 생성 후 재생할 동영상파일을 넣습니다.
-        Uri video = Uri.parse("android.resource://" + getPackageName()+ "/"+R.raw.video_shuffle);
+        Uri video = Uri.parse("android.resource://" + getPackageName()+ "/"+R.raw.mp4_shuffle);
         /*
         외부파일의 경우
         Uri video = Uri.parse("http://해당 url/mp4_file_name.mp4") 와 같이 사용한다.
@@ -869,6 +876,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         Log.d(TAG, "doJokbo");
         // TODO :
         Toast.makeText(getApplicationContext(), "족보 화면 연결해주세요", Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .add(R.id.fragment_container, GuideFragment.newInstance(), GuideFragment.TAG)
+                .commit();
     }
 
     @Override
@@ -1210,4 +1223,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }, () -> Log.d(TAG, "test onCompleted"));
     }
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        Log.d("lsc","supportFragmentInjector " + fragmentDispatchingAndroidInjector);
+        return fragmentDispatchingAndroidInjector;
+    }
 }
