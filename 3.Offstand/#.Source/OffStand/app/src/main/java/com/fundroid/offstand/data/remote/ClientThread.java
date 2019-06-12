@@ -47,10 +47,14 @@ public class ClientThread implements Runnable {
                     String message = streamByServer.readUTF();
                     ClientPublishSubjectBus.getInstance().sendEvent(message);
                     Log.d("lsc", "서버 -> 클라이언트 " + message);
+                } else {
+                    Log.d("lsc", "API_OUT_SELF 보냄");
+                    ClientPublishSubjectBus.getInstance().sendEvent(new ApiBody(API_OUT_SELF).toString());
+                    break;
                 }
             }
         } catch (IOException e) {
-            Log.e("lsc", "ClientThread error " + e.getMessage());
+            Log.e("lsc", "ClientThread error " + e.getMessage() + ", API_OUT_SELF 보냄");
             ClientPublishSubjectBus.getInstance().sendEvent(new ApiBody(API_OUT_SELF).toString());
         }
 
