@@ -1,8 +1,13 @@
 package com.fundroid.offstand.ui.lobby.findroom;
 
 
+import android.content.Context;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.util.Log;
 
+import com.fundroid.offstand.R;
+import com.fundroid.offstand.SettingActivity;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
@@ -17,6 +22,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import io.reactivex.Completable;
 
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
@@ -25,9 +32,11 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
-    public FindRoomViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
-        super(dataManager, schedulerProvider);
+    private Context context;
 
+    public FindRoomViewModel(Context context, DataManager dataManager, SchedulerProvider schedulerProvider) {
+        super(dataManager, schedulerProvider);
+        this.context = context;
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
                 .map(json -> new Gson().fromJson((String) json, ApiBody.class))
                 .subscribeOn(getSchedulerProvider().io())
@@ -62,6 +71,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void onEnterRoomClick() {
+        MediaPlayer.create(context, R.raw.mouth_interface_button).start();
 //        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 3};
         byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
         InetAddress addr = null;
