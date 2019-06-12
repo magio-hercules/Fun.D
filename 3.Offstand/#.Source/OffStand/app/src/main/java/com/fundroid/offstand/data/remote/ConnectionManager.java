@@ -114,7 +114,8 @@ public class ConnectionManager {
     private static ArrayList<User> swapToFirst(ArrayList<User> users, int seatNo) {
         Log.d("lsc", "ConnectionManager swapToFirst " + users + ", " + seatNo);
         for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).getSeat() == seatNo) {
+            Log.d("lsc", "ConnectionManager swapToFirst for " + users.get(i));
+            if (users.get(i) != null && users.get(i).getSeat() == seatNo) {
                 Collections.swap(users, 0, i);
             }
         }
