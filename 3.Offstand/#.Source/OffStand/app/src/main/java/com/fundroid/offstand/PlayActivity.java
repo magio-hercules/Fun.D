@@ -1197,6 +1197,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                 image_re.setEnabled(true);
                                 enableRegame = true;
                             }
+                            Log.d("lsc","MSMS" + apiBody.getUsers());
+                            //int a = apiBody.getUsers().get(0).getCards().first;
+                            //apiBody.getUsers().size();
+
+                            Log.d("MSMS","MSMS"+  apiBody.getUsers().get(0).getCards().first);
 
                             Game_Result();
                             showResult = true;
