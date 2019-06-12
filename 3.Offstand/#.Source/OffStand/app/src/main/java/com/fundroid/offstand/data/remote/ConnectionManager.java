@@ -160,7 +160,7 @@ public class ConnectionManager {
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
                         .flatMap(pair -> {
                             if (roomStatus == EnumStatus.REGAME) {
-                                if (pair.second.getStatus() == CARDOPEN.getEnumStatus()) {
+                                if (pair.second.getStatus() == CARDOPEN.getEnumStatus() || pair.second.getStatus() == INGAME.getEnumStatus()) {
                                     Log.d("lsc", "REGAME SHUFFLE before " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
                                     pair.second.setStatus(INGAME.getEnumStatus());
                                     Log.d("lsc", "REGAME SHUFFLE after " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
@@ -477,8 +477,8 @@ public class ConnectionManager {
 //                // 1P 8땡 2P 땡잡이 3P 구사
 //                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));//팔땡
 //                serverThreads.get(1).getUser().setCards(new Pair<>(4, 9));//멍구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(1, 19)); //구삥
-//                serverThreads.get(1).getUser().setCards(new Pair<>(14, 9)); //구사
+                serverThreads.get(0).getUser().setCards(new Pair<>(1, 19)); //구삥
+                serverThreads.get(1).getUser().setCards(new Pair<>(14, 9)); //구사
 //                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
 //                // 1P 8땡 2P 땡잡이 3P 멍구사
 //                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
