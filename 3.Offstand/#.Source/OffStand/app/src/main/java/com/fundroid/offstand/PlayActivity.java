@@ -54,9 +54,6 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import pl.droidsonroids.gif.AnimationListener;
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifImageView;
 
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
@@ -1230,7 +1227,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        Log.d("lsc","supportFragmentInjector " + fragmentDispatchingAndroidInjector);
+        Log.d("lsc","PlayActivity supportFragmentInjector " + fragmentDispatchingAndroidInjector);
         return fragmentDispatchingAndroidInjector;
     }
 }

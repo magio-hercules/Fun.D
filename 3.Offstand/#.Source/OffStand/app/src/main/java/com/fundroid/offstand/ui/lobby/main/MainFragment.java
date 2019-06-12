@@ -1,18 +1,12 @@
 package com.fundroid.offstand.ui.lobby.main;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.databinding.FragmentMainBinding;
@@ -26,8 +20,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-
-import pl.droidsonroids.gif.GifDrawable;
 
 public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewModel> implements MainNavigator {
 
@@ -83,8 +75,28 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     private void initViews() {
         String videoRootPath = "android.resource://" + getContext().getPackageName() + "/";
         fragmentMainBinding.bgMain.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_lobby));
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("lsc","MainFragment onStart");
         fragmentMainBinding.bgMain.start();
         fragmentMainBinding.bgMain.setOnPreparedListener(mp -> mp.setLooping(true));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d("lsc","MainFragment onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d("lsc","MainFragment onStop");
+        fragmentMainBinding.bgMain.stopPlayback();
     }
 
     @Override
