@@ -81,21 +81,13 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     @Override
     public void onStart() {
         super.onStart();
-        Log.d("lsc","MainFragment onStart");
         fragmentMainBinding.bgMain.start();
         fragmentMainBinding.bgMain.setOnPreparedListener(mp -> mp.setLooping(true));
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        Log.d("lsc","MainFragment onPause");
-    }
-
-    @Override
     public void onStop() {
         super.onStop();
-        Log.d("lsc","MainFragment onStop");
         fragmentMainBinding.bgMain.stopPlayback();
     }
 

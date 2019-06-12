@@ -167,48 +167,73 @@
         app:layout_constraintGuide_percent="0.949" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_bluffing_s" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_bluffing_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.05" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_bluffing_e" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_bluffing_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.226" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_1_s" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_1_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.277" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_1_e" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_1_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.393" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_2_s" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_2_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.463" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_2_e" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_2_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.579" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_3_s" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_3_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.648" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_3_e" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_3_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.764" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_4_s" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_4_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.834" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_v_sound_4_e" android:orientation="vertical"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_v_sound_4_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintGuide_percent="0.95" />
 
     <!-- end of Vertical -->
@@ -329,48 +354,73 @@
         app:layout_constraintGuide_percent="0.906" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_bluffing_s" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_bluffing_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.168" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_bluffing_e" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_bluffing_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.246" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_1_s" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_1_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.168" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_1_e" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_1_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.233" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_2_s" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_2_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.168" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_2_e" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_2_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.233" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_3_s" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_3_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.168" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_3_e" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_3_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.233" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_4_s" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_4_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.168" />
+
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guide_h_sound_4_e" android:orientation="horizontal"
-        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:id="@+id/guide_h_sound_4_e"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.233" />
 
     // 만땅 Layout - Start
@@ -754,50 +804,50 @@
     <!-- 효과음 -->
 
     <!--<Button-->
-        <!--android:id="@+id/play_sound_1"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:text="1번"-->
-        <!--app:layout_constraintHorizontal_chainStyle="spread"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
-        <!--app:layout_constraintStart_toStartOf="@+id/guide_v_background_s"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/play_sound_2"/>-->
+    <!--android:id="@+id/play_sound_1"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:text="1번"-->
+    <!--app:layout_constraintHorizontal_chainStyle="spread"-->
+    <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
+    <!--app:layout_constraintStart_toStartOf="@+id/guide_v_background_s"-->
+    <!--app:layout_constraintEnd_toStartOf="@id/play_sound_2"/>-->
 
     <!--<Button-->
-        <!--android:id="@+id/play_sound_2"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:text="2번"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/play_sound_1"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/play_sound_3" />-->
+    <!--android:id="@+id/play_sound_2"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:text="2번"-->
+    <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/play_sound_1"-->
+    <!--app:layout_constraintEnd_toStartOf="@id/play_sound_3" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/play_sound_3"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:text="3번"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/play_sound_2"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/play_sound_4" />-->
+    <!--android:id="@+id/play_sound_3"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:text="3번"-->
+    <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/play_sound_2"-->
+    <!--app:layout_constraintEnd_toStartOf="@id/play_sound_4" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/play_sound_4"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:text="4번"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/play_sound_3"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/play_sound_5" />-->
+    <!--android:id="@+id/play_sound_4"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:text="4번"-->
+    <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/play_sound_3"-->
+    <!--app:layout_constraintEnd_toStartOf="@id/play_sound_5" />-->
 
     <!--<Button-->
-        <!--android:id="@+id/play_sound_5"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:text="5번"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
-        <!--app:layout_constraintStart_toEndOf="@+id/play_sound_4"-->
-        <!--app:layout_constraintEnd_toStartOf="@id/guide_v_background_e" />-->
+    <!--android:id="@+id/play_sound_5"-->
+    <!--android:layout_width="50dp"-->
+    <!--android:layout_height="50dp"-->
+    <!--android:text="5번"-->
+    <!--app:layout_constraintTop_toTopOf="@id/guide_h_5"-->
+    <!--app:layout_constraintStart_toEndOf="@+id/play_sound_4"-->
+    <!--app:layout_constraintEnd_toStartOf="@id/guide_v_background_e" />-->
 
     <ImageView
         android:id="@+id/play_sound_bluffing"
@@ -941,6 +991,16 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_v_start"
         app:layout_constraintRight_toRightOf="@id/guide_v_end"
         app:layout_constraintTop_toTopOf="@id/guide_h_4" />
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/guide_v_end"
+        app:layout_constraintStart_toStartOf="@id/guide_v_start"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!--<pl.droidsonroids.gif.GifImageView
         android:id="@+id/gif_shuffle"

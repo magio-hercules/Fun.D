@@ -40,6 +40,7 @@ import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.ui.lobby.guide.GuideFragment;
+import com.fundroid.offstand.ui.lobby.main.MainFragment;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.google.gson.Gson;
 
@@ -49,6 +50,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -65,6 +67,7 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
+import static com.fundroid.offstand.utils.CommonUtils.getVisibleFragmentTag;
 
 public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener, HasSupportFragmentInjector {
     static final String TAG = "[PLAY]";
@@ -185,7 +188,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
-
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
@@ -530,7 +533,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         // 비디오뷰에 연결
         mediaController.setAnchorView(videoView);
         // 안드로이드 res폴더에 raw폴더를 생성 후 재생할 동영상파일을 넣습니다.
-        Uri video = Uri.parse("android.resource://" + getPackageName()+ "/"+R.raw.mp4_shuffle);
+        Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.mp4_shuffle);
         /*
         외부파일의 경우
         Uri video = Uri.parse("http://해당 url/mp4_file_name.mp4") 와 같이 사용한다.
@@ -1196,11 +1199,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                             } else {
                                 image_result.setEnabled(true);
                             }
-                            Log.d("lsc","MSMS" + apiBody.getUsers());
+                            Log.d("lsc", "MSMS" + apiBody.getUsers());
                             //int a = apiBody.getUsers().get(0).getCards().first;
                             //apiBody.getUsers().size();
 
-                            Log.d("MSMS","MSMS"+  apiBody.getUsers().get(0).getCards().first);
+                            Log.d("MSMS", "MSMS" + apiBody.getUsers().get(0).getCards().first);
 
                             Game_Result();
                             showResult = true;
@@ -1232,7 +1235,25 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        Log.d("lsc","PlayActivity supportFragmentInjector " + fragmentDispatchingAndroidInjector);
         return fragmentDispatchingAndroidInjector;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getVisibleFragmentTag(this) == GuideFragment.TAG) {
+            Log.d("lsc", "PlayActivity onBackPressed 1");
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(GuideFragment.TAG);
+            if (fragment != null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .disallowAddToBackStack()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                        .remove(fragment)
+                        .commitNow();
+            }
+        } else {
+            Log.d("lsc", "PlayActivity onBackPressed 2");
+            super.onBackPressed();
+        }
     }
 }
