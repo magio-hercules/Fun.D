@@ -1196,6 +1196,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 //                                loadImage(image_re, R.drawable.button_play_re);
                                 image_re.setEnabled(true);
                                 enableRegame = true;
+                            } else {
+                                image_result.setEnabled(true);
                             }
 
                             Game_Result();
