@@ -51,20 +51,24 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     Log.d("lsc", "ACTION_DOWN " + v.getId());
+                    v.setPressed(true);
                     break;
 
                 case MotionEvent.ACTION_UP:
                     switch (v.getId()) {
                         case R.id.btn_make_room:
                             Log.d("lsc", "ACTION_UP btn_make_room");
+                            makeRoom();
                             break;
 
                         case R.id.btn_find_room:
                             Log.d("lsc", "ACTION_UP btn_find_room");
+                            findRoom();
                             break;
 
                         case R.id.btn_guide:
                             Log.d("lsc", "ACTION_UP btn_guide");
+                            guide();
                             break;
                     }
                     break;

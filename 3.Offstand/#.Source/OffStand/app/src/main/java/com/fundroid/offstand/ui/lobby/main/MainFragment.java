@@ -76,6 +76,9 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
         String videoRootPath = "android.resource://" + getContext().getPackageName() + "/";
         fragmentMainBinding.bgMain.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_lobby));
 
+        fragmentMainBinding.btnMakeRoom.setImageResource(R.drawable.btn_make_room);
+        fragmentMainBinding.btnFindRoom.setImageResource(R.drawable.btn_find_room);
+        fragmentMainBinding.btnGuide.setImageResource(R.drawable.btn_guide);
     }
 
     @Override
@@ -99,7 +102,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void makeRoom() {
-//        MediaPlayer.create(getActivity().getApplicationContext(), R.raw.mouth_interface_button).start();
+        fragmentMainBinding.btnMakeRoom.setPressed(false);
 
         // [만땅] SoundPool Test - Start
         // 한참을 연구해봤다..그래서 디버깅을 걸어보았는데...이상하게 중단점 지정하고 디버깅하면 소리가 난다 ㅋㅋㅋㅋㅋ뭐지?
@@ -124,6 +127,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void findRoom() {
+        fragmentMainBinding.btnFindRoom.setPressed(false);
+
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()
@@ -134,6 +139,8 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void guide() {
+        fragmentMainBinding.btnGuide.setPressed(false);
+
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()
