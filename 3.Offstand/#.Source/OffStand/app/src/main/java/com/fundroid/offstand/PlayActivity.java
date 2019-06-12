@@ -1196,6 +1196,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                             } else {
                                 image_result.setEnabled(true);
                             }
+                            Log.d("lsc","MSMS" + apiBody.getUsers());
+                            //int a = apiBody.getUsers().get(0).getCards().first;
+                            //apiBody.getUsers().size();
+
+                            Log.d("MSMS","MSMS"+  apiBody.getUsers().get(0).getCards().first);
 
                             Game_Result();
                             showResult = true;
