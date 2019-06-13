@@ -18,6 +18,8 @@ package com.fundroid.offstand.ui.lobby.main;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.media.MediaPlayer;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,8 +31,11 @@ import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 public class MainViewModel extends BaseViewModel<MainNavigator> {
 
-    public MainViewModel(DataManager dataManager, SchedulerProvider schedulerProvider) {
+    private final Context context;
+
+    public MainViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, Context context) {
         super(dataManager, schedulerProvider);
+        this.context = context;
     }
 
     public void makeRoom() {
@@ -58,16 +63,25 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
                     switch (v.getId()) {
                         case R.id.btn_make_room:
                             Log.d("lsc", "ACTION_UP btn_make_room");
+
+                            MediaPlayer.create(context, R.raw.abstract_click).start();
+
                             makeRoom();
                             break;
 
                         case R.id.btn_find_room:
                             Log.d("lsc", "ACTION_UP btn_find_room");
+
+                            MediaPlayer.create(context, R.raw.abstract_click).start();
+
                             findRoom();
                             break;
 
                         case R.id.btn_guide:
                             Log.d("lsc", "ACTION_UP btn_guide");
+
+                            MediaPlayer.create(context, R.raw.abstract_click).start();
+
                             guide();
                             break;
                     }

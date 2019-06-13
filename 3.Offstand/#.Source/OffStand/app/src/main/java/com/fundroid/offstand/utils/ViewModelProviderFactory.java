@@ -46,7 +46,7 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
         if (modelClass.isAssignableFrom(LobbyViewModel.class)) {
             return (T) new LobbyViewModel(dataManager, schedulerProvider, wifiP2pManager, channel, resourceProvider);
         } else if (modelClass.isAssignableFrom(MainViewModel.class)) {
-            return (T) new MainViewModel(dataManager, schedulerProvider);
+            return (T) new MainViewModel(dataManager, schedulerProvider, context);
         } else if (modelClass.isAssignableFrom(FindRoomViewModel.class)) {
             return (T) new FindRoomViewModel(context, dataManager, schedulerProvider);
         } else if (modelClass.isAssignableFrom(MakeRoomViewModel.class)) {
