@@ -170,14 +170,11 @@
             app:layout_constraintGuide_percent="0.666" />
         <!-- end of Horizontal -->
 
-
-
-        <pl.droidsonroids.gif.GifImageView
+        <VideoView
             android:id="@+id/bg_main"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="fitXY"
-            android:src="@drawable/bg_lobby"
             app:layout_constraintStart_toStartOf="@id/guide_v_bg_main_s"
             app:layout_constraintEnd_toEndOf="@id/guide_v_bg_main_e"
             app:layout_constraintTop_toTopOf="@id/guide_h_bg_main_s"
@@ -222,7 +219,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{() -> viewModel.makeRoom()}"
-            android:src="@drawable/btn_make_room"
+            app:onTouch="@{viewModel.onTouchListener}"
             app:layout_constraintStart_toStartOf="@id/guide_v_make_room_s"
             app:layout_constraintEnd_toStartOf="@id/guide_v_make_room_e"
             app:layout_constraintTop_toBottomOf="@id/guide_card_top"
@@ -233,7 +230,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{() -> viewModel.findRoom()}"
-            android:src="@drawable/btn_find_room"
+            app:onTouch="@{viewModel.onTouchListener}"
             app:layout_constraintStart_toStartOf="@id/guide_v_find_room_s"
             app:layout_constraintEnd_toStartOf="@id/guide_v_find_room_e"
             app:layout_constraintTop_toBottomOf="@id/guide_card_top"
@@ -244,7 +241,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{() -> viewModel.guide()}"
-            android:src="@drawable/btn_guide"
+            app:onTouch="@{viewModel.onTouchListener}"
             app:layout_constraintStart_toStartOf="@id/guide_v_guide_s"
             app:layout_constraintEnd_toStartOf="@id/guide_v_guide_e"
             app:layout_constraintTop_toBottomOf="@id/guide_card_top"

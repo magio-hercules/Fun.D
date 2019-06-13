@@ -1,14 +1,13 @@
 package com.fundroid.offstand.ui.lobby.main;
 
 import android.media.AudioAttributes;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.fundroid.offstand.BR;
-import com.fundroid.offstand.PlayActivity;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.databinding.FragmentMainBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
@@ -21,10 +20,6 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
-import pl.droidsonroids.gif.GifDrawable;
-
-import static com.fundroid.offstand.core.AppConstant.FRAGMENT_FIND_ROOM;
-import static com.fundroid.offstand.core.AppConstant.FRAGMENT_MAKE_ROOM;
 
 public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewModel> implements MainNavigator {
 
@@ -78,12 +73,36 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     }
 
     private void initViews() {
-        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).setLoopCount(0);
+        String videoRootPath = "android.resource://" + getContext().getPackageName() + "/";
+        fragmentMainBinding.bgMain.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_lobby));
+
+        fragmentMainBinding.btnMakeRoom.setImageResource(R.drawable.btn_make_room);
+        fragmentMainBinding.btnFindRoom.setImageResource(R.drawable.btn_find_room);
+        fragmentMainBinding.btnGuide.setImageResource(R.drawable.btn_guide);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fragmentMainBinding.bgMain.start();
+        fragmentMainBinding.bgMain.setOnPreparedListener(mp -> mp.setLooping(true));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        fragmentMainBinding.bgMain.stopPlayback();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.v(TAG, "MainFragment onDestroy");
     }
 
     @Override
     public void makeRoom() {
-//        MediaPlayer.create(getActivity().getApplicationContext(), R.raw.mouth_interface_button).start();
+        fragmentMainBinding.btnMakeRoom.setPressed(false);
 
         // [만땅] SoundPool Test - Start
         // 한참을 연구해봤다..그래서 디버깅을 걸어보았는데...이상하게 중단점 지정하고 디버깅하면 소리가 난다 ㅋㅋㅋㅋㅋ뭐지?
@@ -96,16 +115,10 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
         int soundID = sp.load(getActivity().getApplicationContext(), R.raw.mouth_interface_button, 1);
 //        sp.play(soundID, 1f, 1f, 0, 0,1f);
 
-        sp.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
-            @Override
-            public void onLoadComplete(SoundPool soundPool, int sampleId, int status) {
-                sp.play(soundID, 1f, 1f, 0, 0,1f);
-            }
-        });
+        sp.setOnLoadCompleteListener((soundPool, sampleId, status) -> sp.play(soundID, 1f, 1f, 0, 0, 1f));
         // [만땅] SoundPool Test - End
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack(FRAGMENT_MAKE_ROOM)
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, MakeRoomFragment.newInstance(), MakeRoomFragment.TAG)
@@ -114,9 +127,10 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void findRoom() {
+        fragmentMainBinding.btnFindRoom.setPressed(false);
+
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack(FRAGMENT_FIND_ROOM)
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, FindRoomFragment.newInstance(), FindRoomFragment.TAG)
@@ -125,10 +139,10 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void guide() {
-        ((GifDrawable) fragmentMainBinding.bgMain.getDrawable()).pause();
+        fragmentMainBinding.btnGuide.setPressed(false);
+
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
-//                .addToBackStack(FRAGMENT_FIND_ROOM)
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .add(R.id.fragment_container, GuideFragment.newInstance(), GuideFragment.TAG)

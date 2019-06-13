@@ -1,5 +1,6 @@
 package com.fundroid.offstand.core;
 
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.util.Log;
@@ -39,6 +40,7 @@ public class OffStandApplication extends DaggerApplication {
         return DaggerAppComponent.builder().create(this);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,7 +49,7 @@ public class OffStandApplication extends DaggerApplication {
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
-                    Log.d("lsc", "OffStandApplication result " + result);
+//                    Log.d("lsc", "/**/OffStandApplication result " + result);
                 }, onError -> {
                     Log.d("lsc", "OffStandApplication onError " + onError);
                 }, () -> Log.d("lsc", "OffStandApplication onCompleted"));

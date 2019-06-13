@@ -40,7 +40,7 @@ public class ServerThread implements Runnable {
 
     public ServerThread(Socket socket) {
         this.socket = socket;
-        Log.d("lsc","ServerThread constructor " + Thread.currentThread().getName());
+        Log.d("lsc", "ServerThread constructor " + Thread.currentThread().getName());
     }
 
     @Override
@@ -48,11 +48,14 @@ public class ServerThread implements Runnable {
         try {
             while (true) {
                 synchronized (lock) {
-                streamByClient = new DataInputStream(socket.getInputStream());
-                streamToClient = new DataOutputStream(socket.getOutputStream());
-                String message = streamByClient.readUTF();
-                ServerPublishSubjectBus.getInstance().sendEvent(message);
-                Log.d("lsc", "클라이언트 -> 서버 " + message);
+//                    Log.d("lsc","ServerThread run socket " + (socket == null));
+                    if(socket != null) {
+                        streamByClient = new DataInputStream(socket.getInputStream());
+                        streamToClient = new DataOutputStream(socket.getOutputStream());
+                        String message = streamByClient.readUTF();
+                        ServerPublishSubjectBus.getInstance().sendEvent(message);
+                        Log.d("lsc", "클라이언트 -> 서버 " + message);
+                    }
                 }
             }
         } catch (IOException e) {

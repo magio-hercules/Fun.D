@@ -17,6 +17,12 @@
 package com.fundroid.offstand.ui.lobby.main;
 
 
+import android.annotation.SuppressLint;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
+
+import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
@@ -37,6 +43,39 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
 
     public void guide() {
         getNavigator().guide();
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    public View.OnTouchListener onTouchListener() {
+        return (v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    Log.d("lsc", "ACTION_DOWN " + v.getId());
+                    v.setPressed(true);
+                    break;
+
+                case MotionEvent.ACTION_UP:
+                    switch (v.getId()) {
+                        case R.id.btn_make_room:
+                            Log.d("lsc", "ACTION_UP btn_make_room");
+                            makeRoom();
+                            break;
+
+                        case R.id.btn_find_room:
+                            Log.d("lsc", "ACTION_UP btn_find_room");
+                            findRoom();
+                            break;
+
+                        case R.id.btn_guide:
+                            Log.d("lsc", "ACTION_UP btn_guide");
+                            guide();
+                            break;
+                    }
+                    break;
+            }
+            return false;
+        };
+
     }
 
     public void onNavBackClick() {

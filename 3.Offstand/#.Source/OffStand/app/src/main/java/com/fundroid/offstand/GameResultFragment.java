@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.fundroid.offstand.data.model.ApiBody;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -48,6 +50,8 @@ public class GameResultFragment extends Fragment {
     ImageView play_result_ReButton;
 
     PlayActivity playActivity;
+
+    ApiBody apiBody;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -101,7 +105,31 @@ public class GameResultFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+
+
         Log.d("MSMS", "4");
+
+        int[] firstCard = {0, R.drawable.card_1_1, R.drawable.card_2_1,
+                R.drawable.card_3_1, R.drawable.card_4_1,
+                R.drawable.card_5_1, R.drawable.card_6_1,
+                R.drawable.card_7_1, R.drawable.card_8_1,
+                R.drawable.card_9_1, R.drawable.card_10_1,
+                R.drawable.card_1_2, R.drawable.card_2_2,
+                R.drawable.card_3_2, R.drawable.card_4_2,
+                R.drawable.card_5_2, R.drawable.card_6_2,
+                R.drawable.card_7_2, R.drawable.card_8_2,
+                R.drawable.card_9_2, R.drawable.card_10_2};
+
+        int[] secondCard = {0, R.drawable.card_1_1, R.drawable.card_2_1,
+                R.drawable.card_3_1, R.drawable.card_4_1,
+                R.drawable.card_5_1, R.drawable.card_6_1,
+                R.drawable.card_7_1, R.drawable.card_8_1,
+                R.drawable.card_9_1, R.drawable.card_10_1,
+                R.drawable.card_1_2, R.drawable.card_2_2,
+                R.drawable.card_3_2, R.drawable.card_4_2,
+                R.drawable.card_5_2, R.drawable.card_6_2,
+                R.drawable.card_7_2, R.drawable.card_8_2,
+                R.drawable.card_9_2, R.drawable.card_10_2};
 
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_gameresult,container,false);
 
@@ -136,6 +164,12 @@ public class GameResultFragment extends Fragment {
         play_result_left_button.setVisibility(rootview.VISIBLE);
         play_result_right_button.setVisibility(rootview.VISIBLE);
         play_result_shadow.setVisibility(rootview.VISIBLE);
+
+//        Log.d("MSMS","MSMS"+  firstCard[apiBody.getUsers().get(0).getCards().first]);
+
+        //play_result_content1_card1.setImageResource(firstCard[apiBody.getUsers().get(0).getCards().first]);
+        //play_result_content1_card2.setImageResource(secondCard[apiBody.getUsers().get(0).getCards().second]);
+
 
         // 결과보기 - 화살표(왼쪽, 오른쪽) 눌렀을 경우
         play_result_left_button.setOnClickListener(new View.OnClickListener() {

@@ -25,7 +25,7 @@ import javax.inject.Inject;
 
 public class AppPreferencesHelper implements PreferencesHelper {
 
-    private static final String PREF_KEY_USER_NAME = "userName";
+    public static final String PREF_KEY_USER_NAME = "userName";
     private static final String PREF_KEY_AVATAR = "character";
     private static final String PREF_KEY_TOTAL = "total";
     private static final String PREF_KEY_WIN = "win";

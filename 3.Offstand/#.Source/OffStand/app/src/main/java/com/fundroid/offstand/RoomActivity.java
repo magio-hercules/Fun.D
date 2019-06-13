@@ -564,6 +564,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
             if (curUser.getAvatar() != 0) {
                 allUser[tSeat] = new User(tSeat, curUser.isHost(), curUser.getName(),
                         curUser.getAvatar(), curUser.getTotal(), curUser.getWin());
+                allUser[tSeat].setStatus(curUser.getStatus());
                 if (curUser.getName().equals(userName) && curUser.getAvatar() == avatarId) {
                     curUserIndex = tSeat;
                 }
@@ -1000,6 +1001,7 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
                 .subscribeOn(Schedulers.io())
                 .subscribe(result -> {
                     Log.d(TAG, "RoomActivity server result " + result);
+                    Log.d("lsc", "RoomActivity server result " + result);
                     ApiBody apiBody = ((ApiBody) result);
                     switch (apiBody.getNo()) {
                         case API_ROOM_INFO:

@@ -36,6 +36,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import butterknife.OnClick;
+import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -79,6 +80,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
+        Log.d("lsc","LobbyActivity supportFragmentInjector " + fragmentDispatchingAndroidInjector);
         return fragmentDispatchingAndroidInjector;
     }
 

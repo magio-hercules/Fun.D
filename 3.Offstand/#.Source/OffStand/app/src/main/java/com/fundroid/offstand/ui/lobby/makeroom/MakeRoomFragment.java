@@ -96,5 +96,7 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
                 .beginTransaction()
                 .remove(this)
                 .commit();
+        getBaseActivity().finish();
     }
+
 }

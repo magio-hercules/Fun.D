@@ -7,21 +7,6 @@ import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
 public class Room extends WifiP2pDevice {
 
-    public enum EnumStatus {
-
-        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3);
-
-        private int enumStatus;
-
-        EnumStatus(int enumStatus) {
-            this.enumStatus = enumStatus;
-        }
-
-        public int getEnumStatus() {
-            return enumStatus;
-        }
-    }
-
     public String deviceName;
     public String deviceMacAddress;
     private int RoomStatus;

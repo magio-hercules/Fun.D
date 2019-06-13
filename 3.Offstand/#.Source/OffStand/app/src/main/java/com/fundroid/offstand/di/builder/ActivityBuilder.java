@@ -1,5 +1,6 @@
 package com.fundroid.offstand.di.builder;
 
+import com.fundroid.offstand.PlayActivity;
 import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.SettingActivity;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
@@ -26,5 +27,8 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector()
     abstract RoomActivity bindRoomActivity();
+
+    @ContributesAndroidInjector(modules = GuideFragmentProvider.class)
+    abstract PlayActivity bindPlayActivity();
 
 }

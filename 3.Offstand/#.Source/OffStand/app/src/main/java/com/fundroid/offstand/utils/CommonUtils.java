@@ -18,6 +18,15 @@ public final class CommonUtils {
         // This utility class is not publicly instantiable
     }
 
+    public static String getVisibleFragmentTag(FragmentActivity context) {
+        for (Fragment fragment : context.getSupportFragmentManager().getFragments())
+            if (fragment.isVisible()) {
+                return fragment.getTag();
+            }
+
+        return null;
+    }
+
     public static String getVisibleFragmentTag(FragmentActivity context, String tagForExceptFragment) {
         for (Fragment fragment : context.getSupportFragmentManager().getFragments())
             if (!fragment.getTag().equals(tagForExceptFragment)) {

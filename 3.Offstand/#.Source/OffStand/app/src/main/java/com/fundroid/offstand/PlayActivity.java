@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,8 +18,10 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
+import android.widget.VideoView;
 
 import java.io.IOException;
 import java.util.Random;
@@ -28,6 +31,7 @@ import androidx.constraintlayout.widget.Group;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -35,18 +39,23 @@ import com.bumptech.glide.Glide;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
+import com.fundroid.offstand.ui.lobby.guide.GuideFragment;
+import com.fundroid.offstand.ui.lobby.main.MainFragment;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.google.gson.Gson;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import dagger.android.AndroidInjection;
+import dagger.android.AndroidInjector;
+import dagger.android.DispatchingAndroidInjector;
+import dagger.android.support.HasSupportFragmentInjector;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import pl.droidsonroids.gif.AnimationListener;
-import pl.droidsonroids.gif.GifDrawable;
-import pl.droidsonroids.gif.GifImageView;
 
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
@@ -54,10 +63,13 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
+import static com.fundroid.offstand.utils.CommonUtils.getVisibleFragmentTag;
 
-public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {
+public class PlayActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener, HasSupportFragmentInjector {
     static final String TAG = "[PLAY]";
 
     public static int SOUND_MAX_COUNT = 10;
@@ -67,8 +79,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     public static int SOUND_LUCKY1 = 4;
     public static int SOUND_LUCKY2 = 5;
     public static int SOUND_LUCKY3 = 6;
-
-
 
 
     //    @BindView(R.id.play_image_card0)
@@ -81,6 +91,17 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     ImageView image3;
     //    @BindView(R.id.play_image_card4)
     ImageView image4;
+
+    @BindView(R.id.play_sound_bluffing)
+    ImageView play_sound_bluffing;
+    @BindView(R.id.play_sound_1)
+    ImageView play_sound_1;
+    @BindView(R.id.play_sound_2)
+    ImageView play_sound_2;
+    @BindView(R.id.play_sound_3)
+    ImageView play_sound_3;
+    @BindView(R.id.play_sound_4)
+    ImageView play_sound_4;
 
     @BindView(R.id.play_image_card_die)
     ImageView image_card_die;
@@ -132,7 +153,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private boolean bHideCard1 = false, bHideCard2 = false;
     private String card1, card2;
 
-    SoundPool soundPool;
+    SoundPool soundPool = null;
     int[] soundTrack;
 
 
@@ -167,7 +188,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "onCreate");
-
+        AndroidInjection.inject(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play);
 
@@ -178,7 +199,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         Intent intent = new Intent(this.getIntent());
         int tNum1, tNum2;
-        isHost =  intent.getBooleanExtra("isHost", false);
+        isHost = intent.getBooleanExtra("isHost", false);
         seatNum = intent.getIntExtra("seatNum", -1);
         tNum1 = intent.getIntExtra("card1", -1);
         tNum2 = intent.getIntExtra("card2", -1);
@@ -193,7 +214,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         initRX();
 
-        initCardImage();
+        initImage();
 
         initSound();
 
@@ -247,12 +268,14 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         super.onStop();
         Log.d(TAG, "onStop");
 
-        for (int i = 0 ; i < soundTrack.length ; i++) {
+        for (int i = 0; i < soundTrack.length; i++) {
             soundTrack[i] = 0;
         }
 
-        soundPool.release();
-        soundPool = null;
+        if (soundPool != null) {
+            soundPool.release();
+            soundPool = null;
+        }
     }
 
     @OnClick({
@@ -303,31 +326,39 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     @OnClick({
+            R.id.play_sound_bluffing,
             R.id.play_sound_1,
             R.id.play_sound_2,
             R.id.play_sound_3,
-            R.id.play_sound_4,
-            R.id.play_sound_5
+            R.id.play_sound_4
     })
-    public void onClick_sound(Button view) {
+    public void onClick_sound(ImageView view) {
         Log.d(TAG, "onClick_sound");
 
         switch (view.getId()) {
+            case R.id.play_sound_bluffing:
+                Group groupSound = (Group) findViewById(R.id.room_group_sound);
+                if (groupSound.getVisibility() == View.GONE) {
+                    groupSound.setVisibility(View.VISIBLE);
+                } else {
+                    groupSound.setVisibility(View.GONE);
+                }
+                break;
             case R.id.play_sound_1:
                 playSound(SOUND_LAUGH);
                 break;
             case R.id.play_sound_2:
-                playSound(SOUND_THUNDER);
-                break;
-            case R.id.play_sound_3:
                 playSound(SOUND_LUCKY1);
                 break;
-            case R.id.play_sound_4:
+            case R.id.play_sound_3:
                 playSound(SOUND_LUCKY2);
                 break;
-            case R.id.play_sound_5:
+            case R.id.play_sound_4:
                 playSound(SOUND_LUCKY3);
                 break;
+//            case R.id.play_sound_5:
+//                playSound(SOUND_THUNDER);
+//                break;
         }
     }
 
@@ -412,7 +443,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void initButton(boolean bFlag) {
         if (bFlag) {
             image_setting.setVisibility(View.VISIBLE);
-            image_open.setVisibility(View.VISIBLE);
+            // shuffle 효과 중에 보이는 이슈로 인해 INVISIBLE로 변경
+            image_open.setVisibility(View.INVISIBLE);
 
             image_exit.setVisibility(View.INVISIBLE);
             image_re.setVisibility(View.INVISIBLE);
@@ -429,8 +461,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             image_result.setVisibility(View.VISIBLE);
             image_jokbo.setVisibility(View.VISIBLE);
 
-            loadImage(image_re, R.drawable.play_re_dis);
-            loadImage(image_result, R.drawable.play_result_dis);
+//            loadImage(image_re, R.drawable.play_re_dis);
+//            loadImage(image_result, R.drawable.play_result_dis);
+            image_re.setEnabled(false);
+            image_result.setEnabled(false);
 
             enableRegame = false;
             enableResult = false;
@@ -445,12 +479,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         }
     }
 
-    private void initCardImage() {
+    private void initImage() {
         image0 = (ImageView) findViewById(R.id.play_image_card0);
         image1 = (ImageView) findViewById(R.id.play_image_card1);
         image2 = (ImageView) findViewById(R.id.play_image_card2);
         image3 = (ImageView) findViewById(R.id.play_image_card3);
         image4 = (ImageView) findViewById(R.id.play_image_card4);
+
+        play_sound_bluffing.setImageResource(R.drawable.button_play_sound_bluffing);
+        play_sound_1.setImageResource(R.drawable.button_play_sound_1);
+        play_sound_2.setImageResource(R.drawable.button_play_sound_1);
+        play_sound_3.setImageResource(R.drawable.button_play_sound_1);
+        play_sound_4.setImageResource(R.drawable.button_play_sound_1);
     }
 
     private void initSound() {
@@ -458,11 +498,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         soundTrack = new int[SOUND_MAX_COUNT];
 
-        new Handler().postDelayed(new Runnable()
-        {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 AudioAttributes audioAttributes = new AudioAttributes.Builder()
                         .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                         .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -472,7 +510,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
 //        loadSound(SOUND_BACKGROUND, R.raw.pirate_sound_background);
                 loadSound(SOUND_LAUGH, R.raw.play_sound_laugh);
-                loadSound(SOUND_THUNDER, R.raw.play_sound_thunder);
+//                loadSound(SOUND_THUNDER, R.raw.play_sound_thunder);
                 loadSound(SOUND_LUCKY1, R.raw.play_sound_lucky1);
                 loadSound(SOUND_LUCKY2, R.raw.play_sound_lucky2);
                 loadSound(SOUND_LUCKY3, R.raw.play_sound_lucky3);
@@ -483,53 +521,66 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void initShuffle() {
         Log.d(TAG, "initShuffle");
 
-//        ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
-//        if (fragment == null) {
-//            // Make new fragment to show this selection.
-//            fragment = new ShuffleFragment();
-//
-//            // Execute a transaction, replacing any existing fragment
-//            // with this one inside the frame.
-//            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//            ft.replace(R.id.room_shuffle_frame, fragment);
-////            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-//            ft.commit();
-//        }
+        play_sound_bluffing.setVisibility(View.GONE);
+        Group groupSound = (Group) findViewById(R.id.room_group_sound);
+        groupSound.setVisibility(View.GONE);
+        image_open.setVisibility(View.GONE);
 
-        try {
-            Log.d(TAG, "initShuffle 1");
+        // 생성한 비디오뷰를 bind
+        VideoView videoView = (VideoView) findViewById(R.id.gif_shuffle);
+        // 비디오뷰를 커스텀하기 위해서 미디어컨트롤러 객체 생성
+        MediaController mediaController = new MediaController(this);
+        // 비디오뷰에 연결
+        mediaController.setAnchorView(videoView);
+        // 안드로이드 res폴더에 raw폴더를 생성 후 재생할 동영상파일을 넣습니다.
+        Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.mp4_shuffle);
+        /*
+        외부파일의 경우
+        Uri video = Uri.parse("http://해당 url/mp4_file_name.mp4") 와 같이 사용한다.
+        */
 
-            Group groupSound = (Group) findViewById(R.id.room_group_sound);
-            groupSound.setVisibility(View.GONE);
-            image_open.setVisibility(View.GONE);
+        //비디오뷰의 컨트롤러를 미디어컨트롤로러 사용
+//        videoView.setMediaController(mediaController);
+        //비디오뷰에 재생할 동영상주소를 연결
+        videoView.setVideoURI(video);
+        //비디오뷰를 포커스하도록 지정
+        videoView.requestFocus();
+        //비디오를 처음부터 재생할 때 0으로 시작(파라메터 sec)
+//        videoView.seekTo(200);
+        // 검은색 화면이 깜빡이는 이슈 해결
+        videoView.setZOrderOnTop(true);
+        videoView.setVisibility(View.VISIBLE);
+        //동영상 재생
+        videoView.start();
 
-            GifImageView gifImageView = (GifImageView) findViewById(R.id.gif_shuffle);
-            GifDrawable gifDrawable = new GifDrawable(getResources(), R.drawable.gif_shuffle_3);
-            Log.d(TAG, "initShuffle 2");
-            gifImageView.setVisibility(View.VISIBLE);
-            gifImageView.setImageDrawable(gifDrawable);
-            Log.d(TAG, "initShuffle 3");
+        //동영상이 재생준비가 완료되었을 때를 알 수 있는 리스너 (실제 웹에서 영상을 다운받아 출력할 때 많이 사용됨)
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                Log.d(TAG, "initShuffle setOnPreparedListener");
+//                mp.setLooping(true);
+            }
+        });
 
-            gifDrawable.addAnimationListener(new AnimationListener() {
-                @Override
-                public void onAnimationCompleted(int loopNumber) {
-                    Log.d(TAG, "Shuffle onAnimationCompleted");
+        //동영상 재생이 완료된 걸 알 수 있는 리스너
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                //동영상 재생이 완료된 후 호출되는 메소드
+//                Toast.makeText(PlayActivity.this,
+//                        "동영상 재생이 완료되었습니다.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "initShuffle setOnCompletionListener");
 
-                    image_open.setVisibility(View.VISIBLE);
+                image_open.setVisibility(View.VISIBLE);
 //                    Group groupSound = (Group) findViewById(R.id.room_group_sound);
-                    groupSound.setVisibility(View.VISIBLE);
+                play_sound_bluffing.setVisibility(View.VISIBLE);
+//                    groupSound.setVisibility(View.VISIBLE);
 
-                    gifImageView.setVisibility(View.GONE);
-                    gifDrawable.recycle();
-                }
-            });
-        } catch (Resources.NotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                videoView.stopPlayback();
+                videoView.setVisibility(View.GONE);
+            }
+        });
     }
-
 
     public void finishShuffle() {
         ShuffleFragment fragment = (ShuffleFragment) getSupportFragmentManager().findFragmentById(R.id.room_shuffle_frame);
@@ -586,11 +637,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                         yAnimation.cancel();
                         break;
                     case MotionEvent.ACTION_UP:
-                        int gap = startY > (int)event.getRawY() ? startY - (int)event.getRawY() : (int)event.getRawY() - startY;
-                        Log.d(TAG, "viewHeight/2 : " + (viewHeight/2) + ", gap : " + gap);
+                        int gap = startY > (int) event.getRawY() ? startY - (int) event.getRawY() : (int) event.getRawY() - startY;
+                        Log.d(TAG, "viewHeight/2 : " + (viewHeight / 2) + ", gap : " + gap);
 
                         // 패가 절반이상 까진경우
-                        if (viewHeight/2 < gap) {
+                        if (viewHeight / 2 < gap) {
                             Log.d(TAG, "패가 절반이상 까진경우");
 //                            openAnimation.start();
                             bCheck = true;
@@ -782,9 +833,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
     private void doExit() {
         Log.d(TAG, "doExit");
-        Intent intent = new Intent(PlayActivity.this, LobbyActivity.class);
-        startActivity(intent);
-        finish();
+        doSendMessage(API_OUT, seatNum);
     }
 
     private void doRestart() {
@@ -792,6 +841,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
         if (isHost && enableRegame) {
             doSendMessage(API_SHUFFLE);
+
+            // 방장이 DIE 상태에서 RE게임을 수행할 때
+            image_re.setEnabled(false);
+            image_result.setEnabled(false);
+
+            showResult = false;
         } else {
             Toast.makeText(getApplicationContext(), "게임결과 확인 후 RE게임 가능", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "this is client || enableRegame is false");
@@ -821,6 +876,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         Log.d(TAG, "doJokbo");
         // TODO :
         Toast.makeText(getApplicationContext(), "족보 화면 연결해주세요", Toast.LENGTH_SHORT).show();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .disallowAddToBackStack()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .add(R.id.fragment_container, GuideFragment.newInstance(), GuideFragment.TAG)
+                .commit();
     }
 
     @Override
@@ -1131,9 +1192,18 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_GAME_RESULT_BR:
                             if (isHost) {
-                                loadImage(image_re, R.drawable.button_play_re);
+//                                image_re.setImageResource(R.drawable.button_play_re);
+//                                loadImage(image_re, R.drawable.button_play_re);
+                                image_re.setEnabled(true);
                                 enableRegame = true;
+                            } else {
+                                image_result.setEnabled(true);
                             }
+                            Log.d("lsc", "MSMS" + apiBody.getUsers());
+                            //int a = apiBody.getUsers().get(0).getCards().first;
+                            //apiBody.getUsers().size();
+
+                            Log.d("MSMS", "MSMS" + apiBody.getUsers().get(0).getCards().first);
 
                             Game_Result();
                             showResult = true;
@@ -1141,9 +1211,17 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                         case API_GAME_RESULT_AVAILABLE:
                             if (isHost) {
-                                loadImage(image_result, R.drawable.button_play_result);
+//                                image_result.setImageResource(R.drawable.button_play_result);
+//                                loadImage(image_result, R.drawable.button_play_result);
+                                image_result.setEnabled(true);
                                 enableResult = true;
                             }
+                            break;
+
+                        case API_OUT_SELF:
+                            //본인이 나갔을 때
+                            LobbyActivity.start(this);
+                            finish();
                             break;
                     }
 
@@ -1152,4 +1230,30 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 }, () -> Log.d(TAG, "test onCompleted"));
     }
 
+    @Inject
+    DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
+
+    @Override
+    public AndroidInjector<Fragment> supportFragmentInjector() {
+        return fragmentDispatchingAndroidInjector;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getVisibleFragmentTag(this) == GuideFragment.TAG) {
+            Log.d("lsc", "PlayActivity onBackPressed 1");
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(GuideFragment.TAG);
+            if (fragment != null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .disallowAddToBackStack()
+                        .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                        .remove(fragment)
+                        .commitNow();
+            }
+        } else {
+            Log.d("lsc", "PlayActivity onBackPressed 2");
+            super.onBackPressed();
+        }
+    }
 }

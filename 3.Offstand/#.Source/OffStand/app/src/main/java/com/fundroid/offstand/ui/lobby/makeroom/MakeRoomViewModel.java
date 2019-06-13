@@ -58,7 +58,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
         getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
                 .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
-                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(1, true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
+                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(-1, true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().io())
                 .subscribe(() -> {
