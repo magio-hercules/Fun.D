@@ -302,6 +302,90 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.959" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_name_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.415" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_name_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.685" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_name_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.645" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content1_rank1_name_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.685" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_name_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.320" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_name_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.568" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank2_name_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.385" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank2_name_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.420" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank3_name_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.510" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank3_name_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.545" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank4_name_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.630" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank4_name_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.665" />
     // 만땅 Layout - End
 
 
@@ -377,6 +461,18 @@
         app:layout_constraintTop_toTopOf="@id/guide_result_content1_rank1_card_top"
         app:srcCompat="@drawable/card_die" />
 
+    <TextView
+        android:id="@+id/play_result_content1_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center|right"
+        android:text="1등"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content1_rank1_name_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content1_rank1_name_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content1_rank1_name_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content1_rank1_name_top" />
+
     <ImageView
         android:id="@+id/play_result_content2"
         android:layout_width="0dp"
@@ -389,6 +485,18 @@
         app:layout_constraintRight_toRightOf="@id/guide_result_right"
         app:layout_constraintTop_toTopOf="@id/guide_result_content1_top"
         app:srcCompat="@drawable/play_result_2" />
+
+    <TextView
+        android:id="@+id/play_result_content2_rank2_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center|right"
+        android:text="2등"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank2_name_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_name_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_name_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank2_name_top" />
 
     <ImageView
         android:id="@+id/play_result_rank2_card1"
@@ -416,6 +524,18 @@
         app:layout_constraintRight_toRightOf="@id/guide_result_content2_card2_right"
         app:srcCompat="@drawable/card_die" />
 
+    <TextView
+        android:id="@+id/play_result_content2_rank3_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center|right"
+        android:text="3등"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank3_name_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_name_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_name_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank3_name_top" />
+
     <ImageView
         android:id="@+id/play_result_rank3_card1"
         android:layout_width="0dp"
@@ -441,6 +561,18 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card2_left"
         app:layout_constraintRight_toRightOf="@id/guide_result_content2_card2_right"
         app:srcCompat="@drawable/card_die" />
+
+    <TextView
+        android:id="@+id/play_result_content2_rank4_name"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center|right"
+        android:text="4등"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank4_name_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_name_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_name_right"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank4_name_top" />
 
     <ImageView
         android:id="@+id/play_result_rank4_card1"
