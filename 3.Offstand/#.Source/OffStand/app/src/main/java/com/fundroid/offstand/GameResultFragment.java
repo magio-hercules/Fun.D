@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
@@ -34,13 +35,17 @@ public class GameResultFragment extends Fragment {
     // 만땅 - 필요한 요소 선언
     ImageView play_result_title1;
     ImageView play_result_content1;
+    TextView play_result_rank1_name;
     ImageView play_result_content1_card1;
     ImageView play_result_content1_card2;
     ImageView play_result_content2;
+    TextView play_result_rank2_name;
     ImageView play_result_rank2_card1;
     ImageView play_result_rank2_card2;
+    TextView play_result_rank3_name;
     ImageView play_result_rank3_card1;
     ImageView play_result_rank3_card2;
+    TextView play_result_rank4_name;
     ImageView play_result_rank4_card1;
     ImageView play_result_rank4_card2;
     ImageView play_result_left_button;
@@ -164,17 +169,25 @@ public class GameResultFragment extends Fragment {
         play_result_left_button = (ImageView) rootview.findViewById(R.id.play_result_left_button);
         play_result_right_button = (ImageView) rootview.findViewById(R.id.play_result_right_button);
         play_result_shadow = (ImageView) rootview.findViewById(R.id.play_result_shadow);
+        play_result_rank1_name = (TextView) rootview.findViewById(R.id.play_result_content1_rank1_name);
+        play_result_rank2_name = (TextView) rootview.findViewById(R.id.play_result_content2_rank2_name);
+        play_result_rank3_name = (TextView) rootview.findViewById(R.id.play_result_content2_rank3_name);
+        play_result_rank4_name = (TextView) rootview.findViewById(R.id.play_result_content2_rank4_name);
 
         // 만땅 - 기본 셋팅
         play_result_title1.setVisibility(rootview.VISIBLE);
         play_result_content1.setVisibility(rootview.VISIBLE);
+        play_result_rank1_name.setVisibility(rootview.VISIBLE);
         play_result_content1_card1.setVisibility(rootview.VISIBLE);
         play_result_content1_card2.setVisibility(rootview.VISIBLE);
         play_result_content2.setVisibility(rootview.GONE);
+        play_result_rank2_name.setVisibility(rootview.GONE);
         play_result_rank2_card1.setVisibility(rootview.GONE);
         play_result_rank2_card2.setVisibility(rootview.GONE);
+        play_result_rank3_name.setVisibility(rootview.GONE);
         play_result_rank3_card1.setVisibility(rootview.GONE);
         play_result_rank3_card2.setVisibility(rootview.GONE);
+        play_result_rank4_name.setVisibility(rootview.GONE);
         play_result_rank4_card1.setVisibility(rootview.GONE);
         play_result_rank4_card2.setVisibility(rootview.GONE);
         play_result_left_button.setVisibility(rootview.VISIBLE);
@@ -187,17 +200,21 @@ public class GameResultFragment extends Fragment {
             int second = (int) listmap.get("second");
             String name = (String) listmap.get("name");
             if (i == 0) {
+                play_result_rank1_name.setText(name);
                 play_result_content1_card1.setImageResource(oneFirstCard[first]);
                 play_result_content1_card2.setImageResource(oneSecondCard[second]);
                 //textView.setText(name)
 
             } else if (i == 1){
+                play_result_rank1_name.setText(name);
                 play_result_rank2_card1.setImageResource(twoFirstCard[first]);
                 play_result_rank2_card1.setImageResource(twoSecondCard[second]);
             } else if (i == 2){
+                play_result_rank1_name.setText(name);
                 play_result_rank3_card1.setImageResource(twoFirstCard[first]);
                 play_result_rank3_card1.setImageResource(twoSecondCard[second]);
             } else if (i == 3){
+                play_result_rank1_name.setText(name);
                 play_result_rank4_card1.setImageResource(twoFirstCard[first]);
                 play_result_rank4_card1.setImageResource(twoSecondCard[second]);
             }
@@ -223,29 +240,37 @@ public class GameResultFragment extends Fragment {
                 if (play_result_content1.getVisibility() == View.VISIBLE) {
                     // result_1
                     play_result_content1.setVisibility(View.GONE);
+                    play_result_rank1_name.setVisibility(View.GONE);
                     play_result_content1_card1.setVisibility(View.GONE);
                     play_result_content1_card2.setVisibility(View.GONE);
 
                     // result_2
                     play_result_content2.setVisibility(View.VISIBLE);
+                    play_result_rank2_name.setVisibility(View.VISIBLE);
                     play_result_rank2_card1.setVisibility(View.VISIBLE);
                     play_result_rank2_card2.setVisibility(View.VISIBLE);
+                    play_result_rank3_name.setVisibility(View.VISIBLE);
                     play_result_rank3_card1.setVisibility(View.VISIBLE);
                     play_result_rank3_card2.setVisibility(View.VISIBLE);
+                    play_result_rank4_name.setVisibility(View.VISIBLE);
                     play_result_rank4_card1.setVisibility(View.VISIBLE);
                     play_result_rank4_card2.setVisibility(View.VISIBLE);
                 } else {
                     // result_1
                     play_result_content1.setVisibility(View.VISIBLE);
+                    play_result_rank1_name.setVisibility(View.VISIBLE);
                     play_result_content1_card1.setVisibility(View.VISIBLE);
                     play_result_content1_card2.setVisibility(View.VISIBLE);
 
                     // result_2
                     play_result_content2.setVisibility(View.GONE);
+                    play_result_rank2_name.setVisibility(View.GONE);
                     play_result_rank2_card1.setVisibility(View.GONE);
                     play_result_rank2_card2.setVisibility(View.GONE);
+                    play_result_rank3_name.setVisibility(View.GONE);
                     play_result_rank3_card1.setVisibility(View.GONE);
                     play_result_rank3_card2.setVisibility(View.GONE);
+                    play_result_rank4_name.setVisibility(View.GONE);
                     play_result_rank4_card1.setVisibility(View.GONE);
                     play_result_rank4_card2.setVisibility(View.GONE);
                 }
@@ -260,29 +285,37 @@ public class GameResultFragment extends Fragment {
                 if (play_result_content1.getVisibility() == View.VISIBLE) {
                     // result_1
                     play_result_content1.setVisibility(View.GONE);
+                    play_result_rank1_name.setVisibility(View.GONE);
                     play_result_content1_card1.setVisibility(View.GONE);
                     play_result_content1_card2.setVisibility(View.GONE);
 
                     // result_2
                     play_result_content2.setVisibility(View.VISIBLE);
+                    play_result_rank2_name.setVisibility(View.VISIBLE);
                     play_result_rank2_card1.setVisibility(View.VISIBLE);
                     play_result_rank2_card2.setVisibility(View.VISIBLE);
+                    play_result_rank3_name.setVisibility(View.VISIBLE);
                     play_result_rank3_card1.setVisibility(View.VISIBLE);
                     play_result_rank3_card2.setVisibility(View.VISIBLE);
+                    play_result_rank4_name.setVisibility(View.VISIBLE);
                     play_result_rank4_card1.setVisibility(View.VISIBLE);
                     play_result_rank4_card2.setVisibility(View.VISIBLE);
                 } else {
                     // result_1
                     play_result_content1.setVisibility(View.VISIBLE);
+                    play_result_rank1_name.setVisibility(View.VISIBLE);
                     play_result_content1_card1.setVisibility(View.VISIBLE);
                     play_result_content1_card2.setVisibility(View.VISIBLE);
 
                     // result_2
                     play_result_content2.setVisibility(View.GONE);
+                    play_result_rank2_name.setVisibility(View.GONE);
                     play_result_rank2_card1.setVisibility(View.GONE);
                     play_result_rank2_card2.setVisibility(View.GONE);
+                    play_result_rank3_name.setVisibility(View.GONE);
                     play_result_rank3_card1.setVisibility(View.GONE);
                     play_result_rank3_card2.setVisibility(View.GONE);
+                    play_result_rank4_name.setVisibility(View.GONE);
                     play_result_rank4_card1.setVisibility(View.GONE);
                     play_result_rank4_card2.setVisibility(View.GONE);
                 }
