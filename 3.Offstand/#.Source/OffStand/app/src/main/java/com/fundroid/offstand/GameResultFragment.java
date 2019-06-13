@@ -1,7 +1,6 @@
 package com.fundroid.offstand;
 
 import android.content.Context;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,14 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import androidx.fragment.app.Fragment;
+
 import com.fundroid.offstand.data.model.ApiBody;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.fundroid.offstand.PlayActivity.resultList;
 
 
 /**
@@ -67,8 +68,6 @@ public class GameResultFragment extends Fragment {
 
     public GameResultFragment() {
         // Required empty public constructor
-
-        Log.d("MSMS", "1");
     }
 
     /**
@@ -81,7 +80,6 @@ public class GameResultFragment extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
     public static GameResultFragment newInstance(String param1, String param2) {
-        Log.d("MSMS", "2");
         GameResultFragment fragment = new GameResultFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -93,7 +91,6 @@ public class GameResultFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("MSMS", "3");
 
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -106,32 +103,51 @@ public class GameResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
+        int[] oneFirstCard = {0, R.drawable.one_card_1, R.drawable.one_card_2,
+                R.drawable.one_card_3, R.drawable.one_card_4,
+                R.drawable.one_card_5, R.drawable.one_card_6,
+                R.drawable.one_card_7, R.drawable.one_card_8,
+                R.drawable.one_card_9, R.drawable.one_card_10,
+                R.drawable.one_card_1_1, R.drawable.one_card_2_1,
+                R.drawable.one_card_3_1, R.drawable.one_card_4_1,
+                R.drawable.one_card_5_1, R.drawable.one_card_6_1,
+                R.drawable.one_card_7_1, R.drawable.one_card_8_1,
+                R.drawable.one_card_9_1, R.drawable.one_card_10_1};
 
-        Log.d("MSMS", "4");
+        int[] oneSecondCard = {0, R.drawable.one_card_1, R.drawable.one_card_2,
+                R.drawable.one_card_3, R.drawable.one_card_4,
+                R.drawable.one_card_5, R.drawable.one_card_6,
+                R.drawable.one_card_7, R.drawable.one_card_8,
+                R.drawable.one_card_9, R.drawable.one_card_10,
+                R.drawable.one_card_1_1, R.drawable.one_card_2_1,
+                R.drawable.one_card_3_1, R.drawable.one_card_4_1,
+                R.drawable.one_card_5_1, R.drawable.one_card_6_1,
+                R.drawable.one_card_7_1, R.drawable.one_card_8_1,
+                R.drawable.one_card_9_1, R.drawable.one_card_10_1};
 
-        int[] firstCard = {0, R.drawable.card_1_1, R.drawable.card_2_1,
-                R.drawable.card_3_1, R.drawable.card_4_1,
-                R.drawable.card_5_1, R.drawable.card_6_1,
-                R.drawable.card_7_1, R.drawable.card_8_1,
-                R.drawable.card_9_1, R.drawable.card_10_1,
-                R.drawable.card_1_2, R.drawable.card_2_2,
-                R.drawable.card_3_2, R.drawable.card_4_2,
-                R.drawable.card_5_2, R.drawable.card_6_2,
-                R.drawable.card_7_2, R.drawable.card_8_2,
-                R.drawable.card_9_2, R.drawable.card_10_2};
+        int[] twoFirstCard = {0, R.drawable.two_card_1, R.drawable.two_card_2,
+                R.drawable.two_card_3, R.drawable.two_card_4,
+                R.drawable.two_card_5, R.drawable.two_card_6,
+                R.drawable.two_card_7, R.drawable.two_card_8,
+                R.drawable.two_card_9, R.drawable.two_card_10,
+                R.drawable.two_card_1_1, R.drawable.two_card_2_1,
+                R.drawable.two_card_3_1, R.drawable.two_card_4_1,
+                R.drawable.two_card_5_1, R.drawable.two_card_6_1,
+                R.drawable.two_card_7_1, R.drawable.two_card_8_1,
+                R.drawable.two_card_9_1, R.drawable.two_card_10_1};
 
-        int[] secondCard = {0, R.drawable.card_1_1, R.drawable.card_2_1,
-                R.drawable.card_3_1, R.drawable.card_4_1,
-                R.drawable.card_5_1, R.drawable.card_6_1,
-                R.drawable.card_7_1, R.drawable.card_8_1,
-                R.drawable.card_9_1, R.drawable.card_10_1,
-                R.drawable.card_1_2, R.drawable.card_2_2,
-                R.drawable.card_3_2, R.drawable.card_4_2,
-                R.drawable.card_5_2, R.drawable.card_6_2,
-                R.drawable.card_7_2, R.drawable.card_8_2,
-                R.drawable.card_9_2, R.drawable.card_10_2};
+        int[] twoSecondCard = {0, R.drawable.two_card_1, R.drawable.two_card_2,
+                R.drawable.two_card_3, R.drawable.two_card_4,
+                R.drawable.two_card_5, R.drawable.two_card_6,
+                R.drawable.two_card_7, R.drawable.two_card_8,
+                R.drawable.two_card_9, R.drawable.two_card_10,
+                R.drawable.two_card_1_1, R.drawable.two_card_2_1,
+                R.drawable.two_card_3_1, R.drawable.two_card_4_1,
+                R.drawable.two_card_5_1, R.drawable.two_card_6_1,
+                R.drawable.two_card_7_1, R.drawable.two_card_8_1,
+                R.drawable.two_card_9_1, R.drawable.two_card_10_1};
 
-        ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_gameresult,container,false);
+        ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_gameresult, container, false);
 
         // 만땅 - 초기화
         play_result_title1 = (ImageView) rootview.findViewById(R.id.play_result_title1);
@@ -165,7 +181,34 @@ public class GameResultFragment extends Fragment {
         play_result_right_button.setVisibility(rootview.VISIBLE);
         play_result_shadow.setVisibility(rootview.VISIBLE);
 
-//        Log.d("MSMS","MSMS"+  firstCard[apiBody.getUsers().get(0).getCards().first]);
+        for (int i = 0; i < resultList.size(); i++) {
+            Map<String, Object> listmap = (Map<String, Object>) resultList.get(i);
+            int first = (int) listmap.get("first");
+            int second = (int) listmap.get("second");
+            String name = (String) listmap.get("name");
+            if (i == 0) {
+                play_result_content1_card1.setImageResource(oneFirstCard[first]);
+                play_result_content1_card2.setImageResource(oneSecondCard[second]);
+                //textView.setText(name)
+
+            } else if (i == 1){
+                play_result_rank2_card1.setImageResource(twoFirstCard[first]);
+                play_result_rank2_card1.setImageResource(twoSecondCard[second]);
+            } else if (i == 2){
+                play_result_rank3_card1.setImageResource(twoFirstCard[first]);
+                play_result_rank3_card1.setImageResource(twoSecondCard[second]);
+            } else if (i == 3){
+                play_result_rank4_card1.setImageResource(twoFirstCard[first]);
+                play_result_rank4_card1.setImageResource(twoSecondCard[second]);
+            }
+
+        }
+
+//        Log.d("MSMS","MSMS" + "GameResultFragment" + resultList.get(0));
+//        Map<String, Object> listmap = (Map<String, Object>) resultList.get(0);
+//        String userName = (String)listmap.get("name");
+//        Log.d("MSMS","MSMS"+userName);
+//        Log.d("MSMS","MSMS"+  apiBody.getUsers().get(0).getCards().first);
 
         //play_result_content1_card1.setImageResource(firstCard[apiBody.getUsers().get(0).getCards().first]);
         //play_result_content1_card2.setImageResource(secondCard[apiBody.getUsers().get(0).getCards().second]);
@@ -177,7 +220,7 @@ public class GameResultFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("kyj", "left button");
 
-                if(play_result_content1.getVisibility() == View.VISIBLE){
+                if (play_result_content1.getVisibility() == View.VISIBLE) {
                     // result_1
                     play_result_content1.setVisibility(View.GONE);
                     play_result_content1_card1.setVisibility(View.GONE);
@@ -191,8 +234,7 @@ public class GameResultFragment extends Fragment {
                     play_result_rank3_card2.setVisibility(View.VISIBLE);
                     play_result_rank4_card1.setVisibility(View.VISIBLE);
                     play_result_rank4_card2.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     // result_1
                     play_result_content1.setVisibility(View.VISIBLE);
                     play_result_content1_card1.setVisibility(View.VISIBLE);
@@ -215,7 +257,7 @@ public class GameResultFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("kyj", "right button");
 
-                if(play_result_content1.getVisibility() == View.VISIBLE){
+                if (play_result_content1.getVisibility() == View.VISIBLE) {
                     // result_1
                     play_result_content1.setVisibility(View.GONE);
                     play_result_content1_card1.setVisibility(View.GONE);
@@ -229,8 +271,7 @@ public class GameResultFragment extends Fragment {
                     play_result_rank3_card2.setVisibility(View.VISIBLE);
                     play_result_rank4_card1.setVisibility(View.VISIBLE);
                     play_result_rank4_card2.setVisibility(View.VISIBLE);
-                }
-                else{
+                } else {
                     // result_1
                     play_result_content1.setVisibility(View.VISIBLE);
                     play_result_content1_card1.setVisibility(View.VISIBLE);
@@ -253,9 +294,8 @@ public class GameResultFragment extends Fragment {
         play_result_ReButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("MSMS", "5");
 
-                playActivity.Game_Reslut_Close();
+                playActivity.Game_Result_Close();
 
 //                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 //                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -290,7 +330,6 @@ public class GameResultFragment extends Fragment {
 
     @Override
     public void onDetach() {
-        Log.d("MSMS", "5");
         super.onDetach();
 
         //mListener = null;
@@ -314,9 +353,7 @@ public class GameResultFragment extends Fragment {
 
     @OnClick(R.id.play_result_ReButton)
     public void Game_Result_ReButton() {
-        Log.d("MSMS", "6");
         Log.d("kyj", "exit fragment");
-
 
 
 //        fragmentTransaction.remove(this).commit();

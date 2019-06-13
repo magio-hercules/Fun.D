@@ -198,14 +198,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 //                    }
 //                });
 
-                Log.d("MSMS", "AAA" + characterState);
-
                 if (characterState > 1) {
                     characterState--;
                 } else {
                     characterState = character.length - 1;
                 }
-                Log.d("MSMS", "BBB" + characterState);
 
                 setting_character.setImageResource(character[characterState]);
             }
@@ -216,7 +213,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
             public void onClick(View v) {
                 MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
-                Log.d("MSMS", "AAA" + characterState);
 
 
                 if (characterState < character.length - 1) {
@@ -224,7 +220,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
                 } else {
                     characterState = 1;
                 }
-                Log.d("MSMS", "BBB" + characterState);
 
                 setting_character.setImageResource(character[characterState]);
             }
