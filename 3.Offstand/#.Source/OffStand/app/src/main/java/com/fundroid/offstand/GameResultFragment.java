@@ -197,8 +197,10 @@ public class GameResultFragment extends Fragment {
         play_result_right_button.setVisibility(rootview.VISIBLE);
         play_result_shadow.setVisibility(rootview.VISIBLE);
 
+        Map<String, Object> listmap;
+
         for (int i = 0; i < resultList.size(); i++) {
-            Map<String, Object> listmap = (Map<String, Object>) resultList.get(i);
+            listmap = (Map<String, Object>) resultList.get(i);
             int first = (int) listmap.get("first");
             int second = (int) listmap.get("second");
             String name = (String) listmap.get("name");
