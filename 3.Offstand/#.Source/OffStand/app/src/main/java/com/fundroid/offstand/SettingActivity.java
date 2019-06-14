@@ -134,12 +134,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
 //        editor.putInt("total", 5);
 //        editor.commit();
-        dataManager.setUserTotal(5);
+//        dataManager.setUserTotal(5);
 
 
 //        editor.putInt("win", 3);
 //        editor.commit();
-        dataManager.setUserWin(3);
+//        dataManager.setUserWin(3);
 
 
 //        editor.putFloat("per", (new Float(sharedPreferences.getInt("win", 0)) / new Float(sharedPreferences.getInt("total", 0))) * 100);
