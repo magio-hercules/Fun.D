@@ -1217,9 +1217,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                             int usersSize = apiBody.getUsers().size();
 
                             for (int i = usersSize-1; i >= 0; i--) {
-                                resultInfoMap.put("name", apiBody.getUsers().get(i).getName());
-                                resultInfoMap.put("first", apiBody.getUsers().get(i).getCards().first);
-                                resultInfoMap.put("second", apiBody.getUsers().get(i).getCards().second);
+                                resultInfoMap.put("name"+i, apiBody.getUsers().get(i).getName());
+                                resultInfoMap.put("first"+i, apiBody.getUsers().get(i).getCards().first);
+                                resultInfoMap.put("second"+i, apiBody.getUsers().get(i).getCards().second);
                                 Log.d("MSMS","MSMS"+apiBody.getUsers().get(i).getName());
                                 resultList.add(resultInfoMap);
 

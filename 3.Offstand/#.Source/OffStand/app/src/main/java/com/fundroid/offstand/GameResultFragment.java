@@ -201,9 +201,9 @@ public class GameResultFragment extends Fragment {
 
         for (int i = 0; i < resultList.size(); i++) {
             listmap = (Map<String, Object>) resultList.get(i);
-            int first = (int) listmap.get("first");
-            int second = (int) listmap.get("second");
-            String name = (String) listmap.get("name");
+            int first = (int) listmap.get("first"+i);
+            int second = (int) listmap.get("second"+i);
+            String name = (String) listmap.get("name"+i);
             if (i == 0) {
                 play_result_rank1_name.setText(name);
                 play_result_content1_card1.setImageResource(oneFirstCard[first]);
