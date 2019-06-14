@@ -152,7 +152,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
         setting_stats_total_text.setText("" + dataManager.getUserTotal());
         setting_stats_win_text.setText("" + dataManager.getUserWin());
-        setting_stats_per_text.setText("" + (int) (((float) dataManager.getUserWin() / (float) dataManager.getUserTotal())) * 100 + "%");
+        setting_stats_per_text.setText("" + ((int) (((float) dataManager.getUserWin() / (float) dataManager.getUserTotal()) * 100)) + "%");
+
+
 
         // 커서를 끝에 위치시키기
         userName.setSelection(userName.length());
