@@ -206,7 +206,7 @@ public class GameResultFragment extends Fragment {
             String name = (String) listmap.get("name"+i);
             if (i == 0) {
                 play_result_rank1_name.setText(name);
-                play_result_content1_card1.setImageResource(oneFirstCard[first]);
+                play_result_content1_card1.setImageResource(oneFirstCard[first]);   
                 play_result_content1_card2.setImageResource(oneSecondCard[second]);
                 //textView.setText(name)
 
