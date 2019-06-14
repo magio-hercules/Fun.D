@@ -1220,6 +1220,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                 resultInfoMap.put("name"+i, apiBody.getUsers().get(i).getName());
                                 resultInfoMap.put("first"+i, apiBody.getUsers().get(i).getCards().first);
                                 resultInfoMap.put("second"+i, apiBody.getUsers().get(i).getCards().second);
+                                resultInfoMap.put("status"+i, apiBody.getUsers().get(i).getStatus());
                                 Log.d("MSMS","MSMS"+apiBody.getUsers().get(i).getName());
                                 resultList.add(resultInfoMap);
 

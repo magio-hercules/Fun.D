@@ -197,28 +197,32 @@ public class GameResultFragment extends Fragment {
         play_result_right_button.setVisibility(rootview.VISIBLE);
         play_result_shadow.setVisibility(rootview.VISIBLE);
 
-        Map<String, Object> listmap;
 
         for (int i = 0; i < resultList.size(); i++) {
-            listmap = (Map<String, Object>) resultList.get(i);
-            int first = (int) listmap.get("first"+i);
-            int second = (int) listmap.get("second"+i);
-            String name = (String) listmap.get("name"+i);
+            Map<String, Object> listmap = (Map<String, Object>) resultList.get(i);
+            int first = (int) listmap.get("first" + i);
+            int second = (int) listmap.get("second" + i);
+            String name = (String) listmap.get("name" + i);
+            int status = (int) listmap.get("status" + i);
+//            if (status == 4) {
+//                i--;
+//                continue;
+//            }
             if (i == 0) {
                 play_result_rank1_name.setText(name);
-                play_result_content1_card1.setImageResource(oneFirstCard[first]);   
+                play_result_content1_card1.setImageResource(oneFirstCard[first]);
                 play_result_content1_card2.setImageResource(oneSecondCard[second]);
                 //textView.setText(name)
 
-            } else if (i == 1){
+            } else if (i == 1) {
                 play_result_rank2_name.setText(name);
                 play_result_rank2_card1.setImageResource(twoFirstCard[first]);
                 play_result_rank2_card2.setImageResource(twoSecondCard[second]);
-            } else if (i == 2){
+            } else if (i == 2) {
                 play_result_rank3_name.setText(name);
                 play_result_rank3_card1.setImageResource(twoFirstCard[first]);
                 play_result_rank3_card2.setImageResource(twoSecondCard[second]);
-            } else if (i == 3){
+            } else if (i == 3) {
                 play_result_rank4_name.setText(name);
                 play_result_rank4_card1.setImageResource(twoFirstCard[first]);
                 play_result_rank4_card2.setImageResource(twoSecondCard[second]);
