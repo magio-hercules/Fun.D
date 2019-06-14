@@ -108,50 +108,53 @@ public class GameResultFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
-        int[] oneFirstCard = {0, R.drawable.one_card_1, R.drawable.one_card_2,
-                R.drawable.one_card_3, R.drawable.one_card_4,
-                R.drawable.one_card_5, R.drawable.one_card_6,
-                R.drawable.one_card_7, R.drawable.one_card_8,
-                R.drawable.one_card_9, R.drawable.one_card_10,
+        int[] oneFirstCard = {0,
                 R.drawable.one_card_1_1, R.drawable.one_card_2_1,
                 R.drawable.one_card_3_1, R.drawable.one_card_4_1,
                 R.drawable.one_card_5_1, R.drawable.one_card_6_1,
                 R.drawable.one_card_7_1, R.drawable.one_card_8_1,
-                R.drawable.one_card_9_1, R.drawable.one_card_10_1};
-
-        int[] oneSecondCard = {0, R.drawable.one_card_1, R.drawable.one_card_2,
+                R.drawable.one_card_9_1, R.drawable.one_card_10_1,
+                R.drawable.one_card_1, R.drawable.one_card_2,
                 R.drawable.one_card_3, R.drawable.one_card_4,
                 R.drawable.one_card_5, R.drawable.one_card_6,
                 R.drawable.one_card_7, R.drawable.one_card_8,
-                R.drawable.one_card_9, R.drawable.one_card_10,
+                R.drawable.one_card_9, R.drawable.one_card_10,};
+
+        int[] oneSecondCard = {0,
                 R.drawable.one_card_1_1, R.drawable.one_card_2_1,
                 R.drawable.one_card_3_1, R.drawable.one_card_4_1,
                 R.drawable.one_card_5_1, R.drawable.one_card_6_1,
                 R.drawable.one_card_7_1, R.drawable.one_card_8_1,
-                R.drawable.one_card_9_1, R.drawable.one_card_10_1};
+                R.drawable.one_card_9_1, R.drawable.one_card_10_1,
+                R.drawable.one_card_1, R.drawable.one_card_2,
+                R.drawable.one_card_3, R.drawable.one_card_4,
+                R.drawable.one_card_5, R.drawable.one_card_6,
+                R.drawable.one_card_7, R.drawable.one_card_8,
+                R.drawable.one_card_9, R.drawable.one_card_10,};
 
-        int[] twoFirstCard = {0, R.drawable.two_card_1, R.drawable.two_card_2,
-                R.drawable.two_card_3, R.drawable.two_card_4,
-                R.drawable.two_card_5, R.drawable.two_card_6,
-                R.drawable.two_card_7, R.drawable.two_card_8,
-                R.drawable.two_card_9, R.drawable.two_card_10,
+        int[] twoFirstCard = {0,
                 R.drawable.two_card_1_1, R.drawable.two_card_2_1,
                 R.drawable.two_card_3_1, R.drawable.two_card_4_1,
                 R.drawable.two_card_5_1, R.drawable.two_card_6_1,
                 R.drawable.two_card_7_1, R.drawable.two_card_8_1,
-                R.drawable.two_card_9_1, R.drawable.two_card_10_1};
-
-        int[] twoSecondCard = {0, R.drawable.two_card_1, R.drawable.two_card_2,
+                R.drawable.two_card_9_1, R.drawable.two_card_10_1,
+                R.drawable.two_card_1, R.drawable.two_card_2,
                 R.drawable.two_card_3, R.drawable.two_card_4,
                 R.drawable.two_card_5, R.drawable.two_card_6,
                 R.drawable.two_card_7, R.drawable.two_card_8,
-                R.drawable.two_card_9, R.drawable.two_card_10,
+                R.drawable.two_card_9, R.drawable.two_card_10,};
+
+        int[] twoSecondCard = {0,
                 R.drawable.two_card_1_1, R.drawable.two_card_2_1,
                 R.drawable.two_card_3_1, R.drawable.two_card_4_1,
                 R.drawable.two_card_5_1, R.drawable.two_card_6_1,
                 R.drawable.two_card_7_1, R.drawable.two_card_8_1,
-                R.drawable.two_card_9_1, R.drawable.two_card_10_1};
-
+                R.drawable.two_card_9_1, R.drawable.two_card_10_1,
+                R.drawable.two_card_1, R.drawable.two_card_2,
+                R.drawable.two_card_3, R.drawable.two_card_4,
+                R.drawable.two_card_5, R.drawable.two_card_6,
+                R.drawable.two_card_7, R.drawable.two_card_8,
+                R.drawable.two_card_9, R.drawable.two_card_10,};
         ViewGroup rootview = (ViewGroup) inflater.inflate(R.layout.fragment_gameresult, container, false);
 
         // 만땅 - 초기화
