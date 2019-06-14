@@ -212,16 +212,16 @@ public class GameResultFragment extends Fragment {
 
             } else if (i == 1){
                 play_result_rank2_name.setText(name);
-                play_result_rank2_card2.setImageResource(twoFirstCard[first]);
-                play_result_rank2_card1.setImageResource(twoSecondCard[second]);
+                play_result_rank2_card1.setImageResource(twoFirstCard[first]);
+                play_result_rank2_card2.setImageResource(twoSecondCard[second]);
             } else if (i == 2){
                 play_result_rank3_name.setText(name);
-                play_result_rank3_card2.setImageResource(twoFirstCard[first]);
-                play_result_rank3_card1.setImageResource(twoSecondCard[second]);
+                play_result_rank3_card1.setImageResource(twoFirstCard[first]);
+                play_result_rank3_card2.setImageResource(twoSecondCard[second]);
             } else if (i == 3){
                 play_result_rank4_name.setText(name);
-                play_result_rank4_card2.setImageResource(twoFirstCard[first]);
-                play_result_rank4_card1.setImageResource(twoSecondCard[second]);
+                play_result_rank4_card1.setImageResource(twoFirstCard[first]);
+                play_result_rank4_card2.setImageResource(twoSecondCard[second]);
             }
 
         }
