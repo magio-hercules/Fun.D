@@ -10,8 +10,11 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.model.Card;
+import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.model.User;
+import com.fundroid.offstand.utils.NetworkUtils;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -25,8 +28,10 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
+import static com.fundroid.offstand.core.AppConstant.DOCUMENT_ROOMS;
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.data.model.Card.setCardValue;
+import static com.fundroid.offstand.data.model.Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
@@ -60,29 +65,29 @@ import static com.fundroid.offstand.model.User.EnumStatus.STANDBY;
 
 public class ConnectionManager {
 
-    public enum EnumStatus {
-
-        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3), REGAME(4);
-
-        private int enumStatus;
-
-        EnumStatus(int enumStatus) {
-            this.enumStatus = enumStatus;
-        }
-
-        public int getEnumStatus() {
-            return enumStatus;
-        }
-    }
-
     private static ServerThread[] serverThreads;
     private static int serverCount;
     private static ClientThread clientThread;
     private static ServerSocket serverSocket;
     private static int roomMaxUser;
-    private static EnumStatus roomStatus = EnumStatus.SHUFFLE_NOT_AVAILABLE;
+    private static Room.EnumStatus roomStatus = Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
 
     private static ArrayList<Integer> cards = new ArrayList<>();
+
+    public static Completable insertRoom() {
+        return NetworkUtils.getIpAddress()
+                .flatMapCompletable(myIp -> Completable.create(subscriber -> {
+                    Log.d("lsc", "ConnectionManager insertRoom " + myIp);
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    db.collection(DOCUMENT_ROOMS)
+                            .add(new Room("TEST", myIp, SHUFFLE_NOT_AVAILABLE))
+                            .addOnSuccessListener(documentReference -> subscriber.onComplete())
+                            .addOnFailureListener(subscriber::onError);
+//                            .addOnSuccessListener(documentReference -> Log.d("lsc", "success " + documentReference.getId()))
+//                            .addOnFailureListener(e -> Log.e("lsc", "error " + e.getMessage()));
+                }));
+    }
+
 
     public static Completable createServerThread(int roomPort, int roomMaxUser) {
         ConnectionManager.roomMaxUser = roomMaxUser;
@@ -95,6 +100,7 @@ public class ConnectionManager {
     }
 
     private static void socketAcceptLoop() {
+        Log.d("lsc", "socketAcceptLoop " + serverSocket.getInetAddress().getHostAddress());
         while (serverCount != roomMaxUser) {
             Socket socket = null;
             try {
@@ -159,7 +165,7 @@ public class ConnectionManager {
             case API_SHUFFLE:
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
                         .flatMap(pair -> {
-                            if (roomStatus == EnumStatus.REGAME) {
+                            if (roomStatus == Room.EnumStatus.REGAME) {
                                 if (pair.second.getStatus() == CARDOPEN.getEnumStatus() || pair.second.getStatus() == INGAME.getEnumStatus()) {
                                     Log.d("lsc", "REGAME SHUFFLE before " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
                                     pair.second.setStatus(INGAME.getEnumStatus());
@@ -323,7 +329,7 @@ public class ConnectionManager {
         return Completable.complete();
     }
 
-    private static Observable<EnumStatus> setRoomStatus() {
+    private static Observable<Room.EnumStatus> setRoomStatus() {
         Log.d("lsc", "ConnectionManager setRoomStatus");
         return Observable.create(subscriber -> {
             // 방장 제외한 나머지 User 리스트
@@ -348,22 +354,22 @@ public class ConnectionManager {
                 case SHUFFLE_NOT_AVAILABLE:
                 case SHUFFLE_AVAILABLE:
                     if (userCountExceptHost == readyUserCount) {
-                        roomStatus = EnumStatus.SHUFFLE_AVAILABLE;
+                        roomStatus = Room.EnumStatus.SHUFFLE_AVAILABLE;
                     } else {
-                        roomStatus = EnumStatus.SHUFFLE_NOT_AVAILABLE;
+                        roomStatus = Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
                     }
                     break;
 
                 case INGAME:
                     if (inGameUserCount == 0) {
-                        roomStatus = EnumStatus.GAME_RESULT_AVAILABLE;
+                        roomStatus = Room.EnumStatus.GAME_RESULT_AVAILABLE;
                     } else {
-                        roomStatus = EnumStatus.INGAME;
+                        roomStatus = Room.EnumStatus.INGAME;
                     }
                     break;
 
                 case REGAME:
-                    roomStatus = EnumStatus.INGAME;
+                    roomStatus = Room.EnumStatus.INGAME;
                     break;
             }
             Log.d("lsc", "setRoomStatus end inGameUserCount " + inGameUserCount);
@@ -372,7 +378,7 @@ public class ConnectionManager {
         });
     }
 
-    private static Observable<ApiBody> sendToHost(EnumStatus roomStatus) {
+    private static Observable<ApiBody> sendToHost(Room.EnumStatus roomStatus) {
         Log.d("lsc", "sendToHost " + roomStatus);
         switch (roomStatus) {
             case SHUFFLE_AVAILABLE:
@@ -414,7 +420,7 @@ public class ConnectionManager {
         return Single.create(subscriber -> {
             //승리자 LEVEL이 3 또는 7일 경우
             if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
-                roomStatus = EnumStatus.REGAME;
+                roomStatus = Room.EnumStatus.REGAME;
             }
 
             //카드 급이 같을 경우 (죽지 않고 동점이 아닌 사람의 STATUS 를 INGAME으로 셋
@@ -427,7 +433,7 @@ public class ConnectionManager {
                     }).collect(Collectors.toList());
 
             if (users.size() > 1 && users.get(0).getCardSum() == users.get(1).getCardSum()) {
-                roomStatus = EnumStatus.REGAME;
+                roomStatus = Room.EnumStatus.REGAME;
             }
             subscriber.onSuccess(users);
         });
@@ -459,7 +465,7 @@ public class ConnectionManager {
                 } else {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
                 }
-                if (roomStatus != EnumStatus.REGAME) {
+                if (roomStatus != Room.EnumStatus.REGAME) {
                     serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
                 } else {
 
@@ -488,7 +494,7 @@ public class ConnectionManager {
                 //card test end
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
-            roomStatus = EnumStatus.INGAME;
+            roomStatus = Room.EnumStatus.INGAME;
             subscriber.onComplete();
         });
     }

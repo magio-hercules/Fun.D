@@ -5,36 +5,54 @@ import android.util.Log;
 
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
-public class Room extends WifiP2pDevice {
+public class Room {
 
-    public String deviceName;
-    public String deviceMacAddress;
-    private int RoomStatus;
+    public enum EnumStatus {
 
-    public Room(String deviceName, String deviceMacAddress) {
-        this.deviceName = deviceName;
-        deviceMacAddress = this.deviceAddress = deviceMacAddress;
+        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3), REGAME(4);
+
+        private int enumStatus;
+
+        EnumStatus(int enumStatus) {
+            this.enumStatus = enumStatus;
+        }
+
+        public int getEnumStatus() {
+            return enumStatus;
+        }
     }
 
-    public String getDeviceName() {
-        return deviceName;
+    private String name;
+    private String address;
+    private EnumStatus roomStatus;
+
+    public Room(String name, String address, EnumStatus roomStatus) {
+        this.name = name;
+        this.address = address;
+        this.roomStatus = roomStatus;
     }
 
-    public String getDeviceMacAddress() {
-        return deviceMacAddress;
+    public String getName() {
+        return name;
     }
 
-    public int getRoomStatus() {
-        return RoomStatus;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setRoomStatus(int roomStatus) {
-        RoomStatus = roomStatus;
+    public String getAddress() {
+        return address;
     }
 
-    public void enterRoom() {
-        Log.d("lsc", "Room enterRoom");
-        ClientPublishSubjectBus.getInstance().sendEvent(this);
+    public void setAddress(String address) {
+        this.address = address;
     }
 
+    public EnumStatus getRoomStatus() {
+        return roomStatus;
+    }
+
+    public void setRoomStatus(EnumStatus roomStatus) {
+        this.roomStatus = roomStatus;
+    }
 }

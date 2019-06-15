@@ -22,7 +22,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder> {
     private List<Room> rooms;
 
     public void setDatas(List<Room> rooms) {
-        Log.d("lsc", "setDatas wifis " + rooms.size());
+        Log.d("lsc", "setDatas rooms " + rooms.size());
         RoomDiffCallback roomDiffCallback = new RoomDiffCallback(this.rooms, rooms);
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(roomDiffCallback);
         this.rooms = rooms;

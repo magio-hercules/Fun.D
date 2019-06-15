@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
+import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
@@ -24,7 +25,9 @@ import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Completable;
 
+import static com.fundroid.offstand.core.AppConstant.DOCUMENT_ROOMS;
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
+import static com.fundroid.offstand.data.model.Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
@@ -56,51 +59,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     }
 
     public void makeRoomClick() {
-        Log.d("lsc", "MakeRoomViewModel makeRoomClick");
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        Log.d("lsc", "MakeRoomViewModel makeRoomClick 1");
-        db.collection("users")
-                .add(new test(1,"홍길동","값없음"))
-                .addOnSuccessListener(documentReference -> Log.d("lsc", "DocumentSnapshot added with ID: " + documentReference.getId()))
-                .addOnFailureListener(e -> Log.w("lsc", "Error adding document", e));
-
         createSocket(ROOM_PORT, 4);
-    }
-
-    private class test {
-        int id;
-        String name;
-        String value;
-
-        public test(int id, String name, String value) {
-            this.id = id;
-            this.name = name;
-            this.value = value;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {
@@ -108,6 +67,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
                 .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
                 .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
                 .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(-1, true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
+                .andThen(ConnectionManager.insertRoom())
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().io())
                 .subscribe(() -> {
@@ -116,6 +76,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
                     Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
                 })
         );
+
     }
 
 
