@@ -42,7 +42,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(result -> {
-                    Log.d("lsc","FindRoomViewModel result " + result);
+                    Log.d("lsc", "FindRoomViewModel result " + result);
                     switch (((ApiBody) result).getNo()) {
                         case API_ROOM_INFO:
                             BehaviorSubjectBus.getInstance().sendEvent(result);
@@ -70,6 +70,18 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
     }
 
+    public void onRefreshClick() {
+        Log.d("lsc", "FindRoomViewModel onRefreshClick");
+        getCompositeDisposable().add(ConnectionManager.selectRooms()
+                .subscribeOn(getSchedulerProvider().io())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(() -> {
+                    Log.d("lsc", "FindRoomViewModel onRefreshClick result");
+                }, onError -> {
+                    Log.d("lsc", "FindRoomViewModel onRefreshClick onError " + onError);
+                }));
+    }
+
     public void onEnterRoomClick() {
         MediaPlayer.create(context, R.raw.mouth_interface_button).start();
 //        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 3};
@@ -90,6 +102,6 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     @Override
     protected void onCleared() {
         super.onCleared();
-        Log.d("lsc","FindRoomVIewModel onCleared");
+        Log.d("lsc", "FindRoomVIewModel onCleared");
     }
 }

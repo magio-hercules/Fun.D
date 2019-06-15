@@ -337,79 +337,80 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:textColor="@color/white"
+            android:text="@{viewModel.roomName}"
             app:layout_constraintBottom_toBottomOf="@id/label_room_name"
             app:layout_constraintEnd_toEndOf="@id/guide_text_end"
             app:layout_constraintStart_toStartOf="@id/guide_text_start"
             app:layout_constraintTop_toTopOf="@id/label_room_name" />
 
-        <ImageView
-            android:id="@+id/label_room_rule"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/label_game_rule"
-            app:layout_constraintBottom_toTopOf="@id/guide_h_room_rule_e"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
-            app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
-            app:layout_constraintTop_toBottomOf="@id/guide_h_room_rule_s" />
+        <!--<ImageView-->
+        <!--android:id="@+id/label_room_rule"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:src="@drawable/label_game_rule"-->
+        <!--app:layout_constraintBottom_toTopOf="@id/guide_h_room_rule_e"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"-->
+        <!--app:layout_constraintStart_toStartOf="@id/guide_v_label_start"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/guide_h_room_rule_s" />-->
 
-        <EditText
-            android:id="@+id/et_room_rule"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/label_room_rule"
-            app:layout_constraintEnd_toEndOf="@id/guide_text_end"
-            app:layout_constraintStart_toStartOf="@id/guide_text_start"
-            app:layout_constraintTop_toTopOf="@id/label_room_rule" />
+        <!--<EditText-->
+        <!--android:id="@+id/et_room_rule"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:inputType="number"-->
+        <!--android:textColor="@color/white"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/label_room_rule"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/guide_text_end"-->
+        <!--app:layout_constraintStart_toStartOf="@id/guide_text_start"-->
+        <!--app:layout_constraintTop_toTopOf="@id/label_room_rule" />-->
 
-        <ImageView
-            android:id="@+id/label_room_set"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:src="@drawable/label_limit_edition"
-            app:layout_constraintBottom_toTopOf="@id/guide_h_room_set_e"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
-            app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
-            app:layout_constraintTop_toBottomOf="@id/guide_h_room_set_s" />
+        <!--<ImageView-->
+        <!--android:id="@+id/label_room_set"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:inputType="number"-->
+        <!--android:src="@drawable/label_limit_edition"-->
+        <!--app:layout_constraintBottom_toTopOf="@id/guide_h_room_set_e"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"-->
+        <!--app:layout_constraintStart_toStartOf="@id/guide_v_label_start"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/guide_h_room_set_s" />-->
 
-        <EditText
-            android:id="@+id/et_room_set"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/label_room_set"
-            app:layout_constraintEnd_toEndOf="@id/guide_text_end"
-            app:layout_constraintStart_toStartOf="@id/guide_text_start"
-            app:layout_constraintTop_toTopOf="@id/label_room_set" />
+        <!--<EditText-->
+        <!--android:id="@+id/et_room_set"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:textColor="@color/white"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/label_room_set"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/guide_text_end"-->
+        <!--app:layout_constraintStart_toStartOf="@id/guide_text_start"-->
+        <!--app:layout_constraintTop_toTopOf="@id/label_room_set" />-->
 
-        <ImageView
-            android:id="@+id/label_room_time"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/label_limit_time"
-            app:layout_constraintBottom_toTopOf="@id/guide_h_room_time_e"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
-            app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
-            app:layout_constraintTop_toBottomOf="@id/guide_h_room_time_s" />
+        <!--<ImageView-->
+        <!--android:id="@+id/label_room_time"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:src="@drawable/label_limit_time"-->
+        <!--app:layout_constraintBottom_toTopOf="@id/guide_h_room_time_e"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"-->
+        <!--app:layout_constraintStart_toStartOf="@id/guide_v_label_start"-->
+        <!--app:layout_constraintTop_toBottomOf="@id/guide_h_room_time_s" />-->
 
-        <EditText
-            android:id="@+id/et_room_time"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/label_room_time"
-            app:layout_constraintEnd_toEndOf="@id/guide_text_end"
-            app:layout_constraintStart_toStartOf="@id/guide_text_start"
-            app:layout_constraintTop_toTopOf="@id/label_room_time" />
+        <!--<EditText-->
+        <!--android:id="@+id/et_room_time"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:inputType="number"-->
+        <!--android:textColor="@color/white"-->
+        <!--app:layout_constraintBottom_toBottomOf="@id/label_room_time"-->
+        <!--app:layout_constraintEnd_toEndOf="@id/guide_text_end"-->
+        <!--app:layout_constraintStart_toStartOf="@id/guide_text_start"-->
+        <!--app:layout_constraintTop_toTopOf="@id/label_room_time" />-->
 
         <ImageView
             android:id="@+id/label_room_password"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:src="@drawable/label_room_password"
             app:layout_constraintBottom_toTopOf="@id/guide_h_room_password_e"
             app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"

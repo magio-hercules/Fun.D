@@ -14,7 +14,12 @@ import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.utils.NetworkUtils;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -28,7 +33,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-import static com.fundroid.offstand.core.AppConstant.DOCUMENT_ROOMS;
+import static com.fundroid.offstand.core.AppConstant.COLLECTION_ROOMS;
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.data.model.Card.setCardValue;
 import static com.fundroid.offstand.data.model.Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
@@ -71,21 +76,38 @@ public class ConnectionManager {
     private static ServerSocket serverSocket;
     private static int roomMaxUser;
     private static Room.EnumStatus roomStatus = Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
-
     private static ArrayList<Integer> cards = new ArrayList<>();
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public static Completable insertRoom() {
+    public static Completable insertRoom(String roomName) {
         return NetworkUtils.getIpAddress()
                 .flatMapCompletable(myIp -> Completable.create(subscriber -> {
                     Log.d("lsc", "ConnectionManager insertRoom " + myIp);
-                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                    db.collection(DOCUMENT_ROOMS)
-                            .add(new Room("TEST", myIp, SHUFFLE_NOT_AVAILABLE))
+                    CollectionReference offStandCollection = db.collection(COLLECTION_ROOMS);
+                    Room room = new Room(roomName, myIp, SHUFFLE_NOT_AVAILABLE);
+                    offStandCollection.document(room + ":" + myIp);
+                    offStandCollection.add(room)
                             .addOnSuccessListener(documentReference -> subscriber.onComplete())
                             .addOnFailureListener(subscriber::onError);
 //                            .addOnSuccessListener(documentReference -> Log.d("lsc", "success " + documentReference.getId()))
 //                            .addOnFailureListener(e -> Log.e("lsc", "error " + e.getMessage()));
                 }));
+    }
+
+    public static Completable selectRooms() {
+        return Completable.create(subscriber -> {
+            Task<QuerySnapshot> task = db.collection(COLLECTION_ROOMS)
+                    .get()
+                    .addOnSuccessListener(queryDocumentSnapshots -> {
+                        Log.d("lsc", "selectRoom onSuccess");
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            Log.d("lsc", "selectRoom " + document.getData().get("name"));
+                            Log.d("lsc", "selectRoom " + document.getData().get("address"));
+                            Log.d("lsc", "selectRoom " + document.getData().get("roomStatus"));
+                        }
+                    });
+            subscriber.onComplete();
+        });
     }
 
 

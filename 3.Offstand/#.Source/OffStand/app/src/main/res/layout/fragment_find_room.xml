@@ -110,6 +110,7 @@
             android:layout_height="0dp"
             android:padding="@dimen/padding_refresh"
             android:src="@drawable/btn_refresh"
+            android:onClick="@{() -> viewModel.onRefreshClick()}"
             app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"
             app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="@id/guide_refresh_end"
