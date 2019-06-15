@@ -96,4 +96,8 @@ dependencies {
     // glide
     implementation dependencies.glide
     annotationProcessor dependencies.glideCompiler
+
+    // db
+    implementation 'com.google.firebase:firebase-firestore:19.0.2'
 }
+apply plugin: 'com.google.gms.google-services'

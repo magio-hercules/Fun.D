@@ -10,17 +10,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
-import com.fundroid.offstand.MainActivity;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.SettingActivity;
 import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.databinding.ActivityLobbyBinding;
-import com.fundroid.offstand.receiver.WifiDirectReceiver;
 import com.fundroid.offstand.ui.base.BaseActivity;
-import com.fundroid.offstand.ui.lobby.findroom.FindRoomFragment;
-import com.fundroid.offstand.ui.lobby.guide.GuideFragment;
 import com.fundroid.offstand.ui.lobby.main.MainFragment;
-import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 import com.tedpark.tedpermission.rx2.TedRx2Permission;
 
@@ -30,13 +25,10 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import butterknife.OnClick;
-import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
@@ -54,13 +46,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     LobbyViewModel lobbyViewModel;
-
-    @Inject
-    WifiDirectReceiver wifiDirectReceiver;
-
-    private ActivityLobbyBinding activityLobbyBinding;
-    private IntentFilter intentFilter;
-    private Disposable disposable;
 
     @Override
     public int getBindingVariable() {
@@ -80,7 +65,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        Log.d("lsc","LobbyActivity supportFragmentInjector " + fragmentDispatchingAndroidInjector);
+        Log.d("lsc", "LobbyActivity supportFragmentInjector " + fragmentDispatchingAndroidInjector);
         return fragmentDispatchingAndroidInjector;
     }
 
@@ -89,72 +74,15 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         context.startActivity(intent);
     }
 
-    // 배경음악 - 출처 : https://www.youtube.com/audiolibrary/music - Lone Wolf
-//    private static MediaPlayer mp;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v("lsc", "LobbyActivity onCreate ");
         lobbyViewModel.setNavigator(this);
-        activityLobbyBinding = getViewDataBinding();
         initViews();
-//        setupRecyclerView(activityLobbyBinding.rvRoom, new RoomAdapter());
-        intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);
-        intentFilter.addAction(WifiP2pManager.WIFI_P2P_THIS_DEVICE_CHANGED_ACTION);
-
-        disposable = TedRx2Permission.with(this)
-                .setPermissions(ACCESS_FINE_LOCATION)
-                .setDeniedMessage(getString(R.string.splash_msg_denied))
-                .setGotoSettingButton(true)
-                .setGotoSettingButtonText(getString(R.string.splash_msg_goto_setting))
-                .request()
-                .subscribe(
-                        permissionResult -> {
-                            Log.d("lsc", "LobbyActivity permissionResult " + permissionResult.isGranted());
-                            if (permissionResult.isGranted()) {
-
-                            } else {
-//                                Todo : DialogFragment 으로 바꿀 것...
-                                Log.d("lsc", "LobbyActivity permission not granted");
-                                finish();
-                            }
-                        },
-                        this::handleError
-                );
-
-        // 배경음악
-//        mp = MediaPlayer.create(this, R.raw.lone_wolf);
-//        mp.setLooping(true);
-//        mp.start();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.v("lsc", "LobbyActivity onStart");
-        registerReceiver(wifiDirectReceiver, intentFilter);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.v("lsc", "LobbyActivity onStop");
-        unregisterReceiver(wifiDirectReceiver);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.v("lsc", "LobbyActivity onDestroy");
-        disposable.dispose();
     }
 
     private void initViews() {
-//        ((GifDrawable) activityLobbyBinding.bgLobby.getDrawable()).setLoopCount(0);
         getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()
@@ -162,23 +90,11 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
                 .commit();
     }
 
-    private void setupRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
     @Override
     public void goToSettingActivity() {
         MediaPlayer.create(LobbyActivity.this, R.raw.mouth_interface_button).start();
-
         Intent intent = new Intent(LobbyActivity.this, SettingActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void onRepositoriesChanged(List<Room> rooms) {
-//        RoomAdapter adapter = (RoomAdapter) activityLobbyBinding.rvRoom.getAdapter();
-//        adapter.setDatas(rooms);
     }
 
     @Override

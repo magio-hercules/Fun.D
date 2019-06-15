@@ -9,6 +9,7 @@ import com.facebook.stetho.Stetho;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.di.component.DaggerAppComponent;
 import com.fundroid.offstand.utils.rx.ServerPublishSubjectBus;
+import com.google.firebase.FirebaseApp;
 
 import javax.inject.Inject;
 
@@ -45,6 +46,7 @@ public class OffStandApplication extends DaggerApplication {
     public void onCreate() {
         super.onCreate();
         Stetho.initializeWithDefaults(this);
+        FirebaseApp.initializeApp(this);
         ServerPublishSubjectBus.getInstance().getEvents(String.class)
                 .flatMap(json -> ConnectionManager.serverProcessor((String) json))
                 .subscribeOn(Schedulers.io())

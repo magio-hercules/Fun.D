@@ -3,6 +3,8 @@ package com.fundroid.offstand.ui.lobby.makeroom;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
@@ -11,6 +13,10 @@ import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.BehaviorSubjectBus;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.gson.Gson;
 
 import java.net.InetAddress;
@@ -50,8 +56,51 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     }
 
     public void makeRoomClick() {
-        //Test
+        Log.d("lsc", "MakeRoomViewModel makeRoomClick");
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Log.d("lsc", "MakeRoomViewModel makeRoomClick 1");
+        db.collection("users")
+                .add(new test(1,"홍길동","값없음"))
+                .addOnSuccessListener(documentReference -> Log.d("lsc", "DocumentSnapshot added with ID: " + documentReference.getId()))
+                .addOnFailureListener(e -> Log.w("lsc", "Error adding document", e));
+
         createSocket(ROOM_PORT, 4);
+    }
+
+    private class test {
+        int id;
+        String name;
+        String value;
+
+        public test(int id, String name, String value) {
+            this.id = id;
+            this.name = name;
+            this.value = value;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {

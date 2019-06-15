@@ -108,7 +108,6 @@
             android:id="@+id/btn_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:onClick="@{() -> lobbyViewModel.refresh()}"
             android:padding="@dimen/padding_refresh"
             android:src="@drawable/btn_refresh"
             app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"

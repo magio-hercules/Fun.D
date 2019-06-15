@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.p2p.WifiP2pManager;
 
-import com.fundroid.offstand.R;
 import com.fundroid.offstand.core.AppConstant;
 import com.fundroid.offstand.core.OffStandApplication;
 import com.fundroid.offstand.data.AppDataManager;
@@ -13,8 +12,6 @@ import com.fundroid.offstand.data.local.prefs.AppPreferencesHelper;
 import com.fundroid.offstand.data.local.prefs.PreferencesHelper;
 import com.fundroid.offstand.di.provider.ResourceProvider;
 import com.fundroid.offstand.di.quailfier.PreferenceInfo;
-import com.fundroid.offstand.receiver.WifiDirectReceiver;
-import com.fundroid.offstand.service.WifiP2pService;
 import com.fundroid.offstand.utils.rx.AppSchedulerProvider;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 import com.google.gson.Gson;
@@ -68,27 +65,6 @@ public class AppModule {
     @Singleton
     DataManager provideDataManager(AppDataManager appDataManager) {
         return appDataManager;
-    }
-
-    @Provides
-    @Singleton
-    WifiP2pService provideNetworkService() {
-        return new WifiP2pService();
-    }
-
-    @Provides
-    WifiP2pManager provideWifiP2pManager(Context context) {
-        return (WifiP2pManager) context.getSystemService(Context.WIFI_P2P_SERVICE);
-    }
-
-    @Provides
-    WifiP2pManager.Channel provideWifiP2pManagerChannel(WifiP2pManager wifiP2pManager, Context context, WifiP2pService wifiP2pService) {
-        return wifiP2pManager.initialize(context, context.getMainLooper(), wifiP2pService);
-    }
-
-    @Provides
-    WifiDirectReceiver provideWifiDirectReceiver(WifiP2pManager wifiP2pManager, WifiP2pManager.Channel channel, WifiP2pService wifiP2pService) {
-        return new WifiDirectReceiver(wifiP2pManager, channel, wifiP2pService);
     }
 
     @Provides
