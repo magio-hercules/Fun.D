@@ -9,9 +9,6 @@
             name="viewModel"
             type="com.fundroid.offstand.ui.lobby.findroom.FindRoomViewModel" />
 
-        <variable
-            name="lobbyViewModel"
-            type="com.fundroid.offstand.ui.lobby.LobbyViewModel" />
 
     </data>
 
@@ -108,14 +105,24 @@
             android:id="@+id/btn_refresh"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:onClick="@{() -> viewModel.onRefreshClick()}"
             android:padding="@dimen/padding_refresh"
             android:src="@drawable/btn_refresh"
-            android:onClick="@{() -> viewModel.onRefreshClick()}"
             app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"
             app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="@id/guide_refresh_end"
             app:layout_constraintStart_toEndOf="@id/title_find_room"
             app:layout_constraintTop_toTopOf="@id/guide_title_top" />
+
+        <VideoView
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="0dp"

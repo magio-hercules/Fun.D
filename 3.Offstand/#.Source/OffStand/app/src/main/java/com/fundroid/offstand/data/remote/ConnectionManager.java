@@ -85,7 +85,7 @@ public class ConnectionManager {
                     Log.d("lsc", "ConnectionManager insertRoom " + myIp);
                     CollectionReference offStandCollection = db.collection(COLLECTION_ROOMS);
                     Room room = new Room(roomName, myIp, SHUFFLE_NOT_AVAILABLE);
-                    offStandCollection.document(room + ":" + myIp);
+                    offStandCollection.document(roomName + ":" + myIp);
                     offStandCollection.add(room)
                             .addOnSuccessListener(documentReference -> subscriber.onComplete())
                             .addOnFailureListener(subscriber::onError);
@@ -107,6 +107,12 @@ public class ConnectionManager {
                         }
                     });
             subscriber.onComplete();
+        });
+    }
+
+    public static Completable deleteRoom() {
+        return Completable.create(subscriber -> {
+//            db.collection(COLLECTION_ROOMS).document(room + ":" + myIp)
         });
     }
 
