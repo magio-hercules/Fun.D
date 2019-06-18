@@ -84,7 +84,7 @@ public class ConnectionManager {
                 .flatMapCompletable(myIp -> Completable.create(subscriber -> {
                     Log.d("lsc", "ConnectionManager insertRoom " + myIp);
                     CollectionReference offStandCollection = db.collection(COLLECTION_ROOMS);
-                    Room room = new Room(roomName, myIp, SHUFFLE_NOT_AVAILABLE);
+                    Room room = new Room(roomName, myIp);
                     offStandCollection.document(roomName + ":" + myIp);
                     offStandCollection.add(room)
                             .addOnSuccessListener(documentReference -> subscriber.onComplete())
@@ -94,19 +94,12 @@ public class ConnectionManager {
                 }));
     }
 
-    public static Completable selectRooms() {
-        return Completable.create(subscriber -> {
-            Task<QuerySnapshot> task = db.collection(COLLECTION_ROOMS)
+    public static Observable selectRooms() {
+        return Observable.create(subscriber -> {
+            db.collection(COLLECTION_ROOMS)
                     .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                        Log.d("lsc", "selectRoom onSuccess");
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            Log.d("lsc", "selectRoom " + document.getData().get("name"));
-                            Log.d("lsc", "selectRoom " + document.getData().get("address"));
-                            Log.d("lsc", "selectRoom " + document.getData().get("roomStatus"));
-                        }
-                    });
-            subscriber.onComplete();
+                    .addOnSuccessListener(subscriber::onNext)
+                    .addOnFailureListener(subscriber::onError);
         });
     }
 

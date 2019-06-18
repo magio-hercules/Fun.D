@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.p2p.WifiP2pManager;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.fundroid.offstand.core.AppConstant;
 import com.fundroid.offstand.core.OffStandApplication;
 import com.fundroid.offstand.data.AppDataManager;
@@ -12,10 +14,13 @@ import com.fundroid.offstand.data.local.prefs.AppPreferencesHelper;
 import com.fundroid.offstand.data.local.prefs.PreferencesHelper;
 import com.fundroid.offstand.di.provider.ResourceProvider;
 import com.fundroid.offstand.di.quailfier.PreferenceInfo;
+import com.fundroid.offstand.ui.lobby.findroom.RoomAdapter;
 import com.fundroid.offstand.utils.rx.AppSchedulerProvider;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.ArrayList;
 
 import javax.inject.Singleton;
 
@@ -70,5 +75,15 @@ public class AppModule {
     @Provides
     SchedulerProvider provideSchedulerProvider() {
         return new AppSchedulerProvider();
+    }
+
+    @Provides
+    RoomAdapter provideRoomAdapter() {
+        return new RoomAdapter(new ArrayList<>());
+    }
+
+    @Provides
+    LinearLayoutManager provideLinearLayoutManager(Context context) {
+        return new LinearLayoutManager(context);
     }
 }

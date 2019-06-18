@@ -15,7 +15,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorTransparant70"
+        android:background="@android:color/transparent"
         android:clickable="true"
         android:focusable="true">
 
@@ -89,6 +89,43 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.6" />
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.925" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1453125" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.986" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.014" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorTransparant70"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_end"
+            app:layout_constraintLeft_toLeftOf="@id/guide_v_start"
+            app:layout_constraintRight_toRightOf="@id/guide_v_end"
+            app:layout_constraintTop_toTopOf="@id/guide_h_start" />
+
         <ImageView
             android:id="@+id/title_find_room"
             android:layout_width="0dp"
@@ -114,17 +151,9 @@
             app:layout_constraintStart_toEndOf="@id/title_find_room"
             app:layout_constraintTop_toTopOf="@id/guide_title_top" />
 
-        <VideoView
-            android:id="@+id/loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_room"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@color/white"
@@ -133,6 +162,7 @@
             app:layout_constraintEnd_toEndOf="@id/guide_refresh_end"
             app:layout_constraintStart_toStartOf="@id/guide_title_start"
             app:layout_constraintTop_toTopOf="@id/guide_list_top"
+            app:setRoomAdapter="@{viewModel.rooms}"
             tools:listitem="@layout/item_room" />
 
         <ImageView

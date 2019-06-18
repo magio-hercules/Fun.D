@@ -42,9 +42,6 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     ViewModelProviderFactory viewModelProviderFactory;
 
     private MakeRoomViewModel makeRoomViewModel;
-    private LobbyViewModel lobbyViewModel;
-
-    private FragmentMakeRoomBinding fragmentMakeRoomBinding;
 
     public static MakeRoomFragment newInstance() {
         Bundle args = new Bundle();
@@ -78,14 +75,6 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         makeRoomViewModel.setNavigator(this);
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        fragmentMakeRoomBinding = getViewDataBinding();
-        lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
-        fragmentMakeRoomBinding.setLobbyViewModel(lobbyViewModel);
     }
 
     @Override

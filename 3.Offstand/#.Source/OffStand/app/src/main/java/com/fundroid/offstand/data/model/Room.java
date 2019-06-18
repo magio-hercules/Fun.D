@@ -1,8 +1,5 @@
 package com.fundroid.offstand.data.model;
 
-import android.net.wifi.p2p.WifiP2pDevice;
-import android.util.Log;
-
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
 public class Room {
@@ -26,10 +23,9 @@ public class Room {
     private String address;
     private EnumStatus roomStatus;
 
-    public Room(String name, String address, EnumStatus roomStatus) {
+    public Room(String name, String address) {
         this.name = name;
         this.address = address;
-        this.roomStatus = roomStatus;
     }
 
     public String getName() {
