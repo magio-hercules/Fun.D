@@ -84,6 +84,6 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     @Override
     protected void onCleared() {
         super.onCleared();
-        Log.d("lsc", "MakeRoomViewModel enterRoom onCleared");
+        Log.d("lsc", "MakeRoomViewModel onCleared");
     }
 }

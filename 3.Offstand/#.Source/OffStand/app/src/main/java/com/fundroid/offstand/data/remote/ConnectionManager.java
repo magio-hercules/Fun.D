@@ -78,6 +78,7 @@ public class ConnectionManager {
     private static Room.EnumStatus roomStatus = Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
     private static ArrayList<Integer> cards = new ArrayList<>();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static String roomDocumentId;
 
     public static Completable insertRoom(String roomName) {
         return NetworkUtils.getIpAddress()
@@ -85,12 +86,11 @@ public class ConnectionManager {
                     Log.d("lsc", "ConnectionManager insertRoom " + myIp);
                     CollectionReference offStandCollection = db.collection(COLLECTION_ROOMS);
                     Room room = new Room(roomName, myIp);
-                    offStandCollection.document(roomName + ":" + myIp);
+                    roomDocumentId = roomName + ":" + myIp;
+                    offStandCollection.document(roomDocumentId);
                     offStandCollection.add(room)
                             .addOnSuccessListener(documentReference -> subscriber.onComplete())
                             .addOnFailureListener(subscriber::onError);
-//                            .addOnSuccessListener(documentReference -> Log.d("lsc", "success " + documentReference.getId()))
-//                            .addOnFailureListener(e -> Log.e("lsc", "error " + e.getMessage()));
                 }));
     }
 
@@ -104,9 +104,8 @@ public class ConnectionManager {
     }
 
     public static Completable deleteRoom() {
-        return Completable.create(subscriber -> {
-//            db.collection(COLLECTION_ROOMS).document(room + ":" + myIp)
-        });
+        Log.d("lsc", "ConnectionManager deleteRoom");
+        return Completable.create(subscriber -> db.collection(COLLECTION_ROOMS).document(roomDocumentId).delete().addOnSuccessListener(Void -> subscriber.onComplete()).addOnFailureListener(subscriber::onError));
     }
 
 
