@@ -301,6 +301,10 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 //                            Toast.makeText(getApplicationContext(), "시작하기 (셔플)", Toast.LENGTH_SHORT).show();
 
                             doSendMessage(API_SHUFFLE, currentUser.getSeat());
+                            ConnectionManager.deleteRoom()
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe();
 //                            Intent intent = new Intent(RoomActivity.this, PlayActivity.class);
 //                            startActivity(intent);
 //                            finish();

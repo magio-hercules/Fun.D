@@ -1,7 +1,5 @@
 package com.fundroid.offstand.data.model;
 
-import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
-
 public class Room {
 
     public enum EnumStatus {
