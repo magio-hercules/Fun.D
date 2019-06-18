@@ -46,6 +46,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
     LobbyViewModel lobbyViewModel;
+    long lastTimeBackPressed;
 
     @Override
     public int getBindingVariable() {
@@ -102,7 +103,15 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         Log.d("lsc", "LobbyActivity onBackPressed " + getVisibleFragmentTag(this, MainFragment.TAG));
         if (getVisibleFragmentTag(this, MainFragment.TAG).equals(MainFragment.TAG)) {
             Log.d("lsc", "LobbyActivity onBackPressed 1");
-            super.onBackPressed();
+//            super.onBackPressed();
+
+            if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
+                finishAffinity();
+                return;
+            }
+
+            Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show();
+            lastTimeBackPressed = System.currentTimeMillis();
         } else {
             Log.d("lsc", "LobbyActivity onBackPressed 2");
             onFragmentDetached(getVisibleFragmentTag(this, MainFragment.TAG));

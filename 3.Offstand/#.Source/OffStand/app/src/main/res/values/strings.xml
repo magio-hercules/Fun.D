@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OffStand</string>
+    <string name="app_name">오프섯다</string>
     <string name="shared_preferences">com.leesc.tazza.sharedpreferences</string>
     <!-- Splash -->
     <string name="splash_msg_title">알림</string>
