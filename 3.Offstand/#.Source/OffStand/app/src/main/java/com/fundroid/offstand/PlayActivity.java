@@ -31,6 +31,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
@@ -156,6 +157,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     SoundPool soundPool = null;
     int[] soundTrack;
 
+    @Inject
+    DataManager dataManager;
 
     // TODO
     // 참여인원
@@ -1224,9 +1227,22 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                 Log.d("MSMS", "MSMS" + apiBody.getUsers().get(i).getName());
                                 resultList.add(resultInfoMap);
 
+                                if (seatNum == apiBody.getUsers().get(i).getSeat()) {
+                                    Log.d(TAG, "게임결과 (seatNum: " + seatNum + ")");
+                                    int nTotal = dataManager.getUserTotal();
+                                    int nWin = dataManager.getUserWin();
+
+                                    dataManager.setUserTotal(nTotal + 1);
+                                    if (i == 0) { // 승
+                                        dataManager.setUserWin(nWin + 1);
+                                        Log.d(TAG, "게임결과 (승) : " + nTotal+1 + "전 " + nWin+1 + "승");
+                                    } else {
+                                        Log.d(TAG, "게임결과 (패) : " + nTotal+1 + "전 " + nWin + "승");
+                                    }
+                                }
                             }
 
-                            showResult = true;
+                           showResult = true;
                             Game_Result();
                             break;
 
