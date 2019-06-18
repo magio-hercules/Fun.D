@@ -3,6 +3,7 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
@@ -14,8 +15,13 @@ import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.utils.NetworkUtils;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Transaction;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -79,15 +85,27 @@ public class ConnectionManager {
         return NetworkUtils.getIpAddress()
                 .flatMapCompletable(myIp -> Completable.create(subscriber -> {
                     Log.d("lsc", "ConnectionManager insertRoom " + myIp);
-                    CollectionReference offStandCollection = db.collection(COLLECTION_ROOMS);
                     Room room = new Room(roomName, myIp);
-                    roomDocumentId = roomName + ":" + myIp;
-                    offStandCollection.document(roomDocumentId)
-                            .set(room)
-                            .addOnSuccessListener(documentReference -> subscriber.onComplete())
+                    roomDocumentId = roomName + "(" + myIp + ")";
+                    DocumentReference documentReference = db.collection(COLLECTION_ROOMS).document(roomDocumentId);
+                    db.runTransaction(transaction -> {
+                        DocumentSnapshot snapshot = transaction.get(documentReference);
+                        if (!snapshot.exists()) {
+                            transaction.set(documentReference, room);
+                        }
+                        return null;
+                    })
+                            .addOnSuccessListener(onSuccess -> subscriber.onComplete())
                             .addOnFailureListener(subscriber::onError);
                 }));
     }
+
+//    public static Completable test(String roomDocumentId) {
+//        return Completable.create(subscriber -> {
+//            Task<DocumentSnapshot> task = db.collection(COLLECTION_ROOMS).document(roomDocumentId).get();
+//            Log.d("lsc", "test " + task.getResult());
+//        });
+//    }
 
     public static Observable selectRooms() {
         return Observable.create(subscriber -> {
@@ -110,6 +128,7 @@ public class ConnectionManager {
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
             subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
+            Log.d("lsc","ConnectionManager createServerThread " + Thread.currentThread().getName());
             socketAcceptLoop();
         });
     }

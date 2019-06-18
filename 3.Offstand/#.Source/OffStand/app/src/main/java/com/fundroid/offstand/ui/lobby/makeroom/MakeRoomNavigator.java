@@ -1,9 +1,12 @@
 package com.fundroid.offstand.ui.lobby.makeroom;
 
 
-public interface MakeRoomNavigator {
+import com.fundroid.offstand.ui.base.BaseNavigator;
+
+public interface MakeRoomNavigator extends BaseNavigator {
 
     void goToRoomActivity();
 
     void goBack();
+
 }

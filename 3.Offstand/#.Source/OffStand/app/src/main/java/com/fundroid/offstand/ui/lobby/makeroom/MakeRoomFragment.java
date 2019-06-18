@@ -19,6 +19,7 @@ package com.fundroid.offstand.ui.lobby.makeroom;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
@@ -88,4 +89,9 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
         getBaseActivity().finish();
     }
 
+    @Override
+    public void handleError(Throwable throwable) {
+        Log.e("lsc", "MakeRoomFragment handleError " + throwable.getMessage());
+        Toast.makeText(getContext(), getString(R.string.msg_room_exist), Toast.LENGTH_SHORT).show();
+    }
 }

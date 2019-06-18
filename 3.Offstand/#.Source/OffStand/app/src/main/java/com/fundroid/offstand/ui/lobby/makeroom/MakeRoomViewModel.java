@@ -57,22 +57,26 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
     public void makeRoomClick() {
         createSocket(ROOM_PORT, 4);
-        Log.d("lsc","MakeRoomCViewModel makeRoomClick " + roomName.get());
+        Log.d("lsc", "MakeRoomCViewModel makeRoomClick " + roomName.get());
         getDataManager().setRoomName(roomName.get());
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {
-        getCompositeDisposable().add(ConnectionManager.createServerThread(roomPort, roomMaxAttendee)
-                .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
-                .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
-                .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(-1, true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
-                .subscribeOn(getSchedulerProvider().io())
-                .observeOn(getSchedulerProvider().io())
-                .subscribe(() -> {
-                    Log.d("lsc", "MakeRoomViewModel createSocket result ");
-                }, onError -> {
-                    Log.d("lsc", "MakeRoomViewModel createSocket onError " + onError);
-                })
+        getCompositeDisposable().add(
+                ConnectionManager.insertRoom(getDataManager().getRoomName())
+                        .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().io())
+                        .andThen(ConnectionManager.createServerThread(roomPort, roomMaxAttendee))
+                        .andThen(ConnectionManager.createClientThread(null, ROOM_PORT))
+                        .andThen(Completable.timer(500, TimeUnit.MILLISECONDS))
+                        .andThen(ConnectionManager.sendMessage(new ApiBody(API_ENTER_ROOM, new User(-1, true, getDataManager().getUserName(), getDataManager().getUserAvatar(), getDataManager().getUserTotal(), getDataManager().getUserWin()))))
+                        .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribe(() -> {
+                            Log.d("lsc", "MakeRoomViewModel createSocket result ");
+                        }, onError -> {
+                            getNavigator().handleError(onError);
+                        })
         );
 
     }

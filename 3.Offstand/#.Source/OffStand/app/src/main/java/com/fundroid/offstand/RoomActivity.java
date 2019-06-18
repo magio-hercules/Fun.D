@@ -144,7 +144,11 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         AndroidInjection.inject(this);
         ConnectionManager.insertRoom(dataManager.getRoomName()).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe();
+                .subscribe(() -> {
+                    Log.d("lsc","dfdf success");
+                }, e -> {
+                    Log.d("lsc","dfdf e " + e.getMessage());
+                });
         // 버터나이프 사용
         ButterKnife.bind(this);
 
