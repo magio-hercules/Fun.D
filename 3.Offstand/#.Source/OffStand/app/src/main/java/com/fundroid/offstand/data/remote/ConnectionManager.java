@@ -14,12 +14,8 @@ import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.utils.NetworkUtils;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -36,7 +32,6 @@ import io.reactivex.Single;
 import static com.fundroid.offstand.core.AppConstant.COLLECTION_ROOMS;
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.data.model.Card.setCardValue;
-import static com.fundroid.offstand.data.model.Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
@@ -87,8 +82,8 @@ public class ConnectionManager {
                     CollectionReference offStandCollection = db.collection(COLLECTION_ROOMS);
                     Room room = new Room(roomName, myIp);
                     roomDocumentId = roomName + ":" + myIp;
-                    offStandCollection.document(roomDocumentId);
-                    offStandCollection.add(room)
+                    offStandCollection.document(roomDocumentId)
+                            .set(room)
                             .addOnSuccessListener(documentReference -> subscriber.onComplete())
                             .addOnFailureListener(subscriber::onError);
                 }));

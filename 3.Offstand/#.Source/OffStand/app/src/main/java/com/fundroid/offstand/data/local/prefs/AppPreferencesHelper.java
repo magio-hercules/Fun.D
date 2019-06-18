@@ -29,6 +29,7 @@ public class AppPreferencesHelper implements PreferencesHelper {
     private static final String PREF_KEY_AVATAR = "character";
     private static final String PREF_KEY_TOTAL = "total";
     private static final String PREF_KEY_WIN = "win";
+    private static final String PREF_KEY_ROOM_NAME = "roomName";
 
     private final SharedPreferences mPrefs;
 
@@ -77,4 +78,13 @@ public class AppPreferencesHelper implements PreferencesHelper {
         mPrefs.edit().putInt(PREF_KEY_TOTAL, total).apply();
     }
 
+    @Override
+    public String getRoomName() {
+        return mPrefs.getString(PREF_KEY_ROOM_NAME, null);
+    }
+
+    @Override
+    public void setRoomName(String roomName) {
+        mPrefs.edit().putString(PREF_KEY_ROOM_NAME, roomName).apply();
+    }
 }

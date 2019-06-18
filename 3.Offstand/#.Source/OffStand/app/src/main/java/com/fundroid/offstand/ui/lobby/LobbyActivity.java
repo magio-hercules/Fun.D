@@ -26,15 +26,9 @@ import javax.inject.Inject;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-import io.reactivex.disposables.Disposable;
-
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static com.fundroid.offstand.utils.CommonUtils.getVisibleFragmentTag;
 
 public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewModel> implements LobbyNavigator, HasSupportFragmentInjector {
@@ -66,7 +60,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public AndroidInjector<Fragment> supportFragmentInjector() {
-        Log.d("lsc", "LobbyActivity supportFragmentInjector " + fragmentDispatchingAndroidInjector);
         return fragmentDispatchingAndroidInjector;
     }
 

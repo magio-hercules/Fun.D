@@ -1,5 +1,7 @@
 package com.fundroid.offstand.data.model;
 
+import com.google.gson.annotations.Expose;
+
 public class Room {
 
     public enum EnumStatus {
@@ -19,6 +21,8 @@ public class Room {
 
     private String name;
     private String address;
+
+    @Expose
     private EnumStatus roomStatus;
 
     public Room(String name, String address) {

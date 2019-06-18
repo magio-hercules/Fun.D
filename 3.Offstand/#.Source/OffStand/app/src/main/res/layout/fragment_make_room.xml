@@ -293,7 +293,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:textColor="@color/white"
-            android:text="@{viewModel.roomName}"
+            android:text="@={viewModel.roomName}"
             app:layout_constraintBottom_toBottomOf="@id/label_room_name"
             app:layout_constraintEnd_toEndOf="@id/guide_text_end"
             app:layout_constraintStart_toStartOf="@id/guide_text_start"
