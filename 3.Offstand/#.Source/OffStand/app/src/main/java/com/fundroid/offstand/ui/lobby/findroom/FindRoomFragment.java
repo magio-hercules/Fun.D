@@ -31,16 +31,23 @@ import javax.inject.Inject;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, FindRoomViewModel> implements FindRoomNavigator {
 
     public static final String TAG = FindRoomFragment.class.getSimpleName();
 
     @Inject
+    LinearLayoutManager linearLayoutManager;
+
+    @Inject
+    RoomAdapter roomAdapter;
+
+    @Inject
     ViewModelProviderFactory viewModelProviderFactory;
 
     private FindRoomViewModel findRoomViewModel;
-    private LobbyViewModel lobbyViewModel;
 
     private FragmentFindRoomBinding fragmentFindRoomBinding;
 
@@ -82,13 +89,13 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fragmentFindRoomBinding = getViewDataBinding();
-        lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
-        fragmentFindRoomBinding.setLobbyViewModel(lobbyViewModel);
         initViews();
     }
 
     private void initViews() {
-
+        getViewDataBinding().rvRoom.setLayoutManager(linearLayoutManager);
+        getViewDataBinding().rvRoom.setItemAnimator(new DefaultItemAnimator());
+        getViewDataBinding().rvRoom.setAdapter(roomAdapter);
     }
 
     @Override

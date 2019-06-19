@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "901361465181",
+    "firebase_url": "https://offstand-92960.firebaseio.com",
+    "project_id": "offstand-92960",
+    "storage_bucket": "offstand-92960.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:901361465181:android:78802eddaae81e8f",
+        "android_client_info": {
+          "package_name": "com.fundroid.offstand"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "901361465181-dgn7prr670cns8shqkqf9k82puhevf8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFKgnQ77eRDo8_DvXRitqIhAy0haa2w5g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "901361465181-dgn7prr670cns8shqkqf9k82puhevf8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

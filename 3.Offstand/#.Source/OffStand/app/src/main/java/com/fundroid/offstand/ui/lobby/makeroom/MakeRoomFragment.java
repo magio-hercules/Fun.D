@@ -19,6 +19,7 @@ package com.fundroid.offstand.ui.lobby.makeroom;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
@@ -42,9 +43,6 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     ViewModelProviderFactory viewModelProviderFactory;
 
     private MakeRoomViewModel makeRoomViewModel;
-    private LobbyViewModel lobbyViewModel;
-
-    private FragmentMakeRoomBinding fragmentMakeRoomBinding;
 
     public static MakeRoomFragment newInstance() {
         Bundle args = new Bundle();
@@ -81,14 +79,6 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        fragmentMakeRoomBinding = getViewDataBinding();
-        lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
-        fragmentMakeRoomBinding.setLobbyViewModel(lobbyViewModel);
-    }
-
-    @Override
     public void goToRoomActivity() {
         RoomActivity.start(getContext());
         getBaseActivity()
@@ -99,4 +89,9 @@ public class MakeRoomFragment extends BaseFragment<FragmentMakeRoomBinding, Make
         getBaseActivity().finish();
     }
 
+    @Override
+    public void handleError(Throwable throwable) {
+        Log.e("lsc", "MakeRoomFragment handleError " + throwable.getMessage());
+        Toast.makeText(getContext(), getString(R.string.msg_room_exist), Toast.LENGTH_SHORT).show();
+    }
 }

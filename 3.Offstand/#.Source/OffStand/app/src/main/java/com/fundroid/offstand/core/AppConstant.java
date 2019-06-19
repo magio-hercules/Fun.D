@@ -2,6 +2,9 @@ package com.fundroid.offstand.core;
 
 public class AppConstant {
 
+    //firestore
+    public static final String COLLECTION_ROOMS = "rooms";
+
     //ui
     public static final String FRAGMENT_FIND_ROOM = "FRAGMENT_FIND_ROOM";
     public static final String FRAGMENT_MAKE_ROOM = "FRAGMENT_MAKE_ROOM";

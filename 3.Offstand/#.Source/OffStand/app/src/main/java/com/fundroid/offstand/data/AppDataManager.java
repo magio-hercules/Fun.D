@@ -66,4 +66,14 @@ public class AppDataManager implements DataManager {
     public void setUserTotal(int total) {
         mPreferencesHelper.setUserTotal(total);
     }
+
+    @Override
+    public String getRoomName() {
+        return mPreferencesHelper.getRoomName();
+    }
+
+    @Override
+    public void setRoomName(String roomName) {
+        mPreferencesHelper.setRoomName(roomName);
+    }
 }

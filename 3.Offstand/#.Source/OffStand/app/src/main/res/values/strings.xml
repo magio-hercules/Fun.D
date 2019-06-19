@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OffStand</string>
+    <string name="app_name">오프섯다</string>
     <string name="shared_preferences">com.leesc.tazza.sharedpreferences</string>
     <!-- Splash -->
     <string name="splash_msg_title">알림</string>
@@ -8,4 +8,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- 방 만들기 -->
+    <string name="msg_room_exist">이미 방이 존재합니다.</string>
 </resources>

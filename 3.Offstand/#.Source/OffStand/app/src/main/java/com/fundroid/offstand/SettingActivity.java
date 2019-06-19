@@ -134,12 +134,12 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
 //        editor.putInt("total", 5);
 //        editor.commit();
-        dataManager.setUserTotal(5);
+//        dataManager.setUserTotal(5);
 
 
 //        editor.putInt("win", 3);
 //        editor.commit();
-        dataManager.setUserWin(3);
+//        dataManager.setUserWin(3);
 
 
 //        editor.putFloat("per", (new Float(sharedPreferences.getInt("win", 0)) / new Float(sharedPreferences.getInt("total", 0))) * 100);
@@ -152,7 +152,9 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 
         setting_stats_total_text.setText("" + dataManager.getUserTotal());
         setting_stats_win_text.setText("" + dataManager.getUserWin());
-        setting_stats_per_text.setText("" + (int) (((float) dataManager.getUserWin() / (float) dataManager.getUserTotal())) * 100 + "%");
+        setting_stats_per_text.setText("" + ((int) (((float) dataManager.getUserWin() / (float) dataManager.getUserTotal()) * 100)) + "%");
+
+
 
         // 커서를 끝에 위치시키기
         userName.setSelection(userName.length());
@@ -198,14 +200,11 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
 //                    }
 //                });
 
-                Log.d("MSMS", "AAA" + characterState);
-
                 if (characterState > 1) {
                     characterState--;
                 } else {
                     characterState = character.length - 1;
                 }
-                Log.d("MSMS", "BBB" + characterState);
 
                 setting_character.setImageResource(character[characterState]);
             }
@@ -216,7 +215,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
             public void onClick(View v) {
                 MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
-                Log.d("MSMS", "AAA" + characterState);
 
 
                 if (characterState < character.length - 1) {
@@ -224,7 +222,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
                 } else {
                     characterState = 1;
                 }
-                Log.d("MSMS", "BBB" + characterState);
 
                 setting_character.setImageResource(character[characterState]);
             }

@@ -5,31 +5,24 @@
 
         <variable
             name="room"
-            type="com.fundroid.offstand.data.model.Room" />
+            type="com.fundroid.offstand.ui.lobby.findroom.ItemRoomViewModel" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/item_wifi"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="@{() -> room.enterRoom()}">
+        android:onClick="@{() -> room.onItemClick()}"
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/device_name"
+            android:id="@+id/room_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{room.deviceName}"
+            android:text="@{room.name}"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/device_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

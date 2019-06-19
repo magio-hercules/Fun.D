@@ -1,8 +1,8 @@
 package com.fundroid.offstand;
 
+import android.annotation.SuppressLint;
 import android.content.ClipDescription;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.media.AudioAttributes;
 import android.media.MediaPlayer;
 import android.media.SoundPool;
@@ -15,16 +15,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.Toast;
-import android.annotation.SuppressLint;
 import android.widget.VideoView;
-
-import java.io.IOException;
-import java.util.Random;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.Group;
@@ -36,13 +31,19 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.ui.lobby.guide.GuideFragment;
-import com.fundroid.offstand.ui.lobby.main.MainFragment;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -60,8 +61,8 @@ import io.reactivex.schedulers.Schedulers;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_DIE_BR;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_GAME_RESULT_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
@@ -156,6 +157,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     SoundPool soundPool = null;
     int[] soundTrack;
 
+    @Inject
+    DataManager dataManager;
 
     // TODO
     // 참여인원
@@ -183,6 +186,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     ImageView result_right_button;
     ImageView result_shadow;
     ImageView result_rebutton;
+
+    //게임 결과 리스트 정보
+    static Map<String, Object> resultInfoMap = new HashMap<String, Object>();
+    static List resultList = new ArrayList();
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -983,7 +990,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         Glide.with(this).load(resId).into(view);
     }
 
-    public void Game_Reslut_Close() {
+
+    public void Game_Result_Close() {
 
         result_back.setVisibility(View.GONE);
 
@@ -1001,6 +1009,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 //    @OnClick(R.id.play_image_result)
     public void Game_Result() {
         Log.d(TAG, "Click Game_Result");
+
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -1160,6 +1169,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
 
+    @SuppressLint("CheckResult")
     private void initRX() {
         Log.d(TAG, "initRX");
 
@@ -1199,14 +1209,41 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                             } else {
                                 image_result.setEnabled(true);
                             }
+
+
                             Log.d("lsc", "MSMS" + apiBody.getUsers());
                             //int a = apiBody.getUsers().get(0).getCards().first;
-                            //apiBody.getUsers().size();
 
                             Log.d("MSMS", "MSMS" + apiBody.getUsers().get(0).getCards().first);
+//                            resultInfo.resultInfoMap.put("name",apiBody.getUsers().get(0).getCards().first);
 
+                            int usersSize = apiBody.getUsers().size();
+
+                            for (int i = usersSize - 1; i >= 0; i--) {
+                                resultInfoMap.put("name" + i, apiBody.getUsers().get(i).getName());
+                                resultInfoMap.put("first" + i, apiBody.getUsers().get(i).getCards().first);
+                                resultInfoMap.put("second" + i, apiBody.getUsers().get(i).getCards().second);
+                                resultInfoMap.put("status" + i, apiBody.getUsers().get(i).getStatus());
+                                Log.d("MSMS", "MSMS" + apiBody.getUsers().get(i).getName());
+                                resultList.add(resultInfoMap);
+
+                                if (seatNum == apiBody.getUsers().get(i).getSeat()) {
+                                    Log.d(TAG, "게임결과 (seatNum: " + seatNum + ")");
+                                    int nTotal = dataManager.getUserTotal();
+                                    int nWin = dataManager.getUserWin();
+
+                                    dataManager.setUserTotal(nTotal + 1);
+                                    if (i == 0) { // 승
+                                        dataManager.setUserWin(nWin + 1);
+                                        Log.d(TAG, "게임결과 (승) : " + nTotal+1 + "전 " + nWin+1 + "승");
+                                    } else {
+                                        Log.d(TAG, "게임결과 (패) : " + nTotal+1 + "전 " + nWin + "승");
+                                    }
+                                }
+                            }
+
+                           showResult = true;
                             Game_Result();
-                            showResult = true;
                             break;
 
                         case API_GAME_RESULT_AVAILABLE:

@@ -9,10 +9,6 @@
             name="viewModel"
             type="com.fundroid.offstand.ui.lobby.makeroom.MakeRoomViewModel" />
 
-        <variable
-            name="lobbyViewModel"
-            type="com.fundroid.offstand.ui.lobby.LobbyViewModel" />
-
     </data>
 
 
@@ -22,33 +18,6 @@
         android:background="@android:color/transparent"
         android:clickable="true"
         android:focusable="true">
-        <!--<androidx.constraintlayout.widget.ConstraintLayout-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="0dp"-->
-        <!--app:layout_constraintLeft_toLeftOf="@id/guide_v_start"-->
-        <!--app:layout_constraintRight_toRightOf="@id/guide_v_end"-->
-        <!--app:layout_constraintTop_toTopOf="@id/guide_h_start"-->
-        <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_end"-->
-        <!--android:background="@color/colorTransparant70"-->
-        <!--android:clickable="true"-->
-        <!--android:focusable="true">-->
-
-        <!-- Vertical -->
-
-        <!--<androidx.constraintlayout.widget.Guideline
-          android:id="@+id/guide_make_room_start"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:orientation="vertical"
-          app:layout_constraintGuide_percent="0.125388" />-->
-
-        <!--<androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_back_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.874612" />-->
-
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_text_start"
@@ -92,12 +61,12 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.014" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_v_end"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.986" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide_v_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.986" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_title_start"
@@ -159,19 +128,6 @@
 
 
         <!-- Horizontal -->
-
-        <!--<androidx.constraintlayout.widget.Guideline
-                  android:id="@+id/guide_label_top"
-                  android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:orientation="horizontal"
-                  app:layout_constraintGuide_percent="0.0689415" />-->
-        <!--<androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_label_bottom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.793565" />-->
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_h_start"
@@ -317,7 +273,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/title_make_room"
-            android:onClick="@{() -> lobbyViewModel.createGroup()}"
             app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"
             app:layout_constraintEnd_toEndOf="@id/guide_title_end"
             app:layout_constraintStart_toStartOf="@id/guide_title_start"
@@ -328,7 +283,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/label_room_name"
-            android:onClick="@{() -> lobbyViewModel.removeGroup()}"
             app:layout_constraintBottom_toBottomOf="@id/guide_h_roomname_e"
             app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
             app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
@@ -339,79 +293,17 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:textColor="@color/white"
+            android:text="@={viewModel.roomName}"
             app:layout_constraintBottom_toBottomOf="@id/label_room_name"
             app:layout_constraintEnd_toEndOf="@id/guide_text_end"
             app:layout_constraintStart_toStartOf="@id/guide_text_start"
             app:layout_constraintTop_toTopOf="@id/label_room_name" />
 
         <ImageView
-            android:id="@+id/label_room_rule"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/label_game_rule"
-            app:layout_constraintBottom_toTopOf="@id/guide_h_room_rule_e"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
-            app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
-            app:layout_constraintTop_toBottomOf="@id/guide_h_room_rule_s" />
-
-        <EditText
-            android:id="@+id/et_room_rule"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/label_room_rule"
-            app:layout_constraintEnd_toEndOf="@id/guide_text_end"
-            app:layout_constraintStart_toStartOf="@id/guide_text_start"
-            app:layout_constraintTop_toTopOf="@id/label_room_rule" />
-
-        <ImageView
-            android:id="@+id/label_room_set"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:src="@drawable/label_limit_edition"
-            app:layout_constraintBottom_toTopOf="@id/guide_h_room_set_e"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
-            app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
-            app:layout_constraintTop_toBottomOf="@id/guide_h_room_set_s" />
-
-        <EditText
-            android:id="@+id/et_room_set"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/label_room_set"
-            app:layout_constraintEnd_toEndOf="@id/guide_text_end"
-            app:layout_constraintStart_toStartOf="@id/guide_text_start"
-            app:layout_constraintTop_toTopOf="@id/label_room_set" />
-
-        <ImageView
-            android:id="@+id/label_room_time"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:src="@drawable/label_limit_time"
-            app:layout_constraintBottom_toTopOf="@id/guide_h_room_time_e"
-            app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
-            app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
-            app:layout_constraintTop_toBottomOf="@id/guide_h_room_time_s" />
-
-        <EditText
-            android:id="@+id/et_room_time"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:inputType="number"
-            android:textColor="@color/white"
-            app:layout_constraintBottom_toBottomOf="@id/label_room_time"
-            app:layout_constraintEnd_toEndOf="@id/guide_text_end"
-            app:layout_constraintStart_toStartOf="@id/guide_text_start"
-            app:layout_constraintTop_toTopOf="@id/label_room_time" />
-
-        <ImageView
             android:id="@+id/label_room_password"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:inputType="number"
+            android:inputType="numberPassword"
             android:src="@drawable/label_room_password"
             app:layout_constraintBottom_toTopOf="@id/guide_h_room_password_e"
             app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"

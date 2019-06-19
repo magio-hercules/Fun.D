@@ -142,7 +142,13 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_room4);
         AndroidInjection.inject(this);
-
+        ConnectionManager.insertRoom(dataManager.getRoomName()).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(() -> {
+                    Log.d("lsc","dfdf success");
+                }, e -> {
+                    Log.d("lsc","dfdf e " + e.getMessage());
+                });
         // 버터나이프 사용
         ButterKnife.bind(this);
 
@@ -301,6 +307,14 @@ public class RoomActivity extends AppCompatActivity implements View.OnTouchListe
 //                            Toast.makeText(getApplicationContext(), "시작하기 (셔플)", Toast.LENGTH_SHORT).show();
 
                             doSendMessage(API_SHUFFLE, currentUser.getSeat());
+                            ConnectionManager.deleteRoom()
+                                    .subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(() -> {
+                                        Log.d("lsc", "success");
+                                    }, e -> {
+                                        Log.d("lsc", "error " + e.getMessage());
+                                    });
 //                            Intent intent = new Intent(RoomActivity.this, PlayActivity.class);
 //                            startActivity(intent);
 //                            finish();

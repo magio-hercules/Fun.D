@@ -34,4 +34,8 @@ public interface PreferencesHelper {
 
     void setUserTotal(int total);
 
+    String getRoomName();
+
+    void setRoomName(String roomName);
+
 }
