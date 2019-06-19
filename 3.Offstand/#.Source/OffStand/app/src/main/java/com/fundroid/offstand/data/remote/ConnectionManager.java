@@ -100,13 +100,6 @@ public class ConnectionManager {
                 }));
     }
 
-//    public static Completable test(String roomDocumentId) {
-//        return Completable.create(subscriber -> {
-//            Task<DocumentSnapshot> task = db.collection(COLLECTION_ROOMS).document(roomDocumentId).get();
-//            Log.d("lsc", "test " + task.getResult());
-//        });
-//    }
-
     public static Observable selectRooms() {
         return Observable.create(subscriber -> {
             db.collection(COLLECTION_ROOMS)
@@ -128,7 +121,7 @@ public class ConnectionManager {
             serverSocket = new ServerSocket(roomPort);
             serverThreads = new ServerThread[roomMaxUser];
             subscriber.onComplete();   // accept에서 blocking 되니 방장 클라이언트가 붙기전에 보냄
-            Log.d("lsc","ConnectionManager createServerThread " + Thread.currentThread().getName());
+            Log.d("lsc", "ConnectionManager createServerThread " + Thread.currentThread().getName());
             socketAcceptLoop();
         });
     }
@@ -238,7 +231,8 @@ public class ConnectionManager {
             case API_OUT:
                 //Todo : 배열에 다 찰 경우 다시 loop 돌리는 로직 추가해야됨
                 if (apiBody.getSeatNo().equals(serverThreads[0].getUser().getSeat())) {
-                    return closeAllServerSocket();
+                    return deleteRoom()
+                            .andThen(closeAllServerSocket());
                 } else {
                     return broadcastMessageExceptOne(new ApiBody(API_OUT_BR, apiBody.getSeatNo()), apiBody.getSeatNo())
                             .concatMap(result -> closeServerSocket(apiBody.getSeatNo()))

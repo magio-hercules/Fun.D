@@ -131,7 +131,6 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:src="@drawable/title_host_list"
-            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"
             app:layout_constraintDimensionRatio="H,3984:450"
             app:layout_constraintEnd_toEndOf="@id/guide_enter_room_end"
@@ -146,7 +145,6 @@
             android:padding="@dimen/padding_refresh"
             android:src="@drawable/btn_refresh"
             app:layout_constraintBottom_toBottomOf="@id/guide_title_bottom"
-            app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="@id/guide_refresh_end"
             app:layout_constraintStart_toEndOf="@id/title_find_room"
             app:layout_constraintTop_toTopOf="@id/guide_title_top" />

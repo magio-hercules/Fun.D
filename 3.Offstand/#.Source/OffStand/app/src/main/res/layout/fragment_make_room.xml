@@ -61,12 +61,12 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.014" />
 
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guide_v_end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_percent="0.986" />
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.986" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guide_title_start"
@@ -292,8 +292,9 @@
             android:id="@+id/et_room_name"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:textColor="@color/white"
+            android:gravity="center_horizontal"
             android:text="@={viewModel.roomName}"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/label_room_name"
             app:layout_constraintEnd_toEndOf="@id/guide_text_end"
             app:layout_constraintStart_toStartOf="@id/guide_text_start"
@@ -314,6 +315,9 @@
             android:id="@+id/et_room_password"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:gravity="center_horizontal"
+            android:inputType="numberPassword"
+            android:maxLength="4"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="@id/label_room_password"
             app:layout_constraintEnd_toEndOf="@id/guide_text_end"
