@@ -1237,9 +1237,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                     dataManager.setUserTotal(nTotal + 1);
                                     if (i == 0) { // 승
                                         dataManager.setUserWin(nWin + 1);
-                                        Log.d(TAG, "게임결과 (승) : " + nTotal + 1 + "전 " + nWin + 1 + "승");
+                                        Log.d(TAG, "게임결과 (승) : " + (nTotal+1) + "전 " + (nWin + 1) + "승");
                                     } else {
-                                        Log.d(TAG, "게임결과 (패) : " + nTotal + 1 + "전 " + nWin + "승");
+                                        Log.d(TAG, "게임결과 (패) : " + (nTotal+1) + "전 " + nWin + "승");
                                     }
                                 }
                             }
