@@ -1,7 +1,5 @@
 package com.fundroid.offstand.data.model;
 
-import com.google.gson.annotations.Expose;
-
 public class Room {
 
     public enum EnumStatus {
@@ -19,13 +17,12 @@ public class Room {
         }
     }
 
+    private String id;
     private String name;
     private String address;
 
-    @Expose
-    private EnumStatus roomStatus;
-
-    public Room(String name, String address) {
+    public Room(String id, String name, String address) {
+        this.id = id;
         this.name = name;
         this.address = address;
     }
@@ -34,23 +31,11 @@ public class Room {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public EnumStatus getRoomStatus() {
-        return roomStatus;
-    }
-
-    public void setRoomStatus(EnumStatus roomStatus) {
-        this.roomStatus = roomStatus;
+    public String getId() {
+        return id;
     }
 }

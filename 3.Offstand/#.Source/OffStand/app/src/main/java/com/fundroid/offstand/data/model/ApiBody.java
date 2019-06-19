@@ -36,7 +36,7 @@ public class ApiBody {
     private Integer cardNo2;
 
     @Expose
-    private Boolean result;
+    private Boolean draw;
 
     public int getNo() {
         return no;
@@ -62,6 +62,12 @@ public class ApiBody {
     public ApiBody(Integer no, ArrayList<User> users) {
         this.no = no;
         this.users = users;
+    }
+
+    public ApiBody(Integer no, ArrayList<User> users, boolean draw) {
+        this.no = no;
+        this.users = users;
+        this.draw = draw;
     }
 
     public ApiBody(Integer no, Integer seatNo) {
