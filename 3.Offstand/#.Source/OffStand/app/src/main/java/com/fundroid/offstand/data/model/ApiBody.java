@@ -114,6 +114,8 @@ public class ApiBody {
         return seatNos;
     }
 
+    public Boolean getDraw() { return draw; }
+
     @Override
     public String toString() {
         return new Gson().toJson(this);

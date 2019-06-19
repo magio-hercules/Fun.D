@@ -1229,7 +1229,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                 Log.d("MSMS", "MSMS" + apiBody.getUsers().get(i).getName());
                                 resultList.add(resultInfoMap);
 
-                                if (seatNum == apiBody.getUsers().get(i).getSeat()) {
+                                if (!apiBody.getDraw() && seatNum == apiBody.getUsers().get(i).getSeat()) {
                                     Log.d(TAG, "게임결과 (seatNum: " + seatNum + ")");
                                     int nTotal = dataManager.getUserTotal();
                                     int nWin = dataManager.getUserWin();
