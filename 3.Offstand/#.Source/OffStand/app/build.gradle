@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'deploygate'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 28
@@ -61,6 +62,7 @@ dependencies {
     implementation dependencies.appCompat
     implementation dependencies.design
     implementation dependencies.constraintLayout
+    implementation dependencies.recyclerSelection
 
     //reactive
     implementation dependencies.rxJava
@@ -98,6 +100,9 @@ dependencies {
     annotationProcessor dependencies.glideCompiler
 
     // db
-    implementation 'com.google.firebase:firebase-firestore:19.0.2'
+    implementation dependencies.fireStore
+
+    //firebase
+    implementation dependencies.firebaseCore
 }
 apply plugin: 'com.google.gms.google-services'

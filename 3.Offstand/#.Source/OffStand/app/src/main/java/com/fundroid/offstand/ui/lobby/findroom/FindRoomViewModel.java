@@ -72,8 +72,10 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(querySnapshot ->
+
                                 rooms.setValue(Stream.of(((QuerySnapshot) querySnapshot).getDocuments()).map(queryDocumentSnapshot ->
-                                        new Room((String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("name"),
+                                        new Room(ConnectionManager.roomDocumentId,
+                                                (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("name"),
                                                 (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("address")))
                                         .toList())
                         , onError -> {

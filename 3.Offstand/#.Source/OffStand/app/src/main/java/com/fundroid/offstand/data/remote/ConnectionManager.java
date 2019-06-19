@@ -38,6 +38,7 @@ import io.reactivex.Single;
 import static com.fundroid.offstand.core.AppConstant.COLLECTION_ROOMS;
 import static com.fundroid.offstand.core.AppConstant.RESULT_API_NOT_DEFINE;
 import static com.fundroid.offstand.data.model.Card.setCardValue;
+import static com.fundroid.offstand.data.model.Room.EnumStatus.REGAME;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_BAN_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_CARD_OPEN;
@@ -79,14 +80,14 @@ public class ConnectionManager {
     private static Room.EnumStatus roomStatus = Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
     private static ArrayList<Integer> cards = new ArrayList<>();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private static String roomDocumentId;
+    public static String roomDocumentId;
 
     public static Completable insertRoom(String roomName) {
         return NetworkUtils.getIpAddress()
                 .flatMapCompletable(myIp -> Completable.create(subscriber -> {
                     Log.d("lsc", "ConnectionManager insertRoom " + myIp);
-                    Room room = new Room(roomName, myIp);
                     roomDocumentId = roomName + "(" + myIp + ")";
+                    Room room = new Room(roomDocumentId, roomName, myIp);
                     DocumentReference documentReference = db.collection(COLLECTION_ROOMS).document(roomDocumentId);
                     db.runTransaction(transaction -> {
                         DocumentSnapshot snapshot = transaction.get(documentReference);
@@ -192,7 +193,7 @@ public class ConnectionManager {
             case API_SHUFFLE:
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
                         .flatMap(pair -> {
-                            if (roomStatus == Room.EnumStatus.REGAME) {
+                            if (roomStatus == REGAME) {
                                 if (pair.second.getStatus() == CARDOPEN.getEnumStatus() || pair.second.getStatus() == INGAME.getEnumStatus()) {
                                     Log.d("lsc", "REGAME SHUFFLE before " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
                                     pair.second.setStatus(INGAME.getEnumStatus());
@@ -225,7 +226,7 @@ public class ConnectionManager {
                         .flatMap(ConnectionManager::setSumRebalance)
                         .flatMap(users -> sortByUserSum())
                         .flatMap(ConnectionManager::checkRematch)
-                        .flatMapObservable(users -> broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users)));
+                        .flatMapObservable(users -> broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users, roomStatus.getEnumStatus() == REGAME.getEnumStatus())));
 
 
             case API_OUT:
@@ -448,7 +449,7 @@ public class ConnectionManager {
         return Single.create(subscriber -> {
             //승리자 LEVEL이 3 또는 7일 경우
             if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
-                roomStatus = Room.EnumStatus.REGAME;
+                roomStatus = REGAME;
             }
 
             //카드 급이 같을 경우 (죽지 않고 동점이 아닌 사람의 STATUS 를 INGAME으로 셋
@@ -461,7 +462,7 @@ public class ConnectionManager {
                     }).collect(Collectors.toList());
 
             if (users.size() > 1 && users.get(0).getCardSum() == users.get(1).getCardSum()) {
-                roomStatus = Room.EnumStatus.REGAME;
+                roomStatus = REGAME;
             }
             subscriber.onSuccess(users);
         });
@@ -493,7 +494,7 @@ public class ConnectionManager {
                 } else {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
                 }
-                if (roomStatus != Room.EnumStatus.REGAME) {
+                if (roomStatus != REGAME) {
                     serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
                 } else {
 
@@ -516,7 +517,7 @@ public class ConnectionManager {
 //                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
 //                // 1P 8땡 2P 땡잡이 3P 멍구사
 //                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(3, 7));
+//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 9));
 //                serverThreads.get(2).getUser().setCards(new Pair<>(4, 9));
 
                 //card test end

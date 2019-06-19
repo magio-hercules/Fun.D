@@ -3,6 +3,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="room"
             type="com.fundroid.offstand.ui.lobby.findroom.ItemRoomViewModel" />
@@ -12,8 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/item_wifi"
         android:layout_width="match_parent"
-        android:onClick="@{() -> room.onItemClick()}"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> room.onItemClick()}">
 
         <TextView
             android:id="@+id/room_name"
