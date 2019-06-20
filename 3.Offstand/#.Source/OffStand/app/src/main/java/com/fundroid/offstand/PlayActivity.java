@@ -439,7 +439,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 @Override
                 public void onAnimationEnd(DynamicAnimation animation, boolean canceled, float value, float velocity) {
                     if (bCheck) {
-                        changeCard();
+                        changeCard(true);
                     }
                 }
             });
@@ -617,7 +617,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                     Log.d(TAG, "onDoubleTap");
 
                     bCheck = true;
-                    changeCard();
+                    changeCard(true);
 
                     return super.onDoubleTap(e);
                 }
@@ -721,29 +721,6 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
 
-    private void changeCard() {
-        if (tempIndex == 1) {
-            loadImage(image1, getResourceId("drawable", "card_" + card2));
-            loadImage(image2, getResourceId("drawable", "card_" + card1));
-
-            tempIndex++;
-            bCheck = false;
-        } else if (tempIndex == 2) {
-            tempIndex = 1;
-            bCheck = false;
-
-            // move
-            ani_view2_x.start();
-            ani_view2_y.start();
-            ani_view1_x.start();
-            ani_view1_y.start();
-
-            doSendMessage(API_CARD_OPEN, seatNum);
-
-            initButton(false);
-        }
-    }
-
     private void resetCard() {
         Log.d(TAG, "resetCard");
 
@@ -774,13 +751,38 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         initButton(true);
     }
 
-    private void openCard() {
+    private void changeCard(boolean bSendApi) {
+        if (tempIndex == 1) {
+            loadImage(image1, getResourceId("drawable", "card_" + card2));
+            loadImage(image2, getResourceId("drawable", "card_" + card1));
+
+            tempIndex++;
+            bCheck = false;
+        } else if (tempIndex == 2) {
+            tempIndex = 1;
+            bCheck = false;
+
+            // move
+            ani_view2_x.start();
+            ani_view2_y.start();
+            ani_view1_x.start();
+            ani_view1_y.start();
+
+            if (bSendApi) {
+                doSendMessage(API_CARD_OPEN, seatNum);
+            }
+
+            initButton(false);
+        }
+    }
+
+    private void openCard(boolean bSendApi) {
         Log.d(TAG, "openCard");
 
         bCheck = true;
-        changeCard();
+        changeCard(bSendApi);
         bCheck = true;
-        changeCard();
+        changeCard(bSendApi);
     }
 
 
@@ -924,7 +926,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                         MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
 
                         image_open.setPressed(false);
-                        openCard();
+                        openCard(true);
                         break;
                     case R.id.play_image_re:
                         MediaPlayer.create(PlayActivity.this, R.raw.mouth_interface_button).start();
@@ -1206,15 +1208,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 //                                loadImage(image_re, R.drawable.button_play_re);
                                 image_re.setEnabled(true);
                                 enableRegame = true;
-
-                                // for AUTO_RESULT
-                                if (!showResult) {
-                                    openCard();
-                                }
                             } else {
                                 image_result.setEnabled(true);
                             }
-
 
                             Log.d("lsc", "MSMS" + apiBody.getUsers());
                             //int a = apiBody.getUsers().get(0).getCards().first;
@@ -1249,7 +1245,15 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                 }
                             }
 
+                            // for AUTO_RESULT
+                            if (!showResult) {
+                                openCard(false);
+                                Log.d(TAG, "TEST openCard !showResult");
+                            } else {
+                                Log.d(TAG, "TEST openCard showResult");
+                            }
                             showResult = true;
+
                             Game_Result();
                             break;
 
