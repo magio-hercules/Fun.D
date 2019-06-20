@@ -218,7 +218,8 @@ public class ConnectionManager {
                         .concatMap(result -> Observable.just(new ApiBody(RESULT_API_NOT_DEFINE)));
 
             case API_GAME_RESULT:
-                return setCardSumAndLevel((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
+                return
+                        setCardSumAndLevel((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
                         .flatMap(ConnectionManager::setSumRebalance)
                         .flatMap(users -> sortByUserSum())
                         .flatMap(ConnectionManager::checkRematch)
@@ -433,8 +434,9 @@ public class ConnectionManager {
                 return sendMessage(new ApiBody(API_GAME_RESULT_AVAILABLE), serverThreads[0]);
 
             case AUTO_RESULT:
-                return sendMessage(new ApiBody(API_GAME_RESULT_AVAILABLE), serverThreads[0])
-                        .concatMap(apiBody -> serverProcessor(new ApiBody(API_GAME_RESULT).toString()));
+//                return sendMessage(new ApiBody(API_GAME_RESULT_AVAILABLE), serverThreads[0])
+//                        .concatMap(apiBody -> serverProcessor(new ApiBody(API_GAME_RESULT).toString()));
+                return serverProcessor(new ApiBody(API_GAME_RESULT).toString());
 
             default:
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
