@@ -3,7 +3,6 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 
@@ -15,13 +14,10 @@ import com.fundroid.offstand.data.model.Room;
 import com.fundroid.offstand.model.User;
 import com.fundroid.offstand.utils.NetworkUtils;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
+
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Transaction;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -292,6 +288,12 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
             serverSocket.close();
             serverCount = 0;
+//            for (int index = 0; index < serverThreads.length; index++) {
+//                if (serverThreads[index] != null && serverThreads[index].getUser() != null) {
+//                    serverThreads[index].getSocket().close();
+//                    serverThreads[index] = null;
+//                }
+//            }
         });
     }
 
@@ -379,6 +381,15 @@ public class ConnectionManager {
                     .filter(serverThread -> serverThread.getUser().getStatus() == INGAME.getEnumStatus())
                     .count();
 
+            int dieUserCount = (int) Stream.of(serverThreads)
+                    .withoutNulls()
+                    .filter(serverThread -> serverThread.getUser().getStatus() == DIE.getEnumStatus())
+                    .count();
+
+            int allGameUserCount = (int) Stream.of(serverThreads)
+                    .withoutNulls()
+                    .count();
+
             switch (roomStatus) {
                 case SHUFFLE_NOT_AVAILABLE:
                 case SHUFFLE_AVAILABLE:
@@ -390,7 +401,9 @@ public class ConnectionManager {
                     break;
 
                 case INGAME:
-                    if (inGameUserCount == 0) {
+                    if (allGameUserCount == dieUserCount + 1) {
+                        roomStatus = Room.EnumStatus.AUTO_RESULT;
+                    } else if (inGameUserCount == 0) {
                         roomStatus = Room.EnumStatus.GAME_RESULT_AVAILABLE;
                     } else {
                         roomStatus = Room.EnumStatus.INGAME;
@@ -419,12 +432,17 @@ public class ConnectionManager {
             case GAME_RESULT_AVAILABLE:
                 return sendMessage(new ApiBody(API_GAME_RESULT_AVAILABLE), serverThreads[0]);
 
+            case AUTO_RESULT:
+                return sendMessage(new ApiBody(API_GAME_RESULT_AVAILABLE), serverThreads[0])
+                        .concatMap(apiBody -> serverProcessor(new ApiBody(API_GAME_RESULT).toString()));
+
             default:
                 return Observable.just(new ApiBody(RESULT_API_NOT_DEFINE));
         }
     }
 
     public static Single<ArrayList<User>> setCardSumAndLevel(ArrayList<User> users) {
+        Log.d("lsc", "setCardSumAndLevel");
         return Single.create(subscriber -> {
             for (User user : Stream.of(users).filter(user -> user.getStatus() == CARDOPEN.getEnumStatus() || user.getStatus() == DIE.getEnumStatus()).toList()) {
                 setCardValue(user);
@@ -446,12 +464,13 @@ public class ConnectionManager {
     }
 
     private static Single<ArrayList<User>> checkRematch(ArrayList<User> users) {
+        Log.d("lsc", "checkRematch");
         return Single.create(subscriber -> {
             //승리자 LEVEL이 3 또는 7일 경우
             if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
                 roomStatus = REGAME;
             }
-
+            Log.d("lsc", "checkRematch 1");
             //카드 급이 같을 경우 (죽지 않고 동점이 아닌 사람의 STATUS 를 INGAME으로 셋
             Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser())
                     .filterNot(user -> user.getStatus() == DIE.getEnumStatus())
@@ -460,7 +479,7 @@ public class ConnectionManager {
                         loseUser.setStatus(INGAME.getEnumStatus());
                         return loseUser;
                     }).collect(Collectors.toList());
-
+            Log.d("lsc", "checkRematch 2");
             if (users.size() > 1 && users.get(0).getCardSum() == users.get(1).getCardSum()) {
                 roomStatus = REGAME;
             }
@@ -516,8 +535,8 @@ public class ConnectionManager {
 //                serverThreads.get(1).getUser().setCards(new Pair<>(14, 9)); //구사
 //                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
 //                // 1P 8땡 2P 땡잡이 3P 멍구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 9));
+                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
+                serverThreads.get(1).getUser().setCards(new Pair<>(4, 9));
 //                serverThreads.get(2).getUser().setCards(new Pair<>(4, 9));
 
                 //card test end

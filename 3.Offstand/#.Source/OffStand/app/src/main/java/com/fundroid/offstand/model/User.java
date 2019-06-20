@@ -68,7 +68,7 @@ public class User implements Comparable<User> {
     private int cardLevel;
 
     @Expose
-    private Integer cardSum;
+    private Integer cardSum = 0;   // 남은 유저가 카드 오픈을 하지 않아도 AUTO_RESULT를 받을 수 있도록
 
     public User() {
         new User(-1, false, 0, 0, "");
@@ -212,6 +212,9 @@ public class User implements Comparable<User> {
 
     @Override
     public int compareTo(User user) {
+        Log.d("lsc","User compareTo cardSum " + cardSum);
+        Log.d("lsc","User compareTo user " + (user == null));
+        Log.d("lsc","User compareTo user.getCardSum() " + user.getCardSum());
         return cardSum.compareTo(user.getCardSum());
     }
 

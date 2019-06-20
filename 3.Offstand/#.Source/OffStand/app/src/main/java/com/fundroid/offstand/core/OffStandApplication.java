@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.DaggerApplication;
+import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 public class OffStandApplication extends DaggerApplication {
@@ -45,6 +46,7 @@ public class OffStandApplication extends DaggerApplication {
     @Override
     public void onCreate() {
         super.onCreate();
+        RxJavaPlugins.setErrorHandler(e -> Log.e("lsc","rx Handle error " + e.getMessage()));
         Stetho.initializeWithDefaults(this);
         FirebaseApp.initializeApp(this);
         ServerPublishSubjectBus.getInstance().getEvents(String.class)

@@ -4,7 +4,7 @@ public class Room {
 
     public enum EnumStatus {
 
-        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3), REGAME(4);
+        SHUFFLE_NOT_AVAILABLE(0), SHUFFLE_AVAILABLE(1), INGAME(2), GAME_RESULT_AVAILABLE(3), REGAME(4), AUTO_RESULT(5);
 
         private int enumStatus;
 

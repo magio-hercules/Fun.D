@@ -104,5 +104,6 @@ dependencies {
 
     //firebase
     implementation dependencies.firebaseCore
+    implementation dependencies.crashlytics
 }
 apply plugin: 'com.google.gms.google-services'
