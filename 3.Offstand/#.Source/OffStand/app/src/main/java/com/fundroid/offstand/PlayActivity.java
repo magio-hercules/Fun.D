@@ -882,7 +882,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     private void doJokbo() {
         Log.d(TAG, "doJokbo");
         // TODO :
-        Toast.makeText(getApplicationContext(), "족보 화면 연결해주세요", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "족보 화면 연결해주세요", Toast.LENGTH_SHORT).show();
         getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()
@@ -1206,6 +1206,11 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 //                                loadImage(image_re, R.drawable.button_play_re);
                                 image_re.setEnabled(true);
                                 enableRegame = true;
+
+                                // for AUTO_RESULT
+                                if (!showResult) {
+                                    openCard();
+                                }
                             } else {
                                 image_result.setEnabled(true);
                             }
