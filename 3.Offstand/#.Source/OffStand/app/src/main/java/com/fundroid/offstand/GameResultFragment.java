@@ -267,6 +267,10 @@ public class GameResultFragment extends Fragment {
             if (userCheck-1 == drawcnt) {
                 play_result_content1_card1.setImageResource(R.drawable.card_back);
                 play_result_content1_card2.setImageResource(R.drawable.card_back);
+                play_result_content1.setVisibility(rootview.VISIBLE);
+                play_result_rank1_name.setVisibility(rootview.GONE);
+                play_result_content1_card1.setVisibility(rootview.GONE);
+                play_result_content1_card2.setVisibility(rootview.GONE);
             }
 
         }
