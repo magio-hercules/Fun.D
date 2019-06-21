@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
 
@@ -10,7 +11,7 @@ public class Client {
 
         try {
             //서버 접속
-            Socket socket = new Socket("172.30.1.10", 8080);
+            Socket socket = new Socket(InetAddress.getLocalHost(), 8080);
             System.out.println("클라이언트 소켓 " + socket.getLocalPort());
             while (true) {
                 streamByServer = new DataInputStream(socket.getInputStream());

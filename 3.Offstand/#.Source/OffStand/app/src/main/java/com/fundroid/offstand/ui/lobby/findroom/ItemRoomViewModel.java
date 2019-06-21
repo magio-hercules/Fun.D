@@ -7,6 +7,7 @@ import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
 
 import com.fundroid.offstand.data.model.Room;
+import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
 public class ItemRoomViewModel {
 
@@ -25,7 +26,9 @@ public class ItemRoomViewModel {
 
     public void onItemClick() {
         Log.d("lsc", "ItemRoomViewModel onItemClick " + room.getName() + ", " + room.getAddress() + ", " + isChecked.get());
-        isChecked.set(!isChecked.get());
+//        isChecked.set(!isChecked.get());
+        ClientPublishSubjectBus.getInstance().sendEvent(room);
+
     }
 
 }
