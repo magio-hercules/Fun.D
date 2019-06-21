@@ -80,6 +80,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     public static int SOUND_LUCKY1 = 4;
     public static int SOUND_LUCKY2 = 5;
     public static int SOUND_LUCKY3 = 6;
+    public static boolean drawCheck = false;
 
 
     //    @BindView(R.id.play_image_card0)
@@ -1220,6 +1221,8 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                             Log.d("MSMS", "MSMS" + apiBody.getUsers().get(0).getCards().first);
 //                            resultInfo.resultInfoMap.put("name",apiBody.getUsers().get(0).getCards().first);
 
+
+                            drawCheck = false;
                             int usersSize = apiBody.getUsers().size();
                             resultInfoMap.clear();
                             resultList.clear();
@@ -1245,6 +1248,10 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                                         Log.d(TAG, "게임결과 (패) : " + (nTotal+1) + "전 " + nWin + "승");
                                     }
                                 }
+                            }
+
+                            if (apiBody.getDraw() == true) {
+                                drawCheck = true;
                             }
 
                             showResult = true;
