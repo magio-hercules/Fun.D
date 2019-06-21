@@ -223,7 +223,10 @@ public class ConnectionManager {
                         .flatMap(ConnectionManager::setSumRebalance)
                         .flatMap(users -> sortByUserSum())
                         .flatMap(ConnectionManager::checkRematch)
-                        .flatMapObservable(users -> broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users, roomStatus.getEnumStatus() == REGAME.getEnumStatus())));
+                        .flatMapObservable(users -> {
+                            Log.d("lsc","GAME_RESULT_BR roomStatus " + roomStatus);
+                            return broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users, roomStatus.getEnumStatus() == REGAME.getEnumStatus()));
+                        });
 
 
             case API_OUT:
@@ -362,7 +365,7 @@ public class ConnectionManager {
     }
 
     private static Observable<Room.EnumStatus> setRoomStatus() {
-        Log.d("lsc", "ConnectionManager setRoomStatus");
+        Log.d("lsc", "ConnectionManager setRoomStatus " + roomStatus);
         return Observable.create(subscriber -> {
             // 방장 제외한 나머지 User 리스트
             // 모두 ready 면 방장에게 셔플 가능 api 전송
@@ -402,6 +405,7 @@ public class ConnectionManager {
                     break;
 
                 case INGAME:
+                case GAME_RESULT_AVAILABLE:
                     if (allGameUserCount == dieUserCount + 1) {
                         roomStatus = Room.EnumStatus.AUTO_RESULT;
                     } else if (inGameUserCount == 0) {
@@ -511,6 +515,7 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
 //                Log.d("lsc", "shuffle " + cards.get(i * 2) + ", " + cards.get((i * 2) + 1));
+                serverThreads.get(i).getUser().setCardSum(null);
                 if (cards.get(i * 2) < cards.get((i * 2) + 1)) {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
                 } else {

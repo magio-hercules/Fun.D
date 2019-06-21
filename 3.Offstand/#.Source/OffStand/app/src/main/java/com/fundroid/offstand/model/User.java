@@ -157,7 +157,7 @@ public class User implements Comparable<User> {
         return cardSum;
     }
 
-    public void setCardSum(int cardSum) {
+    public void setCardSum(Integer cardSum) {
         this.cardSum = cardSum;
     }
 
