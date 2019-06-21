@@ -202,6 +202,11 @@ public class GameResultFragment extends Fragment {
 
         if (drawCheck) {
             play_result_content1.setImageResource(R.drawable.drawcheck);
+            play_result_rank1_name.setVisibility(rootview.GONE);
+            play_result_content1_card1.setVisibility(rootview.GONE);
+            play_result_content1_card2.setVisibility(rootview.GONE);
+            play_result_left_button.setVisibility(rootview.GONE);
+            play_result_right_button.setVisibility(rootview.GONE);
         } else {
 
             int drawcnt = 0;
@@ -213,9 +218,7 @@ public class GameResultFragment extends Fragment {
                 String name = (String) listmap.get("name" + i);
                 int status = (int) listmap.get("status" + i);
                 if (status == 4) {
-
                     drawcnt++;
-
                     if (i == 0) {
                         play_result_rank1_name.setText(name);
                         play_result_content1_card1.setImageResource(R.drawable.card_back);
@@ -263,14 +266,11 @@ public class GameResultFragment extends Fragment {
 
             }
 
-            // 다이체크
+            // 다이체크 // 1등 다 다이해서
             if (userCheck-1 == drawcnt) {
                 play_result_content1_card1.setImageResource(R.drawable.card_back);
                 play_result_content1_card2.setImageResource(R.drawable.card_back);
-                play_result_content1.setVisibility(rootview.VISIBLE);
-                play_result_rank1_name.setVisibility(rootview.GONE);
-                play_result_content1_card1.setVisibility(rootview.GONE);
-                play_result_content1_card2.setVisibility(rootview.GONE);
+
             }
 
         }
