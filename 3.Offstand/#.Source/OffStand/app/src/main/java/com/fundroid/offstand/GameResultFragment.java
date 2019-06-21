@@ -21,6 +21,7 @@ import butterknife.OnClick;
 
 import static com.fundroid.offstand.PlayActivity.drawCheck;
 import static com.fundroid.offstand.PlayActivity.resultList;
+import static com.fundroid.offstand.PlayActivity.userCheck;
 
 
 /**
@@ -202,6 +203,9 @@ public class GameResultFragment extends Fragment {
         if (drawCheck) {
             play_result_content1.setImageResource(R.drawable.drawcheck);
         } else {
+
+            int drawcnt = 0;
+
             for (int i = 0; i < resultList.size(); i++) {
                 Map<String, Object> listmap = (Map<String, Object>) resultList.get(i);
                 int first = (int) listmap.get("first" + i);
@@ -209,6 +213,9 @@ public class GameResultFragment extends Fragment {
                 String name = (String) listmap.get("name" + i);
                 int status = (int) listmap.get("status" + i);
                 if (status == 4) {
+
+                    drawcnt++;
+
                     if (i == 0) {
                         play_result_rank1_name.setText(name);
                         play_result_content1_card1.setImageResource(R.drawable.card_back);
@@ -227,6 +234,8 @@ public class GameResultFragment extends Fragment {
                         play_result_rank4_name.setText(name);
                         play_result_rank4_card1.setImageResource(R.drawable.card_back);
                         play_result_rank4_card2.setImageResource(R.drawable.card_back);
+                        play_result_content1_card1.setImageResource(R.drawable.card_back);
+                        play_result_content1_card2.setImageResource(R.drawable.card_back);
                     }
                     continue;
                 }
@@ -253,6 +262,13 @@ public class GameResultFragment extends Fragment {
 
 
             }
+
+            // 다이체크
+            if (userCheck-1 == drawcnt) {
+                play_result_content1_card1.setImageResource(R.drawable.card_back);
+                play_result_content1_card2.setImageResource(R.drawable.card_back);
+            }
+
         }
 
 //        Log.d("MSMS","MSMS" + "GameResultFragment" + resultList.get(0));
