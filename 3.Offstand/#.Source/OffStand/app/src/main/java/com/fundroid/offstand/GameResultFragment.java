@@ -198,6 +198,7 @@ public class GameResultFragment extends Fragment {
         play_result_right_button.setVisibility(rootview.VISIBLE);
         play_result_shadow.setVisibility(rootview.VISIBLE);
 
+
         if (drawCheck) {
             play_result_content1.setImageResource(R.drawable.drawcheck);
         } else {
@@ -229,6 +230,7 @@ public class GameResultFragment extends Fragment {
                     }
                     continue;
                 }
+
                 if (i == 0) {
                     play_result_rank1_name.setText(name);
                     play_result_content1_card1.setImageResource(oneFirstCard[first]);
@@ -248,6 +250,7 @@ public class GameResultFragment extends Fragment {
                     play_result_rank4_card1.setImageResource(twoFirstCard[first]);
                     play_result_rank4_card2.setImageResource(twoSecondCard[second]);
                 }
+
 
             }
         }

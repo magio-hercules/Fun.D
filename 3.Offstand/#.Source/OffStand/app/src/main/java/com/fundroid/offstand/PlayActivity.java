@@ -82,6 +82,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     public static int SOUND_LUCKY2 = 5;
     public static int SOUND_LUCKY3 = 6;
     public static boolean drawCheck = false;
+    public static int userCheck = 0;
 
 
     //    @BindView(R.id.play_image_card0)
@@ -1227,6 +1228,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
 
                             drawCheck = false;
                             int usersSize = apiBody.getUsers().size();
+                            userCheck = usersSize;
                             resultInfoMap.clear();
                             resultList.clear();
 
