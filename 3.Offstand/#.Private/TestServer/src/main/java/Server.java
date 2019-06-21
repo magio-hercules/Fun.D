@@ -1,6 +1,7 @@
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +23,12 @@ public class Server {
                 new Thread(serverThread).start();
                 serverThreads.add(serverThread);
                 System.out.println(serverThreads.size() + "번째 클라이언트 소켓 연결 성공");
+                Thread.sleep(5000);
+                serverSocket.close();
             }
-        } catch (IOException e) {
+
+
+        } catch (InterruptedException | IOException e) {
             System.out.println("서버소켓 생성 실패 " + e.getMessage());
         }
         System.out.println("서버스레드 종료");

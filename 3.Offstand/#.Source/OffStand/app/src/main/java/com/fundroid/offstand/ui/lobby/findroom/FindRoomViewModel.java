@@ -51,6 +51,11 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     private void subscribeEvents() {
+        getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(Room.class)
+                .subscribe(room -> {
+                    enterRoom(InetAddress.getByName(((Room) room).getAddress()), ROOM_PORT);
+                }));
+
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
                 .map(json -> new Gson().fromJson((String) json, ApiBody.class))
                 .subscribeOn(getSchedulerProvider().io())
@@ -72,7 +77,6 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(querySnapshot ->
-
                                 rooms.setValue(Stream.of(((QuerySnapshot) querySnapshot).getDocuments()).map(queryDocumentSnapshot ->
                                         new Room(ConnectionManager.roomDocumentId,
                                                 (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("name"),
@@ -106,7 +110,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     public void onEnterRoomClick() {
         MediaPlayer.create(context, R.raw.mouth_interface_button).start();
 //        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 163};
-        byte[] ipAddr = new byte[]{(byte) 121, (byte) 133, (byte) 212, (byte) 120};//http://121.133.212.120
+        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 219, (byte) 126};//http://121.133.212.120
         InetAddress addr = null;
         try {
             addr = InetAddress.getByAddress(ipAddr);
