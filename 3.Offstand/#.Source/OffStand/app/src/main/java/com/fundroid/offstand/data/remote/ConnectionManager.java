@@ -475,7 +475,12 @@ public class ConnectionManager {
         return Single.create(subscriber -> {
             //승리자 LEVEL이 3 또는 7일 경우
             if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
-                roomStatus = REGAME;
+                if(users.size() > 1 && users.get(1).getStatus() == DIE.getEnumStatus()) {
+                    roomStatus = Room.EnumStatus.INGAME;
+                } else {
+                    roomStatus = Room.EnumStatus.REGAME;
+                }
+
             }
             Log.d("lsc", "checkRematch 1");
             //카드 급이 같을 경우 (죽지 않고 동점이 아닌 사람의 STATUS 를 INGAME으로 셋
@@ -483,7 +488,11 @@ public class ConnectionManager {
                     .filterNot(user -> user.getStatus() == DIE.getEnumStatus())
                     .filterNot(user -> users.get(0).getCardSum() == user.getCardSum())
                     .map(loseUser -> {
-                        loseUser.setStatus(INGAME.getEnumStatus());
+                        if(users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
+                            loseUser.setStatus(INGAME.getEnumStatus());
+                        } else {
+                            loseUser.setStatus(DIE.getEnumStatus());
+                        }
                         return loseUser;
                     }).collect(Collectors.toList());
             Log.d("lsc", "checkRematch 2");
@@ -515,7 +524,7 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
             for (int i = 0; i < serverThreads.size(); i++) {
 //                Log.d("lsc", "shuffle " + cards.get(i * 2) + ", " + cards.get((i * 2) + 1));
-                serverThreads.get(i).getUser().setCardSum(null);
+                serverThreads.get(i).getUser().setCardSum(-2);
                 if (cards.get(i * 2) < cards.get((i * 2) + 1)) {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get(i * 2), cards.get((i * 2) + 1)));
                 } else {
@@ -543,9 +552,9 @@ public class ConnectionManager {
 //                serverThreads.get(1).getUser().setCards(new Pair<>(14, 9)); //구사
 //                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
 //                // 1P 8땡 2P 땡잡이 3P 멍구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 9));
-//                serverThreads.get(2).getUser().setCards(new Pair<>(4, 9));
+//                serverThreads.get(0).getUser().setCards(new Pair<>(4, 5));
+//                serverThreads.get(1).getUser().setCards(new Pair<>(14, 15));
+//                serverThreads.get(2).getUser().setCards(new Pair<>(3, 11));
 
                 //card test end
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
