@@ -208,7 +208,7 @@ public class GameResultFragment extends Fragment {
             play_result_left_button.setVisibility(rootview.GONE);
             play_result_right_button.setVisibility(rootview.GONE);
         } else {
-
+ 
             int drawcnt = 0;
 
             for (int i = 0; i < resultList.size(); i++) {
