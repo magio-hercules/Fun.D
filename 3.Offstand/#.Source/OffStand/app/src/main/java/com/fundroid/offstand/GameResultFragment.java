@@ -200,6 +200,7 @@ public class GameResultFragment extends Fragment {
         play_result_shadow.setVisibility(rootview.VISIBLE);
 
 
+        //드로우 일경우
         if (drawCheck) {
             play_result_content1.setImageResource(R.drawable.drawcheck);
             play_result_rank1_name.setVisibility(rootview.GONE);
@@ -207,8 +208,10 @@ public class GameResultFragment extends Fragment {
             play_result_content1_card2.setVisibility(rootview.GONE);
             play_result_left_button.setVisibility(rootview.GONE);
             play_result_right_button.setVisibility(rootview.GONE);
-        } else {
- 
+        }
+        //드로우가 아니면
+        else {
+
             int drawcnt = 0;
 
             for (int i = 0; i < resultList.size(); i++) {
@@ -217,28 +220,37 @@ public class GameResultFragment extends Fragment {
                 int second = (int) listmap.get("second" + i);
                 String name = (String) listmap.get("name" + i);
                 int status = (int) listmap.get("status" + i);
+
+                //status == 4 다이 일경우
                 if (status == 4) {
+
                     drawcnt++;
+
+                    //1등은 다이가 될 경우가 없음 -> 무조건 1명은 삼
                     if (i == 0) {
                         play_result_rank1_name.setText(name);
-                        play_result_content1_card1.setImageResource(R.drawable.card_back);
-                        play_result_content1_card2.setImageResource(R.drawable.card_back);
-                        //textView.setText(name)
+                        play_result_content1_card1.setImageResource(oneFirstCard[first]);
+                        play_result_content1_card2.setImageResource(oneSecondCard[second]);
 
+                        //2등
                     } else if (i == 1) {
                         play_result_rank2_name.setText(name);
                         play_result_rank2_card1.setImageResource(R.drawable.card_back);
                         play_result_rank2_card2.setImageResource(R.drawable.card_back);
+
+                        //3등
                     } else if (i == 2) {
                         play_result_rank3_name.setText(name);
                         play_result_rank3_card1.setImageResource(R.drawable.card_back);
                         play_result_rank3_card2.setImageResource(R.drawable.card_back);
+
+                        //4등
                     } else if (i == 3) {
                         play_result_rank4_name.setText(name);
                         play_result_rank4_card1.setImageResource(R.drawable.card_back);
                         play_result_rank4_card2.setImageResource(R.drawable.card_back);
-                        play_result_content1_card1.setImageResource(R.drawable.card_back);
-                        play_result_content1_card2.setImageResource(R.drawable.card_back);
+//                        play_result_content1_card1.setImageResource(R.drawable.card_back);
+//                        play_result_content1_card2.setImageResource(R.drawable.card_back);
                     }
                     continue;
                 }
@@ -266,12 +278,12 @@ public class GameResultFragment extends Fragment {
 
             }
 
-            // 다이체크 // 1등 다 다이해서
-            if (userCheck-1 == drawcnt) {
-                play_result_content1_card1.setImageResource(R.drawable.card_back);
-                play_result_content1_card2.setImageResource(R.drawable.card_back);
-
-            }
+//            // 다이체크 // 1등 다 다이해서
+//            if (userCheck - 1 == drawcnt) {
+//                play_result_content1_card1.setImageResource(R.drawable.card_back);
+//                play_result_content1_card2.setImageResource(R.drawable.card_back);
+//
+//            }
 
         }
 
