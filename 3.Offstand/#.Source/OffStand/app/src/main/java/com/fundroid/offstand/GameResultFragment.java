@@ -221,11 +221,15 @@ public class GameResultFragment extends Fragment {
                 String name = (String) listmap.get("name" + i);
                 int status = (int) listmap.get("status" + i);
 
+
                 //status == 4 다이 일경우
                 if (status == 4) {
-
+                    drawcnt++;
                     //1등은 다이가 될 경우가 없음 -> 무조건 1명은 삼
                     if (i == 0) {
+
+                        Log.d("kkkk", "kkkk" + "BBB");
+
                         play_result_rank1_name.setText(name);
                         play_result_content1_card1.setImageResource(oneFirstCard[first]);
                         play_result_content1_card2.setImageResource(oneSecondCard[second]);
@@ -250,39 +254,48 @@ public class GameResultFragment extends Fragment {
 //                        play_result_content1_card1.setImageResource(R.drawable.card_back);
 //                        play_result_content1_card2.setImageResource(R.drawable.card_back);
                     }
-//                    continue;
                 }
+                //다이가 아닐경우
+                else {
 
-                if (i == 0) {
-                    play_result_rank1_name.setText(name);
-                    play_result_content1_card1.setImageResource(oneFirstCard[first]);
-                    play_result_content1_card2.setImageResource(oneSecondCard[second]);
-                    //textView.setText(name)
+                    if (i == 0) {
 
-                } else if (i == 1) {
-                    play_result_rank2_name.setText(name);
-                    play_result_rank2_card1.setImageResource(twoFirstCard[first]);
-                    play_result_rank2_card2.setImageResource(twoSecondCard[second]);
-                } else if (i == 2) {
-                    play_result_rank3_name.setText(name);
-                    play_result_rank3_card1.setImageResource(twoFirstCard[first]);
-                    play_result_rank3_card2.setImageResource(twoSecondCard[second]);
-                } else if (i == 3) {
-                    play_result_rank4_name.setText(name);
-                    play_result_rank4_card1.setImageResource(twoFirstCard[first]);
-                    play_result_rank4_card2.setImageResource(twoSecondCard[second]);
+                        Log.d("kkkk", "kkkk" + "AAA");
+
+                        play_result_rank1_name.setText(name);
+                        play_result_content1_card1.setImageResource(oneFirstCard[first]);
+                        play_result_content1_card2.setImageResource(oneSecondCard[second]);
+                        //textView.setText(name)
+
+                    } else if (i == 1) {
+                        play_result_rank2_name.setText(name);
+                        play_result_rank2_card1.setImageResource(twoFirstCard[first]);
+                        play_result_rank2_card2.setImageResource(twoSecondCard[second]);
+                    } else if (i == 2) {
+                        play_result_rank3_name.setText(name);
+                        play_result_rank3_card1.setImageResource(twoFirstCard[first]);
+                        play_result_rank3_card2.setImageResource(twoSecondCard[second]);
+                    } else if (i == 3) {
+                        play_result_rank4_name.setText(name);
+                        play_result_rank4_card1.setImageResource(twoFirstCard[first]);
+                        play_result_rank4_card2.setImageResource(twoSecondCard[second]);
+                    }
+
                 }
-
-
             }
+            Log.d("kkkk", "kkkk" + userCheck);
+            Log.d("kkkk", "kkkk" + drawcnt);
 
-//            // 다이체크 // 1등 다 다이해서
-//            if (userCheck - 1 == drawcnt) {
-//                play_result_content1_card1.setImageResource(R.drawable.card_back);
-//                play_result_content1_card2.setImageResource(R.drawable.card_back);
-//
-//            }
-
+            // 한명일때 다이 했을 때도 패 뒤집어야 되는지 검토 그럴필요 없을꺼 같긴함
+            // 다이체크 // 1등 다 다이해서
+            if (userCheck > 1) {
+                if (userCheck - 1 == drawcnt) {
+                    play_result_content1_card1.setImageResource(R.drawable.card_back);
+                    play_result_content1_card2.setImageResource(R.drawable.card_back);
+                    Log.d("kkkk", "kkkk" + userCheck);
+                    Log.d("kkkk", "kkkk" + drawcnt);
+                }
+            }
         }
 
 //        Log.d("MSMS","MSMS" + "GameResultFragment" + resultList.get(0));
