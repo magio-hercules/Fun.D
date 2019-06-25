@@ -245,22 +245,22 @@ public class GameResultFragment extends Fragment {
                         //2등
                     } else if (i == 1) {
                         play_result_rank2_name.setText(name);
-                        play_result_rank2_card1.setImageResource(R.drawable.card_back);
-                        play_result_rank2_card2.setImageResource(R.drawable.card_back);
+                        play_result_rank2_card1.setImageResource(R.drawable.card_die);
+                        play_result_rank2_card2.setImageResource(R.drawable.card_die);
                         play_result_rank2_die.setImageResource(R.drawable.die_card);
 
                         //3등
                     } else if (i == 2) {
                         play_result_rank3_name.setText(name);
-                        play_result_rank3_card1.setImageResource(R.drawable.card_back);
-                        play_result_rank3_card2.setImageResource(R.drawable.card_back);
+                        play_result_rank3_card1.setImageResource(R.drawable.card_die);
+                        play_result_rank3_card2.setImageResource(R.drawable.card_die);
                         play_result_rank3_die.setImageResource(R.drawable.die_card);
 
                         //4등
                     } else if (i == 3) {
                         play_result_rank4_name.setText(name);
-                        play_result_rank4_card1.setImageResource(R.drawable.card_back);
-                        play_result_rank4_card2.setImageResource(R.drawable.card_back);
+                        play_result_rank4_card1.setImageResource(R.drawable.card_die);
+                        play_result_rank4_card2.setImageResource(R.drawable.card_die);
                         play_result_rank4_die.setImageResource(R.drawable.die_card);
 //                        play_result_content1_card1.setImageResource(R.drawable.card_back);
 //                        play_result_content1_card2.setImageResource(R.drawable.card_back);
