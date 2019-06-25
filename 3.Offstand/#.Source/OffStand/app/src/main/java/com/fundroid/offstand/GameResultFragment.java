@@ -294,8 +294,7 @@ public class GameResultFragment extends Fragment {
 
                 }
             }
-            Log.d("kkkk", "kkkk" + userCheck);
-            Log.d("kkkk", "kkkk" + drawcnt);
+
 
             // 한명일때 다이 했을 때도 패 뒤집어야 되는지 검토 그럴필요 없을꺼 같긴함
             // 다이체크 // 1등 다 다이해서
@@ -303,8 +302,7 @@ public class GameResultFragment extends Fragment {
                 if (userCheck - 1 == drawcnt) {
                     play_result_content1_card1.setImageResource(R.drawable.card_back);
                     play_result_content1_card2.setImageResource(R.drawable.card_back);
-                    Log.d("kkkk", "kkkk" + userCheck);
-                    Log.d("kkkk", "kkkk" + drawcnt);
+
                 }
             }
         }
