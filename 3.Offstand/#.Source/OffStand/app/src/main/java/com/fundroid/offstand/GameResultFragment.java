@@ -224,8 +224,6 @@ public class GameResultFragment extends Fragment {
                 //status == 4 다이 일경우
                 if (status == 4) {
 
-                    drawcnt++;
-
                     //1등은 다이가 될 경우가 없음 -> 무조건 1명은 삼
                     if (i == 0) {
                         play_result_rank1_name.setText(name);
@@ -252,7 +250,7 @@ public class GameResultFragment extends Fragment {
 //                        play_result_content1_card1.setImageResource(R.drawable.card_back);
 //                        play_result_content1_card2.setImageResource(R.drawable.card_back);
                     }
-                    continue;
+//                    continue;
                 }
 
                 if (i == 0) {
