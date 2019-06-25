@@ -386,6 +386,63 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.665" />
+
+    // Die - Layout : 높이 0.025 / 너비 0.152
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank2_die_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.390" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank2_die_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.415" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank3_die_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.513" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank3_die_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.538" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank4_die_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.636" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_rank4_die_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.661" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_die_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.666" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_result_content2_die_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.818" />
     // 만땅 Layout - End
 
 
@@ -599,6 +656,44 @@
         app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_card2_left"
         app:layout_constraintRight_toRightOf="@id/guide_result_content2_card2_right"
         app:srcCompat="@drawable/card_die" />
+
+    // Die
+    <ImageView
+        android:id="@+id/play_result_rank2_die"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank2_die_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank2_die_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_die_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_die_right" />
+
+    <ImageView
+        android:id="@+id/play_result_rank3_die"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank3_die_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank3_die_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_die_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_die_right" />
+
+    <ImageView
+        android:id="@+id/play_result_rank4_die"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitXY"
+        android:tag="BUTTON"
+        android:visibility="visible"
+        app:layout_constraintTop_toTopOf="@id/guide_result_content2_rank4_die_top"
+        app:layout_constraintBottom_toBottomOf="@id/guide_result_content2_rank4_die_bottom"
+        app:layout_constraintLeft_toLeftOf="@id/guide_result_content2_die_left"
+        app:layout_constraintRight_toRightOf="@id/guide_result_content2_die_right" />
+
 
     <ImageView
         android:id="@+id/play_result_left_button"

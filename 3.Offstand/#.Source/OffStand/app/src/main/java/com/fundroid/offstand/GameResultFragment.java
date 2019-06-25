@@ -53,6 +53,9 @@ public class GameResultFragment extends Fragment {
     ImageView play_result_left_button;
     ImageView play_result_right_button;
     ImageView play_result_shadow;
+    ImageView play_result_rank2_die;
+    ImageView play_result_rank3_die;
+    ImageView play_result_rank4_die;
 
     @BindView(R.id.play_result_ReButton)
     ImageView play_result_ReButton;
@@ -178,6 +181,9 @@ public class GameResultFragment extends Fragment {
         play_result_rank2_name = (TextView) rootview.findViewById(R.id.play_result_content2_rank2_name);
         play_result_rank3_name = (TextView) rootview.findViewById(R.id.play_result_content2_rank3_name);
         play_result_rank4_name = (TextView) rootview.findViewById(R.id.play_result_content2_rank4_name);
+        play_result_rank2_die = (ImageView) rootview.findViewById(R.id.play_result_rank2_die);
+        play_result_rank3_die = (ImageView) rootview.findViewById(R.id.play_result_rank3_die);
+        play_result_rank4_die = (ImageView) rootview.findViewById(R.id.play_result_rank4_die);
 
         // 만땅 - 기본 셋팅
         play_result_title1.setVisibility(rootview.VISIBLE);
@@ -198,7 +204,9 @@ public class GameResultFragment extends Fragment {
         play_result_left_button.setVisibility(rootview.VISIBLE);
         play_result_right_button.setVisibility(rootview.VISIBLE);
         play_result_shadow.setVisibility(rootview.VISIBLE);
-
+        play_result_rank2_die.setVisibility(rootview.GONE);
+        play_result_rank3_die.setVisibility(rootview.GONE);
+        play_result_rank4_die.setVisibility(rootview.GONE);
 
         //드로우 일경우
         if (drawCheck) {
@@ -239,18 +247,21 @@ public class GameResultFragment extends Fragment {
                         play_result_rank2_name.setText(name);
                         play_result_rank2_card1.setImageResource(R.drawable.card_back);
                         play_result_rank2_card2.setImageResource(R.drawable.card_back);
+                        play_result_rank2_die.setImageResource(R.drawable.die_card);
 
                         //3등
                     } else if (i == 2) {
                         play_result_rank3_name.setText(name);
                         play_result_rank3_card1.setImageResource(R.drawable.card_back);
                         play_result_rank3_card2.setImageResource(R.drawable.card_back);
+                        play_result_rank3_die.setImageResource(R.drawable.die_card);
 
                         //4등
                     } else if (i == 3) {
                         play_result_rank4_name.setText(name);
                         play_result_rank4_card1.setImageResource(R.drawable.card_back);
                         play_result_rank4_card2.setImageResource(R.drawable.card_back);
+                        play_result_rank4_die.setImageResource(R.drawable.die_card);
 //                        play_result_content1_card1.setImageResource(R.drawable.card_back);
 //                        play_result_content1_card2.setImageResource(R.drawable.card_back);
                     }
@@ -332,6 +343,9 @@ public class GameResultFragment extends Fragment {
                     play_result_rank4_name.setVisibility(View.VISIBLE);
                     play_result_rank4_card1.setVisibility(View.VISIBLE);
                     play_result_rank4_card2.setVisibility(View.VISIBLE);
+                    play_result_rank2_die.setVisibility(View.VISIBLE);
+                    play_result_rank3_die.setVisibility(View.VISIBLE);
+                    play_result_rank4_die.setVisibility(View.VISIBLE);
                 } else {
                     // result_1
                     play_result_content1.setVisibility(View.VISIBLE);
@@ -350,6 +364,9 @@ public class GameResultFragment extends Fragment {
                     play_result_rank4_name.setVisibility(View.GONE);
                     play_result_rank4_card1.setVisibility(View.GONE);
                     play_result_rank4_card2.setVisibility(View.GONE);
+                    play_result_rank2_die.setVisibility(View.GONE);
+                    play_result_rank3_die.setVisibility(View.GONE);
+                    play_result_rank4_die.setVisibility(View.GONE);
                 }
             }
         });
@@ -377,6 +394,9 @@ public class GameResultFragment extends Fragment {
                     play_result_rank4_name.setVisibility(View.VISIBLE);
                     play_result_rank4_card1.setVisibility(View.VISIBLE);
                     play_result_rank4_card2.setVisibility(View.VISIBLE);
+                    play_result_rank2_die.setVisibility(View.VISIBLE);
+                    play_result_rank3_die.setVisibility(View.VISIBLE);
+                    play_result_rank4_die.setVisibility(View.VISIBLE);
                 } else {
                     // result_1
                     play_result_content1.setVisibility(View.VISIBLE);
@@ -395,6 +415,9 @@ public class GameResultFragment extends Fragment {
                     play_result_rank4_name.setVisibility(View.GONE);
                     play_result_rank4_card1.setVisibility(View.GONE);
                     play_result_rank4_card2.setVisibility(View.GONE);
+                    play_result_rank2_die.setVisibility(View.GONE);
+                    play_result_rank3_die.setVisibility(View.GONE);
+                    play_result_rank4_die.setVisibility(View.GONE);
                 }
             }
         });
