@@ -26,6 +26,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -190,14 +191,27 @@ public class ConnectionManager {
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
                         .flatMap(pair -> {
                             if (roomStatus == REGAME) {
-                                if (pair.second.getStatus() == CARDOPEN.getEnumStatus() || pair.second.getStatus() == INGAME.getEnumStatus()) {
+//                                if (/*pair.second.getStatus() == CARDOPEN.getEnumStatus() || */pair.second.getStatus() == INGAME.getEnumStatus()) {
+//                                    Log.d("lsc", "REGAME SHUFFLE before " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
+//                                    pair.second.setStatus(INGAME.getEnumStatus());
+//                                    Log.d("lsc", "REGAME SHUFFLE after " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
+//                                    return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
+////                                } else if (true) {
+////                                    Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
+////                                    return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
+//                                } else {
+//                                    Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
+//                                    return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
+//                                }
+
+                                if (pair.second.getStatus() == DIE.getEnumStatus()) {
+                                    Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
+                                    return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
+                                } else {
                                     Log.d("lsc", "REGAME SHUFFLE before " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
                                     pair.second.setStatus(INGAME.getEnumStatus());
                                     Log.d("lsc", "REGAME SHUFFLE after " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
                                     return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
-                                } else {
-                                    Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
-                                    return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
                                 }
                             } else {
                                 return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
@@ -220,13 +234,13 @@ public class ConnectionManager {
             case API_GAME_RESULT:
                 return
                         setCardSumAndLevel((ArrayList<User>) Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser()).collect(Collectors.toList()))
-                        .flatMap(ConnectionManager::setSumRebalance)
-                        .flatMap(users -> sortByUserSum())
-                        .flatMap(ConnectionManager::checkRematch)
-                        .flatMapObservable(users -> {
-                            Log.d("lsc","GAME_RESULT_BR roomStatus " + roomStatus);
-                            return broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users, roomStatus.getEnumStatus() == REGAME.getEnumStatus()));
-                        });
+                                .flatMap(ConnectionManager::setSumRebalance)
+                                .flatMap(users -> sortByUserSum())
+                                .flatMap(ConnectionManager::checkRematch)
+                                .flatMapObservable(users -> {
+                                    Log.d("lsc", "GAME_RESULT_BR roomStatus " + roomStatus);
+                                    return broadcastMessage(new ApiBody(API_GAME_RESULT_BR, users, roomStatus.getEnumStatus() == REGAME.getEnumStatus()));
+                                });
 
 
             case API_OUT:
@@ -471,30 +485,43 @@ public class ConnectionManager {
     }
 
     private static Single<ArrayList<User>> checkRematch(ArrayList<User> users) {
-        Log.d("lsc", "checkRematch");
+        for (User user : users) {
+            Log.d("lsc", "checkRematch users " + user);
+        }
         return Single.create(subscriber -> {
             //승리자 LEVEL이 3 또는 7일 경우
             if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
-                if(users.size() > 1 && users.get(1).getStatus() == DIE.getEnumStatus()) {
+                if (users.size() > 1 && users.get(1).getStatus() == DIE.getEnumStatus()) {
                     roomStatus = Room.EnumStatus.INGAME;
                 } else {
                     roomStatus = Room.EnumStatus.REGAME;
                 }
-
             }
+
             Log.d("lsc", "checkRematch 1");
-            //카드 급이 같을 경우 (죽지 않고 동점이 아닌 사람의 STATUS 를 INGAME으로 셋
+
+            //카드 급이 같을 경우 (죽지 않고 동점이 아닌 사람의 STATUS 를 INGAME으로 셋)
             Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser())
                     .filterNot(user -> user.getStatus() == DIE.getEnumStatus())
-                    .filterNot(user -> users.get(0).getCardSum() == user.getCardSum())
-                    .map(loseUser -> {
-                        if(users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
+                    .filterNot(user ->
+                        !(users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel()
+                                || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel())
+                                && users.get(0).getCardSum() == user.getCardSum()
+                    )  //1등 94인 경우, 모든 유저, 94가 아닌 경우, 동률이 아닌 유저들
+
+                    .map(loseUser -> {  // 1등이 아닌 애들 (94가 아닌경우), 94이면 모든 유저
+                        if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
                             loseUser.setStatus(INGAME.getEnumStatus());
+                        } else if(users.size() > 1 && users.get(0).getCardSum() != users.get(1).getCardSum()) {
                         } else {
                             loseUser.setStatus(DIE.getEnumStatus());
                         }
                         return loseUser;
-                    }).collect(Collectors.toList());
+                    })
+
+                    .collect(Collectors.toList());
+
+
             Log.d("lsc", "checkRematch 2");
             if (users.size() > 1 && users.get(0).getCardSum() == users.get(1).getCardSum()) {
                 roomStatus = REGAME;
@@ -530,33 +557,14 @@ public class ConnectionManager {
                 } else {
                     serverThreads.get(i).getUser().setCards(new Pair<>(cards.get((i * 2) + 1), cards.get(i * 2)));
                 }
-                if (roomStatus != REGAME) {
-                    serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
+                if (roomStatus == REGAME) {
+
                 } else {
-
+                    serverThreads.get(i).getUser().setStatus(INGAME.getEnumStatus());
                 }
-
-                //card test
-                // 2P, 3P 동점
-//                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
-//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 15));
-                // 3P 구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(2, 8));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 5));
-//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
-//                // 1P 8땡 2P 땡잡이 3P 구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(8, 18));//팔땡
-//                serverThreads.get(1).getUser().setCards(new Pair<>(4, 9));//멍구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(1, 19)); //구삥
-//                serverThreads.get(1).getUser().setCards(new Pair<>(14, 9)); //구사
-//                serverThreads.get(2).getUser().setCards(new Pair<>(14, 19));
-//                // 1P 8땡 2P 땡잡이 3P 멍구사
-//                serverThreads.get(0).getUser().setCards(new Pair<>(4, 5));
-//                serverThreads.get(1).getUser().setCards(new Pair<>(14, 15));
-//                serverThreads.get(2).getUser().setCards(new Pair<>(3, 11));
-
-                //card test end
+                Log.d("lsc", "shuffle userName " + serverThreads.get(i).getUser().getName() + ", userStatus " + serverThreads.get(i).getUser().getStatus() + ", roomStatus " + roomStatus);
+//                serverThreads.get(0).getUser().setCards(new Pair<>(4, 9));//팔땡
+//                serverThreads.get(1).getUser().setCards(new Pair<>(8, 18));//멍구사
                 subscriber.onNext(new Pair<>(serverThreads.get(i), serverThreads.get(i).getUser()));
             }
             roomStatus = Room.EnumStatus.INGAME;
