@@ -1,4 +1,4 @@
-package com.fundroid.offstand;
+package com.fundroid.offstand.ui.play;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+
+import com.fundroid.offstand.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

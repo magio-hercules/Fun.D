@@ -1,4 +1,4 @@
-package com.fundroid.offstand;
+package com.fundroid.offstand.ui.play;
 
 import android.annotation.SuppressLint;
 import android.content.ClipDescription;
@@ -32,6 +32,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;

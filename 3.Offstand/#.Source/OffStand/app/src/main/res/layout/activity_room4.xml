@@ -261,7 +261,7 @@
         <!--android:layout_width="0dp"-->
         <!--android:layout_height="0dp"-->
         <!--android:id="@+id/room_fragment_shuffle"-->
-        <!--android:name="com.fundroid.offstand.ShuffleFragment"-->
+        <!--android:name="com.fundroid.offstand.ui.play.ShuffleFragment"-->
         <!--app:layout_constraintBottom_toBottomOf="@id/guide_h_7"-->
         <!--app:layout_constraintLeft_toLeftOf="@id/guide_v_table_s"-->
         <!--app:layout_constraintRight_toRightOf="@id/guide_v_table_e"-->

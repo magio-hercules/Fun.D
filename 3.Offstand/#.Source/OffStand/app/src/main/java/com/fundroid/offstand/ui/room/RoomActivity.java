@@ -1,4 +1,4 @@
-package com.fundroid.offstand;
+package com.fundroid.offstand.ui.room;
 
 import android.annotation.SuppressLint;
 import android.content.ClipData;
@@ -21,12 +21,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
 import com.fundroid.offstand.data.model.User;
 import com.fundroid.offstand.data.model.UserWrapper;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
+import com.fundroid.offstand.ui.play.PlayActivity;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.fundroid.offstand.utils.rx.BehaviorSubjectBus;
 import com.google.gson.Gson;

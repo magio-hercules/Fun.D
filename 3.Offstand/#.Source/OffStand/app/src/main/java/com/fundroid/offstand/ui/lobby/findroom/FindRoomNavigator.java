@@ -1,7 +1,9 @@
 package com.fundroid.offstand.ui.lobby.findroom;
 
 
-public interface FindRoomNavigator {
+import com.fundroid.offstand.ui.base.BaseNavigator;
+
+public interface FindRoomNavigator extends BaseNavigator {
 
     void goToRoomActivity();
 

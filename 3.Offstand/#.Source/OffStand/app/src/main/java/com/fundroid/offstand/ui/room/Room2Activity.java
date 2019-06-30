@@ -1,4 +1,4 @@
-package com.fundroid.offstand;
+package com.fundroid.offstand.ui.room;
 
 import android.content.ClipData;
 import android.content.ClipDescription;
@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.fundroid.offstand.R;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 

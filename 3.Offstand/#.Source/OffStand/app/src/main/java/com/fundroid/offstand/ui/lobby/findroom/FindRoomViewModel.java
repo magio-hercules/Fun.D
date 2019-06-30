@@ -60,36 +60,47 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 }));
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
-                .map(json -> new Gson().fromJson((String) json, ApiBody.class))
+                        .map(json -> new Gson().fromJson((String) json, ApiBody.class))
+                        .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribe(result -> {
+                            Log.d("lsc", "FindRoomViewModel result " + result);
+                            getNavigator().dismissProgress();
+                            switch (((ApiBody) result).getNo()) {
+                                case API_ROOM_INFO:
+                                    BehaviorSubjectBus.getInstance().sendEvent(result);
+//                            setIsLoading(false);
+                                    getNavigator().goToRoomActivity();
+                                    break;
+                            }
+                        }, onError -> {
+                            Log.d("lsc", "FindRoomViewModel onError " + onError);
+                        })
+        );
+    }
+
+    void syncRooms() {
+        getCompositeDisposable().add(ConnectionManager.syncRooms()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(result -> {
-                    Log.d("lsc", "FindRoomViewModel result " + result);
-                    getNavigator().dismissProgress();
-                    switch (((ApiBody) result).getNo()) {
-                        case API_ROOM_INFO:
-                            BehaviorSubjectBus.getInstance().sendEvent(result);
-//                            setIsLoading(false);
-                            getNavigator().goToRoomActivity();
-                            break;
-                    }
-                }, onError -> {
-                    Log.d("lsc", "FindRoomViewModel onError " + onError);
-                })
-        );
+                .subscribe(this::setRooms
+                        , onError -> getNavigator().handleError(onError)));
+    }
 
+    public void selectRooms() {
         getCompositeDisposable().add(ConnectionManager.selectRooms()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
-                .subscribe(querySnapshot ->
-                                rooms.setValue(Stream.of(((QuerySnapshot) querySnapshot).getDocuments()).map(queryDocumentSnapshot ->
-                                        new Room(ConnectionManager.roomDocumentId,
-                                                (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("name"),
-                                                (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("address")))
-                                        .toList())
-                        , onError -> {
-                            Log.d("lsc", "FindRoomViewModel onRefreshClick onError " + onError);
-                        }));
+                .subscribe(querySnapshot -> setRooms((QuerySnapshot) querySnapshot)
+                        , onError -> getNavigator().handleError(new Throwable(onError.toString()))));
+    }
+
+    private void setRooms(QuerySnapshot queryDocumentSnapshots) {
+        rooms.setValue(Stream.of(queryDocumentSnapshots.getDocuments()).map(queryDocumentSnapshot ->
+                new Room(ConnectionManager.roomDocumentId,
+                        (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("name"),
+                        (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("address")))
+                .toList());
     }
 
     private void enterRoom(InetAddress roomAddress, int roomPort) {
@@ -112,6 +123,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
     public void onRefreshClick() {
         Log.d("lsc", "FindRoomViewModel onRefreshClick");
+        selectRooms();
 
     }
 

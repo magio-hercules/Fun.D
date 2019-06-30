@@ -6,7 +6,7 @@ import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
-import com.fundroid.offstand.RoomActivity;
+import com.fundroid.offstand.ui.room.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
@@ -35,8 +35,6 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
 
-    private FindRoomViewModel findRoomViewModel;
-
     public static FindRoomFragment newInstance() {
         Bundle args = new Bundle();
         FindRoomFragment fragment = new FindRoomFragment();
@@ -56,8 +54,7 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
 
     @Override
     public FindRoomViewModel getViewModel() {
-        findRoomViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(FindRoomViewModel.class);
-        return findRoomViewModel;
+        return ViewModelProviders.of(this, viewModelProviderFactory).get(FindRoomViewModel.class);
     }
 
     @Override
@@ -68,13 +65,13 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        findRoomViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
+        getViewModel().syncRooms();
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getViewDataBinding();
         initViews();
     }
 
@@ -116,5 +113,10 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     @Override
     public void showToast(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void handleError(Throwable throwable) {
+        Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

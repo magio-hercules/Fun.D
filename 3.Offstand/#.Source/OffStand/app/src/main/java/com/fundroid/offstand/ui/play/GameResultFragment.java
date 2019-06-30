@@ -1,4 +1,4 @@
-package com.fundroid.offstand;
+package com.fundroid.offstand.ui.play;
 
 import android.content.Context;
 import android.net.Uri;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 
+import com.fundroid.offstand.R;
 import com.fundroid.offstand.data.model.ApiBody;
 
 import java.util.Map;
@@ -19,9 +20,9 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.fundroid.offstand.PlayActivity.drawCheck;
-import static com.fundroid.offstand.PlayActivity.resultList;
-import static com.fundroid.offstand.PlayActivity.userCheck;
+import static com.fundroid.offstand.ui.play.PlayActivity.drawCheck;
+import static com.fundroid.offstand.ui.play.PlayActivity.resultList;
+import static com.fundroid.offstand.ui.play.PlayActivity.userCheck;
 
 
 /**

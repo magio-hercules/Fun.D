@@ -24,15 +24,15 @@
         </activity>
 
         <activity
-            android:name=".RoomActivity"
+            android:name=".ui.room.RoomActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".Room2Activity"
+            android:name=".ui.room.Room2Activity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name=".PlayActivity"
+            android:name=".ui.play.PlayActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 

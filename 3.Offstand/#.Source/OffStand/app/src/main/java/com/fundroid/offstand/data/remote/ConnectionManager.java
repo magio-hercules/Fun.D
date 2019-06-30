@@ -17,7 +17,11 @@ import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -104,6 +108,12 @@ public class ConnectionManager {
                     .addOnSuccessListener(subscriber::onNext)
                     .addOnFailureListener(subscriber::onError);
         });
+    }
+
+    public static Observable<QuerySnapshot> syncRooms() {
+        return Observable.create(subscriber ->
+                db.collection(COLLECTION_ROOMS)
+                        .addSnapshotListener((queryDocumentSnapshots, e) -> subscriber.onNext(queryDocumentSnapshots)));
     }
 
     public static Completable deleteRoom() {
@@ -503,15 +513,15 @@ public class ConnectionManager {
             Stream.of(serverThreads).withoutNulls().map(serverThread -> serverThread.getUser())
                     .filterNot(user -> user.getStatus() == DIE.getEnumStatus())
                     .filterNot(user ->
-                        !(users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel()
-                                || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel())
-                                && users.get(0).getCardSum() == user.getCardSum()
+                            !(users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel()
+                                    || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel())
+                                    && users.get(0).getCardSum() == user.getCardSum()
                     )  //1등 94인 경우, 모든 유저, 94가 아닌 경우, 동률이 아닌 유저들
 
                     .map(loseUser -> {  // 1등이 아닌 애들 (94가 아닌경우), 94이면 모든 유저
                         if (users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL3.getCardLevel() || users.get(0).getCardLevel() == Card.EnumCardLevel.LEVEL7.getCardLevel()) {
                             loseUser.setStatus(INGAME.getEnumStatus());
-                        } else if(users.size() > 1 && users.get(0).getCardSum() != users.get(1).getCardSum()) {
+                        } else if (users.size() > 1 && users.get(0).getCardSum() != users.get(1).getCardSum()) {
                         } else {
                             loseUser.setStatus(DIE.getEnumStatus());
                         }

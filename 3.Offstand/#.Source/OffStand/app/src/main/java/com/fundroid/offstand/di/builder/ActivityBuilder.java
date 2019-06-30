@@ -1,7 +1,7 @@
 package com.fundroid.offstand.di.builder;
 
-import com.fundroid.offstand.PlayActivity;
-import com.fundroid.offstand.RoomActivity;
+import com.fundroid.offstand.ui.play.PlayActivity;
+import com.fundroid.offstand.ui.room.RoomActivity;
 import com.fundroid.offstand.ui.setting.SettingActivity;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.ui.lobby.findroom.FindRoomFragmentProvider;

@@ -18,16 +18,13 @@ package com.fundroid.offstand.ui.lobby.makeroom;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
-import com.fundroid.offstand.RoomActivity;
-import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
+import com.fundroid.offstand.ui.room.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentMakeRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
-import com.fundroid.offstand.ui.lobby.LobbyViewModel;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
