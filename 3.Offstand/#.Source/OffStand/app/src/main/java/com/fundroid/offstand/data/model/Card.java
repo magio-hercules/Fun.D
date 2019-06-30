@@ -1,10 +1,6 @@
 package com.fundroid.offstand.data.model;
 
 
-import android.util.Log;
-
-import com.fundroid.offstand.model.User;
-
 import io.reactivex.Completable;
 
 import static com.fundroid.offstand.data.model.Card.EnumCard.FOUR;
@@ -14,7 +10,7 @@ import static com.fundroid.offstand.data.model.Card.EnumCard.ONE;
 import static com.fundroid.offstand.data.model.Card.EnumCard.SIX_MUNG;
 import static com.fundroid.offstand.data.model.Card.EnumCard.TEN_MUNG;
 import static com.fundroid.offstand.data.model.Card.EnumCard.TWO_MUNG;
-import static com.fundroid.offstand.model.User.EnumStatus.DIE;
+import static com.fundroid.offstand.data.model.User.EnumStatus.DIE;
 
 public class Card {
 

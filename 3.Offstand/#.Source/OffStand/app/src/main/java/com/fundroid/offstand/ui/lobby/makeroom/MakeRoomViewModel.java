@@ -8,7 +8,7 @@ import androidx.databinding.ObservableField;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
-import com.fundroid.offstand.model.User;
+import com.fundroid.offstand.data.model.User;
 import com.fundroid.offstand.ui.base.BaseViewModel;
 import com.fundroid.offstand.utils.rx.BehaviorSubjectBus;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;

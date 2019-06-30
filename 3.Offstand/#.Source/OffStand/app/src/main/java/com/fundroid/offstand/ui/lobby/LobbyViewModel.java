@@ -13,7 +13,7 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
 
     public LobbyViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider);
-        Log.v("lsc","LobbyViewModel Constructor");
+        Log.v("lsc","SplashViewModel Constructor");
         this.resourceProvider = resourceProvider;
     }
 
@@ -24,6 +24,6 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
     @Override
     protected void onCleared() {
         super.onCleared();
-        Log.v("lsc", "LobbyViewModel onCleared");
+        Log.v("lsc", "SplashViewModel onCleared");
     }
 }

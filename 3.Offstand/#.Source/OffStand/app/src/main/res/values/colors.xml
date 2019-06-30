@@ -15,6 +15,7 @@
     <color name="holo_orange_light">#ffffbb33</color>
 
     <color name="colorGreen">#59773D</color>
+    <color name="colorBlack">#000000</color>
     <color name="colorTransparant70">#B3000000</color> <!-- 알파 70% -->
     <color name="colorBackground">#ff517936</color> <!-- 알파 70% -->
 

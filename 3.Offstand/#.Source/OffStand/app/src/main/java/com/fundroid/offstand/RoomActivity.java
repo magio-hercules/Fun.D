@@ -24,8 +24,8 @@ import com.bumptech.glide.Glide;
 import com.fundroid.offstand.data.DataManager;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.remote.ConnectionManager;
-import com.fundroid.offstand.model.User;
-import com.fundroid.offstand.model.UserWrapper;
+import com.fundroid.offstand.data.model.User;
+import com.fundroid.offstand.data.model.UserWrapper;
 import com.fundroid.offstand.ui.lobby.LobbyActivity;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 import com.fundroid.offstand.utils.rx.BehaviorSubjectBus;
@@ -62,7 +62,6 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
-import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
 
 @SuppressLint("CheckResult")
 public class RoomActivity extends AppCompatActivity implements View.OnTouchListener, View.OnDragListener {

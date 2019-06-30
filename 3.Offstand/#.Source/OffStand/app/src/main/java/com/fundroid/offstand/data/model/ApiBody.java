@@ -1,6 +1,5 @@
 package com.fundroid.offstand.data.model;
 
-import com.fundroid.offstand.model.User;
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 

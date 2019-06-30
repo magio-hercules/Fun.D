@@ -2,24 +2,18 @@ package com.fundroid.offstand.ui.lobby;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.media.MediaPlayer;
-import android.net.wifi.p2p.WifiP2pManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
-import com.fundroid.offstand.SettingActivity;
-import com.fundroid.offstand.data.model.Room;
+import com.fundroid.offstand.ui.setting.SettingActivity;
 import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.ui.base.BaseActivity;
 import com.fundroid.offstand.ui.lobby.main.MainFragment;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
-import com.tedpark.tedpermission.rx2.TedRx2Permission;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -39,7 +33,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Inject
     DispatchingAndroidInjector<Fragment> fragmentDispatchingAndroidInjector;
 
-    LobbyViewModel lobbyViewModel;
     long lastTimeBackPressed;
 
     @Override
@@ -54,8 +47,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
 
     @Override
     public LobbyViewModel getViewModel() {
-        lobbyViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
-        return lobbyViewModel;
+        return ViewModelProviders.of(this, viewModelProviderFactory).get(LobbyViewModel.class);
     }
 
     @Override
@@ -72,7 +64,7 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.v("lsc", "LobbyActivity onCreate ");
-        lobbyViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
         initViews();
     }
 

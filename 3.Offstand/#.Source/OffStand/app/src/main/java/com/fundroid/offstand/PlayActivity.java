@@ -539,7 +539,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         image_open.setVisibility(View.GONE);
 
         // 생성한 비디오뷰를 bind
-        VideoView videoView = (VideoView) findViewById(R.id.gif_shuffle);
+        VideoView videoView = (VideoView) findViewById(R.id.mp4_shuffle);
         // 비디오뷰를 커스텀하기 위해서 미디어컨트롤러 객체 생성
         MediaController mediaController = new MediaController(this);
         // 비디오뷰에 연결

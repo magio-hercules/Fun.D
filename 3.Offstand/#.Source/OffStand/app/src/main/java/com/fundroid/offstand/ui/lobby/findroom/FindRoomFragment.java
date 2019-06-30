@@ -1,30 +1,14 @@
-/*
- *  Copyright (C) 2017 MINDORKS NEXTGEN PRIVATE LIMITED
- *
- *  Licensed under the Apache License, Version 2.0 (the "License");
- *  you may not use this file except in compliance with the License.
- *  You may obtain a copy of the License at
- *
- *      https://mindorks.com/license/apache-v2
- *
- *  Unless required by applicable law or agreed to in writing, software
- *  distributed under the License is distributed on an "AS IS" BASIS,
- *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  See the License for the specific language governing permissions and
- *  limitations under the License
- */
-
 package com.fundroid.offstand.ui.lobby.findroom;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
 import com.fundroid.offstand.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
-import com.fundroid.offstand.ui.lobby.LobbyViewModel;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
@@ -33,6 +17,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
+
+import java.io.IOException;
+
+import pl.droidsonroids.gif.GifDrawable;
 
 public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, FindRoomViewModel> implements FindRoomNavigator {
 
@@ -48,8 +36,6 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     ViewModelProviderFactory viewModelProviderFactory;
 
     private FindRoomViewModel findRoomViewModel;
-
-    private FragmentFindRoomBinding fragmentFindRoomBinding;
 
     public static FindRoomFragment newInstance() {
         Bundle args = new Bundle();
@@ -88,7 +74,7 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fragmentFindRoomBinding = getViewDataBinding();
+        getViewDataBinding();
         initViews();
     }
 
@@ -96,6 +82,14 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
         getViewDataBinding().rvRoom.setLayoutManager(linearLayoutManager);
         getViewDataBinding().rvRoom.setItemAnimator(new DefaultItemAnimator());
         getViewDataBinding().rvRoom.setAdapter(roomAdapter);
+        try {
+            GifDrawable gifDrawable = new GifDrawable(getResources(), R.raw.gif_loading);
+            getViewDataBinding().loading.setImageDrawable(gifDrawable);
+            gifDrawable.setLoopCount(0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -106,5 +100,21 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
                 .beginTransaction()
                 .remove(this)
                 .commit();
+    }
+
+    @Override
+    public void showProgress() {
+        getViewDataBinding().loading.bringToFront();
+        getViewDataBinding().loading.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void dismissProgress() {
+        getViewDataBinding().loading.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
     }
 }

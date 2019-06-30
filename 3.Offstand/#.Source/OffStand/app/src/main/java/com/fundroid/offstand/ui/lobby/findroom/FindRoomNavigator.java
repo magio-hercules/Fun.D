@@ -5,5 +5,11 @@ public interface FindRoomNavigator {
 
     void goToRoomActivity();
 
+    void showProgress();
+
+    void dismissProgress();
+
     void goBack();
+
+    void showToast(String message);
 }

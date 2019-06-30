@@ -1,6 +1,5 @@
 package com.fundroid.offstand;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -11,9 +10,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.fundroid.offstand.model.User;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;

@@ -1,8 +1,10 @@
 package com.fundroid.offstand.utils;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.VideoView;
 
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +19,13 @@ public class BindingAdapters {
     @BindingAdapter("onTouch")
     public static void onTouch(View self, View.OnTouchListener onTouchListener) {
         self.setOnTouchListener(onTouchListener);
+    }
+
+    @BindingAdapter("setZOrder")
+    public static void setZOrder(VideoView videoView, boolean value) {
+        Log.d("lsc","setZOrder " + value);
+//        videoView.setZOrderOnTop(value);
+        videoView.setZOrderOnTop(true);
     }
 
     @BindingAdapter({"setRoomAdapter"})

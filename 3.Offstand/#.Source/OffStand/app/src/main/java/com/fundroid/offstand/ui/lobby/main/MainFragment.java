@@ -27,10 +27,6 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
 
-    private MainViewModel mainViewModel;
-
-    private FragmentMainBinding fragmentMainBinding;
-
     public static MainFragment newInstance() {
         Bundle args = new Bundle();
         MainFragment fragment = new MainFragment();
@@ -50,8 +46,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public MainViewModel getViewModel() {
-        mainViewModel = ViewModelProviders.of(this, viewModelProviderFactory).get(MainViewModel.class);
-        return mainViewModel;
+        return ViewModelProviders.of(this, viewModelProviderFactory).get(MainViewModel.class);
     }
 
     @Override
@@ -62,36 +57,35 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mainViewModel.setNavigator(this);
+        getViewModel().setNavigator(this);
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        fragmentMainBinding = getViewDataBinding();
         initViews();
     }
 
     private void initViews() {
         String videoRootPath = "android.resource://" + getContext().getPackageName() + "/";
-        fragmentMainBinding.bgMain.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_lobby));
+        getViewDataBinding().bgMain.setVideoURI(Uri.parse(videoRootPath + R.raw.mp4_lobby));
 
-        fragmentMainBinding.btnMakeRoom.setImageResource(R.drawable.btn_make_room);
-        fragmentMainBinding.btnFindRoom.setImageResource(R.drawable.btn_find_room);
-        fragmentMainBinding.btnGuide.setImageResource(R.drawable.btn_guide);
+        getViewDataBinding().btnMakeRoom.setImageResource(R.drawable.btn_make_room);
+        getViewDataBinding().btnFindRoom.setImageResource(R.drawable.btn_find_room);
+        getViewDataBinding().btnGuide.setImageResource(R.drawable.btn_guide);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        fragmentMainBinding.bgMain.start();
-        fragmentMainBinding.bgMain.setOnPreparedListener(mp -> mp.setLooping(true));
+        getViewDataBinding().bgMain.start();
+        getViewDataBinding().bgMain.setOnPreparedListener(mp -> mp.setLooping(true));
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        fragmentMainBinding.bgMain.stopPlayback();
+        getViewDataBinding().bgMain.stopPlayback();
     }
 
     @Override
@@ -102,7 +96,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void makeRoom() {
-        fragmentMainBinding.btnMakeRoom.setPressed(false);
+        getViewDataBinding().btnMakeRoom.setPressed(false);
 
         // [만땅] SoundPool Test - Start
         // 한참을 연구해봤다..그래서 디버깅을 걸어보았는데...이상하게 중단점 지정하고 디버깅하면 소리가 난다 ㅋㅋㅋㅋㅋ뭐지?
@@ -127,7 +121,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void findRoom() {
-        fragmentMainBinding.btnFindRoom.setPressed(false);
+        getViewDataBinding().btnFindRoom.setPressed(false);
 
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
@@ -139,8 +133,7 @@ public class MainFragment extends BaseFragment<FragmentMainBinding, MainViewMode
 
     @Override
     public void guide() {
-        fragmentMainBinding.btnGuide.setPressed(false);
-
+        getViewDataBinding().btnGuide.setPressed(false);
         getBaseActivity().getSupportFragmentManager()
                 .beginTransaction()
                 .disallowAddToBackStack()

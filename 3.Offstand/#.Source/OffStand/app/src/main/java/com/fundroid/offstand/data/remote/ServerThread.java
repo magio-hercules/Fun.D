@@ -2,8 +2,7 @@ package com.fundroid.offstand.data.remote;
 
 import android.util.Log;
 
-import com.fundroid.offstand.model.User;
-import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
+import com.fundroid.offstand.data.model.User;
 import com.fundroid.offstand.utils.rx.ServerPublishSubjectBus;
 
 import java.io.DataInputStream;

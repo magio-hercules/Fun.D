@@ -10,6 +10,7 @@ import com.fundroid.offstand.ui.lobby.findroom.FindRoomViewModel;
 import com.fundroid.offstand.ui.lobby.guide.GuideViewModel;
 import com.fundroid.offstand.ui.lobby.main.MainViewModel;
 import com.fundroid.offstand.ui.lobby.makeroom.MakeRoomViewModel;
+import com.fundroid.offstand.ui.splash.SplashViewModel;
 import com.fundroid.offstand.utils.rx.SchedulerProvider;
 
 import javax.inject.Inject;
@@ -46,6 +47,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new MakeRoomViewModel(dataManager, schedulerProvider);
         } else if (modelClass.isAssignableFrom(GuideViewModel.class)) {
             return (T) new GuideViewModel(dataManager, schedulerProvider);
+        } else if (modelClass.isAssignableFrom(SplashViewModel.class)) {
+            return (T) new SplashViewModel(dataManager, schedulerProvider);
         }
         throw new IllegalArgumentException("Unknown class name");
     }

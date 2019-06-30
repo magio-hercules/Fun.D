@@ -11,7 +11,7 @@ import com.annimon.stream.Stream;
 import com.fundroid.offstand.data.model.ApiBody;
 import com.fundroid.offstand.data.model.Card;
 import com.fundroid.offstand.data.model.Room;
-import com.fundroid.offstand.model.User;
+import com.fundroid.offstand.data.model.User;
 import com.fundroid.offstand.utils.NetworkUtils;
 import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
@@ -26,7 +26,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
@@ -61,11 +60,11 @@ import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_BR;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_NOT_AVAILABLE;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_TEST;
-import static com.fundroid.offstand.model.User.EnumStatus.CARDOPEN;
-import static com.fundroid.offstand.model.User.EnumStatus.DIE;
-import static com.fundroid.offstand.model.User.EnumStatus.INGAME;
-import static com.fundroid.offstand.model.User.EnumStatus.READY;
-import static com.fundroid.offstand.model.User.EnumStatus.STANDBY;
+import static com.fundroid.offstand.data.model.User.EnumStatus.CARDOPEN;
+import static com.fundroid.offstand.data.model.User.EnumStatus.DIE;
+import static com.fundroid.offstand.data.model.User.EnumStatus.INGAME;
+import static com.fundroid.offstand.data.model.User.EnumStatus.READY;
+import static com.fundroid.offstand.data.model.User.EnumStatus.STANDBY;
 
 public class ConnectionManager {
 

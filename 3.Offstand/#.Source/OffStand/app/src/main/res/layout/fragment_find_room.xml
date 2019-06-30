@@ -5,6 +5,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.fundroid.offstand.ui.lobby.findroom.FindRoomViewModel" />
@@ -148,6 +150,17 @@
             app:layout_constraintEnd_toEndOf="@id/guide_refresh_end"
             app:layout_constraintStart_toEndOf="@id/title_find_room"
             app:layout_constraintTop_toTopOf="@id/guide_title_top" />
+
+        <pl.droidsonroids.gif.GifImageView
+            android:id="@+id/loading"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:visibility="invisible"
+            android:scaleType="fitCenter" />
 
 
         <androidx.recyclerview.widget.RecyclerView
