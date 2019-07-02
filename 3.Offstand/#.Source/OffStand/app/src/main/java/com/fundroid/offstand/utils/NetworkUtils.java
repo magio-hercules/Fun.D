@@ -19,6 +19,7 @@ public class NetworkUtils {
                     InetAddress inetAddress = enumInetAddress.nextElement();
                     if (inetAddress.isSiteLocalAddress()) {
                         ip.append(inetAddress.getHostAddress());
+                        return Single.just(ip.toString());
                     }
                 }
             }

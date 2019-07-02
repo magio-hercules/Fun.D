@@ -2,8 +2,6 @@ package com.fundroid.offstand.utils;
 
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.VideoView;
 
 import androidx.databinding.BindingAdapter;
@@ -15,6 +13,11 @@ import com.fundroid.offstand.ui.lobby.findroom.RoomAdapter;
 import java.util.List;
 
 public class BindingAdapters {
+
+    @BindingAdapter("enable")
+    public static void enable(View view, boolean clickable) {
+        view.setEnabled(clickable);
+    }
 
     @BindingAdapter("onTouch")
     public static void onTouch(View self, View.OnTouchListener onTouchListener) {

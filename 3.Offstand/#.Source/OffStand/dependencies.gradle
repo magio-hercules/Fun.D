@@ -12,12 +12,15 @@ ext {
     gson = '2.8.5'
     gifDrawable = '1.2.16'
     glide = '4.9.0'
-    recyclerSelection = '1.0.0-alpha1'
     fireStore = '19.0.2'
     firebaseCore = '16.0.8'
     crashlytics = '2.9.9'
+    butterKnife = '10.1.0'
+    legacySupportV4 = '1.0.0'
+    dynamicAnimation = '1.0.0-beta01'
 
     dependencies = [
+            legacySupportV4       : "androidx.legacy:legacy-support-v4:$legacySupportV4",
             appCompat             : "androidx.appcompat:appcompat:$supportLibrary",
             design                : "com.google.android.material:material:$supportLibrary",
             constraintLayout      : "androidx.constraintlayout:constraintlayout:$constraintLayout",
@@ -38,9 +41,11 @@ ext {
             glide                 : "com.github.bumptech.glide:glide:$glide",
             glideCompiler         : "com.github.bumptech.glide:compiler:$glide",
             gifDrawable           : "pl.droidsonroids.gif:android-gif-drawable:$gifDrawable",
-            recyclerSelection     : "androidx.recyclerview:recyclerview-selection:$recyclerSelection",
             fireStore             : "com.google.firebase:firebase-firestore:$fireStore",
             firebaseCore          : "com.google.firebase:firebase-core:$firebaseCore",
-            crashlytics           : "com.crashlytics.sdk.android:crashlytics:$crashlytics"
+            crashlytics           : "com.crashlytics.sdk.android:crashlytics:$crashlytics",
+            butterKnife           : "com.jakewharton:butterknife:$butterKnife",
+            butterKnifeCompiler   : "com.jakewharton:butterknife-compiler:$butterKnife",
+            dynamicAnimation      : "androidx.dynamicanimation:dynamicanimation:$dynamicAnimation"
     ]
 }

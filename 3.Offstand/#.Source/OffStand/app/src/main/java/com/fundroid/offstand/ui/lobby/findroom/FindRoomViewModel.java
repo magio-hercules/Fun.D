@@ -39,7 +39,8 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
     private Context context;
     private final MutableLiveData<List<Room>> rooms;
-    public ObservableField<Boolean> zOrder = new ObservableField<>(true);
+    private Room selectedRoom;
+    public ObservableField<Boolean> enterRoomEnable = new ObservableField<>(false);
 
     public MutableLiveData<List<Room>> getRooms() {
         return rooms;
@@ -54,9 +55,18 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
     private void subscribeEvents() {
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(Room.class)
-                .subscribe(room -> {
-                    getNavigator().showProgress();
-                    enterRoom(InetAddress.getByName(((Room) room).getAddress()), ROOM_PORT);
+                .subscribe(selectedRoom -> {
+
+                    for (Room room : Stream.of(rooms.getValue()).toList()) {
+                        if (((Room) selectedRoom).getId().equals(room.getId())) {
+                            room.setSelected(true);
+                            this.selectedRoom = room;
+                            enterRoomEnable.set(true);
+                        } else {
+                            room.setSelected(false);
+                        }
+                    }
+                    rooms.setValue(rooms.getValue());
                 }));
 
         getCompositeDisposable().add(ClientPublishSubjectBus.getInstance().getEvents(String.class)
@@ -65,11 +75,11 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                         .observeOn(getSchedulerProvider().ui())
                         .subscribe(result -> {
                             Log.d("lsc", "FindRoomViewModel result " + result);
-                            getNavigator().dismissProgress();
+
                             switch (((ApiBody) result).getNo()) {
                                 case API_ROOM_INFO:
+                                    getNavigator().dismissProgress();
                                     BehaviorSubjectBus.getInstance().sendEvent(result);
-//                            setIsLoading(false);
                                     getNavigator().goToRoomActivity();
                                     break;
                             }
@@ -88,6 +98,8 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
     }
 
     public void selectRooms() {
+        selectedRoom = null;
+        enterRoomEnable.set(false);
         getCompositeDisposable().add(ConnectionManager.selectRooms()
                 .subscribeOn(getSchedulerProvider().io())
                 .observeOn(getSchedulerProvider().ui())
@@ -97,7 +109,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
     private void setRooms(QuerySnapshot queryDocumentSnapshots) {
         rooms.setValue(Stream.of(queryDocumentSnapshots.getDocuments()).map(queryDocumentSnapshot ->
-                new Room(ConnectionManager.roomDocumentId,
+                new Room((String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("id"),
                         (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("name"),
                         (String) ((QueryDocumentSnapshot) queryDocumentSnapshot).getData().get("address")))
                 .toList());
@@ -115,6 +127,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                     Log.d("lsc", "FindRoomViewModel enterRoom result");
                 }, onError -> {
                     Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError);
+                    selectRooms();
                     getNavigator().showToast(onError.getMessage());
                     getNavigator().dismissProgress();
                 }));
@@ -129,15 +142,17 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
 
     public void onEnterRoomClick() {
         MediaPlayer.create(context, R.raw.mouth_interface_button).start();
-//        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 163};
-        byte[] ipAddr = new byte[]{(byte) 192, (byte) 168, (byte) 24, (byte) 148};//http://121.133.212.120
-        InetAddress addr = null;
-        try {
-            addr = InetAddress.getByAddress(ipAddr);
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        if (selectedRoom == null) {
+            getNavigator().showToast(context.getString(R.string.msg_room_not_selected));
+        } else {
+            getNavigator().showProgress();
+            enterRoomEnable.set(false);
+            try {
+                enterRoom(InetAddress.getByName(selectedRoom.getAddress()), ROOM_PORT);
+            } catch (UnknownHostException e) {
+                getNavigator().handleError(e);
+            }
         }
-        enterRoom(addr, ROOM_PORT);
     }
 
     public void onNavBackClick() {

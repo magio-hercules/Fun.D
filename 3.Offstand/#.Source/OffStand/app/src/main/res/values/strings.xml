@@ -11,4 +11,5 @@
 
     <!-- 방 만들기 -->
     <string name="msg_room_exist">이미 방이 존재합니다.</string>
+    <string name="msg_room_not_selected">입장할 방을 선택해주세요.</string>
 </resources>

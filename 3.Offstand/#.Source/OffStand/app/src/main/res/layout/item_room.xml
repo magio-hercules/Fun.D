@@ -15,6 +15,7 @@
         android:id="@+id/item_wifi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@{room.backgroundColor}"
         android:onClick="@{() -> room.onItemClick()}">
 
         <TextView
