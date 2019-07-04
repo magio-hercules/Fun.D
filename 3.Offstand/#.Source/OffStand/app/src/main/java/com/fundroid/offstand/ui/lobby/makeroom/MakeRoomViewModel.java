@@ -58,7 +58,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
     public void makeRoomClick() {
         Log.d("lsc", "MakeRoomCViewModel makeRoomClick " + roomName.get());
         getDataManager().setRoomName(roomName.get());
-        createSocket(ROOM_PORT, 4);
+        createSocket(ROOM_PORT, 3);
     }
 
     public void createSocket(int roomPort, int roomMaxAttendee) {

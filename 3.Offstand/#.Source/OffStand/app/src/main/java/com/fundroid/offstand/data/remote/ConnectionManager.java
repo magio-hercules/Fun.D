@@ -17,10 +17,7 @@ import com.fundroid.offstand.utils.rx.ClientPublishSubjectBus;
 
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.gson.Gson;
 
@@ -80,7 +77,7 @@ public class ConnectionManager {
     private static Room.EnumStatus roomStatus = Room.EnumStatus.SHUFFLE_NOT_AVAILABLE;
     private static ArrayList<Integer> cards = new ArrayList<>();
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
-    public static String roomDocumentId;
+    private static String roomDocumentId;
 
     public static Completable insertRoom(String roomName) {
         return NetworkUtils.getIpAddress()
@@ -135,19 +132,43 @@ public class ConnectionManager {
 
     private static void socketAcceptLoop() {
         Log.d("lsc", "socketAcceptLoop " + serverSocket.getInetAddress().getHostAddress());
-        while (serverCount != roomMaxUser) {
-            Socket socket = null;
-            try {
-                socket = serverSocket.accept();
-            } catch (IOException e) {
-                Log.e("lsc", "socketAcceptLoop e " + e.getMessage());
-                ClientPublishSubjectBus.getInstance().sendEvent(new ApiBody(API_OUT_SELF).toString());
-                break;
+//        while (serverCount != roomMaxUser) {
+//            Socket socket = null;
+//            try {
+//                socket = serverSocket.accept();
+//            } catch (IOException e) {
+//                Log.e("lsc", "socketAcceptLoop e " + e.getMessage());
+//                ClientPublishSubjectBus.getInstance().sendEvent(new ApiBody(API_OUT_SELF).toString());
+//                break;
+//            }
+//            ServerThread serverThread = new ServerThread(socket);
+//            serverThreads[serverCount] = serverThread;
+//            serverCount++;
+//            new Thread(serverThread).start();
+//        }
+
+        while (true) {
+            if (serverCount < roomMaxUser) {
+                Socket socket = null;
+                try {
+                    socket = serverSocket.accept();
+                } catch (IOException e) {
+                    Log.e("lsc", "socketAcceptLoop e " + e.getMessage());
+                    ClientPublishSubjectBus.getInstance().sendEvent(new ApiBody(API_OUT_SELF).toString());
+                    break;
+                }
+                ServerThread serverThread = new ServerThread(socket);
+                int index = 0;
+                for (int i = 0; i < roomMaxUser; i++) {
+                    if (serverThreads[i] == null) {
+                        index = i;
+                        break;
+                    }
+                }
+                serverThreads[index] = serverThread;
+                serverCount++;
+                new Thread(serverThread).start();
             }
-            ServerThread serverThread = new ServerThread(socket);
-            serverThreads[serverCount] = serverThread;
-            serverCount++;
-            new Thread(serverThread).start();
         }
     }
 
@@ -200,19 +221,6 @@ public class ConnectionManager {
                 return shuffle((ArrayList<ServerThread>) Stream.of(serverThreads).withoutNulls().collect(Collectors.toList()))
                         .flatMap(pair -> {
                             if (roomStatus == REGAME) {
-//                                if (/*pair.second.getStatus() == CARDOPEN.getEnumStatus() || */pair.second.getStatus() == INGAME.getEnumStatus()) {
-//                                    Log.d("lsc", "REGAME SHUFFLE before " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
-//                                    pair.second.setStatus(INGAME.getEnumStatus());
-//                                    Log.d("lsc", "REGAME SHUFFLE after " + pair.first.getUser().getSeat() + ", " + pair.second.getStatus());
-//                                    return sendMessage(new ApiBody(API_SHUFFLE_BR, pair.second.getCards().first, pair.second.getCards().second), pair.first);
-////                                } else if (true) {
-////                                    Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
-////                                    return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
-//                                } else {
-//                                    Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
-//                                    return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
-//                                }
-
                                 if (pair.second.getStatus() == DIE.getEnumStatus()) {
                                     Log.d("lsc", "REGAME DIE BR " + pair.second.getSeat());
                                     return sendMessage(new ApiBody(API_DIE_BR, pair.second.getSeat()), pair.second.getSeat());
@@ -315,12 +323,6 @@ public class ConnectionManager {
         return Observable.create(subscriber -> {
             serverSocket.close();
             serverCount = 0;
-//            for (int index = 0; index < serverThreads.length; index++) {
-//                if (serverThreads[index] != null && serverThreads[index].getUser() != null) {
-//                    serverThreads[index].getSocket().close();
-//                    serverThreads[index] = null;
-//                }
-//            }
         });
     }
 
