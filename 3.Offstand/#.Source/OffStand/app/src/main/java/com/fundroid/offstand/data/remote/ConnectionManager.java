@@ -544,7 +544,7 @@ public class ConnectionManager {
     private static Single<ArrayList<User>> setSumRebalance(ArrayList<User> users) {
         return Single.create(subscriber -> {
             if (Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL4.getCardLevel()).count() == 0) {
-                Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL5.getCardLevel()).findFirst().ifPresent(level9User -> level9User.setCardSum(0));
+                Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL5.getCardLevel()).findFirst().ifPresent(level5User -> level5User.setCardSum(0));
             }
             if (Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL8.getCardLevel()).count() == 0) {
                 Stream.of(users).filter(user -> user.getCardLevel() == Card.EnumCardLevel.LEVEL9.getCardLevel()).findFirst().ifPresent(level9User -> level9User.setCardSum(0));
