@@ -895,7 +895,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
                 .beginTransaction()
                 .disallowAddToBackStack()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                .add(R.id.fragment_container, GuideFragment.newInstance(), GuideFragment.TAG)
+                .add(R.id.fragment_container, fragment2, GuideFragment.TAG)
                 .commit();
     }
 
@@ -1316,6 +1316,12 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     }
 
     public void Game_Jokbo_Close() {
-        super.onBackPressed();
+        if (fragment2 != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .disallowAddToBackStack()
+                    .remove(fragment2)
+                    .commitNow();
+        }
     }
 }

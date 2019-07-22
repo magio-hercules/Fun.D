@@ -1,7 +1,11 @@
 package com.fundroid.offstand.ui.lobby.guide;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProviders;
@@ -11,11 +15,15 @@ import com.fundroid.offstand.R;
 import com.fundroid.offstand.databinding.FragmentGuideBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
 
+import com.fundroid.offstand.ui.play.PlayActivity;
 import com.fundroid.offstand.utils.ViewModelProviderFactory;
 
 import javax.inject.Inject;
 
 public class GuideFragment extends BaseFragment<FragmentGuideBinding, GuideViewModel> implements GuideNavigator {
+
+    ImageView exit_jokbo;
+    PlayActivity playActivity;
 
     public static final String TAG = GuideFragment.class.getSimpleName();
 
@@ -64,6 +72,15 @@ public class GuideFragment extends BaseFragment<FragmentGuideBinding, GuideViewM
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         fragmentGuideBinding = getViewDataBinding();
+
+        exit_jokbo = (ImageView)  view.findViewById(R.id.play_image_exit_jokbo);
+        exit_jokbo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                playActivity.Game_Jokbo_Close();
+            }
+        });
+
         initViews();
     }
 
@@ -71,4 +88,11 @@ public class GuideFragment extends BaseFragment<FragmentGuideBinding, GuideViewM
 
     }
 
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        playActivity = (PlayActivity) getActivity();
+    }
 }
