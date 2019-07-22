@@ -171,6 +171,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
     // 잔여 게임
     FragmentManager fragmentManager;
     GameResultFragment fragment;
+    GuideFragment fragment2;
 
     // 만땅 - 게임 결과 화면
     FrameLayout result_back;
@@ -206,6 +207,7 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
         setContentView(R.layout.activity_play);
 
         fragment = new GameResultFragment();
+        fragment2 = new GuideFragment();
 
         // 버터나이프 사용
         ButterKnife.bind(this);
@@ -1311,5 +1313,9 @@ public class PlayActivity extends AppCompatActivity implements View.OnTouchListe
             Log.d("lsc", "PlayActivity onBackPressed 2");
             super.onBackPressed();
         }
+    }
+
+    public void Game_Jokbo_Close() {
+        super.onBackPressed();
     }
 }

@@ -33,6 +33,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.986" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_exit_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.765112" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_v_exit_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.935556" />
         <!-- end of Vertical -->
 
 
@@ -50,7 +64,33 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.925" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_exit_s"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.0359375" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_h_exit_e"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.1046875" />
         <!-- end of Horizontal -->
+
+        <ImageView
+            android:id="@+id/play_image_exit_jokbo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="fitXY"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_exit_e"
+            app:layout_constraintLeft_toLeftOf="@id/guide_v_exit_s"
+            app:layout_constraintRight_toRightOf="@id/guide_v_exit_e"
+            app:layout_constraintTop_toTopOf="@id/guide_h_exit_s"
+            app:srcCompat="@drawable/button_room_exit" />
 
         <ScrollView
             android:layout_width="0dp"
