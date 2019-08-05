@@ -18,6 +18,7 @@ ext {
     butterKnife = '10.1.0'
     legacySupportV4 = '1.0.0'
     dynamicAnimation = '1.0.0-beta01'
+//    retrofit2 = '2.5.0'
 
     dependencies = [
             legacySupportV4       : "androidx.legacy:legacy-support-v4:$legacySupportV4",
@@ -27,6 +28,8 @@ ext {
             rxJava                : "io.reactivex.rxjava2:rxjava:$rxJava2",
             rxAndroid             : "io.reactivex.rxjava2:rxandroid:$rxAndroid",
             stetho                : "com.facebook.stetho:stetho:$stetho",
+//            stethoOkhttp3         : "com.facebook.stetho:stetho-okhttp3:$stetho",
+//            stethoJsRhino         : "com.facebook.stetho:stetho-js-rhino:$stetho",
             stream                : "com.annimon:stream:$stream",
             tedPermission         : "gun0912.ted:tedpermission-rx2:$tedPermission",
             lifecycleExtension    : "androidx.lifecycle:lifecycle-extensions:$architectureComponent",
@@ -47,5 +50,8 @@ ext {
             butterKnife           : "com.jakewharton:butterknife:$butterKnife",
             butterKnifeCompiler   : "com.jakewharton:butterknife-compiler:$butterKnife",
             dynamicAnimation      : "androidx.dynamicanimation:dynamicanimation:$dynamicAnimation"
+//            retrofit              : "com.squareup.retrofit2:retrofit:$retrofit2",
+//            converterGson         : "com.squareup.retrofit2:converter-gson:$retrofit2",
+//            adapterRxjava2        : "com.squareup.retrofit2:adapter-rxjava2:$retrofit2"
     ]
 }

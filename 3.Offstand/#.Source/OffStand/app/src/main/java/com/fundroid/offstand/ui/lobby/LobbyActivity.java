@@ -3,12 +3,14 @@ package com.fundroid.offstand.ui.lobby;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
+import com.fundroid.offstand.ui.lobby.wifialert.WifiAlertDialog;
 import com.fundroid.offstand.ui.setting.SettingActivity;
 import com.fundroid.offstand.databinding.ActivityLobbyBinding;
 import com.fundroid.offstand.ui.base.BaseActivity;
@@ -66,6 +68,14 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
         Log.v("lsc", "LobbyActivity onCreate ");
         getViewModel().setNavigator(this);
         initViews();
+
+        WifiAlertDialog.newInstance().show(getSupportFragmentManager());
+//        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+//        if(wifiManager != null) {
+//            if (!wifiManager.isWifiEnabled()) {
+//                wifiManager.setWifiEnabled(true);
+//            }
+//        }
     }
 
     private void initViews() {
@@ -87,8 +97,6 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     public void onBackPressed() {
         Log.d("lsc", "LobbyActivity onBackPressed " + getVisibleFragmentTag(this, MainFragment.TAG));
         if (getVisibleFragmentTag(this, MainFragment.TAG).equals(MainFragment.TAG)) {
-            Log.d("lsc", "LobbyActivity onBackPressed 1");
-//            super.onBackPressed();
 
             if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
                 finishAffinity();

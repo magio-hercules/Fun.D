@@ -71,6 +71,8 @@ dependencies {
 
     //stetho
     implementation dependencies.stetho
+//    implementation dependencies.stethoOkhttp3
+//    implementation dependencies.stethoJsRhino
 
     //stream
     implementation dependencies.stream
@@ -101,5 +103,10 @@ dependencies {
     //firebase
     implementation dependencies.firebaseCore
     implementation dependencies.crashlytics
+
+    //network
+//    implementation dependencies.retrofit
+//    implementation dependencies.converterGson
+//    implementation dependencies.adapterRxjava2
 }
 apply plugin: 'com.google.gms.google-services'

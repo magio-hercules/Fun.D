@@ -1,5 +1,6 @@
 package com.fundroid.offstand.di.builder;
 
+import com.fundroid.offstand.ui.lobby.wifialert.WifiAlertDialogProvider;
 import com.fundroid.offstand.ui.play.PlayActivity;
 import com.fundroid.offstand.ui.room.RoomActivity;
 import com.fundroid.offstand.ui.setting.SettingActivity;
@@ -23,7 +24,8 @@ public abstract class ActivityBuilder {
             MakeRoomFragmentProvider.class,
             MainFragmentProvider.class,
             GuideFragmentProvider.class,
-            FindRoomFragmentProvider.class})
+            FindRoomFragmentProvider.class,
+            WifiAlertDialogProvider.class,})
     abstract LobbyActivity bindLobbyActivity();
 
     @ContributesAndroidInjector()

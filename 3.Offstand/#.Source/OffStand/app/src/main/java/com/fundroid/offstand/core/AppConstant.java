@@ -13,7 +13,7 @@ public class AppConstant {
     public static final String PREF_NAME = "version";
 
     //network
-    public static final int ROOM_PORT = 8080;
+    public static final int ROOM_PORT = 43514;
     public static final int SOCKET_TIMEOUT = 5000; //millisecond
     public static final int RESULT_OK = 0;
     public static final int RESULT_API_NOT_DEFINE = -1;

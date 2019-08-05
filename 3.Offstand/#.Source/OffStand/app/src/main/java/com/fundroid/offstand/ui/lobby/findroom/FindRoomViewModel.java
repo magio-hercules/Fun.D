@@ -149,6 +149,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
             enterRoomEnable.set(false);
             try {
                 enterRoom(InetAddress.getByName(selectedRoom.getAddress()), ROOM_PORT);
+//                enterRoom(InetAddress.getByName(selectedRoom.getAddress()), 43514);
             } catch (UnknownHostException e) {
                 getNavigator().handleError(e);
             }

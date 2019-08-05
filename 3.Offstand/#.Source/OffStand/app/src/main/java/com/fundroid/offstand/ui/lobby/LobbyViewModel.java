@@ -15,6 +15,8 @@ public class LobbyViewModel extends BaseViewModel<LobbyNavigator> {
         super(dataManager, schedulerProvider);
         Log.v("lsc","SplashViewModel Constructor");
         this.resourceProvider = resourceProvider;
+
+
     }
 
     public void goToSetting() {
