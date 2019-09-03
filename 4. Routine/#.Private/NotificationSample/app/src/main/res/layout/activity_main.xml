@@ -12,5 +12,11 @@
         android:layout_height="wrap_content"
         android:text="Bubble" />
 
+    <Button
+        android:id="@+id/noti1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Noti1" />
+
 
 </androidx.appcompat.widget.LinearLayoutCompat>

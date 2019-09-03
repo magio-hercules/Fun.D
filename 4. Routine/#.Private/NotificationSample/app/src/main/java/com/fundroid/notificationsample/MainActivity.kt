@@ -19,23 +19,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     var notificationManager : NotificationManager? = null
     var bubble : Button? = null
+    var noti1 : Button? = null
     lateinit var channel1 : NotificationChannel
+    lateinit var channel2 : NotificationChannel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        bubble = findViewById(R.id.bubble);
+        bubble = findViewById(R.id.bubble)
         bubble?.setOnClickListener(this)
+        noti1 = findViewById(R.id.noti1)
+        noti1?.setOnClickListener(this)
         notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
 
         channel1 = createNotificationChannel("TestId1","TestChannelName1","TestDescription1")
-        createNotificationChannel("TestId2","TestChannelName2","TestDescription2")
-
+        channel2 = createNotificationChannel("TestId2","TestChannelName2","TestDescription2")
+        val channelGroup = NotificationChannelGroup("GroupId", "GroupName")
+        notificationManager?.createNotificationChannelGroup(channelGroup)
     }
 
     private fun createNotificationChannel(id: String, name: String, description: String) : NotificationChannel {
-        val channelGroup = NotificationChannelGroup(id, name)
+
         // Channel Importance : IMPORTANCE_DEFAULT,IMPORTANCE_HIGH,IMPORTANCE_LOW,IMPORTANCE_MAX,IMPORTANCE_MIN,IMPORTANCE_NONE,IMPORTANCE_UNSPECIFIED
         val importance = NotificationManager.IMPORTANCE_DEFAULT
         val channel = NotificationChannel(id,name,importance)
@@ -62,24 +67,30 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         channel.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION),audioAttributes)
         channel.shouldShowLights()
         channel.shouldVibrate()
-        Log.d("lsc", "canBubble" + channel.canBubble())
-        Log.d("lsc", "canBypassDnd" + channel.canBypassDnd())
-        Log.d("lsc", "canShowBadge" + channel.canShowBadge())
+        Log.d("lsc", "canBubble " + channel.canBubble())
+        Log.d("lsc", "canBypassDnd " + channel.canBypassDnd())
+        Log.d("lsc", "canShowBadge " + channel.canShowBadge())
 
         return channel
     }
 
-    private fun sendNotification(view: View) {
-        val notificationId = 101
-
+    private fun sendNotification() {
+        Log.d("lsc", "sendNotification ")
         val channelId = "TestId"
 
         val notification = Notification.Builder(this, channelId)
+            .setContentTitle("ContentTitle")
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .build()
+
+        notificationManager?.createNotificationChannel(channel1)
+        notificationManager?.notify(3,notification)
     }
 
     override fun onClick(p0: View?) {
         when(p0?.id) {
             R.id.bubble -> {
+                Log.d("lsc", "bubble click ")
                 val target = Intent(this@MainActivity, MainActivity::class.java)
                 val bubbleIntent :PendingIntent = PendingIntent.getActivity(this@MainActivity,0,target, PendingIntent.FLAG_UPDATE_CURRENT)
 
@@ -96,6 +107,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 notificationManager?.createNotificationChannel(channel1)
                 notificationManager?.notify(2,builder.build())
             }
+
+            R.id.noti1 -> {
+                Log.d("lsc", "noti1 click ")
+                sendNotification()
+            }
+
         }
     }
 }
