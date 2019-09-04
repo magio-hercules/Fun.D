@@ -65,17 +65,16 @@ public class LobbyActivity extends BaseActivity<ActivityLobbyBinding, LobbyViewM
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.v("lsc", "LobbyActivity onCreate ");
         getViewModel().setNavigator(this);
         initViews();
 
-        WifiAlertDialog.newInstance().show(getSupportFragmentManager());
-//        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-//        if(wifiManager != null) {
-//            if (!wifiManager.isWifiEnabled()) {
-//                wifiManager.setWifiEnabled(true);
-//            }
-//        }
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        Log.v("lsc", "LobbyActivity onCreate " + wifiManager.isWifiEnabled());
+        if(wifiManager != null) {
+            if (!wifiManager.isWifiEnabled()) {
+                wifiManager.setWifiEnabled(true);
+            }
+        }
     }
 
     private void initViews() {

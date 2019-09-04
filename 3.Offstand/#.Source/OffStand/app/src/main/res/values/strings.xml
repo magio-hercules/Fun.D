@@ -13,6 +13,7 @@
     <string name="msg_room_exist">이미 방이 존재합니다.</string>
     <string name="msg_room_not_selected">입장할 방을 선택해주세요.</string>
 
-    <string name="msg_not_same_wifi">같은 와이파이에 접속 후 게임 이용 가능 합니다.</string>
-    <string name="btn_wifi_setting">같은 와이파이에 접속 후 게임 이용 가능 합니다.</string>
+    <string name="msg_wifi_not_enabled">와이파이에 연결 후 게임 이용 가능 합니다.</string>
+    <string name="msg_not_same_wifi">동일한 와이파이에 접속 후 시도해 주세요.</string>
+
 </resources>

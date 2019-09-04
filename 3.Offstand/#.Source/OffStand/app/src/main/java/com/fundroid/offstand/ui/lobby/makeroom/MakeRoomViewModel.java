@@ -23,6 +23,7 @@ import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_SHUFFLE_AVAILABLE;
+import static com.fundroid.offstand.utils.CommonUtils.getRandomString;
 
 public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
@@ -57,7 +58,7 @@ public class MakeRoomViewModel extends BaseViewModel<MakeRoomNavigator> {
 
     public void makeRoomClick() {
         Log.d("lsc", "MakeRoomCViewModel makeRoomClick " + roomName.get());
-        getDataManager().setRoomName(roomName.get());
+        getDataManager().setRoomName(roomName.get() + "-" + getRandomString(4));
         createSocket(ROOM_PORT, 3);
     }
 

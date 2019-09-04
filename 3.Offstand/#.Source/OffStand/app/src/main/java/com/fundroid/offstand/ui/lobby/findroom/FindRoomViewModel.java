@@ -33,6 +33,7 @@ import io.reactivex.Completable;
 
 import static com.fundroid.offstand.core.AppConstant.ROOM_PORT;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ENTER_ROOM;
+import static com.fundroid.offstand.data.remote.ApiDefine.API_OUT_SELF;
 import static com.fundroid.offstand.data.remote.ApiDefine.API_ROOM_INFO;
 
 public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
@@ -82,6 +83,10 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                                     BehaviorSubjectBus.getInstance().sendEvent(result);
                                     getNavigator().goToRoomActivity();
                                     break;
+
+                                case API_OUT_SELF:
+                                    getNavigator().showWifiAlertDialog();
+                                    break;
                             }
                         }, onError -> {
                             Log.d("lsc", "FindRoomViewModel onError " + onError);
@@ -128,7 +133,7 @@ public class FindRoomViewModel extends BaseViewModel<FindRoomNavigator> {
                 }, onError -> {
                     Log.d("lsc", "FindRoomViewModel enterRoom onError " + onError);
                     selectRooms();
-                    getNavigator().showToast(onError.getMessage());
+//                    getNavigator().showToast(onError.getMessage());
                     getNavigator().dismissProgress();
                 }));
 

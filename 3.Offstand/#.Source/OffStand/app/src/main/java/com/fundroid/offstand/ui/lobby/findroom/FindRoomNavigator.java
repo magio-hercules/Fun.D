@@ -5,6 +5,8 @@ import com.fundroid.offstand.ui.base.BaseNavigator;
 
 public interface FindRoomNavigator extends BaseNavigator {
 
+    void showWifiAlertDialog();
+
     void goToRoomActivity();
 
     void showProgress();

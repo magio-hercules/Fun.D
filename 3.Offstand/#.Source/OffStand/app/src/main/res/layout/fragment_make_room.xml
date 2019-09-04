@@ -283,10 +283,10 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:background="@drawable/label_room_name"
-            app:layout_constraintBottom_toBottomOf="@id/guide_h_roomname_e"
+            app:layout_constraintBottom_toBottomOf="@id/guide_h_room_set_e"
             app:layout_constraintEnd_toEndOf="@id/guide_v_label_end"
             app:layout_constraintStart_toStartOf="@id/guide_v_label_start"
-            app:layout_constraintTop_toTopOf="@id/guide_h_roomname_s" />
+            app:layout_constraintTop_toTopOf="@id/guide_h_room_set_s" />
 
         <EditText
             android:id="@+id/et_room_name"
@@ -300,7 +300,7 @@
             app:layout_constraintStart_toStartOf="@id/guide_text_start"
             app:layout_constraintTop_toTopOf="@id/label_room_name" />
 
-        <ImageView
+        <!--<ImageView
             android:id="@+id/label_room_password"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -322,7 +322,7 @@
             app:layout_constraintBottom_toBottomOf="@id/label_room_password"
             app:layout_constraintEnd_toEndOf="@id/guide_text_end"
             app:layout_constraintStart_toStartOf="@id/guide_text_start"
-            app:layout_constraintTop_toTopOf="@id/label_room_password" />
+            app:layout_constraintTop_toTopOf="@id/label_room_password" />-->
 
         <ImageView
             android:id="@+id/btn_make_room"

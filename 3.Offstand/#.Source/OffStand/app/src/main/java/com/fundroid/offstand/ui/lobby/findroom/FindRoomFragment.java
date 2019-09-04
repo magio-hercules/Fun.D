@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.fundroid.offstand.BR;
 import com.fundroid.offstand.R;
+import com.fundroid.offstand.ui.lobby.wifialert.WifiAlertDialog;
 import com.fundroid.offstand.ui.room.RoomActivity;
 import com.fundroid.offstand.databinding.FragmentFindRoomBinding;
 import com.fundroid.offstand.ui.base.BaseFragment;
@@ -108,6 +109,11 @@ public class FindRoomFragment extends BaseFragment<FragmentFindRoomBinding, Find
     @Override
     public void dismissProgress() {
         getViewDataBinding().loading.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showWifiAlertDialog() {
+        WifiAlertDialog.newInstance().show(getFragmentManager());
     }
 
     @Override
