@@ -1,4 +1,0 @@
-* RoomDBTest2
-  https://blog.yena.io/studynote/2018/09/08/Android-Kotlin-Room.html
-
--> View를 모두 만들었으면 Adatper를 통해 코드와 연결해준다.
