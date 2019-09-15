@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@+id/navigation_main">
+
+    <fragment
+        android:id="@+id/navigation_main"
+        android:name="com.fundroid.routinesc.MainFragment"
+        android:label="메인"
+        tools:layout="@layout/fragment_main" />
+
+    <fragment
+        android:id="@+id/navigation_detail"
+        android:name="com.fundroid.routinesc.DetailFragment"
+        android:label="상세"
+        tools:layout="@layout/fragment_detail" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.fundroid.routinesc.SettingFragment"
+        android:label="설정"
+        tools:layout="@layout/fragment_setting" />
+</navigation>
