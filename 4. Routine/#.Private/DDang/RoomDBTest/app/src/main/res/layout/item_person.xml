@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <ImageView
+        android:id="@+id/itemBack"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/holo_orange_dark" />
+
+    <TextView
+        android:id="@+id/itemID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="ID"
+        app:layout_constraintBottom_toBottomOf="@+id/itemBack"
+        app:layout_constraintStart_toStartOf="@+id/itemBack"
+        app:layout_constraintTop_toTopOf="@+id/itemBack" />
+
+    <TextView
+        android:id="@+id/itemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="88dp"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="@+id/itemBack"
+        app:layout_constraintStart_toStartOf="@+id/itemBack"
+        app:layout_constraintTop_toTopOf="@+id/itemBack"
+        app:layout_constraintVertical_bias="0.488" />
+
+    <TextView
+        android:id="@+id/itemAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="184dp"
+        android:text="Age"
+        app:layout_constraintBottom_toBottomOf="@+id/itemBack"
+        app:layout_constraintStart_toStartOf="@+id/itemBack"
+        app:layout_constraintTop_toTopOf="@+id/itemBack"
+        app:layout_constraintVertical_bias="0.488" />
+
+    <TextView
+        android:id="@+id/itemSex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="256dp"
+        android:text="Sex"
+        app:layout_constraintBottom_toBottomOf="@+id/itemBack"
+        app:layout_constraintStart_toStartOf="@+id/itemBack"
+        app:layout_constraintTop_toTopOf="@+id/itemBack"
+        app:layout_constraintVertical_bias="0.488" />
+
+    <Button
+        android:id="@+id/delButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete"
+        app:layout_constraintBottom_toBottomOf="@+id/itemBack"
+        app:layout_constraintEnd_toEndOf="@+id/itemBack"
+        app:layout_constraintTop_toTopOf="@+id/itemBack" />
+</androidx.constraintlayout.widget.ConstraintLayout>
