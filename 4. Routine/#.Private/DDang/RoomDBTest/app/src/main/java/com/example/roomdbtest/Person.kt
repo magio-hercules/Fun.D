@@ -9,5 +9,5 @@ class Person(
     @ColumnInfo(name = "age") var age: Int,
     @ColumnInfo(name = "sex") var sex: String)
 {
-    @Ignore constructor(): this(null, "", 0, "")
+    constructor(): this(1, "", 0, "")
 }

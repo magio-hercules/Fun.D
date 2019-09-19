@@ -3,6 +3,7 @@ package com.example.roomdbtest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import kotlinx.android.synthetic.main.activity_add_person.*
 
 class AddPerson : AppCompatActivity() {
@@ -21,6 +22,7 @@ class AddPerson : AppCompatActivity() {
             newPerson.name = addName.text.toString()
             newPerson.age = addAge.text.toString().toInt()
             newPerson.sex = addSex.text.toString()
+            Log.d("tag", "$newPerson.name / $newPerson.age / $newPerson.sex")
             personDB?.personDao()?.insert(newPerson)
         }
 
