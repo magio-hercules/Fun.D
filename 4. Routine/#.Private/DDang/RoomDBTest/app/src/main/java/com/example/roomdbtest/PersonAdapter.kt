@@ -7,7 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PersonAdapter(val context: Context, val persons: List<Person>): RecyclerView.Adapter<PersonAdapter.Holder>() {
+class PersonAdapter(val context: Context, var persons: List<Person>): RecyclerView.Adapter<PersonAdapter.Holder>() {
+
+    internal fun setItems(persons: List<Person>) {
+        this.persons = persons
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_person, parent, false)

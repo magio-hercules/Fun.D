@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         val r = Runnable {
             try {
                 personList = personDb?.personDao()?.getAll()!!
+                mAdapter.setItems(personList)
                 mAdapter.notifyDataSetChanged()
 
                 RoomRecyclerView.adapter = mAdapter
