@@ -18,11 +18,12 @@ class AddPerson : AppCompatActivity() {
 
         val addRunnable = Runnable {
             val newPerson = Person()
-//            newPerson.id = addID.text.toString()
+            var id = addID.text.toString().toLong()
+            newPerson.id = id
             newPerson.name = addName.text.toString()
             newPerson.age = addAge.text.toString().toInt()
             newPerson.sex = addSex.text.toString()
-            Log.d("tag", "$newPerson.name / $newPerson.age / $newPerson.sex")
+            Log.d("tag", "${newPerson.id} / ${newPerson.name} / ${newPerson.age} / ${newPerson.sex}")
             personDB?.personDao()?.insert(newPerson)
         }
 

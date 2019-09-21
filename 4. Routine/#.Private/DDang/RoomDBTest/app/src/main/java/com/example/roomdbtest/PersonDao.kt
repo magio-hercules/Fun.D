@@ -13,6 +13,6 @@ interface PersonDao {
     @Query("DELETE FROM person")
     fun deleteAll()
 
-//    @Query("DELETE FROM person WHERE perid = :perid")
-//    fun delete(perid: String)
+    @Delete
+    fun delete(person: Person)
 }

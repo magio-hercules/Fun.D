@@ -18,7 +18,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         personDb = PersonDB.getInstance(this)
-        mAdapter = PersonAdapter(this, personList)
+        mAdapter = PersonAdapter(this, personList) {
+//            Log.d("tag", "item Click")
+        }
 
         val r = Runnable {
             try {
