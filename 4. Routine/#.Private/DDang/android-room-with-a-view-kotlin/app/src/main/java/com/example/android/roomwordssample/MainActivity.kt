@@ -28,10 +28,15 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.appcompat.widget.Toolbar
 import android.widget.Toast
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), WordListAdapter.OnItemClickListener<Word> {
 
     private val newWordActivityRequestCode = 1
     private lateinit var wordViewModel: WordViewModel
+
+    override fun onItemClick(item: Word, position: Int) {
+        Toast.makeText(this, "Test : ${item.word}, ${position}", Toast.LENGTH_SHORT).show()
+        wordViewModel.deleteThis(item.word)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +47,7 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerview)
         val adapter = WordListAdapter(this)
+        adapter.setOnItemClickListener(this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -79,4 +85,6 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
     }
+
+
 }

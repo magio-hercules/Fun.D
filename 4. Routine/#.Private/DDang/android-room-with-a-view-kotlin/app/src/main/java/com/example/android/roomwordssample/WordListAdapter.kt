@@ -36,6 +36,16 @@ class WordListAdapter internal constructor(
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var words = emptyList<Word>() // Cached copy of words
 
+    interface OnItemClickListener<Word> {
+        fun onItemClick(item: Word, position: Int)
+    }
+
+    private var onItemClickListener: OnItemClickListener<Word>? = null
+
+    fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener<Word>) {
+        this.onItemClickListener = mOnItemClickListener
+    }
+
     inner class WordViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val wordItemView: TextView = itemView.findViewById(R.id.textView)
     }
@@ -49,10 +59,10 @@ class WordListAdapter internal constructor(
         val current = words[position]
         holder.wordItemView.text = current.word
 
-        holder.itemView.setOnClickListener{
-            Log.d("tag","testtesttest")
-            Toast.makeText(context,"Test : ${current.word}", Toast.LENGTH_LONG).show()
-
+        holder.itemView.setOnClickListener {
+            Log.d("tag", "testtesttest")
+//            Toast.makeText(context, "Test : ${current.word}", Toast.LENGTH_LONG).show()
+            onItemClickListener?.onItemClick(current, position)
 //            deleteThis(current.word)
         }
     }
