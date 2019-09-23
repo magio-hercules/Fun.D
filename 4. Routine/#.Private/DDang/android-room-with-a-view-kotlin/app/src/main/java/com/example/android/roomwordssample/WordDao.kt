@@ -46,4 +46,7 @@ interface WordDao {
 
     @Query("DELETE FROM word_table")
     suspend fun deleteAll()
+
+    @Query("DELETE FROM word_table WHERE word = :str")
+    suspend fun deleteThis(str: String)
 }
