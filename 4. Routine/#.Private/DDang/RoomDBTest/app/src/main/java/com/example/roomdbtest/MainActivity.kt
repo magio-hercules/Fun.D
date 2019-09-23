@@ -1,6 +1,7 @@
 package com.example.roomdbtest
 
 import android.content.Intent
+import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,9 +16,35 @@ class MainActivity : AppCompatActivity(), PersonAdapter.OnItemClickListener<Pers
     private var personList = listOf<Person>()
     lateinit var mAdapter: PersonAdapter
 
+    public fun selectDB() {
+        personList = personDb?.personDao()?.getAll()!!
+        mAdapter.setItems(personList)
+        mAdapter.notifyDataSetChanged()
+    }
+
+    public class PersonDeleteAsync(var personDb : PersonDB?) : AsyncTask<Person, Void, Void?>() {
+
+        override fun onPreExecute() {
+            super.onPreExecute()
+        }
+
+        override fun doInBackground(vararg person: Person?): Void? {
+            personDb?.personDao()?.delete(person[0]?.id!!.toLong())
+            return null
+        }
+
+        override fun onPostExecute(result: Void?) {
+            super.onPostExecute(result)
+        }
+    }
+
     override fun onItemClick(person: Person, position: Int) {
         Toast.makeText(this, "${person.id} / ${person.name} / ${person.age} / ${person.sex}", Toast.LENGTH_SHORT).show()
+        Log.d("test","onItemClick Thread ${Thread.currentThread().name}" )
 //        personDb?.personDao()?.delete(person.id!!.toLong())
+        var personDeleteAsync : PersonDeleteAsync
+        personDeleteAsync = PersonDeleteAsync(personDb)
+        personDeleteAsync.execute(person)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,11 +58,8 @@ class MainActivity : AppCompatActivity(), PersonAdapter.OnItemClickListener<Pers
 
         val r = Runnable {
             try {
-                personList = personDb?.personDao()?.getAll()!!
-                mAdapter.setItems(personList)
                 mAdapter.setOnItemClickListener(this)
-                mAdapter.notifyDataSetChanged()
-
+                selectDB()
                 RoomRecyclerView.adapter = mAdapter
                 RoomRecyclerView.layoutManager = LinearLayoutManager(this)
                 RoomRecyclerView.setHasFixedSize(true)

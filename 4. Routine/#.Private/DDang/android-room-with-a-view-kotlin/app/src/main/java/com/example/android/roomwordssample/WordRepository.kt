@@ -16,6 +16,7 @@ package com.example.android.roomwordssample
  * limitations under the License.
  */
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.annotation.WorkerThread
 
@@ -38,6 +39,7 @@ class WordRepository(private val wordDao: WordDao) {
     }
 
     suspend fun deleteThis(str: String){
+        Log.d("test","deleteThis Thread ${Thread.currentThread().name}" )
         wordDao.deleteThis(str)
     }
 }
