@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +14,18 @@ class PersonAdapter(
     var persons: List<Person>,
     val itemClick: (Person) -> Unit
 ): RecyclerView.Adapter<PersonAdapter.Holder>() {
+
+    // Person Click Event
+    interface OnItemClickListener<Person> {
+        fun onItemClick(item: Person, position: Int)
+    }
+
+    private var onItemClickListener: OnItemClickListener<Person>? = null
+
+    fun setOnItemClickListener(mOnItemClickListener: OnItemClickListener<Person>) {
+        this.onItemClickListener = mOnItemClickListener
+    }
+    // -----------------------
 
     internal fun setItems(persons: List<Person>) {
         this.persons = persons
@@ -44,9 +57,10 @@ class PersonAdapter(
 
             itemView.setOnClickListener {
                 itemClick(person)
-                Toast.makeText(context, "${person.id} / ${person.name} / ${person.age} / ${person.sex}", Toast.LENGTH_LONG).show()
+//                Toast.makeText(context, "${person.id} / ${person.name} / ${person.age} / ${person.sex}", Toast.LENGTH_SHORT).show()
 
                 val personDB = PersonDB.getInstance(context)
+                onItemClickListener?.onItemClick(person, position)
 
 //                personDB?.personDao()?.delete(person)
             }

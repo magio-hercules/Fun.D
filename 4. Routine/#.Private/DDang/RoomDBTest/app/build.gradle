@@ -48,4 +48,6 @@ dependencies {
 
     /* optional - Guava support for Room, including Optional and ListenableFuture */
     implementation "android.arch.persistence.room:guava:1.1.1"
+
+    implementation "com.facebook.stetho:stetho:1.5.1"
 }
