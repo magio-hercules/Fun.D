@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity(), PersonAdapter.OnItemClickListener<Pers
 
         override fun onPreExecute() {
             super.onPreExecute()
+            selectDB()
         }
 
         override fun doInBackground(vararg person: Person?): Void? {

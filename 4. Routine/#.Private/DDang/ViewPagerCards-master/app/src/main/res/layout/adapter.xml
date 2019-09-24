@@ -25,11 +25,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pokerViewPager"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"></android.support.v4.view.ViewPager>
-
             <TextView
                 android:id="@+id/contentTextView"
                 style="@style/TextAppearance.AppCompat.Body1"
@@ -37,6 +32,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"/>
 
+            <Button
+                style="@style/ButtonStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Button" />
         </LinearLayout>
 
         <ImageView
