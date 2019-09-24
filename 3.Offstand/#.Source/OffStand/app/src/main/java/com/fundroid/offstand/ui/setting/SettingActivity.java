@@ -234,7 +234,6 @@ public class SettingActivity extends AppCompatActivity implements View.OnTouchLi
             public void onClick(View v) {
                 MediaPlayer.create(SettingActivity.this, R.raw.mouth_interface_button).start();
 
-                Toast.makeText(getApplicationContext(), "저장완료", Toast.LENGTH_LONG).show();
 
                 String input = userName.getText().toString();
 
