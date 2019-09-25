@@ -5,9 +5,23 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
+import com.github.rubensousa.viewpagercards.DataBase.Code.CodeDTO
+import kotlinx.android.synthetic.main.fragment_adapter.*
 import java.util.*
 
 class CardFragmentPagerAdapter(fm: FragmentManager, private val mBaseElevation: Float) : FragmentStatePagerAdapter(fm), CardAdapter {
+
+    // < Code >
+//    var codesList: List<CodeDTO>? = null
+//
+//    internal fun setData(codes: List<CodeDTO>){
+//        codesList = codes
+//
+//        for (i in 1..6) {
+//            addCardFragment(CardFragment())
+//        }
+//    }
+    // ------------
 
     override fun baseElevation(): Float {
         return mBaseElevation
@@ -22,7 +36,7 @@ class CardFragmentPagerAdapter(fm: FragmentManager, private val mBaseElevation: 
     init {
         mFragments = ArrayList()
 
-        for (i in 0..4) {
+        for (i in 1..4) {
             addCardFragment(CardFragment())
         }
     }

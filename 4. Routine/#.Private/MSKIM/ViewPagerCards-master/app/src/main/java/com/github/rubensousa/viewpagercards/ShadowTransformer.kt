@@ -2,7 +2,6 @@ package com.github.rubensousa.viewpagercards
 
 import android.view.View
 
-import androidx.cardview.widget.CardView
 import androidx.viewpager.widget.ViewPager
 
 
