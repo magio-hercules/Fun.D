@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">RoutineSC</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="setting_version">Version</string>
+    <string name="setting_entire_alarm">전체 알람 선택</string>
+    <string name="setting_weekend_alarm">주말 알람 선택</string>
+    <string name="setting_alarm_type">알람 타입 선택</string>
+    <string name="setting_notification">알림 선택</string>
 </resources>

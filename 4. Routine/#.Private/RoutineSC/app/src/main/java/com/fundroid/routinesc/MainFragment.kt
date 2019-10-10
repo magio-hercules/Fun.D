@@ -26,6 +26,9 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Log.d("lsc", "MainFragment onViewCreated")
+
+        RoutineApplication.prefs.test = "leesc"
+
         val dummyRoutines = listOf(
             Routine("test01", "resource01"),
             Routine("test02", "resource02"),
