@@ -8,7 +8,7 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 
 
-class CardFragment : Fragment() {
+class CardFragment3 : Fragment() {
 
     var cardView: CardView? = null
         private set
@@ -19,7 +19,7 @@ class CardFragment : Fragment() {
                               savedInstanceState: Bundle?): View? {
 
 
-        val view = inflater.inflate(R.layout.fragment_adapter, container, false)
+        val view = inflater.inflate(R.layout.fragment_adapter3, container, false)
         cardView = view.findViewById<View>(R.id.cardView) as CardView
         cardView!!.maxCardElevation = cardView!!.cardElevation * CardAdapter.MAX_ELEVATION_FACTOR
         return view
