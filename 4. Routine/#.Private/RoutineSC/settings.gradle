@@ -1,2 +1,2 @@
-include ':app', ':scalarmmanager'
+include ':app'
 rootProject.name='RoutineSC'
