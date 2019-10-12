@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".NewActivity">
+
+    <Button
+        android:id="@+id/btnBasic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="basic"
+        android:text="Basic" />
+
+    <Button
+        android:id="@+id/btnBigTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="bigTextStyle"
+        android:text="BigTextStyle" />
+
+    <Button
+        android:id="@+id/btnBigPictureStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="bigPictureStyle"
+        android:text="BigPictureStyle" />
+
+    <Button
+        android:id="@+id/btnInboxStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="inboxStyle"
+        android:text="InboxStyle" />
+
+    <Button
+        android:id="@+id/btn4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="messagingStyle"
+        android:text="MessagingStyle" />
+
+    <Button
+        android:id="@+id/btnMediaStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="mediaStyle"
+        android:text="MediaStyle" />
+
+    <Button
+        android:id="@+id/btnInlineReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="inlineReplay"
+        android:text="Inline Reply" />
+
+    <Button
+        android:id="@+id/btnHeadUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="headUp"
+        android:text="Head Up" />
+
+</LinearLayout>
