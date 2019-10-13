@@ -62,4 +62,11 @@
         android:onClick="headUp"
         android:text="Head Up" />
 
+    <Button
+        android:id="@+id/btnPictruelink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="createPicturelinkStyle"
+        android:text="createPicturelinkStyle" />
+
 </LinearLayout>
