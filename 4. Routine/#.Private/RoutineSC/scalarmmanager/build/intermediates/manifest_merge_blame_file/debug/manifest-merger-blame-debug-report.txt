@@ -1,0 +1,31 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.fundroid.scalarmmanager"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="29" />
+9-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml
+10
+11    <application
+11-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:3:5-12:19
+12        android:allowBackup="true"
+12-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:4:9-35
+13        android:supportsRtl="true" >
+13-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:5:9-35
+14        <receiver android:name="com.fundroid.scalarmmanager.receivers.BootCompleteReceiver" >
+14-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:7:9-11:20
+14-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:7:19-65
+15            <intent-filter>
+15-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:8:13-10:29
+16                <action android:name="android.intent.action.BOOT_COMPLETED" />
+16-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:9:17-79
+16-->D:\GitHub\StudyProject\4. Routine\#.Private\RoutineSC\scalarmmanager\src\main\AndroidManifest.xml:9:25-76
+17            </intent-filter>
+18        </receiver>
+19    </application>
+20
+21</manifest>
