@@ -3,4 +3,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_businessman">사업가</string>
+    <string name="contents_businessman">
+        언제 스타가 될지, 성공할지 나도 잘 몰라\n
+        이 바닥은 아이돌이 되려다\n
+        아이~ 돌아버리겠네하면서\n
+        중간에 포기하는 친구들이 대부분이야.\n
+        도전해보고 내 길이 아니다 싶으면 빨리\n
+        새로운 길을 찾는게 현명한 걸지도 몰라."</string>
 </resources>
