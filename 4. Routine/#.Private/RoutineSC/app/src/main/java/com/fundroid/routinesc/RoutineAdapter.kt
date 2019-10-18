@@ -33,6 +33,7 @@ class RoutineAdapter(private val routines: List<Routine>) :
 
         fun bind(routine : Routine) {
             Log.d("lsc","bind ${routine}")
+
             title.text = routine.name
         }
 
