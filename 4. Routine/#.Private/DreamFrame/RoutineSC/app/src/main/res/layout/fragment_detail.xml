@@ -48,11 +48,12 @@
                         android:layout_height="wrap_content"
                         android:text="set"/>
 
-                    <Button
-                        android:id="@+id/switch_fragments"
+                    <TextView
+                        android:id="@+id/text_SwitchButtonCheck"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="프레그먼트 이동공부"/>
+                        android:text="스위치버튼1 체크:"/>
+
                     <TextView
                         android:id="@+id/tv_Title"
                         android:layout_width="match_parent"
@@ -94,6 +95,7 @@
                     android:layout_marginLeft="100dp"
                     android:text = "dddddddddd"/>
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/Alarm_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -112,6 +114,7 @@
                     android:layout_marginLeft="100dp"
                     android:text = "dddddddddd"/>
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/Alarm_2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -132,6 +135,7 @@
                     android:layout_marginLeft="100dp"
                     android:text = "dddddddddd"/>
                 <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/Alarm_3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"

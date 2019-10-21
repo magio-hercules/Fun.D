@@ -20,6 +20,11 @@ import java.util.*
 
 class DetailFragment : Fragment() {
 
+    var bAlarm_1 = false
+    var bAlarm_2 = false
+    var bAlarm_3 = false
+
+
     var builder: AlarmBuilder? = null
 
     override fun onCreateView(
