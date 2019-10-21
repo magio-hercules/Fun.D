@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <!-- 더미색테스트 황교욱-->
+    <color name="testBackgound">#F507B8</color>
+    <color name="testButton">#6BE017</color>
+    <color name="testDialog">#EDFC14</color>
+    <color name="BlackColorFont">#000</color>
+</resources>

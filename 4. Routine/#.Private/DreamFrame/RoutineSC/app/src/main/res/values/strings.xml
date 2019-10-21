@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">RoutineSC</string>
+    <string name="setting_version">Version</string>
+    <string name="setting_entire_alarm">전체 알람 선택</string>
+    <string name="setting_weekend_alarm">주말 알람 선택</string>
+    <string name="setting_alarm_type">알람 타입 선택</string>
+    <string name="setting_notification">알림 선택</string>
+
+    <!--    더미글씨데스트 황교욱-->
+    <string name="title_businessman">사업가</string>
+    <string name="contents_businessman">
+        거창한 계획 따윈 필요없다!\n
+        조금씩, 가볍게, 사소하게 시작하고\n
+        작은 습관을 실행하고\n
+        확실하게 이뤄내라\n
+        작은일 이라도 성공을 한다면\n
+        성취감을 느낄수 있다."</string>
+</resources>
