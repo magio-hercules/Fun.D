@@ -29,8 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="vertical"
-                    android:textAlignment="center">
+                    android:orientation="vertical">
 
                     <Button
                         android:id="@+id/goAlarm"
@@ -50,6 +49,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="50dp"
+                        android:textAlignment="center"
                         android:text=""
                         android:textColor="#FFFFFF"
                         android:textSize="30dp" />

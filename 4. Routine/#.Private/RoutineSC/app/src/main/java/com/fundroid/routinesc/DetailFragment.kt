@@ -1,5 +1,6 @@
 package com.fundroid.routinesc
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
@@ -42,11 +44,16 @@ class DetailFragment : Fragment() {
 
         builder = AlarmBuilder().with(context!!)
 
+
+
         //UI 텍스트
         UI_TextManager()
 
         //UI 이미지
         UI_ImageMAnager()
+        
+        //스위치버튼 알람 ON/OFF
+        AlarmSwitchManager()
     }
 
     fun UI_TextManager() {
@@ -61,6 +68,29 @@ class DetailFragment : Fragment() {
     //알림스위치
     fun AlarmSwitchManager(){
         //스위치 버튼
-        //val scAlarm_1:SwitchCompat =  view.findViewById(R.id.)
+        sc_Alarm1.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(!isChecked)
+            {
+                Toast.makeText(this.context,"알람1_스위치온",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this.context,"알람1_스위치오프",Toast.LENGTH_SHORT).show()
+            }
+        }
+        sc_Alarm2.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(!isChecked)
+            {
+                Toast.makeText(this.context,"알람2_스위치온",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this.context,"알림2_스위치오프",Toast.LENGTH_SHORT).show()
+            }
+        }
+        sc_Alarm3.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(!isChecked)
+            {
+                Toast.makeText(this.context,"알람3_스위치온",Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this.context,"알람3_스위치오프",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
