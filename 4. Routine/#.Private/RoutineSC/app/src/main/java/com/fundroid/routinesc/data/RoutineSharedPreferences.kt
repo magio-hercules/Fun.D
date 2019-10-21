@@ -1,4 +1,4 @@
-package com.fundroid.routinesc
+package com.fundroid.routinesc.data
 
 import android.content.Context
 import android.content.SharedPreferences

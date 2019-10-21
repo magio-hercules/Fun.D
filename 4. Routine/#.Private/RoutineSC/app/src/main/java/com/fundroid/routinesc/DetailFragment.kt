@@ -1,24 +1,30 @@
 package com.fundroid.routinesc
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Switch
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
+import com.fundroid.routinesc.RoutineApplication.Companion.database
+import com.fundroid.routinesc.data.Alarm
+import com.fundroid.routinesc.data.MyAlarm
+import com.fundroid.routinesc.data.Routine
 import kotlinx.android.synthetic.main.fragment_detail.*
-import java.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(), AlarmAdapter.OnItemClick, MyAlarmAdapter.OnItemClick {
 
     var builder: AlarmBuilder? = null
+
+    val scope = CoroutineScope(Dispatchers.IO)
+    var myAlarmSize: Int = 0
+    lateinit var alarms: List<Alarm>
+    lateinit var myAlarms: List<MyAlarm>
+    lateinit var routine: Routine
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,69 +34,97 @@ class DetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_detail, null)
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        goAlarm.setOnClickListener {
-            activity?.startActivity(Intent(activity, AlarmActivity::class.java))
-        }
+        Log.v("lsc", "arguments $arguments")
+        runBlocking {
+            val ioJob = scope.launch {
+                myAlarmSize = database.myAlarmDao().getMyAlarms().size
+                if (myAlarmSize == 0) {
+                    routine = database.routineDao()
+                        .getRoutineById(arguments!!.getInt("routineId"))
+                    alarms = database.alarmDao()
+                        .getAlarms(routine.id)
 
-        setAlarm.setOnClickListener {
-            Log.d("lsc", "onClick setAlarm")
-            val calendar = Calendar.getInstance()
-            calendar.timeInMillis = System.currentTimeMillis() + 10000
-//            builder?.setTargetActivity(javaClass)
-            builder?.setAlarm(calendar, true, AlarmType.ALARM)
-        }
+                    val alarmAdapter = AlarmAdapter(alarms, routine)
+                    alarmAdapter.setOnItemClick(this@DetailFragment)
+                    rv_details.apply {
+                        adapter = alarmAdapter
+                    }
+                } else {
+                    myAlarms = database.myAlarmDao().getMyAlarms()
 
-        builder = AlarmBuilder().with(context!!)
-
-
-
-        //UI 텍스트
-        UI_TextManager()
-
-        //UI 이미지
-        UI_ImageMAnager()
-        
-        //스위치버튼 알람 ON/OFF
-        AlarmSwitchManager()
-    }
-
-    fun UI_TextManager() {
-        tv_Title.text = getString(R.string.title_businessman)
-        tv_Contents.text = getString(R.string.contents_businessman)
-    }
-
-    fun UI_ImageMAnager() {
-
-
-    }
-    //알림스위치
-    fun AlarmSwitchManager(){
-        //스위치 버튼
-        sc_Alarm1.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(!isChecked)
-            {
-                Toast.makeText(this.context,"알람1_스위치온",Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this.context,"알람1_스위치오프",Toast.LENGTH_SHORT).show()
+                    val alarmAdapter = MyAlarmAdapter(
+                        myAlarms,
+                        database.routineDao().getRoutineById(myAlarms.get(0).routineId)
+                    )
+                    alarmAdapter.setOnItemClick(this@DetailFragment)
+                    rv_details.apply {
+                        adapter = alarmAdapter
+                    }
+                }
             }
+            ioJob.join()
+            builder = AlarmBuilder().with(context!!)
         }
-        sc_Alarm2.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(!isChecked)
-            {
-                Toast.makeText(this.context,"알람2_스위치온",Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this.context,"알림2_스위치오프",Toast.LENGTH_SHORT).show()
-            }
-        }
-        sc_Alarm3.setOnCheckedChangeListener { buttonView, isChecked ->
-            if(!isChecked)
-            {
-                Toast.makeText(this.context,"알람3_스위치온",Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(this.context,"알람3_스위치오프",Toast.LENGTH_SHORT).show()
-            }
-        }
+
+
+//        goAlarm.setOnClickListener{
+//            activity?.startActivity(Intent(activity, AlarmActivity::class.java))
+//        }
+//
+//        setAlarm.setOnClickListener {
+//            Log.d("lsc","onClick setAlarm")
+//            val calendar = Calendar.getInstance()
+//            calendar.timeInMillis = System.currentTimeMillis() + 10000
+//            builder?.setAlarm(calendar, true, AlarmType.ALARM)
+//        }
+//
+//        builder = AlarmBuilder().with(context!!)
     }
+
+    override fun onChoice() {
+        (activity as MainActivity).setDetailEnable(true)
+        runBlocking {
+            val ioJob = scope.launch {
+                database.myAlarmDao().nukeTable()
+
+                if (myAlarmSize == 0) {
+                    Log.d("lsc", "alarms ${alarms.size}")
+                    for (i in alarms.indices) {
+                        database.myAlarmDao().createMyAlarm(
+                            MyAlarm(
+                                alarms[i].localTime,
+                                alarms[i].comment,
+                                alarms[i].isUse,
+                                alarms[i].routineType,
+                                alarms[i].routineId
+                            )
+                        )
+                    }
+                } else {
+                    Log.d("lsc", "myAlarms ${myAlarms.size}")
+                    for (i in myAlarms.indices) {
+                        database.myAlarmDao().createMyAlarm(
+                            MyAlarm(
+                                myAlarms[i].localTime,
+                                myAlarms[i].comment,
+                                myAlarms[i].isUse,
+                                myAlarms[i].routineType,
+                                myAlarms[i].routineId
+                            )
+                        )
+                    }
+                }
+            }
+            ioJob.join()
+        }
+
+//        val calendar = Calendar.getInstance()
+//        calendar.timeInMillis = System.currentTimeMillis() + 10000
+//        builder?.setAlarm(calendar, true, AlarmType.ALARM)
+//https://stackoverflow.com/questions/29346725/android-alarm-manager-not-triggering-event
+    }
+
 }

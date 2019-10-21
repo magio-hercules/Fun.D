@@ -8,42 +8,43 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/title_routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="100억 자산가 루틴"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/routines"
+        android:id="@+id/vp2_routines"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_margin="16dp"
         android:background="#3F0"
-        app:layout_constraintBottom_toTopOf="@id/switch_for_some"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        app:layout_constraintBottom_toTopOf="@id/switch_routine"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintTop_toBottomOf="@id/title_routine"
         tools:listitem="@layout/item_routine" />
 
     <Switch
-        android:id="@+id/switch_for_some"
+        android:id="@+id/switch_routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/comment_switch"
+        app:layout_constraintBottom_toTopOf="@id/footer_routine"
+        android:clickable="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/comment_switch"
+        android:id="@+id/footer_routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="밀어서 100억원대 자산가 되기"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

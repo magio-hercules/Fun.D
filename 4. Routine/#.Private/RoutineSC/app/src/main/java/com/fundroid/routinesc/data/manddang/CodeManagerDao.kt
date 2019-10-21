@@ -1,4 +1,4 @@
-package com.fundroid.routinesc
+package com.fundroid.routinesc.data.manddang
 
 import androidx.room.*
 
