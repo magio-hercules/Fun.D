@@ -4,28 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF0"
+    android:background="#FFF"
     tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24.5dp"
+        android:src="@drawable/logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title_routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
+        android:drawableStart="@drawable/layer_5"
+        android:drawablePadding="11dp"
+        android:textColor="#414042"
+        app:layout_constraintBottom_toTopOf="@id/vp2_routines"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/logo" />
 
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp2_routines"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="16dp"
-        android:background="#3F0"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
-        app:layout_constraintBottom_toTopOf="@id/switch_routine"
+        android:layout_width="275dp"
+        android:layout_height="450dp"
+        android:layout_marginTop="22.2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_routine"
@@ -35,18 +45,27 @@
         android:id="@+id/switch_routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@id/footer_routine"
+        android:layout_marginTop="26.8dp"
+        android:background="@drawable/switch_main"
         android:clickable="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vp2_routines" />
 
     <TextView
         android:id="@+id/footer_routine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="18.5dp"
+        android:background="@drawable/rounded_rectangle_1"
+        android:gravity="center"
+        android:letterSpacing="0.08"
+        android:lineSpacingExtra="5.3sp"
+        android:padding="8.5dp"
+        android:textColor="#939598"
+        android:textSize="8.8sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/switch_routine" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

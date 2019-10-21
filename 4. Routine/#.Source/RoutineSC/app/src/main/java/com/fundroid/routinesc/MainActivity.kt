@@ -3,6 +3,7 @@ package com.fundroid.routinesc
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Window
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.ui.AppBarConfiguration
@@ -27,12 +28,12 @@ class MainActivity : AppCompatActivity() {
         Log.d("lsc", "MainActivity onCreate")
         setContentView(R.layout.activity_main)
         navController = Navigation.findNavController(this, R.id.nav_host_fragment)
-        val appBarConfiguration = AppBarConfiguration.Builder(
-            R.id.navigation_main,
-            R.id.navigation_detail,
-            R.id.navigation_setting
-        ).build()
-        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
+//        val appBarConfiguration = AppBarConfiguration.Builder(
+//            R.id.navigation_main,
+//            R.id.navigation_detail,
+//            R.id.navigation_setting
+//        ).build()
+//        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
         NavigationUI.setupWithNavController(nav_view, navController)
 
         runBlocking {

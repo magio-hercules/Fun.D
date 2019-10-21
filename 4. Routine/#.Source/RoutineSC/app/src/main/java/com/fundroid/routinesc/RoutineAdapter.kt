@@ -50,9 +50,9 @@ class RoutineAdapter(private val routines: List<Routine>) :
         fun bind(routine : Routine) {
             title.text = routine.coverMessage
             when(routine.id) {
-                1 -> cover.setImageDrawable(mContext!!.getDrawable(R.drawable.ic_launcher_background))
+                1 -> cover.setImageDrawable(mContext!!.getDrawable(R.drawable.ic_launcher_foreground))
                 2 -> cover.setImageDrawable(mContext!!.getDrawable(R.drawable.ic_launcher_foreground))
-                3 -> cover.setImageDrawable(mContext!!.getDrawable(R.drawable.ic_launcher_background))
+                3 -> cover.setImageDrawable(mContext!!.getDrawable(R.drawable.ic_launcher_foreground))
                 4 -> cover.setImageDrawable(mContext!!.getDrawable(R.drawable.ic_launcher_foreground))
             }
             itemView.setOnClickListener {

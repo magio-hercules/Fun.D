@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RoutineSC</string>
+    <string name="app_name">Routine</string>
     <string name="setting_version">Version</string>
     <string name="setting_entire_alarm">전체 알람 선택</string>
     <string name="setting_weekend_alarm">주말 알람 선택</string>

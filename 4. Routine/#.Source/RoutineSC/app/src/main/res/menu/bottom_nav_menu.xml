@@ -3,17 +3,14 @@
 
     <item
         android:id="@+id/navigation_main"
-        android:icon="@mipmap/ic_launcher"
-        android:title="메인" />
+        android:icon="@drawable/tab_home" />
 
     <item
         android:id="@+id/navigation_detail"
-        android:icon="@mipmap/ic_launcher"
-        android:title="디테일" />
+        android:icon="@drawable/tab_detail" />
 
     <item
         android:id="@+id/navigation_setting"
-        android:icon="@mipmap/ic_launcher"
-        android:title="설정" />
+        android:icon="@drawable/tab_setting" />
 
 </menu>
