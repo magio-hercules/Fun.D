@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import com.fund.iam.HomeActivity;
 import com.fund.iam.MainActivity;
 import com.fund.iam.R;
+import com.fund.iam.R2;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,17 +36,17 @@ public class TestFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    @BindView(R.id.test_login)
+    @BindView(R2.id.test_login)
     Button testLogin;
-    @BindView(R.id.test_home)
+    @BindView(R2.id.test_home)
     Button testHome;
-    @BindView(R.id.test_letter)
+    @BindView(R2.id.test_letter)
     Button testLetter;
-    @BindView(R.id.test_bookmark)
+    @BindView(R2.id.test_bookmark)
     Button testBookmark;
-    @BindView(R.id.test_search)
+    @BindView(R2.id.test_search)
     Button testSearch;
-    @BindView(R.id.test_setting)
+    @BindView(R2.id.test_setting)
     Button testSetting;
 
     // TODO: Rename and change types of parameters
@@ -119,7 +120,7 @@ public class TestFragment extends Fragment {
         mListener = null;
     }
 
-    @OnClick({R.id.test_login, R.id.test_home, R.id.test_home_act, R.id.test_letter, R.id.test_bookmark, R.id.test_search, R.id.test_setting})
+    @OnClick({R2.id.test_login, R2.id.test_home, R2.id.test_home_act, R2.id.test_letter, R2.id.test_bookmark, R2.id.test_search, R2.id.test_setting})
     public void onViewClicked(View view) {
         Log.d(TAG,"onViewClicked");
 

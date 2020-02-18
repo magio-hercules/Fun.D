@@ -3,22 +3,22 @@
 
     <item
         android:id="@+id/navigation_test"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="TEST" />
     <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="홈" />
     <item
         android:id="@+id/navigation_bookmark"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="내저장" />
     <item
         android:id="@+id/navigation_search"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="검색" />
     <item
         android:id="@+id/navigation_setting"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_launcher_foreground"
         android:title="설정" />
 </menu>
