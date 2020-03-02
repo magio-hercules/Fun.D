@@ -18,7 +18,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/item_chat" />
+            tools:listitem="@layout/item_local_chat" />
 
         <EditText
             android:id="@+id/input"
@@ -34,11 +34,11 @@
             android:id="@+id/send"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:onClick="@{viewModel.onSend"
+            android:onClick="@{() -> viewModel.onSend()}"
             android:text="SEND"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="@id/input"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/input" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -13,6 +13,8 @@ public interface ChatNavigator {
 
     void onRepositoriesChanged(List<Message> messages);
 
+    void onMessageAdd(Message message);
+
     void showToast(String message);
 
     void handleError(Throwable throwable);

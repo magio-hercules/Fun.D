@@ -8,7 +8,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fund.iam.databinding.ItemChatBinding;
+import com.fund.iam.databinding.ItemLocalChatBinding;
+import com.fund.iam.databinding.ItemRemoteChatBinding;
 import com.fund.iam.model.Message;
 
 import java.util.ArrayList;
@@ -26,6 +27,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         notifyDataSetChanged();
     }
 
+    public void addItem(Message message) {
+        Log.d("lsc","addItem " + message);
+        this.messages.add(message);
+        notifyDataSetChanged();
+    }
+
     public void clearItems() {
         messages.clear();
     }
@@ -33,8 +40,22 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        ItemChatBinding itemChatBinding = ItemChatBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new ChatViewHolder(itemChatBinding);
+        switch (viewType) {
+            case VIEW_TYPE_LOCAL:
+                ItemLocalChatBinding itemLocalChatBinding = ItemLocalChatBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+                return new ChatViewHolder(itemLocalChatBinding);
+
+            case VIEW_TYPE_REMOTE:
+                ItemRemoteChatBinding itemRemoteChatBinding = ItemRemoteChatBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+                return new ChatViewHolder(itemRemoteChatBinding);
+
+            default:
+//                ItemEmptyViewBinding emptyViewBinding = ItemEmptyViewBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+//                return new ItemEmptyViewHolder(emptyViewBinding);
+                //Todo: 비었을 때 뷰 만들기.
+                return null;
+
+        }
     }
 
     @Override
@@ -61,17 +82,31 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public class ChatViewHolder extends RecyclerView.ViewHolder {
 
-        private ItemChatBinding binding;
+        private ItemLocalChatBinding localChatBinding;
 
-        public ChatViewHolder(ItemChatBinding binding) {
-            super(binding.getRoot());
-            this.binding = binding;
+        private ItemRemoteChatBinding remoteChatBinding;
+
+        public ChatViewHolder(ItemLocalChatBinding localChatBinding) {
+            super(localChatBinding.getRoot());
+            this.localChatBinding = localChatBinding;
+        }
+
+        public ChatViewHolder(ItemRemoteChatBinding remoteChatBinding) {
+            super(remoteChatBinding.getRoot());
+            this.remoteChatBinding = remoteChatBinding;
         }
 
         public void onBind(int position) {
             final Message message = messages.get(position);
             ItemChatViewModel itemChatViewModel = new ItemChatViewModel(message);
-            binding.setViewModel(itemChatViewModel);
+            switch (getItemViewType()) {
+                case VIEW_TYPE_LOCAL:
+                    localChatBinding.setViewModel(itemChatViewModel);
+                    break;
+                case VIEW_TYPE_REMOTE:
+                    remoteChatBinding.setViewModel(itemChatViewModel);
+                    break;
+            }
         }
     }
 }

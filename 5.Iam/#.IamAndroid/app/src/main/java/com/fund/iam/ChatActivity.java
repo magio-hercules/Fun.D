@@ -37,7 +37,7 @@ public class ChatActivity extends AppCompatActivity implements ChatNavigator {
 
         chatViewModel = new ViewModelProvider(this, viewModelFactory).get(ChatViewModel.class);
         chatViewModel.setNavigator(this);
-
+        chatBinding.setViewModel(chatViewModel);
         initViews();
     }
 
@@ -63,6 +63,11 @@ public class ChatActivity extends AppCompatActivity implements ChatNavigator {
     public void onRepositoriesChanged(List<Message> messages) {
         chatAdapter.clearItems();
         chatAdapter.addItems(messages);
+    }
+
+    @Override
+    public void onMessageAdd(Message message) {
+        chatAdapter.addItem(message);
     }
 
     @Override
