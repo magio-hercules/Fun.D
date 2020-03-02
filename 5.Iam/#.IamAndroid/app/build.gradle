@@ -42,6 +42,22 @@ android {
         }
     }
 
+    deploygate {
+
+        userName = "fundroid2019"
+        token = "8081f2a35490f1c9abb937f7d54fbc6f0802675f"
+
+        apks {
+            debug {
+                sourceFile = file("build/outputs/apk/debug/app-debug.apk")
+            }
+            release {
+                sourceFile = file("release/app-release.apk")
+            }
+        }
+    }
+
+
     dataBinding {
         enabled = true
     }
@@ -71,6 +87,5 @@ dependencies {
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.27.0'
     implementation "io.reactivex.rxjava2:rxjava:2.2.14"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -4,6 +4,7 @@ import android.app.Application;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.stetho.Stetho;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
@@ -64,6 +65,7 @@ public class IamApplication extends Application {
         super.onCreate();
         instance = this;
         KakaoSDK.init(new KakaoSDKAdapter());
+        Stetho.initializeWithDefaults(this);
     }
 
     @Override
