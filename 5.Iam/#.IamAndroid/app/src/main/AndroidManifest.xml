@@ -28,6 +28,8 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity android:name=".ChatActivity"/>
+
         <service
             android:name=".FCMService"
             android:exported="false">

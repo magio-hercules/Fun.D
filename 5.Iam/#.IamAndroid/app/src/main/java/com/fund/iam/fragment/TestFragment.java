@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import androidx.fragment.app.Fragment;
 
+import com.fund.iam.ChatActivity;
 import com.fund.iam.HomeActivity;
 import com.fund.iam.MainActivity;
 import com.fund.iam.R;
@@ -140,7 +141,8 @@ public class TestFragment extends Fragment {
                 break;
             case R.id.test_letter:
                 Log.d(TAG,"쪽지함 화면 연결 필요");
-                onButtonPressed("letter");
+//                onButtonPressed("letter");
+                getActivity().startActivity(new Intent(getContext(), ChatActivity.class));
                 break;
             case R.id.test_bookmark:
                 Log.d(TAG,"내저장 화면 연결 필요");

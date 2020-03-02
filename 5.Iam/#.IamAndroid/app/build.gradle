@@ -41,6 +41,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -66,5 +71,6 @@ dependencies {
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.27.0'
     implementation "io.reactivex.rxjava2:rxjava:2.2.14"
     implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
 }
 apply plugin: 'com.google.gms.google-services'
