@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity
                      HomeFragment.OnFragmentInteractionListener {
     private static final String TAG = "[IAM][MAIN]";
 
-    BottomNavigationView bottomNavigation;
+    BottomNavigationView bottomNavigationView;
     BottomNavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener;
 
     @Override
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity
     private void initBottomNavigation() {
         Log.d(TAG, "initBottomNavigation");
 
-        bottomNavigation = findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         navigationItemSelectedListener =
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 };
 
-        bottomNavigation.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
+        bottomNavigationView.setOnNavigationItemSelectedListener(navigationItemSelectedListener);
         openFragment(TestFragment.newInstance("", ""));
     }
 
@@ -116,19 +116,32 @@ public class MainActivity extends AppCompatActivity
         switch (fragmentName) {
             case "test":
                 openFragment(TestFragment.newInstance("", ""));
+                bottomNavigationView.setSelectedItemId(R.id.navigation_test);
                 break;
             case "login":
 //                openFragment(TestFragment.newInstance("", ""));
                 break;
             case "home":
                 openFragment(HomeFragment.newInstance("", ""));
+                bottomNavigationView.setSelectedItemId(R.id.navigation_home);
                 break;
-            case "boomark":
+            case "bookmark":
+                bottomNavigationView.setSelectedItemId(R.id.navigation_bookmark);
                 break;
             case "search":
+                bottomNavigationView.setSelectedItemId(R.id.navigation_search);
                 break;
             case "setting":
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //call super
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "MainActivity onActivityResult");
+
     }
 }

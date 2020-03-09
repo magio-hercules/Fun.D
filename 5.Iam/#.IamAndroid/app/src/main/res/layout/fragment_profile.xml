@@ -1,0 +1,330 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/layout">
+
+
+<!--        <ImageView-->
+<!--            android:id="@+id/header_cover_image"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="150dp"-->
+<!--            android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--            android:scaleType="centerCrop"-->
+<!--            android:src="@drawable/profile_background"-->
+<!--            app:srcCompat="@drawable/profile_background" />-->
+
+        <RelativeLayout
+            android:id="@+id/profile_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#7E57C2"
+            android:elevation="4dp"
+            android:paddingBottom="24dp">
+
+
+            <ImageView
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+
+                android:src="@android:drawable/ic_menu_edit" />
+
+            <TextView
+                android:id="@+id/profile_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="70dp"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/profile_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/profile_age_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_job"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:textColor="#fff"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/profile_layout"
+            android:layout_margin="5dp"
+            android:layout_marginTop="5dp"
+            android:background="#fff"
+            android:elevation="4dp"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+
+            >
+
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="전화번호: "
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="347dp"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <TextView
+                android:id="@+id/profile_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text=""
+                app:layout_constraintLeft_toRightOf="@+id/textView10"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="347dp"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="이메일: "
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="347dp"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <TextView
+                android:id="@+id/profile_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="hong@gmail.com"
+                app:layout_constraintTop_toBottomOf="@+id/textView10"
+                app:layout_constraintLeft_toRightOf="@+id/textView5"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="347dp"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView5"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:clickable="true"-->
+<!--                android:text="홈페이지: "-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/textView5"-->
+<!--                tools:layout_conversion_absoluteHeight="0dp"-->
+<!--                tools:layout_editor_absoluteY="347dp"-->
+<!--                tools:layout_editor_absoluteX="5dp"-->
+<!--                tools:layout_conversion_absoluteWidth="0dp" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/occupation"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:clickable="true"-->
+<!--                android:text="hong_portfolio.com"-->
+<!--                app:layout_constraintLeft_toRightOf="@+id/textView5"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/textView5"-->
+<!--                tools:layout_conversion_absoluteHeight="0dp"-->
+<!--                tools:layout_editor_absoluteY="347dp"-->
+<!--                tools:layout_editor_absoluteX="5dp"-->
+<!--                tools:layout_conversion_absoluteWidth="0dp" />-->
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="성별: "
+                android:textStyle="bold"
+
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="347dp"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+            <TextView
+                android:id="@+id/profile_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:text="남자"
+                app:layout_constraintLeft_toRightOf="@+id/textView11"
+                app:layout_constraintTop_toBottomOf="@+id/textView5"
+                tools:layout_conversion_absoluteHeight="0dp"
+                tools:layout_editor_absoluteY="347dp"
+                tools:layout_editor_absoluteX="5dp"
+                tools:layout_conversion_absoluteWidth="0dp" />
+
+
+            <Button
+                android:id="@+id/button_add_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이미지+"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <Button
+                android:id="@+id/button_add_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="글+"
+                app:layout_constraintStart_toEndOf="@+id/button_add_image"
+                app:layout_constraintTop_toTopOf="@+id/button_add_image" />
+
+            <Button
+                android:id="@+id/button_get_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Portfolio"
+                app:layout_constraintStart_toEndOf="@+id/button_add_text"
+                app:layout_constraintTop_toTopOf="@+id/button_add_text" />
+
+            <Button
+                android:id="@+id/button_next_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Next User"
+                app:layout_constraintStart_toEndOf="@+id/button_get_user"
+                app:layout_constraintTop_toTopOf="@+id/button_get_user" />
+
+
+            <LinearLayout
+                android:layout_width="399dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="236dp"
+                android:id="@+id/portfolio_layout"
+                app:layout_constraintStart_toStartOf="@+id/button_add_image"
+                app:layout_constraintTop_toBottomOf="@+id/button_add_image">
+
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+</ScrollView>
+
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context="de.hdodenhof.xingapi.sample.ProfileFragment">-->
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/profile_picture"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="256dp"-->
+<!--            android:scaleType="centerCrop"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/user_name"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignBottom="@id/profile_picture"-->
+<!--            android:paddingLeft="16dp"-->
+<!--            android:paddingRight="16dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="8dp"-->
+<!--            android:background="@color/primaryTranslucent"-->
+<!--            android:textColor="@color/primaryText"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/header_haves"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/profile_picture"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:text="Haves"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/haves"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/header_haves"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/header_wants"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/haves"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:text="Wants"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/wants"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/header_wants"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>-->
+
+<!--    </RelativeLayout>-->
+
+<!--</ScrollView>-->
