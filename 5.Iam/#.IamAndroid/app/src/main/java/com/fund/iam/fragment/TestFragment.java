@@ -141,8 +141,8 @@ public class TestFragment extends Fragment {
                 break;
             case R.id.test_letter:
                 Log.d(TAG,"쪽지함 화면 연결 필요");
-//                onButtonPressed("letter");
-                getActivity().startActivity(new Intent(getContext(), ChatActivity.class));
+                onButtonPressed("chatList");
+//                getActivity().startActivity(new Intent(getContext(), ChatActivity.class));
                 break;
             case R.id.test_bookmark:
                 Log.d(TAG,"내저장 화면 연결 필요");

@@ -1,12 +1,10 @@
 package com.fund.iam;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 
+import com.fund.iam.fragment.LetterBoxFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -124,6 +121,9 @@ public class MainActivity extends AppCompatActivity
             case "home":
                 openFragment(HomeFragment.newInstance("", ""));
                 bottomNavigationView.setSelectedItemId(R.id.navigation_home);
+                break;
+            case "chatList":
+                openFragment(LetterBoxFragment.newInstance());
                 break;
             case "bookmark":
                 bottomNavigationView.setSelectedItemId(R.id.navigation_bookmark);

@@ -52,8 +52,8 @@ public class ChatViewModel extends ViewModel {
     }
 
     private void testSend() {
-//        messageSendBody.setTo("ePT67k1HR9mXGvWCyfx1OG:APA91bF3Lj7YMgJSuhlcQQWQ-8W6PxaMfiR2s-vZsRPiiqXQB17_dDWL7Qdo0nFyr5Upri96LBRQRwvP2Hli4ZtB115_bYLUk3p9H3aET2eW2LDUKp92STW1WU5l8UIagJJfzR8CLwlb");       // to J600
-        messageSendBody.setTo("dQQrvN6BSVetYlJwi01_o5:APA91bECGnbqFtqKzWZP9OqAm-gfcuGbkYfVHjDc7Ali4Nya4cThpvntrFNpNu2roSqyL1TXfHEEV5Y9hWbAbL6CpIGM8td_9s4N1ZzlhTJMRsgD2yUHjqIiUQfL5IhYFNjrs6Wjgk3s");       // to 갤10
+        messageSendBody.setTo("ePT67k1HR9mXGvWCyfx1OG:APA91bF3Lj7YMgJSuhlcQQWQ-8W6PxaMfiR2s-vZsRPiiqXQB17_dDWL7Qdo0nFyr5Upri96LBRQRwvP2Hli4ZtB115_bYLUk3p9H3aET2eW2LDUKp92STW1WU5l8UIagJJfzR8CLwlb");       // to J600
+//        messageSendBody.setTo("dQQrvN6BSVetYlJwi01_o5:APA91bECGnbqFtqKzWZP9OqAm-gfcuGbkYfVHjDc7Ali4Nya4cThpvntrFNpNu2roSqyL1TXfHEEV5Y9hWbAbL6CpIGM8td_9s4N1ZzlhTJMRsgD2yUHjqIiUQfL5IhYFNjrs6Wjgk3s");       // to 갤10
         messageSendBody.setPriority("high");
         messageData.setTitle("TestTitle");
         messageData.setMessage(input.get());

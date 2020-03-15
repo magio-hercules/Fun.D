@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -39,6 +40,8 @@ import com.kakao.util.exception.KakaoException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.kakao.util.helper.Utility.getPackageInfo;
 
@@ -64,6 +67,24 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
         return null;
+    }
+
+    public void createSignInIntent() {
+        // [START auth_fui_create_intent]
+        // Choose authentication providers
+        List<AuthUI.IdpConfig> providers = Arrays.asList(
+                new AuthUI.IdpConfig.GoogleBuilder().build(),
+                new AuthUI.IdpConfig.FacebookBuilder().build()
+        );
+
+        // Create and launch sign-in intent
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                RC_SIGN_IN);
+        // [END auth_fui_create_intent]
     }
 
     @Override
