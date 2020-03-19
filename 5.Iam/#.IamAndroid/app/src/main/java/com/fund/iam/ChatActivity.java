@@ -38,7 +38,7 @@ public class ChatActivity extends AppCompatActivity implements ChatNavigator {
         chatViewModel = new ViewModelProvider(this, viewModelFactory).get(ChatViewModel.class);
         chatViewModel.setNavigator(this);
         chatBinding.setViewModel(chatViewModel);
-        initViews();
+        chatViewModel.onSend();
     }
 
     private void initViews() {
