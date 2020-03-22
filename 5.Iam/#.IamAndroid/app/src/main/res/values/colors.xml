@@ -3,6 +3,10 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="gray">#333333</color>
+    <color name="purple">#4527A0</color>
+    <color name="pink">#F89A9A</color>
+    <color name="navPressed">#7859bc</color>
+
 
     <color name="background">#333333</color>
     <color name="accent">#7E57C2</color>

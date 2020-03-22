@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/navigation_test"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="TEST" />
-    <item
         android:id="@+id/navigation_home"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="홈" />
+        android:icon="@drawable/ic_nav_profile"
+        tools:ignore="MenuTitle" />
     <item
         android:id="@+id/navigation_bookmark"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="내저장" />
+        android:icon="@drawable/ic_nav_bookmark"
+        tools:ignore="MenuTitle" />
     <item
         android:id="@+id/navigation_search"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="검색" />
+        android:icon="@drawable/ic_nav_search"
+        tools:ignore="MenuTitle" />
     <item
         android:id="@+id/navigation_setting"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="설정" />
+        android:icon="@drawable/ic_nav_setting"
+        tools:ignore="MenuTitle" />
 </menu>

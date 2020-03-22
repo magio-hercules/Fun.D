@@ -1,76 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/gray"
-    tools:context=".HomeActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:text="I AM"
-        android:textColor="@color/white"
-        android:textSize="60sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <data>
 
-    <TextView
-        android:id="@+id/label_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <variable
+            name="viewModel"
+            type="com.fund.iam.ui.login.LoginViewModel" />
+    </data>
 
-        android:text="LOGIN"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/gray"
+        tools:context=".ui.login.LoginActivity">
 
-    <TextView
-        android:id="@+id/divider_center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="----- SNS LOGIN -----"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/label_center" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            android:text="I AM"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.kakao.usermgmt.LoginButton
-        android:id="@+id/com_kakao_login"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/divider_center" />
+        <TextView
+            android:id="@+id/label_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/signInButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="24dp"
-        android:visibility="visible"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/com_kakao_login" />
+            android:text="LOGIN"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/buttonFacebookLogin"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="24dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/signInButton" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/divider_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="----- SNS LOGIN -----"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/label_center" />
+
+        <com.kakao.usermgmt.LoginButton
+            android:id="@+id/btnKakao"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_center" />
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btnGoogle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="24dp"
+            android:visibility="visible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnKakao" />
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/btnFacebook"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,5 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:color="@color/navPressed" />
+    <!--Todo  pressed 이미지 투명 적용 안되있음.-->
+    <item android:color="#CFD8DC"  />
+</selector>

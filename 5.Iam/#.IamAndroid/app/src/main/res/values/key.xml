@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Preference -->
-    <string name="key_fcm_token">key_fcm_token</string>
+    <string name="key_push_token">key_push_token</string>
 
 </resources>
