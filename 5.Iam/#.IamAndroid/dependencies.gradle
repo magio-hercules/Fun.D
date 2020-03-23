@@ -2,6 +2,7 @@ ext {
     supportLibrary = '28.0.0'
     constraintLayout = '2.0.0-beta4'
     architectureComponent = '2.2.0'
+    room = '2.2.5'
     rxJava2 = '2.2.14'
     rxAndroid = '2.1.1'
     rxLifecycle2 = '3.0.0'
@@ -56,9 +57,9 @@ ext {
             firebaseAnalytics     : "com.google.firebase:firebase-analytics:$firebaseAnalytics",
             firebaseAuth          : "com.google.firebase:firebase-auth:$firebaseAuth",
             logger                : "com.orhanobut:logger:$logger",
-            roomRx                : "androidx.room:room-rxjava2:$architectureComponent",
-            roomRuntime           : "androidx.room:room-runtime:$architectureComponent",
-            roomCompiler          : "androidx.room:room-compiler:$architectureComponent",
+            roomRx                : "androidx.room:room-rxjava2:$room",
+            roomRuntime           : "androidx.room:room-runtime:$room",
+            roomCompiler          : "androidx.room:room-compiler:$room",
             navigationFragment    : "androidx.navigation:navigation-fragment:$navigation",
             navigationUi          : "androidx.navigation:navigation-ui:$navigation",
             circleView            : "de.hdodenhof:circleimageview:$circleView",
