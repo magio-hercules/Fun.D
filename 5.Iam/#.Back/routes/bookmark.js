@@ -4,12 +4,14 @@ const db = require(`../config/db_connections`)();
 const DB_TABLE_BOOKMARKCHANNEL = `bookmark_channel`;
 const DB_TABLE_BOOKMARKUSER = `bookmark_user`;
 
-function getBookMarkChannel() {
-  console.log(`call getBookMarkChannel`);
-  let queryString = `SELECT * FROM ${DB_TABLE_BOOKMARKCHANNEL}`;
+/* -------------- ::START:: API Function Zone -------------- */
+
+function postBookMarkChannelInfo(param) {
+  console.log(`call postBookMarkChannelInfo`);
+  let queryString = `SELECT * FROM ${DB_TABLE_BOOKMARKCHANNEL} WHERE id = ?`;
 
   return new Promise(function(resolve, reject) {
-    db.query(queryString, [], function(err, result) {
+    db.query(queryString, param, function(err, result) {
       if (err) {
         reject(err);
       }
@@ -18,12 +20,12 @@ function getBookMarkChannel() {
   });
 }
 
-function getBookMarkUser() {
-  console.log(`call getBookMarkUser`);
-  let queryString = `SELECT * FROM ${DB_TABLE_BOOKMARKUSER}`;
+function channelInsert(param) {
+  console.log(`call channelInsert`);
+  let queryString = `INSERT INTO ${DB_TABLE_BOOKMARKCHANNEL} SET ? `;
 
   return new Promise(function(resolve, reject) {
-    db.query(queryString, [], function(err, result) {
+    db.query(queryString, param, function(err, result) {
       if (err) {
         reject(err);
       }
@@ -32,29 +34,160 @@ function getBookMarkUser() {
   });
 }
 
-/* GET users listing. */
-router.get("/channel", function(req, res, next) {
+function channelUpdate(params) {
+  console.log(`call channelUpdate`);
+
+  let queryString = `UPDATE ${DB_TABLE_BOOKMARKCHANNEL} SET ? WHERE id = ?`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, params, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function postBookMarkUserInfo(param) {
+  console.log(`call postBookMarkUserInfo`);
+  let queryString = `SELECT * FROM ${DB_TABLE_BOOKMARKUSER} WHERE id = ?`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, param, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function userInsert(param) {
+  console.log(`call userInsert`);
+  let queryString = `INSERT INTO ${DB_TABLE_BOOKMARKUSER} SET ? `;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, param, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function userUpdate(params) {
+  console.log(`call userUpdate`);
+
+  let queryString = `UPDATE ${DB_TABLE_BOOKMARKUSER} SET ? WHERE id = ?`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, params, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+/* -------------- ::START:: Router Zone -------------- */
+
+router.post("/channel", function(req, res, next) {
   console.log(`API = /channel`);
 
-  getBookMarkChannel()
+  postBookMarkChannelInfo(req.body.id)
     .then(result => {
       res.json(result);
     })
     .catch(function(err) {
-      console.log(`[getBookMarkChannel] error : ${err}`);
+      console.log(`[postBookMarkChannelInfo] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.get("/user", function(req, res, next) {
-  console.log(`API = /user`);
+router.post(`/channelInsert`, function(req, res, next) {
+  console.log(`API = /channelInsert`);
 
-  getBookMarkUser()
+  channelInsert(req.body)
     .then(result => {
       res.json(result);
     })
     .catch(function(err) {
-      console.log(`[getBookMarkUser] error : ${err}`);
+      console.log(`[channelInsert] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/channelUpdate`, function(req, res, next) {
+  console.log(`API = /channelUpdate`);
+
+  // 에러로 보내야됨
+  if (req.body.id == null) {
+    return res.json({ msg: `id is NULL` });
+  }
+
+  let params = [];
+  params.push(req.body);
+  params.push(req.body.id);
+
+  channelUpdate(params)
+    .then(result => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[channelUpdate] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post("/user", function(req, res, next) {
+  console.log(`API = /user`);
+
+  postBookMarkUserInfo(req.body.id)
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[postBookMarkUserInfo] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/userInsert`, function(req, res, next) {
+  console.log(`API = /userInsert`);
+
+  userInsert(req.body)
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[userInsert] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/userUpdate`, function(req, res, next) {
+  console.log(`API = /userUpdate`);
+
+  // 에러로 보내야됨
+  if (req.body.id == null) {
+    return res.json({ msg: `id is NULL` });
+  }
+
+  let params = [];
+  params.push(req.body);
+  params.push(req.body.id);
+
+  userUpdate(params)
+    .then(result => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[userUpdate] error : ${err}`);
       res.end(`NOK`);
     });
 });
