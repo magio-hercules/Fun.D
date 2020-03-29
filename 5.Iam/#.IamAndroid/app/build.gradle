@@ -116,6 +116,9 @@ dependencies {
     annotationProcessor dependencies.roomRuntime
     implementation dependencies.navigationFragment
     implementation dependencies.navigationUi
+    implementation dependencies.glide
+    annotationProcessor dependencies.glideCompiler
+
 
 }
 apply plugin: 'com.google.gms.google-services'

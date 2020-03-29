@@ -4,6 +4,7 @@ package com.fund.iam.data;
 import com.fund.iam.data.local.prefs.PreferencesHelper;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
+import com.fund.iam.data.model.request.LoginBody;
 import com.fund.iam.data.model.request.PushBody;
 import com.fund.iam.data.remote.ApiHelper;
 
@@ -43,6 +44,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Maybe<Response<List<Portfolio>>> postPortfolios(int userId) {
         return mAwsApiHelper.postPortfolios(userId);
+    }
+
+    @Override
+    public Maybe<Response<Void>> postLogin(LoginBody loginBody) {
+        return mAwsApiHelper.postLogin(loginBody);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

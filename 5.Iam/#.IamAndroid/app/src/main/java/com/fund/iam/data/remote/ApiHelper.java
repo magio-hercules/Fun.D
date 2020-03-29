@@ -2,6 +2,7 @@ package com.fund.iam.data.remote;
 
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
+import com.fund.iam.data.model.request.LoginBody;
 import com.fund.iam.data.model.request.PushBody;
 
 import java.util.List;
@@ -24,6 +25,10 @@ public interface ApiHelper {
     @GET(ApiDefine.Body.API_PORTFOLIOS)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Maybe<Response<List<Portfolio>>> postPortfolios(@Field("user_id") int userId);
+
+    @POST(ApiDefine.Body.API_LOGIN)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<Void>> postLogin(@Body LoginBody loginBody);
 
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)

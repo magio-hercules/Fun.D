@@ -7,8 +7,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class LetterBox {
 
-    private String id;
-    private String picture;
+    private String name;
+    private String imageUrl;
     private String job;
     private String email;
 

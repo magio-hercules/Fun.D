@@ -7,6 +7,7 @@ import android.view.View;
 import com.fund.iam.BuildConfig;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.model.request.LoginBody;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
@@ -101,7 +102,13 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         //Todo : AWS API 연동;
-                        getNavigator().startMainActivity();
+                        getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(acct.getEmail(), acct.getDisplayName(), acct.getIdToken(), acct.getPhotoUrl().toString()))
+                                .observeOn(getSchedulerProvider().ui())
+                                .subscribeOn(getSchedulerProvider().io())
+                                .subscribe(testVoid -> {
+                                    Logger.d("result " + testVoid.isSuccessful());
+                                    getNavigator().startMainActivity();
+                                }, onError -> getNavigator().handleError(onError)));
                     } else {
                         getNavigator().handleError(new Throwable("firebaseAuthWithGoogle error"));
                     }
@@ -140,4 +147,6 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
         Logger.d("onSessionOpenFailed " + exception);
         getNavigator().handleError(exception);
     }
+
+
 }

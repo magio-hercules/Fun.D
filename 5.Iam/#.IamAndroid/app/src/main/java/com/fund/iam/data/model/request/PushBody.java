@@ -2,6 +2,7 @@ package com.fund.iam.data.model.request;
 
 import com.fund.iam.data.model.Letter;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

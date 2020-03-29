@@ -26,6 +26,7 @@ import com.orhanobut.logger.Logger;
 import javax.inject.Inject;
 
 import static com.fund.iam.core.AppConstants.RC_GOOGLE_SIGN_IN;
+import static com.fund.iam.core.AppConstants.RC_KAKAO_SIGN_IN;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator {
 
@@ -60,25 +61,35 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     private void initViews() {
-        getViewDataBinding().btnGoogle.setOnClickListener(view -> startActivityForResult(getViewModel().getMGoogleSignInClient().getSignInIntent(), RC_GOOGLE_SIGN_IN));
+        getViewDataBinding().btnGoogle.setOnClickListener(view -> {
+            Logger.d("fdfdfd");
+
+        });
+        getViewDataBinding().btnGoogleCustom.setOnClickListener(view -> {
+            Logger.d("dfdfdf");
+            startActivityForResult(getViewModel().getMGoogleSignInClient().getSignInIntent(), RC_GOOGLE_SIGN_IN);
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Logger.d("LoginActivity onActivityResult " + requestCode + ", " + resultCode);
-        //kakao
-        //Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case RC_KAKAO_SIGN_IN:
+                Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
+                break;
 
-        if (requestCode == RC_GOOGLE_SIGN_IN) {
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-                Logger.d("LoginActivity account " + account);
-                getViewModel().firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                handleError(e);
-            }
+            case RC_GOOGLE_SIGN_IN:
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+                try {
+                    GoogleSignInAccount account = task.getResult(ApiException.class);
+                    Logger.d("LoginActivity account " + account);
+                    getViewModel().firebaseAuthWithGoogle(account);
+                } catch (ApiException e) {
+                    handleError(e);
+                }
+                break;
         }
 
     }

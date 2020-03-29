@@ -15,6 +15,7 @@ public class ApiDefine {
 
         String API_USERS = "users";                         // 메시지 보내기
         String API_PORTFOLIOS = "users/portfolio";          // 메시지 보내기
+        String API_LOGIN = "users/userInsert";              // 유저 로그
     }
 
 }

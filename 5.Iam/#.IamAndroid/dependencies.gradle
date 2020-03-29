@@ -24,6 +24,7 @@ ext {
     kakaoAuth = '1.27.0'
     firebaseUiAuth = '6.2.0'
     facebookAuth = '6.1.0'
+    glide = '4.11.0'
 
     dependencies = [
             appCompat             : "com.android.support:appcompat-v7:$supportLibrary",
@@ -66,7 +67,10 @@ ext {
             googleAuth            : "com.google.android.gms:play-services-auth:$googleAuth",
             kakaoAuth             : "com.kakao.sdk:usermgmt:$kakaoAuth",
             facebookAuth          : "com.facebook.android:facebook-android-sdk:$facebookAuth",
-            firebaseUiAuth        : "com.firebaseui:firebase-ui-auth:$firebaseUiAuth"
+            firebaseUiAuth        : "com.firebaseui:firebase-ui-auth:$firebaseUiAuth",
+            glide                 : "com.github.bumptech.glide:glide:$glide",
+            glideCompiler         : "com.github.bumptech.glide:compiler:$glide"
+
 
     ]
 }

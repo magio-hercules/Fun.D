@@ -4,6 +4,7 @@ package com.fund.iam.ui.letter;
 import androidx.databinding.ObservableField;
 
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.bus.LetterBoxBus;
 import com.fund.iam.data.bus.LetterBus;
 import com.fund.iam.data.enums.LetterType;
 import com.fund.iam.data.model.Letter;
@@ -11,9 +12,11 @@ import com.fund.iam.data.model.request.PushBody;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
+import com.orhanobut.logger.Logger;
 
 public class LetterViewModel extends BaseViewModel<LetterNavigator> {
 
+    public ObservableField<String> title = new ObservableField<>();
     public ObservableField<String> input = new ObservableField<>();
     private PushBody pushBody = new PushBody();
     private Letter localLetter = new Letter();
@@ -25,6 +28,13 @@ public class LetterViewModel extends BaseViewModel<LetterNavigator> {
     }
 
     private void subscribeEvent() {
+        getCompositeDisposable().add(LetterBoxBus.getInstance().getLetterBox().subscribe(
+                letterBox -> {
+                    Logger.d(letterBox);
+                    title.set(letterBox.getName());
+                }
+        ));
+
         getCompositeDisposable().add(LetterBus.getInstance().getLetter()
                 .observeOn(getSchedulerProvider().ui())
                 .subscribe(letter -> getNavigator().onLetterAdd(letter)));

@@ -1,5 +1,6 @@
 package com.fund.iam.ui.main.letterbox;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -28,6 +29,7 @@ import static com.fund.iam.ui.base.BaseViewHolder.VIEW_TYPE_NORMAL;
 public class LetterBoxAdapter extends RecyclerView.Adapter<BaseViewHolder> {
 
     private List<LetterBox> letterBoxes;
+    private Context context;
 
     public LetterBoxAdapter(List<LetterBox> letterBoxes) {
         this.letterBoxes = letterBoxes;
@@ -51,6 +53,7 @@ public class LetterBoxAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     @Override
     public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Logger.d("onCreateViewHolder viewType " + viewType);
+        context = parent.getContext();
         switch (viewType) {
             case VIEW_TYPE_NORMAL:
                 ItemLetterboxBinding itemNoticeBinding = ItemLetterboxBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
@@ -102,7 +105,7 @@ public class LetterBoxAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             final LetterBox letterBox = letterBoxes.get(position);
-            ItemLetterBoxViewModel letterBoxViewModel = new ItemLetterBoxViewModel(letterBox);
+            ItemLetterBoxViewModel letterBoxViewModel = new ItemLetterBoxViewModel(context, letterBox);
             switch (getItemViewType()) {
                 case VIEW_TYPE_NORMAL:
                     letterLocalBinding.setViewModel(letterBoxViewModel);
