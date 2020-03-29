@@ -8,7 +8,7 @@ const DB_TABLE_LETTERBOXINFO = `letterbox_info`;
 
 function postLetterBoxInfo(param) {
   console.log(`call postLetterBoxInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXINFO} WHERE id = ?`;
+  let queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXINFO} WHERE user_id = ?`;
 
   return new Promise(function(resolve, reject) {
     db.query(queryString, param, function(err, result) {
@@ -51,8 +51,15 @@ function letterboxUpdate(params) {
 
 function postLetterBoxMessageInfo(param) {
   console.log(`call postLetterBoxMessageInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXMESSAGE} WHERE id = ?`;
+  console.log(typeof param.friend_id);
+  console.log(param[1]);
 
+  let queryString;
+  if (param[1] !== undefined) {
+    queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXMESSAGE} WHERE user_id = ? AND friend_id = ?`;
+  } else {
+    queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXMESSAGE} WHERE user_id = ?`;
+  }
   return new Promise(function(resolve, reject) {
     db.query(queryString, param, function(err, result) {
       if (err) {
@@ -146,7 +153,16 @@ router.post(`/letterboxUpdate`, function(req, res, next) {
 router.post("/message", function(req, res, next) {
   console.log(`API = /message`);
 
-  postLetterBoxMessageInfo(req.body.id)
+  console.log(typeof req.body.friend_id);
+  let params = [];
+
+  params.push(req.body.user_id);
+
+  if (req.body.friend_id !== undefined) {
+    params.push(req.body.friend_id);
+  }
+
+  postLetterBoxMessageInfo(params)
     .then(result => {
       res.json(result);
     })

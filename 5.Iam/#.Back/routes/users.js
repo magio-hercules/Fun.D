@@ -51,7 +51,7 @@ function userUpdate(params) {
 
 function postPortfolioInfo(param) {
   console.log(`call postPortfolioInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_USERPORTFOLIO} WHERE id = ?`;
+  let queryString = `SELECT * FROM ${DB_TABLE_USERPORTFOLIO} WHERE user_id = ?`;
 
   return new Promise(function(resolve, reject) {
     db.query(queryString, param, function(err, result) {
@@ -65,7 +65,7 @@ function postPortfolioInfo(param) {
 
 function portfolioInsert(param) {
   console.log(`call portfolioInsert`);
-  let queryString = `INSERT INTO ${DB_TABLE_USERINFO} SET ? `;
+  let queryString = `INSERT INTO ${DB_TABLE_USERPORTFOLIO} SET ? `;
 
   return new Promise(function(resolve, reject) {
     db.query(queryString, param, function(err, result) {
