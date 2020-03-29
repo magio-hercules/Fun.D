@@ -11,10 +11,10 @@ public class ApiDefine {
 
     public interface Body {
 
-        String API_FCM_SEND = "fcm/send";       // 메시지 보내기
+        String API_FCM_SEND = "fcm/send";                   // 메시지 보내기
 
-        String API_USERS = "users";       // 메시지 보내기
-        String API_PORTFOLIOS = "users/portfolio";       // 메시지 보내기
+        String API_USERS = "users";                         // 메시지 보내기
+        String API_PORTFOLIOS = "users/portfolio";          // 메시지 보내기
     }
 
 }

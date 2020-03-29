@@ -1,4 +1,4 @@
-package com.fund.iam.ui.main.setting;
+package com.fund.iam.ui.main.more.setting;
 
 import com.fund.iam.ui.base.BaseNavigator;
 

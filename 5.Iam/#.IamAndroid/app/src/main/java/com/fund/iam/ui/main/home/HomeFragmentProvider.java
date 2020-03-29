@@ -7,5 +7,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class HomeFragmentProvider {
 
     @ContributesAndroidInjector
-    abstract HomeFragment provideSettingFragmentFactory();
+    abstract HomeFragment provideHomeFragmentFactory();
 }

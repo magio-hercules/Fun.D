@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.fund.iam.ui.main.more.setting.SettingViewModel" />
+            type="com.fund.iam.ui.main.more.notice.NoticeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -36,10 +35,12 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/title_setting"
+                android:text="@string/title_notice"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+
         </androidx.appcompat.widget.Toolbar>
 
 
@@ -50,44 +51,21 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent=".165" />
 
-        <include
-            android:id="@+id/item_info_update"
-            layout="@layout/item_setting"
+        <ExpandableListView
+            android:id="@+id/notices"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/item_contact_us"
-            app:layout_constraintTop_toBottomOf="@id/guide_header"
-            bind:status="@{viewModel.versionState}"
-            bind:statusColor="@{viewModel.versionStateColor}"
-            bind:subTitle="@{viewModel.currentVersion}"
-            bind:title="@{@string/title_update_item}" />
+            android:divider="@color/purpleLight"
+            android:dividerHeight="1dp"
+            android:groupIndicator="@null"
+            app:layout_constraintTop_toBottomOf="@id/guide_header" />
 
-        <include
-            android:id="@+id/item_contact_us"
-            layout="@layout/item_setting"
+        <View
+            android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/item_privacy"
-            app:layout_constraintTop_toBottomOf="@id/item_info_update"
-            bind:title="@{@string/title_contact_us}" />
-
-        <include
-            android:id="@+id/item_privacy"
-            layout="@layout/item_setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/item_policy"
-            app:layout_constraintTop_toBottomOf="@id/item_contact_us"
-            bind:title="@{@string/title_privacy}" />
-
-        <include
-            android:id="@+id/item_policy"
-            layout="@layout/item_setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/item_privacy"
-            bind:title="@{@string/title_policy}" />
-
+            android:layout_height="1dp"
+            android:background="@color/purpleLight"
+            app:layout_constraintBottom_toBottomOf="@id/notices" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

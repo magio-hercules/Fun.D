@@ -7,8 +7,10 @@ import com.fund.iam.ui.main.MainActivity;
 import com.fund.iam.ui.main.bookmark.BookmarkFragmentProvider;
 import com.fund.iam.ui.main.home.HomeFragmentProvider;
 import com.fund.iam.ui.main.letterbox.LetterBoxFragmentProvider;
+import com.fund.iam.ui.main.more.notice.NoticeFragmentProvider;
+import com.fund.iam.ui.main.more.setting.SettingFragmentProvider;
 import com.fund.iam.ui.main.search.SearchFragmentProvider;
-import com.fund.iam.ui.main.setting.SettingFragmentProvider;
+import com.fund.iam.ui.main.more.MoreFragmentProvider;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -25,6 +27,8 @@ public abstract class ActivityBuilder {
             HomeFragmentProvider.class,
             BookmarkFragmentProvider.class,
             SearchFragmentProvider.class,
+            MoreFragmentProvider.class,
+            NoticeFragmentProvider.class,
             SettingFragmentProvider.class,
             LetterBoxFragmentProvider.class
     })

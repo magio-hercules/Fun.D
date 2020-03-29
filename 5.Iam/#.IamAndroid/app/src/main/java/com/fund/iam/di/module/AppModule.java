@@ -1,29 +1,24 @@
 package com.fund.iam.di.module;
 
 import android.app.Application;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraManager;
-import android.media.AudioManager;
 
 import com.fund.iam.core.AppConstants;
-import com.fund.iam.core.IamApplication;
 import com.fund.iam.data.AppDataManager;
 import com.fund.iam.data.DataManager;
 
 import com.fund.iam.data.local.prefs.AppPreferencesHelper;
 import com.fund.iam.data.local.prefs.PreferencesHelper;
-import com.fund.iam.data.model.Letter;
 import com.fund.iam.di.provider.AppResourceProvider;
 import com.fund.iam.di.provider.AppSchedulerProvider;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
-import com.fund.iam.di.qualifier.DatabaseInfo;
 import com.fund.iam.di.qualifier.PreferenceInfo;
 import com.fund.iam.ui.letter.LetterAdapter;
 import com.fund.iam.ui.main.letterbox.LetterBoxAdapter;
+import com.fund.iam.ui.main.more.MoreAdapter;
+import com.fund.iam.ui.main.more.notice.NoticeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -36,6 +31,7 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
+
     @Provides
     @Singleton
     Context provideContext(Application application) {
@@ -102,6 +98,16 @@ public class AppModule {
     @Provides
     LetterAdapter provideLetterAdapter() {
         return new LetterAdapter(new ArrayList<>());
+    }
+
+    @Provides
+    MoreAdapter provideMoreAdapter() {
+        return new MoreAdapter(new ArrayList<>());
+    }
+
+    @Provides
+    NoticeAdapter provideNoticeAdapter() {
+        return new NoticeAdapter(new ArrayList<>());
     }
 
 }

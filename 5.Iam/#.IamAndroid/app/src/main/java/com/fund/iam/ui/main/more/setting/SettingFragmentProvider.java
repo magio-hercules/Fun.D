@@ -1,4 +1,4 @@
-package com.fund.iam.ui.main.setting;
+package com.fund.iam.ui.main.more.setting;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;

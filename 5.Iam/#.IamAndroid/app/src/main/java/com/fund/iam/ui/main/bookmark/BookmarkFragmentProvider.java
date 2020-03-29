@@ -7,5 +7,5 @@ import dagger.android.ContributesAndroidInjector;
 public abstract class BookmarkFragmentProvider {
 
     @ContributesAndroidInjector
-    abstract BookmarkFragment provideSettingFragmentFactory();
+    abstract BookmarkFragment provideBookmarkFragmentFactory();
 }

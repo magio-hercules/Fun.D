@@ -36,13 +36,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Maybe<Response<List<User>>> getUsers() {
-        return mAwsApiHelper.getUsers();
+    public Maybe<Response<List<User>>> postUsers(int userId) {
+        return mAwsApiHelper.postUsers(userId);
     }
 
     @Override
-    public Maybe<Response<List<Portfolio>>> getPortfolios() {
-        return mAwsApiHelper.getPortfolios();
+    public Maybe<Response<List<Portfolio>>> postPortfolios(int userId) {
+        return mAwsApiHelper.postPortfolios(userId);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

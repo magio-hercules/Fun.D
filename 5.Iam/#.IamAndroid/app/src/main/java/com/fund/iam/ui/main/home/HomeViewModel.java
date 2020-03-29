@@ -22,13 +22,13 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
 
     public void testUsersApi() {
-        getCompositeDisposable().add(getDataManager().getUsers().subscribe(result -> {
+        getCompositeDisposable().add(getDataManager().postUsers(1).subscribe(result -> {
             Logger.d(result.body());
         }));
     }
 
     public void testPortfolioApi() {
-        getCompositeDisposable().add(getDataManager().getPortfolios().subscribe(result -> {
+        getCompositeDisposable().add(getDataManager().postPortfolios(1).subscribe(result -> {
             Logger.d(result.body());
         }));
     }

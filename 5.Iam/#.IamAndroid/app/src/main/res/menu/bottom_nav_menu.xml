@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_nav_search"
         tools:ignore="MenuTitle" />
     <item
-        android:id="@+id/navigation_setting"
+        android:id="@+id/navigation_more"
         android:icon="@drawable/ic_nav_setting"
         tools:ignore="MenuTitle" />
 </menu>

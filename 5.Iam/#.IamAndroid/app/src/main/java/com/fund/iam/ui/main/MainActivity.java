@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -24,6 +25,7 @@ import com.fund.iam.databinding.ActivityMainBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseActivity;
 import com.fund.iam.ui.letter.LetterActivity;
+import com.fund.iam.ui.main.more.notice.NoticeFragment;
 import com.orhanobut.logger.Logger;
 
 import javax.inject.Inject;
@@ -74,12 +76,21 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         initViews();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void initViews() {
-        getViewDataBinding().toolbar.getNavigationIcon().mutate().setColorFilter(ContextCompat.getColor(this, R.color.black), PorterDuff.Mode.SRC_IN);
         mNavController = Navigation.findNavController(this, R.id.fragment_container);
-        NavigationUI.setupWithNavController(getViewDataBinding().toolbar, mNavController);
+//        NavigationUI.setupWithNavController(getViewDataBinding().toolbar, mNavController);
         NavigationUI.setupWithNavController(getViewDataBinding().navigationBottom, mNavController);
-        mNavController.addOnDestinationChangedListener(this);
+//        mNavController.addOnDestinationChangedListener(this);
     }
 
     public void actionNavigate(View view) {
@@ -97,35 +108,37 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     }
 
     @Override
-    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
-        switch (destination.getId()) {
-            case R.id.navigation_home:
-                Logger.d("onDestinationChanged home");
-                getViewModel().toolbarVisible.set(false);
-                break;
-
-            case R.id.navigation_bookmark:
-                Logger.d("onDestinationChanged bookmark");
-                getViewModel().toolbarVisible.set(true);
-                break;
-
-            case R.id.navigation_search:
-                Logger.d("onDestinationChanged search");
-                getViewModel().toolbarVisible.set(true);
-                break;
-
-            case R.id.navigation_setting:
-                Logger.d("onDestinationChanged setting");
-                getViewModel().toolbarVisible.set(true);
-                break;
-
-            case R.id.navigation_letterbox:
-                Logger.d("onDestinationChanged letterbox");
-                getViewModel().toolbarVisible.set(true);
-                break;
-
-        }
+    public void actionNavigate(@IdRes int resourceId) {
+        mNavController.navigate(resourceId);
     }
+
+    @Override
+    public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+//        switch (destination.getId()) {
+//            case R.id.navigation_home:
+//            case R.id.navigation_more:
+//                getViewModel().toolbarVisible.set(false);
+//                break;
+//
+//            case R.id.navigation_bookmark:
+//            case R.id.navigation_search:
+//            case R.id.navigation_letterbox:
+//            case R.id.navigation_notice:
+//            case R.id.navigation_setting:
+//                getViewModel().toolbarVisible.set(true);
+//                setAppBarTitle(destination.getId());
+//                break;
+//
+//        }
+    }
+
+//    private void setAppBarTitle(@IdRes int destinationId) {
+//        switch (destinationId) {
+//            case R.id.navigation_notice:
+//                getViewDataBinding().toolbar.setTitle(getString(R.string.title_notice));
+//                break;
+//        }
+//    }
 
     @Override
     public void showToast(String message) {

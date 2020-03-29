@@ -11,8 +11,16 @@
     <string name="title_letterbox">쪽지함</string>
     <string name="title_users">가입한 유저들</string>
     <string name="title_profile_update">프로필 수정</string>
-    <string name="title_setting">환경설정</string>
+    <string name="title_more">더보기</string>
     <string name="title_notice">공지사항</string>
+    <string name="title_setting">환경설정</string>
     <string name="title_update">업데이트 정보</string>
+    <string name="title_update_item">업데이트 변경사항</string>
+    <string name="title_contact_us">Contact Us</string>
+    <string name="title_privacy">개인정보처리방침</string>
+    <string name="title_policy">이용약관 및 정책</string>
+    <string name="version_state_normal">최신 버전입니다.</string>
+    <string name="version_state_old">버전업하소</string>
+    <string name="version_current">최근 업데이트 버전 %1$s</string>
 
 </resources>

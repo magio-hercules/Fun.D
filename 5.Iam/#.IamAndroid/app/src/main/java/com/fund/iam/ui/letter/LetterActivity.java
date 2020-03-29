@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fund.iam.BR;
 import com.fund.iam.R;
+import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.Letter;
 import com.fund.iam.databinding.ActivityLetterBinding;
 import com.fund.iam.databinding.ActivityLoginBinding;

@@ -9,6 +9,7 @@ import java.util.List;
 import io.reactivex.Maybe;
 import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -16,13 +17,13 @@ import retrofit2.http.POST;
 public interface ApiHelper {
 
     // Aws
-    @GET(ApiDefine.Body.API_USERS)
+    @POST(ApiDefine.Body.API_USERS)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Maybe<Response<List<User>>> getUsers();
+    Maybe<Response<List<User>>> postUsers(@Field("user_id") int userId);
 
     @GET(ApiDefine.Body.API_PORTFOLIOS)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Maybe<Response<List<Portfolio>>> getPortfolios();
+    Maybe<Response<List<Portfolio>>> postPortfolios(@Field("user_id") int userId);
 
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)

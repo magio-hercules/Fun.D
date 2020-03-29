@@ -35,7 +35,6 @@ public class IamApplication extends Application implements HasAndroidInjector {
     public void onCreate() {
         super.onCreate();
 
-
         DaggerAppComponent.builder()
                 .application(this)
                 .build()

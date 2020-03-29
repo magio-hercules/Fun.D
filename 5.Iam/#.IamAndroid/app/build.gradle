@@ -9,7 +9,7 @@ android {
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
         versionCode 1
-        versionName "1.0"
+        versionName "v1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -116,7 +116,6 @@ dependencies {
     annotationProcessor dependencies.roomRuntime
     implementation dependencies.navigationFragment
     implementation dependencies.navigationUi
-
 
 }
 apply plugin: 'com.google.gms.google-services'

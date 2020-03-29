@@ -25,14 +25,77 @@
         tools:layout="@layout/fragment_search" />
 
     <fragment
-        android:id="@+id/navigation_setting"
-        android:name="com.fund.iam.ui.main.setting.SettingFragment"
-        android:label="@string/title_setting"
-        tools:layout="@layout/fragment_setting" />
-
-    <fragment
         android:id="@+id/navigation_letterbox"
         android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
         android:label="@string/title_letterbox"
         tools:layout="@layout/fragment_letterbox" />
+
+    <fragment
+        android:id="@+id/navigation_more"
+        android:name="com.fund.iam.ui.main.more.MoreFragment"
+        android:label="@string/title_more"
+        tools:layout="@layout/fragment_more" >
+
+        <action
+            android:id="@+id/action_setting"
+            app:destination="@id/navigation_setting" />
+
+        <action
+            android:id="@+id/action_notice"
+            app:destination="@id/navigation_notice" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.fund.iam.ui.main.more.setting.SettingFragment"
+        android:label="@string/title_setting"
+        tools:layout="@layout/fragment_setting" >
+
+        <action
+            android:id="@+id/action_info_update"
+            app:destination="@id/navigation_info_update" />
+
+        <action
+            android:id="@+id/action_contact_us"
+            app:destination="@id/navigation_contact_us" />
+
+        <action
+            android:id="@+id/action_privacy"
+            app:destination="@id/navigation_privacy" />
+
+        <action
+            android:id="@+id/action_policy"
+            app:destination="@id/navigation_policy" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_notice"
+        android:name="com.fund.iam.ui.main.more.notice.NoticeFragment"
+        android:label="@string/title_notice"
+        tools:layout="@layout/fragment_notice" />
+
+    <fragment
+        android:id="@+id/navigation_info_update"
+        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
+        android:label="@string/title_notice"
+        tools:layout="@layout/fragment_info_update" />
+
+    <fragment
+        android:id="@+id/navigation_contact_us"
+        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
+        android:label="@string/title_notice"
+        tools:layout="@layout/fragment_contact_us" />
+
+    <fragment
+        android:id="@+id/navigation_privacy"
+        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
+        android:label="@string/title_notice"
+        tools:layout="@layout/fragment_privacy" />
+
+    <fragment
+        android:id="@+id/navigation_policy"
+        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
+        android:label="@string/title_notice"
+        tools:layout="@layout/fragment_policy" />
 </navigation>

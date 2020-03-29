@@ -14,6 +14,7 @@ public class ItemLetterBoxViewModel {
     public ItemLetterBoxViewModel(LetterBox letterBox) {
         Logger.d("ItemLetterBoxViewModel " + letterBox);
         job.set("디자이너");
+        job.set(letterBox.getJob());
         name.set("이승철");
         email.set("slee8789@naver.com");
 
