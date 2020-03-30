@@ -1,6 +1,7 @@
 package com.fund.iam.ui.main.home;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -27,11 +28,13 @@ public class SpinnerAdapter extends ArrayAdapter<String> {
 
         if (position == getCount()) {
             Logger.i("position == getCount()");
-
-//            ((TextView)v.findViewById(R.id.spinner_item_text)).setText("");
             ((TextView)v.findViewById(R.id.spinner_item_text)).setText(getItem(getCount()));
-            ((TextView)v.findViewById(R.id.spinner_item_text)).setHint(getItem(getCount()));
+//            ((TextView)v.findViewById(R.id.spinner_item_text)).setHint(getItem(getCount()));
+            ((TextView)v.findViewById(R.id.spinner_item_text)).setTextColor(0xFFC9C9C9);
+        } else {
         }
+
+        ((TextView)v.findViewById(R.id.spinner_item_text)).setPadding(0, 10, 0, 10);
         return v;
     }
 

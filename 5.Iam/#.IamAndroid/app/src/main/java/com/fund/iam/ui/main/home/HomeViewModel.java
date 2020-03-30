@@ -134,11 +134,11 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     }
 
 
-    public void handleLetterBox() {
-        Log.d(TAG, "handleLetterBox");
-
-        getNavigator().startLetterActivity();
-    }
+//    public void handleLetterBox() {
+//        Log.d(TAG, "handleLetterBox");
+//
+//        getNavigator().startLetterActivity();
+//    }
 
 //    public void handleModify() {
 //        Log.d(TAG, "handleModify");

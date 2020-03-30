@@ -66,6 +66,30 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             "기획자",
     };
 
+    String[] spinnerValueJobDetail = {
+            "FrontEnd 개발자",
+            "BackEnd 개발자",
+            "Server 개발자",
+            "UI/UX 디자이너",
+            "웹 디자이너",
+            "기획자",
+    };
+
+    String[] spinnerValueGender = {
+            "남자",
+            "여자",
+    };
+
+    String[] spinnerValueAge = {
+            "10대",
+            "20대",
+            "30대",
+            "40대",
+            "50대",
+            "60대",
+    };
+
+
     //
 
 
@@ -109,7 +133,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initSpinner();
+        initSpinnerList();
     }
 
     @Override
@@ -120,7 +144,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     @Override
     public void startLetterActivity() {
         LetterActivity.start(getActivity());
-        getActivity().finish();
+//        getActivity().finish();
     }
 
     @Override
@@ -138,55 +162,73 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     /////////////////////////////
 
 
-    public void initSpinner() {
+    public void initSpinnerList() {
+//        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.spinner_item);
+////        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+//        adapter.addAll(spinnerValueLocation);
+//        adapter.add("거주지");
+//
+//
+//        getViewDataBinding().profileEditLocation.setAdapter(adapter);
+//        getViewDataBinding().profileEditLocation.setSelection(adapter.getCount());
+//
+//        getViewDataBinding().profileEditLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) { }
+//
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+////                if (getViewDataBinding().profileEditLocation.getSelectedItem() == "거주지") {
+////                    //Do nothing.
+////                    Toast.makeText(getContext(), "이거슨 힌트", Toast.LENGTH_LONG).show();
+////                } else {
+////                    Toast.makeText(getContext(), getViewDataBinding().profileEditLocation.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+////                }
+//            }
+//        });
+
+        initSpinner(getViewDataBinding().profileEditLocation,
+                    spinnerValueLocation,
+                "거주지");
+
+        initSpinner(getViewDataBinding().profileEditJob,
+                spinnerValueJob,
+                "직종");
+
+        initSpinner(getViewDataBinding().profileEditJobDetail,
+                spinnerValueJobDetail,
+                "세부직종");
+
+        initSpinner(getViewDataBinding().profileEditGender,
+                spinnerValueGender,
+                "성별");
+
+        initSpinner(getViewDataBinding().profileEditAge,
+                spinnerValueAge,
+                "나이대");
+    }
+
+    private void initSpinner(Spinner spinner, String[] valueList, String hint) {
         SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.spinner_item);
-//        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        adapter.addAll(spinnerValueLocation);
-        adapter.add("거주지");
+        adapter.addAll(valueList);
+        adapter.add(hint);
 
+        spinner.setAdapter(adapter);
+        spinner.setSelection(adapter.getCount());
 
-        getViewDataBinding().profileEditLocation.setAdapter(adapter);
-        getViewDataBinding().profileEditLocation.setSelection(adapter.getCount());
-
-        getViewDataBinding().profileEditLocation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onNothingSelected(AdapterView<?> parent) { }
 
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // TODO Auto-generated method stub
-
-//                if (getViewDataBinding().profileEditLocation.getSelectedItem() == "거주지") {
+//                if (spinner.getSelectedItem() == "거주지") {
 //                    //Do nothing.
 //                    Toast.makeText(getContext(), "이거슨 힌트", Toast.LENGTH_LONG).show();
 //                } else {
-//                    Toast.makeText(getContext(), getViewDataBinding().profileEditLocation.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), spinner.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
 //                }
-            }
-        });
 
-        // for job
-        SpinnerAdapter adapterJob = new SpinnerAdapter(getContext(), R.layout.spinner_item);
-        adapterJob.clear();
-        adapterJob.addAll(spinnerValueJob);
-        adapterJob.add("직종");
-
-        getViewDataBinding().profileEditJob.setAdapter(adapterJob);
-        getViewDataBinding().profileEditJob.setSelection(adapterJob.getCount());
-
-        getViewDataBinding().profileEditJob.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
-
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                // TODO Auto-generated method stub
-//                if (getViewDataBinding().profileEditLocation.getSelectedItem() == "거주지") {
-//                    //Do nothing.
-//                    Toast.makeText(getContext(), "이거슨 힌트", Toast.LENGTH_LONG).show();
-//                } else {
-//                    Toast.makeText(getContext(), getViewDataBinding().profileEditLocation.getSelectedItem().toString(), Toast.LENGTH_LONG).show();
-//                }
             }
         });
     }

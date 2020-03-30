@@ -109,7 +109,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     @Override
     public void startLetterActivity() {
         LetterActivity.start(getActivity());
-        getActivity().finish();
+//        getActivity().finish();
     }
 
     @Override

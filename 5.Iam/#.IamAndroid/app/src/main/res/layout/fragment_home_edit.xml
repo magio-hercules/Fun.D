@@ -73,7 +73,7 @@
                 app:layout_constraintDimensionRatio="4:3"
                 app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
                 app:layout_constraintTop_toBottomOf="@id/profile_header"
-                app:srcCompat="@drawable/profile_background" />
+                />
 
             <EditText
                 android:id="@+id/profile_edit_nickname"
@@ -86,7 +86,7 @@
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:hint="닉네임"
-                android:textColorHint="@color/gray"
+                android:textColorHint="#c9c9c9"
                 app:layout_constraintLeft_toRightOf="@id/profile_edit_profile"
                 app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
                 app:layout_constraintTop_toBottomOf="@id/profile_header" />
@@ -103,7 +103,7 @@
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:hint="이름"
-                android:textColorHint="@color/gray"
+                android:textColorHint="#c9c9c9"
                 app:layout_constraintBottom_toBottomOf="@id/profile_edit_profile"
                 app:layout_constraintLeft_toRightOf="@id/profile_edit_profile"
                 app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end" />
@@ -112,15 +112,15 @@
                 android:id="@+id/profile_edit_email"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/layout_edittext"
                 android:ems="10"
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:hint="이메일"
-                android:textColorHint="@color/gray"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_profile"
+                android:textColorHint="#c9c9c9"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_profile"
                 />
@@ -129,15 +129,15 @@
                 android:id="@+id/profile_edit_homepage"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/layout_edittext"
                 android:ems="10"
                 android:gravity="center_vertical"
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:hint="홈페이지"
-                android:textColorHint="@color/gray"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_profile"
+                android:textColorHint="#c9c9c9"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_email"
                 />
@@ -146,11 +146,11 @@
                 android:id="@+id/profile_edit_location"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/spinner_background"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="209dp"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_profile"
+                android:popupBackground="#ffffff"
+                android:overlapAnchor="false"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_homepage"
                 />
@@ -159,56 +159,131 @@
                 android:id="@+id/profile_edit_job"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/spinner_background"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="209dp"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_profile"
+                android:popupBackground="#ffffff"
+                android:overlapAnchor="false"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_location"
                 />
 
-<!--            <Spinner-->
-<!--                android:id="@+id/profile_edit_job_detail"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:layout_marginTop="9dp"-->
-<!--                android:background="@drawable/spinner_background"-->
-<!--                tools:layout_editor_absoluteX="16dp"-->
-<!--                tools:layout_editor_absoluteY="209dp"-->
-<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_profile"-->
-<!--                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_job"-->
-<!--                />-->
+            <Spinner
+                android:id="@+id/profile_edit_job_detail"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/spinner_background"
+                android:popupBackground="#ffffff"
+                android:overlapAnchor="false"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_job"
+                />
 
-<!--            <Spinner-->
-<!--                android:id="@+id/profile_edit_gender"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:layout_marginTop="9dp"-->
-<!--                android:background="@drawable/spinner_background"-->
-<!--                tools:layout_editor_absoluteX="16dp"-->
-<!--                tools:layout_editor_absoluteY="209dp"-->
-<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_profile"-->
-<!--                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_job_detail"-->
-<!--                />-->
+            <Spinner
+                android:id="@+id/profile_edit_gender"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/spinner_background"
+                android:popupBackground="#ffffff"
+                android:overlapAnchor="false"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_job_detail"
+                />
 
-<!--            <Spinner-->
-<!--                android:id="@+id/profile_edit_age"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:layout_marginTop="9dp"-->
-<!--                android:background="@drawable/spinner_background"-->
-<!--                tools:layout_editor_absoluteX="16dp"-->
-<!--                tools:layout_editor_absoluteY="209dp"-->
-<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_profile"-->
-<!--                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"-->
-<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_gender"-->
-<!--                />-->
+            <Spinner
+                android:id="@+id/profile_edit_age"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/spinner_background"
+                android:popupBackground="#ffffff"
+                android:overlapAnchor="false"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="209dp"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_gender"
+                />
+
+            <View
+                android:id="@+id/profile_edit_divider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="#4527A0"
+                android:layout_marginTop="20dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/profile_edit_age" />
+
+            <LinearLayout
+                android:id="@+id/portfolio_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                app:layout_constraintStart_toStartOf="@+id/profile_guideline_v_start"
+                app:layout_constraintEnd_toEndOf="@+id/profile_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@+id/profile_edit_divider"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="236dp">
+
+            </LinearLayout>
 
 
+            <Button
+                android:id="@+id/profile_edit_insert_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="이미지+"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:elevation="4dp"
+                android:background="@drawable/layout_profile_insert"
+                android:onClick="@{() -> viewModel.handleInsertImage()}"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
+                app:layout_constraintRight_toLeftOf="@id/profile_edit_insert_text"
+                app:layout_constraintTop_toBottomOf="@id/portfolio_layout" />
 
+            <Button
+                android:id="@+id/profile_edit_insert_text"
+                android:layout_width="154dp"
+                android:layout_height="46dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="텍스트+"
+                android:textSize="18sp"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:elevation="4dp"
+                android:background="@drawable/layout_profile_insert"
+                android:onClick="@{() -> viewModel.handleInsertText()}"
+                app:layout_constraintLeft_toRightOf="@id/profile_edit_insert_image"
+                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@id/portfolio_layout" />
+
+            <Button
+                android:id="@+id/profile_edit_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_marginBottom="12dp"
+                android:text="수정사항 저장하기"
+                android:textSize="24sp"
+                android:textColor="#ffffff"
+                android:textStyle="bold"
+                android:elevation="4dp"
+                android:background="@drawable/layout_profile_save"
+                android:onClick="@{() -> viewModel.handleInsertImage()}"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_insert_image"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
 
             <View
