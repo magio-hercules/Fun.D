@@ -96,8 +96,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
     public void actionNavigate(View view) {
         Logger.d("actionNavigate " + view.getId());
         switch (view.getId()) {
-            case R.id.btnLetterBox:
+            case R.id.profile_image_letter:
                 mNavController.navigate(R.id.navigation_letterbox);
+                break;
+            case R.id.profile_image_modify:
+                mNavController.navigate(R.id.navigation_home_edit);
+                break;
+            case R.id.profile_edit_cancel:
+                mNavController.navigate(R.id.navigation_home);
                 break;
 
             case R.id.btnLetter:

@@ -5,6 +5,7 @@ import com.fund.iam.ui.letter.LetterActivity;
 import com.fund.iam.ui.login.LoginActivity;
 import com.fund.iam.ui.main.MainActivity;
 import com.fund.iam.ui.main.bookmark.BookmarkFragmentProvider;
+import com.fund.iam.ui.main.home.HomeEditFragmentProvider;
 import com.fund.iam.ui.main.home.HomeFragmentProvider;
 import com.fund.iam.ui.main.letterbox.LetterBoxFragmentProvider;
 import com.fund.iam.ui.main.more.notice.NoticeFragmentProvider;
@@ -25,6 +26,7 @@ public abstract class ActivityBuilder {
 
     @ContributesAndroidInjector(modules = {
             HomeFragmentProvider.class,
+            HomeEditFragmentProvider.class,
             BookmarkFragmentProvider.class,
             SearchFragmentProvider.class,
             MoreFragmentProvider.class,

@@ -11,6 +11,7 @@ import io.reactivex.Maybe;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -18,13 +19,15 @@ import retrofit2.http.POST;
 public interface ApiHelper {
 
     // Aws
+    @FormUrlEncoded
     @POST(ApiDefine.Body.API_USERS)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Maybe<Response<List<User>>> postUsers(@Field("user_id") int userId);
+    Maybe<Response<List<User>>> postUsers(@Field("id") int userId);
 
-    @GET(ApiDefine.Body.API_PORTFOLIOS)
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_PORTFOLIOS)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Maybe<Response<List<Portfolio>>> postPortfolios(@Field("user_id") int userId);
+    Maybe<Response<List<Portfolio>>> postPortfolios(@Field("id") int userId);
 
     @POST(ApiDefine.Body.API_LOGIN)
     @Headers({ApiDefine.Header.ACCEPT_JSON})

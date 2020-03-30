@@ -12,6 +12,18 @@
         <action
             android:id="@+id/action_letterbox"
             app:destination="@id/navigation_letterbox" />
+        <action
+            android:id="@+id/action_home_edit"
+            app:destination="@id/navigation_home_edit" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_home_edit"
+        android:name="com.fund.iam.ui.main.home.HomeEditFragment"
+        tools:layout="@layout/fragment_home_edit" >
+        <action
+            android:id="@+id/action_navigation_home_edit_to_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment
