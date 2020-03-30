@@ -3,7 +3,11 @@ package com.fund.iam.ui.login;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
+import com.facebook.AccessToken;
 import com.fund.iam.BuildConfig;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
@@ -15,9 +19,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
@@ -110,9 +117,23 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
                                     getNavigator().startMainActivity();
                                 }, onError -> getNavigator().handleError(onError)));
                     } else {
-                        getNavigator().handleError(new Throwable("firebaseAuthWithGoogle error"));
+                        getNavigator().handleError(new Throwable("firebaseAuthWithGoogle failed."));
                     }
                 });
+    }
+
+    public void firebaseAuthWithFaceBook(AccessToken acct) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(acct.getToken());
+        mFirebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        getNavigator().startMainActivity();
+                    } else {
+                        getNavigator().handleError(new Throwable("firebaseAuthWithFaceBook failed."));
+                    }
+                });
+
+
     }
 
 

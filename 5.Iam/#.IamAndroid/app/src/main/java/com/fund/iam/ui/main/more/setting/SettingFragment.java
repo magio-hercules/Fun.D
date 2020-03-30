@@ -11,19 +11,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fund.iam.BR;
 import com.fund.iam.R;
-import com.fund.iam.databinding.FragmentMoreBinding;
+import com.fund.iam.data.DataManager;
+import com.fund.iam.databinding.FragmentNoticeBinding;
+import com.fund.iam.databinding.FragmentSettingBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
-import com.fund.iam.ui.main.more.MoreAdapter;
-import com.fund.iam.ui.main.more.MoreNavigator;
-import com.fund.iam.ui.main.more.MoreViewModel;
 import com.fund.iam.utils.RecyclerDecoration;
 import com.orhanobut.logger.Logger;
 
 import javax.inject.Inject;
 
+import static androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM;
 
-public class SettingFragment extends BaseFragment<FragmentMoreBinding, MoreViewModel> implements MoreNavigator, View.OnClickListener {
+
+public class SettingFragment extends BaseFragment<FragmentSettingBinding, SettingViewModel> implements SettingNavigator, View.OnClickListener {
 
     public static final String TAG = SettingFragment.class.getSimpleName();
 
@@ -31,7 +32,7 @@ public class SettingFragment extends BaseFragment<FragmentMoreBinding, MoreViewM
     ViewModelProviderFactory viewModelProviderFactory;
 
     @Inject
-    MoreAdapter moreAdapter;
+    DataManager dataManager;
 
     @Override
     public int getBindingVariable() {
@@ -40,12 +41,12 @@ public class SettingFragment extends BaseFragment<FragmentMoreBinding, MoreViewM
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_more;
+        return R.layout.fragment_setting;
     }
 
     @Override
-    public MoreViewModel getViewModel() {
-        return new ViewModelProvider(getViewModelStore(), viewModelProviderFactory).get(MoreViewModel.class);
+    public SettingViewModel getViewModel() {
+        return new ViewModelProvider(getViewModelStore(), viewModelProviderFactory).get(SettingViewModel.class);
     }
 
     @Override
@@ -65,16 +66,18 @@ public class SettingFragment extends BaseFragment<FragmentMoreBinding, MoreViewM
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupActionBar();
         initViews();
     }
 
+    private void setupActionBar() {
+        getBaseActivity().setSupportActionBar(getViewDataBinding().toolbar);
+        getBaseActivity().getSupportActionBar().setDisplayOptions(DISPLAY_SHOW_CUSTOM);
+        getBaseActivity().getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+
     private void initViews() {
-        getViewDataBinding().mores.setLayoutManager(new LinearLayoutManager(getActivity()));
-        getViewDataBinding().mores.addItemDecoration(new RecyclerDecoration(ContextCompat.getDrawable(getBaseActivity(), R.drawable.divider_gray), /*ViewUtils.DpToPixel(getBaseActivity(), 16)*/0, 0));
-        getViewDataBinding().mores.setAdapter(moreAdapter);
-        moreAdapter.clearItems();
-        moreAdapter.addItem(getResources().getString(R.string.title_notice));
-        moreAdapter.addItem(getResources().getString(R.string.title_setting));
+
     }
 
     @Override

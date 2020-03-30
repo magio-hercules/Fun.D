@@ -64,16 +64,6 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/divider_center" />
 
-        <Button
-            android:id="@+id/btn_kakao_custom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_kakao"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider_center" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btnGoogle"
@@ -83,17 +73,6 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:visibility="invisible"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnKakao" />
-
-        <Button
-            android:id="@+id/btn_google_custom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_google"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnKakao" />
@@ -112,17 +91,43 @@
             app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
 
         <Button
-            android:id="@+id/btn_facebook_custom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_kakao_custom"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/btn_facebook"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btnGoogle" />
+            android:background="@drawable/ic_btn_kakao"
+            app:layout_constraintBottom_toTopOf="@id/divider_footer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_facebook_custom"
+            app:layout_constraintTop_toBottomOf="@id/divider_center" />
+
+        <Button
+            android:id="@+id/btn_google_custom"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_btn_google"
+            app:layout_constraintBottom_toTopOf="@id/divider_footer"
+            app:layout_constraintEnd_toStartOf="@id/btn_facebook_custom"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/divider_center" />
+
+        <Button
+            android:id="@+id/btn_facebook_custom"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_btn_facebook"
+            app:layout_constraintBottom_toTopOf="@id/divider_footer"
+            app:layout_constraintEnd_toStartOf="@id/btn_kakao_custom"
+            app:layout_constraintStart_toEndOf="@id/btn_google_custom"
+            app:layout_constraintTop_toBottomOf="@id/divider_center" />
 
         <View
+            android:id="@+id/divider_footer"
             android:layout_width="match_parent"
             android:layout_height="5dp"
             android:layout_marginStart="32dp"

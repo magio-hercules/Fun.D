@@ -9,6 +9,10 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginResult;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.databinding.ActivityLoginBinding;
@@ -25,6 +29,7 @@ import com.orhanobut.logger.Logger;
 
 import javax.inject.Inject;
 
+import static com.fund.iam.core.AppConstants.RC_FACEBOOK_SIGN_IN;
 import static com.fund.iam.core.AppConstants.RC_GOOGLE_SIGN_IN;
 import static com.fund.iam.core.AppConstants.RC_KAKAO_SIGN_IN;
 
@@ -42,6 +47,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     public int getLayoutId() {
         return R.layout.activity_login;
     }
+
+    private CallbackManager mCallbackManager;
 
     @Override
     public LoginViewModel getViewModel() {
@@ -61,14 +68,27 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     private void initViews() {
-        getViewDataBinding().btnGoogle.setOnClickListener(view -> {
-            Logger.d("fdfdfd");
+        getViewDataBinding().btnGoogleCustom.setOnClickListener(view -> startActivityForResult(getViewModel().getMGoogleSignInClient().getSignInIntent(), RC_GOOGLE_SIGN_IN));
+        mCallbackManager = CallbackManager.Factory.create();
+        getViewDataBinding().btnFacebook.setPermissions("email", "public_profile");
+        getViewDataBinding().btnFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Logger.d("facebook:onSuccess:" + loginResult);
+                getViewModel().firebaseAuthWithFaceBook(loginResult.getAccessToken());
+            }
 
+            @Override
+            public void onCancel() {
+                Logger.d("facebook:onCancel");
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                handleError(error);
+            }
         });
-        getViewDataBinding().btnGoogleCustom.setOnClickListener(view -> {
-            Logger.d("dfdfdf");
-            startActivityForResult(getViewModel().getMGoogleSignInClient().getSignInIntent(), RC_GOOGLE_SIGN_IN);
-        });
+        getViewDataBinding().btnFacebookCustom.setOnClickListener(view -> getViewDataBinding().btnFacebook.performClick());
     }
 
     @Override
@@ -76,6 +96,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         super.onActivityResult(requestCode, resultCode, data);
         Logger.d("LoginActivity onActivityResult " + requestCode + ", " + resultCode);
         switch (requestCode) {
+
             case RC_KAKAO_SIGN_IN:
                 Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
                 break;
@@ -89,6 +110,10 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                 } catch (ApiException e) {
                     handleError(e);
                 }
+                break;
+
+            case RC_FACEBOOK_SIGN_IN:
+                mCallbackManager.onActivityResult(requestCode, resultCode, data);
                 break;
         }
 
