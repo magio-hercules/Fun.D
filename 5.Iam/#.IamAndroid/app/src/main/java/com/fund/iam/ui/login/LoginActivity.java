@@ -33,7 +33,7 @@ import static com.fund.iam.core.AppConstants.RC_FACEBOOK_SIGN_IN;
 import static com.fund.iam.core.AppConstants.RC_GOOGLE_SIGN_IN;
 import static com.fund.iam.core.AppConstants.RC_KAKAO_SIGN_IN;
 
-public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator {
+public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator, FacebookCallback<LoginResult> {
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -48,7 +48,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         return R.layout.activity_login;
     }
 
-    private CallbackManager mCallbackManager;
+    private CallbackManager mCallbackManager = CallbackManager.Factory.create();
+    ;
 
     @Override
     public LoginViewModel getViewModel() {
@@ -69,26 +70,10 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
     private void initViews() {
         getViewDataBinding().btnGoogleCustom.setOnClickListener(view -> startActivityForResult(getViewModel().getMGoogleSignInClient().getSignInIntent(), RC_GOOGLE_SIGN_IN));
-        mCallbackManager = CallbackManager.Factory.create();
         getViewDataBinding().btnFacebook.setPermissions("email", "public_profile");
-        getViewDataBinding().btnFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                Logger.d("facebook:onSuccess:" + loginResult);
-                getViewModel().firebaseAuthWithFaceBook(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                Logger.d("facebook:onCancel");
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                handleError(error);
-            }
-        });
+        getViewDataBinding().btnFacebook.registerCallback(mCallbackManager, this);
         getViewDataBinding().btnFacebookCustom.setOnClickListener(view -> getViewDataBinding().btnFacebook.performClick());
+        getViewDataBinding().btnKakaoCustom.setOnClickListener(view -> getViewDataBinding().btnKakao.performClick());
     }
 
     @Override
@@ -122,6 +107,21 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     @Override
     public void startMainActivity() {
         MainActivity.start(this);
+    }
+
+    @Override
+    public void onSuccess(LoginResult loginResult) {
+        getViewModel().firebaseAuthWithFaceBook(loginResult.getAccessToken());
+    }
+
+    @Override
+    public void onCancel() {
+
+    }
+
+    @Override
+    public void onError(FacebookException error) {
+        handleError(error);
     }
 
     @Override

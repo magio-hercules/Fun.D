@@ -26,4 +26,7 @@ public class User {
     private int age;
 
     private int gender;
+
+    @SerializedName("firebase_token")
+    private String firebaseToken;
 }

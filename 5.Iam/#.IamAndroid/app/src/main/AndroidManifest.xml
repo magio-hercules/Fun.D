@@ -28,11 +28,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.login.LoginActivity"/>
+        <activity android:name=".ui.login.LoginActivity" />
 
-        <activity android:name=".ui.main.MainActivity"/>
+        <activity android:name=".ui.main.MainActivity" />
 
-        <activity android:name=".ui.letter.LetterActivity"/>
+        <activity
+            android:name=".ui.letter.LetterActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"

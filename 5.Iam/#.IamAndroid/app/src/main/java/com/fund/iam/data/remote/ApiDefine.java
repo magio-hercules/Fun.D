@@ -12,10 +12,11 @@ public class ApiDefine {
     public interface Body {
 
         String API_FCM_SEND = "fcm/send";                   // 메시지 보내기
+        String API_KAKAO_VERIFY_TOKEN = "verifyToken";       // 카카오 토큰 인증
 
         String API_USERS = "users";                         // 메시지 보내기
-        String API_PORTFOLIOS = "users/portfolio";          // 메시지 보내기
-        String API_LOGIN = "users/userInsert";              // 유저 로그
+        String API_PORTFOLIOS = "users/portfolio";          // 포트폴리오
+        String API_LOGIN = "users/userInsert";              // 유저 로그인
     }
 
 }

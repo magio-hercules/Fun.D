@@ -22,5 +22,6 @@
     <string name="version_state_normal">최신 버전입니다.</string>
     <string name="version_state_old">버전업하소</string>
     <string name="version_current">최근 업데이트 버전 %1$s</string>
+    <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 
 </resources>

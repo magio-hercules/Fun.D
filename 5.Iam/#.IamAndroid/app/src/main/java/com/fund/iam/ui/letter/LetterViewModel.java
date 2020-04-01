@@ -41,8 +41,8 @@ public class LetterViewModel extends BaseViewModel<LetterNavigator> {
     }
 
     public void onSend() {
-//        pushBody.setTo("ePT67k1HR9mXGvWCyfx1OG:APA91bF3Lj7YMgJSuhlcQQWQ-8W6PxaMfiR2s-vZsRPiiqXQB17_dDWL7Qdo0nFyr5Upri96LBRQRwvP2Hli4ZtB115_bYLUk3p9H3aET2eW2LDUKp92STW1WU5l8UIagJJfzR8CLwlb");       // to J600
-        pushBody.setTo("fADEQ0JXSC2vP0RZMkwE1M:APA91bFNOl_92NN_dT-MpEqzrhRSSXdDh8l7Cz2IbxuEUnjv65Gx93jc1qg6vtEh5lx7doU_Yi_kfwr7_7BcI9M0DwD4INmDqLk_-eoBwxyq8U7Ka35ZjL38F5Xg9meToPf_j9EPhWQm");       // to 갤10
+        pushBody.setTo("dsnuJqHkS_e6YIDezKM0Fa:APA91bHQRzW6cLrxziJUA3JLvoiq255lh6cBuqI4TszhvvOEjqKnkVurmhoqma2R1_c4ni6jSN7YZBdu97K9Tugnd-Bjj-Nf4sXpdKyZaNjtQi_9dnLE7T-gsBAym0lkEbABc5MGoK7z");       // to J5
+//        pushBody.setTo("f-KfKqLhQfi7MVEDbW7sJQ:APA91bGKoRd7t_R-TgEtWbDwYSQuNRdb0btgcHiZBqJ8S3rNmZP7ln1AKWBJa1yAtiVIy5HHcUjGGx7Y_xgrJoEZ9R7o4MPnUnNetdHKpSgozAGpu6oVDFfiTmFIL9aIEfc7NsgrBJ4p");       // to 갤10
         pushBody.setPriority("high");
         localLetter.setMessage(input.get());
         pushBody.setData(localLetter);

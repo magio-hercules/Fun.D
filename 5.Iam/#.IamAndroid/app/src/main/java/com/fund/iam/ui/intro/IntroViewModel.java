@@ -19,9 +19,8 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
 
     private void checkAuth() {
         if (FirebaseAuth.getInstance().getCurrentUser() == null) {
-//            getNavigator().startLoginActivity();
-
-            getNavigator().startMainActivity();
+            getNavigator().startLoginActivity();
+//            getNavigator().startMainActivity();
         } else {
             getNavigator().startMainActivity();
         }

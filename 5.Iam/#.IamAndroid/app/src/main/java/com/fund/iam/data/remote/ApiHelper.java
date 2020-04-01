@@ -33,6 +33,10 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Maybe<Response<Void>> postLogin(@Body LoginBody loginBody);
 
+    @POST(ApiDefine.Body.API_KAKAO_VERIFY_TOKEN)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<User>> postVerifyToken(@Field("token") String token);
+
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)
     @Headers({ApiDefine.Header.CONTENT_TYPE_JSON, ApiDefine.Header.AUTHORIZATION})
