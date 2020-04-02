@@ -3,8 +3,23 @@ var router = express.Router();
 const db = require(`../config/db_connections`)();
 const DB_TABLE_LISTLOCATION = `list_location`;
 const DB_TABLE_LISTJOB = `list_job`;
+const DB_TABLE_LISTNOTICE = `list_notice`;
 
 /* -------------- ::START:: API Function Zone -------------- */
+
+function postLocation(param) {
+  console.log(`call postLocation`);
+  let queryString = `SELECT * FROM ${DB_TABLE_LISTLOCATION}`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, param, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
 
 function postLocationInfo(param) {
   console.log(`call postListLocationInfo`);
@@ -41,6 +56,20 @@ function locationUpdate(params) {
 
   return new Promise(function(resolve, reject) {
     db.query(queryString, params, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function postJob(param) {
+  console.log(`call postJob`);
+  let queryString = `SELECT * FROM ${DB_TABLE_LISTJOB}`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, param, function(err, result) {
       if (err) {
         reject(err);
       }
@@ -92,7 +121,35 @@ function jobUpdate(params) {
   });
 }
 
+function postNotice(params) {
+  console.log(`call jobUpdate`);
+
+  let queryString = `SELECT * FROM ${DB_TABLE_LISTNOTICE}`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, params, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
 /* -------------- ::START:: Router Zone -------------- */
+
+router.post("/location", function(req, res, next) {
+  console.log(`API = /location`);
+
+  postLocation()
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[postLocation] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
 
 router.post("/locationInfo", function(req, res, next) {
   console.log(`API = /locationInfo`);
@@ -143,6 +200,19 @@ router.post(`/locationUpdate`, function(req, res, next) {
     });
 });
 
+router.post("/job", function(req, res, next) {
+  console.log(`API = /job`);
+
+  postJob()
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[getListJob] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
 router.post("/jobInfo", function(req, res, next) {
   console.log(`API = /jobInfo`);
 
@@ -188,6 +258,19 @@ router.post(`/jobUpdate`, function(req, res, next) {
     })
     .catch(function(err) {
       console.log(`[jobUpdate] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post("/notice", function(req, res, next) {
+  console.log(`API = /notice`);
+
+  postNotice()
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[postNotice] error : ${err}`);
       res.end(`NOK`);
     });
 });

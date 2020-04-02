@@ -6,6 +6,20 @@ const DB_TABLE_CHANNELUSER = `channel_user`;
 
 /* -------------- ::START:: API Function Zone -------------- */
 
+function postChanner(param) {
+  console.log(`call postChannerInfo`);
+  let queryString = `SELECT * FROM ${DB_TABLE_CHANNELINFO}`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, param, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
 function postChannerInfo(param) {
   console.log(`call postChannerInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_CHANNELINFO} WHERE id = ?`;
@@ -51,7 +65,7 @@ function channerUpdate(params) {
 
 function postChannelUserInfo(param) {
   console.log(`call postChannelUserInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_CHANNELUSER} WHERE id = ?`;
+  let queryString = `SELECT * FROM ${DB_TABLE_CHANNELUSER} WHERE channel_id = ?`;
 
   return new Promise(function(resolve, reject) {
     db.query(queryString, param, function(err, result) {
@@ -93,6 +107,19 @@ function userUpdate(params) {
 }
 
 /* -------------- ::START:: Router Zone -------------- */
+
+router.post("/channer", function(req, res, next) {
+  console.log(`API = /channer`);
+
+  postChanner()
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[postChanner] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
 
 router.post("/channerInfo", function(req, res, next) {
   console.log(`API = /channerInfo`);
@@ -146,7 +173,7 @@ router.post(`/channerUpdate`, function(req, res, next) {
 router.post("/user", function(req, res, next) {
   console.log(`API = /user`);
 
-  postChannelUserInfo(req.body.id)
+  postChannelUserInfo(req.body.channel_id)
     .then(result => {
       res.json(result);
     })

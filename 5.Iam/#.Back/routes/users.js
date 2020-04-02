@@ -6,6 +6,20 @@ const DB_TABLE_USERPORTFOLIO = `user_portfolio`;
 
 /* -------------- ::START:: API Function Zone -------------- */
 
+function postUser(param) {
+  console.log(`call postUserInfo`);
+  let queryString = `SELECT * FROM ${DB_TABLE_USERINFO}`;
+
+  return new Promise(function(resolve, reject) {
+    db.query(queryString, param, function(err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
 function postUserInfo(param) {
   console.log(`call postUserInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_USERINFO} WHERE id = ?`;
@@ -95,7 +109,20 @@ function portfolioUpdate(params) {
 /* -------------- ::START:: Router Zone -------------- */
 
 router.post("/", function(req, res, next) {
-  console.log(`API = /user`);
+  console.log(`API = /`);
+
+  postUser()
+    .then(result => {
+      res.json(result);
+    })
+    .catch(function(err) {
+      console.log(`[postUser] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post("/info", function(req, res, next) {
+  console.log(`API = /info`);
 
   postUserInfo(req.body.id)
     .then(result => {
