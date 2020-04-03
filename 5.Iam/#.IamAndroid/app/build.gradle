@@ -118,6 +118,9 @@ dependencies {
     implementation dependencies.navigationUi
     implementation dependencies.glide
     annotationProcessor dependencies.glideCompiler
+    // 머티리얼 디자인 세팅
+    implementation dependencies.material
+    implementation dependencies.cardview
 
 
 }

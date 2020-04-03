@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
 import androidx.fragment.app.Fragment;
+
+import com.fund.iam.R;
 
 import dagger.android.support.AndroidSupportInjection;
 import io.reactivex.annotations.NonNull;
@@ -64,7 +67,16 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+
+        // search 프레그먼트에 머티리얼디자인 테마적용
+        if (getLayoutId()== R.layout.fragment_search) {
+            Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme_MaterialComponents);
+            inflater = getActivity().getLayoutInflater().cloneInContext(contextThemeWrapper);
+            mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        } else {
+            mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
+        }
+
         mRootView = mViewDataBinding.getRoot();
         return mRootView;
     }

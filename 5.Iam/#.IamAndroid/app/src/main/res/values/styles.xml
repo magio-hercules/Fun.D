@@ -11,4 +11,11 @@
         <item name="android:textColor">@android:color/black</item>
         <item name="android:background">@android:color/white</item>
     </style>
+
+    <style name="AppTheme.MaterialComponents" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimarySearch</item>
+        <item name="colorPrimaryDark">@color/colorPrimarySearch</item>
+        <item name="colorAccent">@color/colorPrimarySearch</item>
+        <item name="colorControlNormal">@color/colorPrimarySearch</item>
+    </style>
 </resources>
