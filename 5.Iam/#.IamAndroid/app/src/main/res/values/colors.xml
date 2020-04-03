@@ -20,4 +20,6 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <!--  TODO 지울예정  -->
+
+    <color name="colorPrimarySearch">#7E57C2</color>
 </resources>
