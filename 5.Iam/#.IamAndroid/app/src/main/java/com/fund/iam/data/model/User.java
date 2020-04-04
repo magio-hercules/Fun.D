@@ -23,6 +23,9 @@ public class User {
 
     private String phone;
 
+    @SerializedName("job_list")
+    private String jobList;
+
     private int age;
 
     private int gender;

@@ -14,6 +14,7 @@ import java.util.List;
 public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
     public List<Channel> channels = null;
+    public List<User> users = null;
 
 
     public SearchViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
@@ -36,7 +37,7 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
                 .observeOn(getSchedulerProvider().io())
                 .subscribeOn(getSchedulerProvider().computation())
                 .subscribe(result -> {
-                    Logger.d("postChannel success");
+                    Logger.d("postChannels success");
                     //TODO 여기부터 시작...
                     channels = result.body();
                     Logger.d("result.body"+channels);
@@ -44,6 +45,27 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
                     getNavigator().updateChannels();
 
                 }, onError -> getNavigator().handleError(onError))
+        );
+
+    }
+
+    public void getUsersInfo() {
+
+        Logger.i("getUsersInfo");
+
+        getCompositeDisposable().add(
+                getDataManager().postUsersAll()
+                        .observeOn(getSchedulerProvider().io())
+                        .subscribeOn(getSchedulerProvider().computation())
+                        .subscribe(result -> {
+                            Logger.d("postUsers success");
+                            //TODO 여기부터 시작...
+                            users = result.body();
+                            Logger.d("result.body"+users);
+
+                            getNavigator().updateUsers();
+
+                        }, onError -> getNavigator().handleError(onError))
         );
 
     }

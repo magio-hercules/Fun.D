@@ -19,6 +19,7 @@ public class ApiDefine {
         String API_LOGIN = "users/userInsert";              // 유저 로그인
 
         String API_CHANNELS = "channel/channer";            // 전체 채널 조회
+        String API_USERSALL = "users";                      // 전체 유저 조회
     }
 
 }

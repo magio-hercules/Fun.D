@@ -44,6 +44,11 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<List<Channel>>> postChannels();
 
+    // 전체유저 조회
+    @POST(ApiDefine.Body.API_USERSALL)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<List<User>>> postUsersAll();
+
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)
     @Headers({ApiDefine.Header.CONTENT_TYPE_JSON, ApiDefine.Header.AUTHORIZATION})

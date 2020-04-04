@@ -6,4 +6,5 @@ public interface SearchNavigator extends BaseNavigator {
     
     void goBack();
     void updateChannels();
+    void updateUsers();
 }

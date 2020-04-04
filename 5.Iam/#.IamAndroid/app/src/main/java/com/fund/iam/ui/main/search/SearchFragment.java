@@ -33,7 +33,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
     public static final String TAG = SearchFragment.class.getSimpleName();
 
-    private SearchListChannelAdapter adapter;
+    private SearchListChannelAdapter adapter_channels;
+    private SearchListUserAdapter adapter_users;
     private SearchListUserFilterAdapter adapter_filter;
 
 
@@ -72,7 +73,12 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
     @Override
     public void updateChannels() {
-        adapter.setModel_Channels(getViewModel().channels);
+        adapter_channels.setModel_Channels(getViewModel().channels);
+    }
+
+    @Override
+    public void updateUsers() {
+        adapter_users.setModel_Users(getViewModel().users);
     }
 
     @Override
@@ -105,6 +111,10 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().etSearch.setHint("채널을 검색하세요");
                 getViewDataBinding().userOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.VISIBLE);
+                getViewDataBinding().recyclerViewUsers.setVisibility(View.INVISIBLE);
+                getViewDataBinding().recyclerViewChannels.setVisibility(View.VISIBLE);
+                //TODO 클릭시 리스트 갱신
+//                getViewModel().getChannelsInfo();
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
             }
         });
@@ -117,6 +127,10 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().etSearch.setHint("유저를 검색하세요");
                 getViewDataBinding().userOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.INVISIBLE);
+                getViewDataBinding().recyclerViewChannels.setVisibility(View.INVISIBLE);
+                getViewDataBinding().recyclerViewUsers.setVisibility(View.VISIBLE);
+                //TODO 클릭시 리스트 갱신
+//                getViewModel().getUsersInfo();
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
             }
         });
@@ -175,12 +189,18 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             }
         });
 
-        getViewDataBinding().recyclerView.setHasFixedSize(true);
-        getViewDataBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new SearchListChannelAdapter();
-        getViewDataBinding().recyclerView.setAdapter(adapter);
+        getViewDataBinding().recyclerViewChannels.setHasFixedSize(true);
+        getViewDataBinding().recyclerViewChannels.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter_channels = new SearchListChannelAdapter();
+        getViewDataBinding().recyclerViewChannels.setAdapter(adapter_channels);
+
+        getViewDataBinding().recyclerViewUsers.setHasFixedSize(true);
+        getViewDataBinding().recyclerViewUsers.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter_users = new SearchListUserAdapter();
+        getViewDataBinding().recyclerViewUsers.setAdapter(adapter_users);
 
         getViewModel().getChannelsInfo();
+        getViewModel().getUsersInfo();
     }
 
 
