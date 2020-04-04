@@ -2,6 +2,7 @@
 package com.fund.iam.data;
 
 import com.fund.iam.data.local.prefs.PreferencesHelper;
+import com.fund.iam.data.model.Channel;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
 import com.fund.iam.data.model.request.LoginBody;
@@ -15,6 +16,7 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 import retrofit2.Response;
 
 @Singleton
@@ -54,6 +56,12 @@ public class AppDataManager implements DataManager {
     @Override
     public Maybe<Response<User>> postVerifyToken(String token) {
         return mAwsApiHelper.postVerifyToken(token);
+    }
+
+    // 전체채널 조회
+    @Override
+    public Single<Response<List<Channel>>> postChannels() {
+        return mAwsApiHelper.postChannels();
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

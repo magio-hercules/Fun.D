@@ -27,11 +27,11 @@
             app:srcCompat="@drawable/search_food_sample" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/iv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="새로운 요리 연구가들의 모임"
             android:textColor="#000000"
             android:textSize="18sp"
@@ -40,7 +40,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/iv_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -49,7 +49,7 @@
             android:textColor="#000000"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/textView2" />
+            app:layout_constraintTop_toBottomOf="@+id/iv_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

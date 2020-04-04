@@ -235,7 +235,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/channel_option_set"
             tools:itemCount="10"
-            tools:listitem="@layout/item_chanel_list" />
+            tools:listitem="@layout/item_channel_list" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

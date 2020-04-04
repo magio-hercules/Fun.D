@@ -1,10 +1,8 @@
 package com.fund.iam.ui.main.search;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -15,7 +13,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -23,7 +20,6 @@ import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
 import com.fund.iam.databinding.FragmentSearchBinding;
-import com.fund.iam.databinding.FragmentSettingBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.orhanobut.logger.Logger;
@@ -37,7 +33,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
     public static final String TAG = SearchFragment.class.getSimpleName();
 
-    private SearchListChanelAdapter adapter;
+    private SearchListChannelAdapter adapter;
     private SearchListUserFilterAdapter adapter_filter;
 
 
@@ -72,6 +68,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     @Override
     public void goBack() {
         getBaseActivity().onFragmentDetached(TAG);
+    }
+
+    @Override
+    public void updateChannels() {
+        adapter.setModel_Channels(getViewModel().channels);
     }
 
     @Override
@@ -176,9 +177,10 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
         getViewDataBinding().recyclerView.setHasFixedSize(true);
         getViewDataBinding().recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new SearchListChanelAdapter();
+        adapter = new SearchListChannelAdapter();
         getViewDataBinding().recyclerView.setAdapter(adapter);
 
+        getViewModel().getChannelsInfo();
     }
 
 

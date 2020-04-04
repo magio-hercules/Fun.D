@@ -1,5 +1,6 @@
 package com.fund.iam.data.remote;
 
+import com.fund.iam.data.model.Channel;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
 import com.fund.iam.data.model.request.LoginBody;
@@ -8,6 +9,7 @@ import com.fund.iam.data.model.request.PushBody;
 import java.util.List;
 
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -36,6 +38,11 @@ public interface ApiHelper {
     @POST(ApiDefine.Body.API_KAKAO_VERIFY_TOKEN)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Maybe<Response<User>> postVerifyToken(@Field("token") String token);
+
+    // 전체채널 조회
+    @POST(ApiDefine.Body.API_CHANNELS)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<List<Channel>>> postChannels();
 
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)
