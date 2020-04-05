@@ -38,6 +38,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     private SearchListChannelAdapter adapter_channels;
     private SearchListUserAdapter adapter_users;
     private SearchListUserFilterAdapter adapter_filter;
+    int TabState = 1;
 
 
     @Inject
@@ -82,6 +83,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     @Override
     public void updateUsers() {
         adapter_users.setModel_Users(getViewModel().users);
+        adapter_users.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
     }
 
     @Override
@@ -112,7 +114,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
                 getViewDataBinding().btChanelList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                 getViewDataBinding().etSearch.setHint("채널을 검색하세요");
-                getViewDataBinding().etSearchInput.setText("");
                 getViewDataBinding().userOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.INVISIBLE);
@@ -120,6 +121,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 //TODO 클릭시 리스트 갱신
 //                getViewModel().getChannelsInfo();
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
+                TabState = 1;
+                getViewDataBinding().etSearchInput.setText("");
             }
         });
 
@@ -129,7 +132,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().btChanelList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                 getViewDataBinding().etSearch.setHint("유저를 검색하세요");
-                getViewDataBinding().etSearchInput.setText("");
                 getViewDataBinding().userOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.INVISIBLE);
@@ -137,6 +139,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 //TODO 클릭시 리스트 갱신
 //                getViewModel().getUsersInfo();
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
+                TabState = 2;
+                getViewDataBinding().etSearchInput.setText("");
             }
         });
 
@@ -148,7 +152,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
+                if (TabState==1) {
+                    adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
+                } else {
+                    adapter_users.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
+                }
             }
 
             @Override

@@ -20,6 +20,8 @@ import java.util.List;
 public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAdapter.ViewHolder> {
 
     private List<User> usersModel = new ArrayList<>();
+    private List<User> usersModel_filterKeyword = new ArrayList<>();
+    String KeyWord;
 
     @NonNull
     @Override
@@ -33,7 +35,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        switch (usersModel.get(position).getJobList()) {
+        switch (usersModel_filterKeyword.get(position).getJobList()) {
             case "0":
                 holder.tv_jobList.setText("기획자");
                 holder.tv_jobList.setBackgroundColor(Color.parseColor("#4BDFF3"));
@@ -53,8 +55,8 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
 
         }
 
-        holder.tv_nickName.setText(usersModel.get(position).getNickName());
-        holder.tv_email.setText(usersModel.get(position).getEmail());
+        holder.tv_nickName.setText(usersModel_filterKeyword.get(position).getNickName());
+        holder.tv_email.setText(usersModel_filterKeyword.get(position).getEmail());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +70,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
 
     @Override
     public int getItemCount() {
-        return usersModel.size();
+        return usersModel_filterKeyword.size();
     }
 
 
@@ -89,6 +91,16 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
 
     public void setModel_Users(List<User> usersModel) {
         this.usersModel = usersModel;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.KeyWord = keyWord;
+        usersModel_filterKeyword.removeAll(usersModel_filterKeyword);
+        for (int i=0; i<usersModel.size(); i++) {
+            if(usersModel.get(i).getNickName().contains(keyWord.toUpperCase())) {
+                usersModel_filterKeyword.add(usersModel.get(i));
+            }
+        }
         notifyDataSetChanged();
     }
 }
