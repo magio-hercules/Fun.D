@@ -22,6 +22,8 @@ import java.util.List;
 public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListChannelAdapter.ViewHolder>{
 
     private List<Channel> channelsModel = new ArrayList<>();
+    private List<Channel> channelsModel_filterKeyword = new ArrayList<>();
+    String keyWord;
 
 
     @NonNull
@@ -41,8 +43,8 @@ public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListCha
                 .centerCrop()
                 .into(holder.imageView);
 
-        holder.tv_name.setText(channelsModel.get(position).name);
-        holder.tv_description.setText(channelsModel.get(position).description);
+        holder.tv_name.setText(channelsModel_filterKeyword.get(position).name);
+        holder.tv_description.setText(channelsModel_filterKeyword.get(position).description);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +61,7 @@ public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListCha
 
     @Override
     public int getItemCount() {
-        return channelsModel.size();
+        return channelsModel_filterKeyword.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -80,6 +82,16 @@ public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListCha
 
     public void setModel_Channels(List<Channel> channelsModel) {
         this.channelsModel = channelsModel;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+        channelsModel_filterKeyword.removeAll(channelsModel_filterKeyword);
+        for (int i=0; i<channelsModel.size(); i++) {
+            if(channelsModel.get(i).name.contains(keyWord.toUpperCase())) {
+                channelsModel_filterKeyword.add(channelsModel.get(i));
+            }
+        }
         notifyDataSetChanged();
     }
 

@@ -3,6 +3,8 @@ package com.fund.iam.ui.main.search;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -74,6 +76,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     @Override
     public void updateChannels() {
         adapter_channels.setModel_Channels(getViewModel().channels);
+        adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
     }
 
     @Override
@@ -109,6 +112,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
                 getViewDataBinding().btChanelList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                 getViewDataBinding().etSearch.setHint("채널을 검색하세요");
+                getViewDataBinding().etSearchInput.setText("");
                 getViewDataBinding().userOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.INVISIBLE);
@@ -125,6 +129,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().btChanelList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                 getViewDataBinding().etSearch.setHint("유저를 검색하세요");
+                getViewDataBinding().etSearchInput.setText("");
                 getViewDataBinding().userOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.INVISIBLE);
@@ -134,6 +139,24 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
             }
         });
+
+        getViewDataBinding().etSearchInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         String[] spinner_str = {"최신순", "참여인원많은순"};
         final ArrayAdapter<String> adapter_spinner = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.support_simple_spinner_dropdown_item,spinner_str) {
