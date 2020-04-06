@@ -289,6 +289,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 View v = super.getView(position, convertView, parent);
                 ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
                 return v;
+
             }
 
         };
