@@ -5,11 +5,14 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +27,7 @@ import com.fund.iam.data.DataManager;
 import com.fund.iam.databinding.FragmentSearchBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.orhanobut.logger.Logger;
 
 import java.util.Objects;
@@ -99,6 +103,9 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        getViewDataBinding().setViewModel(getViewModel());
+
         initViews(view);
 
     }
@@ -118,8 +125,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().channelOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.VISIBLE);
-                //TODO 클릭시 리스트 갱신
-//                getViewModel().getChannelsInfo();
+
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
                 TabState = 1;
                 getViewDataBinding().etSearchInput.setText("");
@@ -136,8 +142,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().channelOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.VISIBLE);
-                //TODO 클릭시 리스트 갱신
-//                getViewModel().getUsersInfo();
+
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
                 TabState = 2;
                 getViewDataBinding().etSearchInput.setText("");
@@ -166,8 +171,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         });
 
 
-        String[] spinner_str = {"최신순", "참여인원많은순"};
-        final ArrayAdapter<String> adapter_spinner = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.support_simple_spinner_dropdown_item,spinner_str) {
+
+
+        String[] spinner_str_channel = {"최신순", "참여인원많은순"};
+
+        final ArrayAdapter<String> adapter_spinner = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.support_simple_spinner_dropdown_item,spinner_str_channel) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -184,7 +192,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             }
 
         };
-
+        getViewDataBinding().spinner.setGravity(Gravity.CENTER);
         getViewDataBinding().spinner.setAdapter(adapter_spinner);
         getViewDataBinding().spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -203,6 +211,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         getViewDataBinding().btMoveToCreateChanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(getActivity(),"새 채널",Toast.LENGTH_SHORT).show();
 //                Intent intent = new Intent(getActivity(), CreateChannelActivity.class);
 //                startActivity(intent);
             }
@@ -213,12 +222,178 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         adapter_filter = new SearchListUserFilterAdapter();
         getViewDataBinding().recyclerViewFilter.setAdapter(adapter_filter);
 
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity());
+        bottomSheetDialog.setContentView(R.layout.dialog_search_user_filter);
+
         getViewDataBinding().btUserFilter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Logger.i("SearchFragment:userFilter 클릭");
+
+                TextView bt_close = bottomSheetDialog.findViewById(R.id.bt_close);
+                bt_close.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        bottomSheetDialog.dismiss();
+                    }
+                });
+
+                Button bt_apply = bottomSheetDialog.findViewById(R.id.bt_apply);
+                bt_apply.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getActivity(),"구현 중",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                bottomSheetDialog.show();
             }
         });
+
+        String[] spinner_str_user_region = {"-","서울특별시", "부산광역시","인천광역시","대구광역시", "광주광역시", "대전광역시", " 울산광역시", "세종시", "경기도", "강원도", "충청남도", "충청북도", "경상북도","경상남도", "전라북도","전라남도", "제주도"};
+        String[] spinner_str_user_job =  {"-","기획자","개발자", "디자이너", "마케터"};
+        String[] spinner_str_user_job_developer = {"-","프론트","서버","풀스택","DBA"};
+        String[] spinner_str_user_job_designer=  {"-","브랜딩","웹", "앱"};
+        String[] spinner_str_user_gender = {"-","남자","여자"};
+        String[] spinner_str_user_age = {"-","10대", "20대","30대","40대", "50대 이상"};
+
+        Spinner spinner_region = bottomSheetDialog.findViewById(R.id.spinner_region);
+        spinner_region.setGravity(Gravity.RIGHT);
+        Spinner spinner_job = bottomSheetDialog.findViewById(R.id.spinner_job);
+        spinner_job.setGravity(Gravity.RIGHT);
+        Spinner spinner_detail_job = bottomSheetDialog.findViewById(R.id.spinner_detail_job);
+        spinner_detail_job.setGravity(Gravity.RIGHT);
+        Spinner spinner_gender = bottomSheetDialog.findViewById(R.id.spinner_gender);
+        spinner_gender.setGravity(Gravity.RIGHT);
+        Spinner spinner_age = bottomSheetDialog.findViewById(R.id.spinner_age);
+        spinner_age.setGravity(Gravity.RIGHT);
+
+
+        final ArrayAdapter<String> adapter_spinner_user_region = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_region) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
+                return v;
+            }
+
+        };
+
+
+        final ArrayAdapter<String> adapter_spinner_user_job = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_job) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
+                return v;
+            }
+
+        };
+        final ArrayAdapter<String> adapter_spinner_user_job_developer = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_job_developer) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
+                return v;
+            }
+
+        };
+        final ArrayAdapter<String> adapter_spinner_user_job_designer = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_job_designer) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
+                return v;
+            }
+
+        };
+        final ArrayAdapter<String> adapter_spinner_user_gender = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_gender) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
+                return v;
+            }
+
+        };
+        final ArrayAdapter<String> adapter_spinner_user_age = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_age) {
+            @NonNull
+            @Override
+            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                View v = super.getView(position, convertView, parent);
+                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
+                return v;
+            }
+
+        };
+
+        spinner_region.setAdapter(adapter_spinner_user_region);
+        spinner_job.setAdapter(adapter_spinner_user_job);
+//        spinner_detail_job.setAdapter();
+        spinner_gender.setAdapter(adapter_spinner_user_gender);
+        spinner_age.setAdapter(adapter_spinner_user_age);
+
+        spinner_region.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Logger.i("SearchFragment:"+spinner_region.getSelectedItem().toString()+"is selected");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        spinner_job.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Logger.i("SearchFragment:"+spinner_job.getSelectedItem().toString()+"is selected");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner_gender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Logger.i("SearchFragment:"+spinner_gender.getSelectedItem().toString()+"is selected");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        spinner_age.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Logger.i("SearchFragment:"+spinner_age.getSelectedItem().toString()+"is selected");
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
         getViewDataBinding().recyclerViewChannels.setHasFixedSize(true);
         getViewDataBinding().recyclerViewChannels.setLayoutManager(new LinearLayoutManager(getActivity()));
