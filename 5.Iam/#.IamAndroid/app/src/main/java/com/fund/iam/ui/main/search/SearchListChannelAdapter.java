@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.fund.iam.R;
 import com.fund.iam.data.model.Channel;
-import com.fund.iam.data.model.User;
 import com.kakao.util.helper.log.Logger;
 
 import java.util.ArrayList;
@@ -44,7 +43,7 @@ public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListCha
                 .into(holder.imageView);
 
         holder.tv_name.setText(channelsModel_filterKeyword.get(position).name);
-        holder.tv_description.setText(channelsModel_filterKeyword.get(position).description);
+        holder.tv_purpose.setText(channelsModel_filterKeyword.get(position).purpose);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,13 +67,13 @@ public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListCha
 
         public final ImageView imageView;
         public final TextView tv_name;
-        public final TextView tv_description;
+        public final TextView tv_purpose;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             tv_name = itemView.findViewById(R.id.tv_name);
-            tv_description = itemView.findViewById(R.id.tv_description);
+            tv_purpose = itemView.findViewById(R.id.tv_purpose);
 
         }
     }

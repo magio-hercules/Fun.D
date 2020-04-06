@@ -42,12 +42,12 @@ public interface ApiHelper {
     // 전체채널 조회
     @POST(ApiDefine.Body.API_CHANNELS)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Single<Response<List<Channel>>> postChannels();
+    Maybe<Response<List<Channel>>> postChannels();
 
     // 전체유저 조회
     @POST(ApiDefine.Body.API_USERSALL)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Single<Response<List<User>>> postUsersAll();
+    Maybe<Response<List<User>>> postUsersAll();
 
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)

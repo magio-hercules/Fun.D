@@ -55,7 +55,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
 
         }
 
-        holder.tv_nickName.setText(usersModel_filterKeyword.get(position).getNickName());
+        holder.tv_userName.setText(usersModel_filterKeyword.get(position).getUserName());
         holder.tv_email.setText(usersModel_filterKeyword.get(position).getEmail());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -77,14 +77,14 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         public final TextView tv_email;
-        public final TextView tv_nickName;
+        public final TextView tv_userName;
         public final TextView tv_jobList;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             tv_email = itemView.findViewById(R.id.tv_email);
-            tv_nickName = itemView.findViewById(R.id.tv_nickName);
+            tv_userName = itemView.findViewById(R.id.tv_userName);
             tv_jobList = itemView.findViewById(R.id.tv_jobList);
         }
     }
@@ -97,7 +97,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
         this.KeyWord = keyWord;
         usersModel_filterKeyword.removeAll(usersModel_filterKeyword);
         for (int i=0; i<usersModel.size(); i++) {
-            if(usersModel.get(i).getNickName().contains(keyWord.toUpperCase())) {
+            if(usersModel.get(i).getUserName().contains(keyWord.toUpperCase())) {
                 usersModel_filterKeyword.add(usersModel.get(i));
             }
         }

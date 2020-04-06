@@ -34,7 +34,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         android:background="#FF1111"
         android:paddingLeft="8dp"
         android:paddingTop="2dp"
@@ -44,21 +43,22 @@
         android:textColor="#111111"
         android:textSize="10sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/iv_user"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_userName"
+        app:layout_constraintStart_toEndOf="@+id/tv_userName"
+        app:layout_constraintTop_toTopOf="@+id/tv_userName" />
 
     <TextView
-        android:id="@+id/tv_nickName"
+        android:id="@+id/tv_userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:text="Max Mckinney"
         android:textColor="#111111"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_jobList"
-        app:layout_constraintStart_toEndOf="@+id/tv_jobList"
-        app:layout_constraintTop_toTopOf="@+id/tv_jobList" />
+        app:layout_constraintStart_toEndOf="@+id/iv_user"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_email"
@@ -71,5 +71,5 @@
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/iv_user"
-        app:layout_constraintTop_toBottomOf="@+id/tv_jobList" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_userName" />
 </androidx.constraintlayout.widget.ConstraintLayout>

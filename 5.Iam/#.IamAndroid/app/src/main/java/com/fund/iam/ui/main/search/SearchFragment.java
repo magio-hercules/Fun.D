@@ -104,7 +104,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        getViewDataBinding().setViewModel(getViewModel());
+//        getViewDataBinding().setViewModel(getViewModel());
 
         initViews(view);
 
@@ -252,8 +252,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
         String[] spinner_str_user_region = {"-","서울특별시", "부산광역시","인천광역시","대구광역시", "광주광역시", "대전광역시", " 울산광역시", "세종시", "경기도", "강원도", "충청남도", "충청북도", "경상북도","경상남도", "전라북도","전라남도", "제주도"};
         String[] spinner_str_user_job =  {"-","기획자","개발자", "디자이너", "마케터"};
-        String[] spinner_str_user_job_developer = {"-","프론트","서버","풀스택","DBA"};
-        String[] spinner_str_user_job_designer=  {"-","브랜딩","웹", "앱"};
         String[] spinner_str_user_gender = {"-","남자","여자"};
         String[] spinner_str_user_age = {"-","10대", "20대","30대","40대", "50대 이상"};
 
@@ -261,8 +259,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         spinner_region.setGravity(Gravity.RIGHT);
         Spinner spinner_job = bottomSheetDialog.findViewById(R.id.spinner_job);
         spinner_job.setGravity(Gravity.RIGHT);
-        Spinner spinner_detail_job = bottomSheetDialog.findViewById(R.id.spinner_detail_job);
-        spinner_detail_job.setGravity(Gravity.RIGHT);
         Spinner spinner_gender = bottomSheetDialog.findViewById(R.id.spinner_gender);
         spinner_gender.setGravity(Gravity.RIGHT);
         Spinner spinner_age = bottomSheetDialog.findViewById(R.id.spinner_age);
@@ -292,26 +288,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             }
 
         };
-        final ArrayAdapter<String> adapter_spinner_user_job_developer = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_job_developer) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
-                return v;
-            }
 
-        };
-        final ArrayAdapter<String> adapter_spinner_user_job_designer = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_job_designer) {
-            @NonNull
-            @Override
-            public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
-                return v;
-            }
-
-        };
         final ArrayAdapter<String> adapter_spinner_user_gender = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_gender) {
             @NonNull
             @Override
@@ -335,7 +312,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
         spinner_region.setAdapter(adapter_spinner_user_region);
         spinner_job.setAdapter(adapter_spinner_user_job);
-//        spinner_detail_job.setAdapter();
         spinner_gender.setAdapter(adapter_spinner_user_gender);
         spinner_age.setAdapter(adapter_spinner_user_age);
 

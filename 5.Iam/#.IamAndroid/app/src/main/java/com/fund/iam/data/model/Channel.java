@@ -10,7 +10,8 @@ public class Channel {
 
     public String description;
 
-    public String purppose;
+    @SerializedName("purppose")
+    public String purpose;
 
     public String location;
 

@@ -11,6 +11,9 @@ android {
         versionCode 1
         versionName "v1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // SVG 세팅...
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -87,6 +90,8 @@ dependencies {
     implementation dependencies.stethoJsRhino
     implementation dependencies.stream
     implementation dependencies.dagger
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     annotationProcessor dependencies.daggerCompiler
     implementation dependencies.daggerAndroid
     implementation dependencies.daggerAndroidSupport

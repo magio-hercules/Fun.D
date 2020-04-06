@@ -60,13 +60,13 @@ public class AppDataManager implements DataManager {
 
     // 전체채널 조회
     @Override
-    public Single<Response<List<Channel>>> postChannels() {
+    public Maybe<Response<List<Channel>>> postChannels() {
         return mAwsApiHelper.postChannels();
     }
 
     // 전체유저 조회
     @Override
-    public Single<Response<List<User>>> postUsersAll() {
+    public Maybe<Response<List<User>>> postUsersAll() {
         return mAwsApiHelper.postUsersAll();
     }
 
