@@ -10,8 +10,8 @@ function postUser(param) {
   console.log(`call postUserInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_USERINFO}`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -24,8 +24,8 @@ function postUserInfo(param) {
   console.log(`call postUserInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_USERINFO} WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -38,8 +38,8 @@ function userInsert(param) {
   console.log(`call userInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_USERINFO} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -53,8 +53,8 @@ function userUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_USERINFO} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -67,8 +67,8 @@ function postPortfolioInfo(param) {
   console.log(`call postPortfolioInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_USERPORTFOLIO} WHERE user_id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -81,8 +81,8 @@ function portfolioInsert(param) {
   console.log(`call portfolioInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_USERPORTFOLIO} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -96,8 +96,23 @@ function portfolioUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_USERPORTFOLIO} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function portfolioDelete(params) {
+  console.log(`call portfolioDelete`);
+
+  let queryString = `DELETE FROM ${DB_TABLE_USERPORTFOLIO} WHERE id = ?`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -108,46 +123,46 @@ function portfolioUpdate(params) {
 
 /* -------------- ::START:: Router Zone -------------- */
 
-router.post("/", function(req, res, next) {
+router.post("/", function (req, res, next) {
   console.log(`API = /`);
 
   postUser()
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postUser] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/info", function(req, res, next) {
+router.post("/info", function (req, res, next) {
   console.log(`API = /info`);
 
   postUserInfo(req.body.id)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postUserInfo] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/userInsert`, function(req, res, next) {
+router.post(`/userInsert`, function (req, res, next) {
   console.log(`API = /userInsert`);
 
   userInsert(req.body)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[userInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/userUpdate`, function(req, res, next) {
+router.post(`/userUpdate`, function (req, res, next) {
   console.log(`API = /userUpdate`);
 
   // 에러로 보내야됨
@@ -160,43 +175,43 @@ router.post(`/userUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   userUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[userUpdate] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/portfolio", function(req, res, next) {
+router.post("/portfolio", function (req, res, next) {
   console.log(`API = /portfolio`);
 
   postPortfolioInfo(req.body.id)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postPortfolioInfo] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/portfolioInsert`, function(req, res, next) {
+router.post(`/portfolioInsert`, function (req, res, next) {
   console.log(`API = /portfolioInsert`);
 
   portfolioInsert(req.body)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[portfolioInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/portfolioUpdate`, function(req, res, next) {
+router.post(`/portfolioUpdate`, function (req, res, next) {
   console.log(`API = /portfolioUpdate`);
 
   // 에러로 보내야됨
@@ -209,11 +224,25 @@ router.post(`/portfolioUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   portfolioUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
+      console.log(`[portfolioUpdate] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/portfolioDelete`, function (req, res, next) {
+  console.log(`API = /portfolioDelete`);
+
+  portfolioDelete(req.body.id)
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch(function (err) {
       console.log(`[portfolioUpdate] error : ${err}`);
       res.end(`NOK`);
     });
