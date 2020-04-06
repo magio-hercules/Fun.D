@@ -100,4 +100,5 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
         Logger.e("CreateChannelFragment:handleError " + throwable.getMessage());
         Toast.makeText(getContext(), throwable.getMessage(),Toast.LENGTH_SHORT).show();
     }
+
 }
