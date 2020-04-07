@@ -22,7 +22,7 @@ function postUser(param) {
 
 function postUserInfo(param) {
   console.log(`call postUserInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_USERINFO} WHERE id = ?`;
+  let queryString = `SELECT * FROM ${DB_TABLE_USERINFO} WHERE email = ?`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
@@ -139,7 +139,7 @@ router.post("/", function (req, res, next) {
 router.post("/info", function (req, res, next) {
   console.log(`API = /info`);
 
-  postUserInfo(req.body.id)
+  postUserInfo(req.body.email)
     .then((result) => {
       res.json(result);
     })
@@ -200,6 +200,10 @@ router.post("/portfolio", function (req, res, next) {
 
 router.post(`/portfolioInsert`, function (req, res, next) {
   console.log(`API = /portfolioInsert`);
+
+  if(req.body.type===1) {
+    
+  }
 
   portfolioInsert(req.body)
     .then((result) => {

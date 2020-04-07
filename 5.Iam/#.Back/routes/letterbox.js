@@ -10,8 +10,8 @@ function postLetterBoxInfo(param) {
   console.log(`call postLetterBoxInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXINFO} WHERE user_id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -24,8 +24,8 @@ function letterboxInsert(param) {
   console.log(`call letterboxInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXINFO} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -39,8 +39,8 @@ function letterboxUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_LETTERBOXINFO} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -60,8 +60,8 @@ function postLetterBoxMessageInfo(param) {
   } else {
     queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXMESSAGE} WHERE user_id = ?`;
   }
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -74,8 +74,8 @@ function messageInsert(param) {
   console.log(`call messageInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -89,8 +89,8 @@ function messageUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_LETTERBOXMESSAGE} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -101,33 +101,33 @@ function messageUpdate(params) {
 
 /* -------------- ::START:: Router Zone -------------- */
 
-router.post("/letterboxInfo", function(req, res, next) {
+router.post("/letterboxInfo", function (req, res, next) {
   console.log(`API = /letterboxInfo`);
 
-  postLetterBoxInfo(req.body.id)
-    .then(result => {
+  postLetterBoxInfo(req.body.user_id)
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postLetterBoxInfo] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/letterboxInsert`, function(req, res, next) {
+router.post(`/letterboxInsert`, function (req, res, next) {
   console.log(`API = /letterboxInsert`);
 
   letterboxInsert(req.body)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[letterboxInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/letterboxUpdate`, function(req, res, next) {
+router.post(`/letterboxUpdate`, function (req, res, next) {
   console.log(`API = /letterboxUpdate`);
 
   // 에러로 보내야됨
@@ -140,17 +140,17 @@ router.post(`/letterboxUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   letterboxUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[letterboxUpdate] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/message", function(req, res, next) {
+router.post("/message", function (req, res, next) {
   console.log(`API = /message`);
 
   console.log(typeof req.body.friend_id);
@@ -163,29 +163,29 @@ router.post("/message", function(req, res, next) {
   }
 
   postLetterBoxMessageInfo(params)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postLetterBoxMessageInfo] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/messageInsert`, function(req, res, next) {
+router.post(`/messageInsert`, function (req, res, next) {
   console.log(`API = /messageInsert`);
 
   messageInsert(req.body)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[messageInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/messageUpdate`, function(req, res, next) {
+router.post(`/messageUpdate`, function (req, res, next) {
   console.log(`API = /messageUpdate`);
 
   // 에러로 보내야됨
@@ -198,11 +198,11 @@ router.post(`/messageUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   messageUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[messageUpdate] error : ${err}`);
       res.end(`NOK`);
     });
