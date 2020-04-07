@@ -69,14 +69,12 @@ public abstract class BaseFragment<T extends ViewDataBinding, V extends BaseView
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         // search 프레그먼트에 머티리얼디자인 테마적용
+        Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme_MaterialComponents);
         if (getLayoutId()== R.layout.fragment_search||getLayoutId()==R.layout.fragment_create_channel) {
-            Context contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AppTheme_MaterialComponents);
             inflater = getActivity().getLayoutInflater().cloneInContext(contextThemeWrapper);
-            mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
-        } else {
-            mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         }
 
+        mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false);
         mRootView = mViewDataBinding.getRoot();
         return mRootView;
     }

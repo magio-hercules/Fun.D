@@ -28,7 +28,6 @@ import com.fund.iam.data.DataManager;
 import com.fund.iam.databinding.FragmentSearchBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
-import com.fund.iam.ui.main.channel.CreateChannelFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.orhanobut.logger.Logger;
 

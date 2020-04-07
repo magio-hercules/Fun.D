@@ -38,8 +38,8 @@
         tools:layout="@layout/fragment_search" >
 
         <action
-            android:id="@+id/action_createChannel"
-            app:destination="@id/navigation_createChannel" />
+            android:id="@+id/action_create_channel"
+            app:destination="@id/navigation_create_channel" />
     </fragment>
 
     <fragment
@@ -117,7 +117,7 @@
         android:label="@string/title_notice"
         tools:layout="@layout/fragment_policy" />
     <fragment
-        android:id="@+id/navigation_createChannel"
+        android:id="@+id/navigation_create_channel"
         android:name="com.fund.iam.ui.main.channel.CreateChannelFragment"
         android:label="채널생성"
         tools:layout="@layout/fragment_create_channel">

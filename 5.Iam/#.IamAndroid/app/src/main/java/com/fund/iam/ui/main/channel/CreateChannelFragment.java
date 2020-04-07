@@ -61,12 +61,6 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_create_channel, container, false);
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.i("CreateChannelFragment:onCreate");
@@ -78,7 +72,7 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        initView(view);
+//        initView(view);
     }
 
     private void initView(View view) {
