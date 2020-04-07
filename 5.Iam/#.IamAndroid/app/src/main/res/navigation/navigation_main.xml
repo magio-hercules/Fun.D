@@ -34,7 +34,13 @@
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.fund.iam.ui.main.search.SearchFragment"
-        tools:layout="@layout/fragment_search" />
+        android:label="검색"
+        tools:layout="@layout/fragment_search" >
+
+        <action
+            android:id="@+id/action_createChannel"
+            app:destination="@id/navigation_createChannel" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_letterbox"
@@ -110,4 +116,11 @@
         android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
         android:label="@string/title_notice"
         tools:layout="@layout/fragment_policy" />
+    <fragment
+        android:id="@+id/navigation_createChannel"
+        android:name="com.fund.iam.ui.main.channel.CreateChannelFragment"
+        android:label="채널생성"
+        tools:layout="@layout/fragment_create_channel">
+
+    </fragment>
 </navigation>

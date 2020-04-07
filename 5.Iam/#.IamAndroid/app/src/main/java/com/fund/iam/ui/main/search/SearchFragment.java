@@ -1,6 +1,7 @@
 package com.fund.iam.ui.main.search;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -27,6 +28,7 @@ import com.fund.iam.data.DataManager;
 import com.fund.iam.databinding.FragmentSearchBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
+import com.fund.iam.ui.main.channel.CreateChannelFragment;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.orhanobut.logger.Logger;
 
@@ -205,15 +207,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
-            }
-        });
-        //TODO 서브페이지를 Activity로 할지 Fragment로 할지 정하기
-        getViewDataBinding().btMoveToCreateChanel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(),"새 채널",Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(getActivity(), CreateChannelActivity.class);
-//                startActivity(intent);
             }
         });
 
