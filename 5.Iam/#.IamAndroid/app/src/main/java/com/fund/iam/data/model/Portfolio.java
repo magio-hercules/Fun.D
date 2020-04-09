@@ -28,4 +28,8 @@ public class Portfolio {
 
     @SerializedName("modify_date")
     private String modifyDate;
+
+    public Portfolio(int userId, int type, String text, String imageUrl) {
+        new Portfolio(-1, userId, type, text, imageUrl, "", "");
+    }
 }

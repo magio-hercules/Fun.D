@@ -24,4 +24,15 @@
         android:src="@drawable/image_default"
         app:srcCompat="@drawable/profile_default_picture" />
 
+    <ImageView
+        android:id="@+id/portfolioImage_delete"
+        android:layout_width="14dp"
+        android:layout_height="17dp"
+        android:layout_marginLeft="10dp"
+        android:layout_gravity="center"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_btn_delete"
+        />
+
+
 </LinearLayout>

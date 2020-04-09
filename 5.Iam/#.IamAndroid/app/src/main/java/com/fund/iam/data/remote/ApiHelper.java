@@ -1,5 +1,6 @@
 package com.fund.iam.data.remote;
 
+import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.Channel;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
@@ -61,9 +62,28 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Maybe<Response<List<Channel>>> postChannel(@Field("id") int id);
 
+    @POST(ApiDefine.Body.API_LIST_JOB)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<List<Job>>> postJobList();
+
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_LIST_JOB_INFO)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<Job>> postJobInfo(@Field("id") int jobId);
+
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_INSERT_PORTFOLIO)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<Void>> postInsertPortfolio(@Field("user_id") int user_id, @Field("type") int type, @Field("text") String text);
+//    Maybe<Response<Void>> postInsertPortfolio(@Body Portfolio portfolio);
+
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_DELETE_PORTFOLIO)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<Void>> postDeletePortfolio(@Field("id") int id);
+
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)
     @Headers({ApiDefine.Header.CONTENT_TYPE_JSON, ApiDefine.Header.AUTHORIZATION})
     Maybe<Response<Void>> postFcmSend(@Body PushBody pushBody);
-
 }

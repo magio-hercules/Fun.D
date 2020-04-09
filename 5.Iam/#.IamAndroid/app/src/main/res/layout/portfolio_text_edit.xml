@@ -13,40 +13,26 @@
         android:layout_height="wrap_content"
         android:textSize="24dp" />
 
-<!--    <EditText-->
-<!--        android:id="@+id/portfolioText_edit"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_weight="1"-->
-<!--        android:ems="10"-->
-<!--        android:inputType="textPersonName"-->
-<!--        android:text="내용을 입력하세요" />-->
-
-    <TextView
-        android:id="@+id/portfolioText_edit_edit"
+    <EditText
+        android:id="@+id/portfolioText_edit_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="내용을 입력하세요"
         android:textSize="12sp"
         android:layout_gravity="center_vertical"
-        android:textColor="#000"/>
+        android:text="내용을 입력하세요"
+        android:textColor="#000" />
 
-<!--    <Button-->
-<!--        android:id="@+id/portfolioText_delete"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="삭제" />-->
     <ImageView
         android:id="@+id/portfolioText_edit_delete"
-        android:layout_width="30dp"
-        android:layout_height="24dp"
-        android:layout_marginRight="10dp"
+        android:layout_width="14dp"
+        android:layout_height="17dp"
+        android:layout_marginLeft="10dp"
         android:layout_gravity="center"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@drawable/letter"
+        android:src="@drawable/ic_btn_delete"
         />
 
 

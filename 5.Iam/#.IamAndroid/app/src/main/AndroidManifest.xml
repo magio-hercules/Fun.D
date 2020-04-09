@@ -21,16 +21,22 @@
         tools:targetApi="n">
 
         <activity android:name=".ui.intro.IntroActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
+
+        <activity android:name=".ui.login.LoginActivity" />
+
+        <activity android:name=".ui.main.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.login.LoginActivity" />
-
-        <activity android:name=".ui.main.MainActivity" />
 
         <activity
             android:name=".ui.letter.LetterActivity"
@@ -68,6 +74,23 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.fund.iam.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <receiver android:name=".YourBrodcastReceiverClass"  android:exported="true">
+            <intent-filter>
+                <!-- The actions you wish to listen to, below is an example -->
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
 
     </application>
 

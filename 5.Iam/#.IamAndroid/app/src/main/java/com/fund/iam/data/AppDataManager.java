@@ -2,6 +2,7 @@
 package com.fund.iam.data;
 
 import com.fund.iam.data.local.prefs.PreferencesHelper;
+import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.Channel;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
@@ -80,6 +81,29 @@ public class AppDataManager implements DataManager {
     @Override
     public Maybe<Response<List<Channel>>> postChannel(int id) {
         return mAwsApiHelper.postChannel(id);
+    }
+
+    @Override
+    public Maybe<Response<List<Job>>> postJobList() {
+        return mAwsApiHelper.postJobList();
+    }
+
+    @Override
+    public Maybe<Response<Job>> postJobInfo(int jobId) {
+        return mAwsApiHelper.postJobInfo(jobId);
+    }
+
+    @Override
+//    public Maybe<Response<Void>> postInsertPortfolio(Portfolio portfolio) {
+//        return mAwsApiHelper.postInsertPortfolio(portfolio);
+//    }
+    public Maybe<Response<Void>> postInsertPortfolio(int user_id, int type, String text) {
+        return mAwsApiHelper.postInsertPortfolio(user_id, type, text);
+    }
+
+    @Override
+    public Maybe<Response<Void>> postDeletePortfolio(int id) {
+        return mAwsApiHelper.postDeletePortfolio(id);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
