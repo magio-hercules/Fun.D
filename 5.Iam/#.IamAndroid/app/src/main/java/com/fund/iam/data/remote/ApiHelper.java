@@ -49,6 +49,18 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Maybe<Response<List<User>>> postUsersAll();
 
+    // 신규채널 생성
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_NEW_CHANNEL)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<Channel>> postCreateChannel(@Field("owner_id") int ownerId, @Field("name") String name, @Field("purpose") String purpose,@Field("location") String location ,@Field("description") String description, @Field("password")String password);
+
+    // 특정채널 조회
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_CHANNEL)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Maybe<Response<List<Channel>>> postChannel(@Field("id") int id);
+
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)
     @Headers({ApiDefine.Header.CONTENT_TYPE_JSON, ApiDefine.Header.AUTHORIZATION})

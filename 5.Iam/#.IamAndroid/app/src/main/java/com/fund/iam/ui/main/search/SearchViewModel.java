@@ -30,7 +30,7 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
     public void getChannelsInfo() {
 
-        Logger.i("getChannelInfo");
+        Logger.i("getChannelsInfo");
 
         getCompositeDisposable().add(
                 getDataManager().postChannels()
@@ -38,7 +38,6 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
                 .subscribeOn(getSchedulerProvider().computation())
                 .subscribe(result -> {
                     Logger.d("postChannels success");
-                    //TODO 여기부터 시작...
                     channels = result.body();
                     Logger.d("result.body"+channels);
 
@@ -46,7 +45,6 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
                 }, onError -> getNavigator().handleError(onError))
         );
-
     }
 
     public void getUsersInfo() {
@@ -59,7 +57,6 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
                         .subscribeOn(getSchedulerProvider().computation())
                         .subscribe(result -> {
                             Logger.d("postUsers success");
-                            //TODO 여기부터 시작...
                             users = result.body();
                             Logger.d("result.body"+users);
 

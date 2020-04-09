@@ -9,34 +9,35 @@ import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
-public class CreateChannelViewModel extends BaseViewModel<CreateChannelNavigator> {
+public class ChannelViewModel extends BaseViewModel<ChannelNavigator> {
 
-    public Channel channel = null;
+    public List<Channel> channel = null;
 
-    public CreateChannelViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
+    public ChannelViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
 
         subscribeEvent();
     }
 
+
     private void subscribeEvent() {
 
     }
 
-    public void getNewChannelInfo(int ownerId, String name, String purpose, String location, String description, String password) {
+    public void getChannelInfo(int id) {
 
-        Logger.i("getNewChannelInfo");
+        Logger.i("getChannelInfo");
 
         getCompositeDisposable().add(
-                getDataManager().postCreateChannel(ownerId, name, purpose, location, description, password)
+                getDataManager().postChannel(id)
                         .observeOn(getSchedulerProvider().io())
                         .subscribeOn(getSchedulerProvider().computation())
                         .subscribe(result -> {
-                            Logger.d("postCreateChannels success");
+                            Logger.d("postChannels success");
                             channel = result.body();
                             Logger.d("result.body"+channel);
 
-                            getNavigator().createChannel();
+                            getNavigator().getChannelInfo();
 
                         }, onError -> getNavigator().handleError(onError))
         );

@@ -10,7 +10,6 @@ public class Channel {
 
     public String description;
 
-    @SerializedName("purppose")
     public String purpose;
 
     public String location;
@@ -22,5 +21,8 @@ public class Channel {
 
     @SerializedName("owner_id")
     public int ownerId;
+
+    @SerializedName("create_date")
+    public String createDate;
 
 }

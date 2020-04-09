@@ -8,7 +8,7 @@ public interface SchedulerProvider {
 
     Scheduler io();
 
-    Scheduler newwThread();
+    Scheduler newThread();
 
     Scheduler computation();
 

@@ -13,6 +13,7 @@ import com.fund.iam.ui.letter.LetterViewModel;
 import com.fund.iam.ui.login.LoginViewModel;
 import com.fund.iam.ui.main.MainViewModel;
 import com.fund.iam.ui.main.bookmark.BookmarkViewModel;
+import com.fund.iam.ui.main.channel.ChannelViewModel;
 import com.fund.iam.ui.main.channel.CreateChannelViewModel;
 import com.fund.iam.ui.main.home.HomeViewModel;
 import com.fund.iam.ui.main.letterbox.LetterBoxViewModel;
@@ -66,6 +67,8 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new SettingViewModel(context, dataManager, schedulerProvider, resourceProvider);
         } else if (modelClass.isAssignableFrom(CreateChannelViewModel.class)) {
             return (T) new CreateChannelViewModel(dataManager, schedulerProvider, resourceProvider);
+        } else if (modelClass.isAssignableFrom(ChannelViewModel.class)) {
+            return (T) new ChannelViewModel(dataManager, schedulerProvider, resourceProvider);
         }
         throw new IllegalArgumentException("Unknown class name");
     }

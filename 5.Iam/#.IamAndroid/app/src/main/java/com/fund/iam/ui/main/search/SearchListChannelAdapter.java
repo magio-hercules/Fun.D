@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -48,11 +49,13 @@ public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListCha
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(holder.itemView.getContext(),position+"",Toast.LENGTH_SHORT).show();
                 Logger.i("클릭"+position);
-                //TODO Activity Fragment 선택
-//                Intent intent = new Intent(channelsViewHolder.itemView.getContext(),ChanelMainActivity.class);
-//                holder.itemView.getContext().startActivity(intent);
+
+                int channelId = channelsModel_filterKeyword.get(position).id;
+                SearchFragmentDirections.ActionMainChannel action = SearchFragmentDirections.actionMainChannel();
+                action.setChannelIdArg(channelId);
+                Navigation.findNavController(v).navigate(action);
+
             }
         });
 

@@ -189,7 +189,7 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_name" />
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/tv_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -207,11 +207,11 @@
                 android:text=""
                 android:textColor="#000"
                 android:textSize="12sp"
-                app:layout_constraintLeft_toRightOf="@id/textView10"
-                app:layout_constraintTop_toTopOf="@id/textView10" />
+                app:layout_constraintLeft_toRightOf="@id/tv_location"
+                app:layout_constraintTop_toTopOf="@id/tv_location" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/tv_create_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
@@ -219,7 +219,7 @@
                 android:textColor="#000"
                 android:textSize="12sp"
                 app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_1"
-                app:layout_constraintTop_toBottomOf="@id/textView10" />
+                app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
             <TextView
                 android:id="@+id/profile_email"
@@ -228,8 +228,8 @@
                 android:text=""
                 android:textColor="#000"
                 android:textSize="12sp"
-                app:layout_constraintLeft_toRightOf="@id/textView5"
-                app:layout_constraintTop_toTopOf="@id/textView5" />
+                app:layout_constraintLeft_toRightOf="@id/tv_create_date"
+                app:layout_constraintTop_toTopOf="@id/tv_create_date" />
 
 
             <TextView
@@ -241,7 +241,7 @@
                 android:textColor="#000"
                 android:textSize="12sp"
                 app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_1"
-                app:layout_constraintTop_toBottomOf="@id/textView5"  />
+                app:layout_constraintTop_toBottomOf="@id/tv_create_date"  />
 
             <TextView
                 android:id="@+id/profile_gender"

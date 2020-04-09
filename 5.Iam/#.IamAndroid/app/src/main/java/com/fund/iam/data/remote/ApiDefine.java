@@ -20,6 +20,8 @@ public class ApiDefine {
 
         String API_CHANNELS = "channel/channer";            // 전체 채널 조회
         String API_USERSALL = "users";                      // 전체 유저 조회
+        String API_NEW_CHANNEL = "channel/channerInsert";   // 신규 채널 생성
+        String API_CHANNEL = "channel/channerInfo";         // 특정 채널 조회
     }
 
 }

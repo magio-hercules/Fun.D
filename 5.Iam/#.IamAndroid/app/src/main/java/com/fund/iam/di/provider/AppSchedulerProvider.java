@@ -22,7 +22,7 @@ public class AppSchedulerProvider implements SchedulerProvider {
     }
 
     @Override
-    public Scheduler newwThread() {
+    public Scheduler newThread() {
         return Schedulers.newThread();
     }
 }
