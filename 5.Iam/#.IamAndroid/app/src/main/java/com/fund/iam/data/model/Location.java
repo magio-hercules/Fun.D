@@ -9,10 +9,8 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class Job {
+public class Location {
 
-    private int id;
     private String name;
-    private String color;
     private String description;
 }

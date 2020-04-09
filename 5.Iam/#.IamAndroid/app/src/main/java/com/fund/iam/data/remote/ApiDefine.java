@@ -25,8 +25,11 @@ public class ApiDefine {
         String API_NEW_CHANNEL = "channel/channerInsert";   // 신규 채널 생성
         String API_CHANNEL = "channel/channerInfo";         // 특정 채널 조회
 
-        String API_LIST_JOB = "list/job";                   // 전체 직업 리스트
+        String API_NOTICES = "list/notice";                 // 전체 공지사항 조회
+        String API_LOCATIONS = "list/location";             // 전체 장소 조회
+        String API_JOBS = "list/job";                       // 전체 직업 조회
         String API_LIST_JOB_INFO = "list/jobInfo";          // 직업 정보
+
     }
 
 }

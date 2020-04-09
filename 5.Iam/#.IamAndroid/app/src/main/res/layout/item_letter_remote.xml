@@ -12,10 +12,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/messagebox_remote"
             android:text="@{viewModel.letterMessage}"
             android:textColor="@color/black"
-            android:background="@drawable/messagebox_remote"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -60,7 +60,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         Log.d(TAG, "postJobList");
 
         getCompositeDisposable().add(
-                getDataManager().postJobList()
+                getDataManager().postJobs()
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
@@ -105,7 +105,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
         int userId = 1;
         getCompositeDisposable().add(
-            getDataManager().postJobList()
+            getDataManager().postJobs()
             .flatMap(result -> {
                 Logger.d("postJobList success");
                 Logger.d(result.body());
@@ -263,7 +263,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
         int userId = 1;
         getCompositeDisposable().add(
-                getDataManager().postJobList()
+                getDataManager().postJobs()
                         .flatMap(result -> {
                             Logger.d("postJobList success");
                             Logger.d(result.body());

@@ -40,7 +40,7 @@
 
         <activity
             android:name=".ui.letter.LetterActivity"
-            android:windowSoftInputMode="stateHidden"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
 
         <meta-data
