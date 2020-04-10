@@ -29,8 +29,8 @@ public class CreateChannelViewModel extends BaseViewModel<CreateChannelNavigator
 
         getCompositeDisposable().add(
                 getDataManager().postCreateChannel(ownerId, name, purpose, location, description, password)
-                        .observeOn(getSchedulerProvider().io())
-                        .subscribeOn(getSchedulerProvider().computation())
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
                             Logger.d("postCreateChannels success");
                             channel = result.body();

@@ -32,12 +32,12 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="새로운 요리 연구가들의 모임"
             android:textColor="#000000"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="새로운 요리 연구가들의 모임" />
 
         <TextView
             android:id="@+id/tv_purpose"
@@ -45,11 +45,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="요리 연구가들은 여기로 모이세요"
             android:textColor="#000000"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toBottomOf="@+id/tv_name" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_name"
+            tools:text="요리 연구가들은 여기로 모이세요" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

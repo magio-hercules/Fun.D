@@ -39,13 +39,13 @@
         android:paddingTop="2dp"
         android:paddingRight="8dp"
         android:paddingBottom="2dp"
-        android:text="디자이너"
         android:textColor="#111111"
         android:textSize="10sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/tv_userName"
         app:layout_constraintStart_toEndOf="@+id/tv_userName"
-        app:layout_constraintTop_toTopOf="@+id/tv_userName" />
+        app:layout_constraintTop_toTopOf="@+id/tv_userName"
+        tools:text="디자이너" />
 
     <TextView
         android:id="@+id/tv_userName"
@@ -53,12 +53,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Max Mckinney"
         android:textColor="#111111"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/iv_user"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Max Mckinney" />
 
     <TextView
         android:id="@+id/tv_email"
@@ -66,10 +66,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="4dp"
-        android:text="Jeff.anderson@example.com"
         android:textColor="#111111"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/iv_user"
-        app:layout_constraintTop_toBottomOf="@+id/tv_userName" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_userName"
+        tools:text="Jeff.anderson@example.com" />
 </androidx.constraintlayout.widget.ConstraintLayout>

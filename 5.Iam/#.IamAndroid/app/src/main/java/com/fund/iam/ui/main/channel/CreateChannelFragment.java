@@ -70,6 +70,7 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
     @Override
     public void createChannel() {
         // TODO 응답 받아서 새 페이지로 넘어 갈 수 있게 설정
+        // TODO 채널생성 스택 없애기
 //        showToast(getViewModel().channel.id+"");
     }
 
