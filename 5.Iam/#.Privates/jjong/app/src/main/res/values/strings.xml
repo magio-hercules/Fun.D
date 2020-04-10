@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">IAM</string>
+    <string name="kakao_app_key">835814cb84fda8ad2479ef6d4db3cde0</string>
+    <string name="facebook_application_id" translatable="false">224894031972118</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb224894031972118</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

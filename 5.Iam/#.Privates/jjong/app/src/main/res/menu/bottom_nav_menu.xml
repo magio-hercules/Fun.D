@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_test"
+        android:icon="@drawable/tab_icon_profile"
+        android:title="TODO" />
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/tab_icon_profile"
+        android:title="TODO" />
+    <item
+        android:id="@+id/navigation_bookmark"
+        android:icon="@drawable/tab_icon_mylist"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/tab_icon_search"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/navigation_setting"
+        android:icon="@drawable/tab_icon_setting"
+        tools:ignore="MenuTitle"  />
+</menu>

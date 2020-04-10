@@ -1,0 +1,344 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
+
+
+        <!--            <ImageView-->
+        <!--                android:id="@+id/edit"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:layout_marginLeft="16dp"-->
+        <!--                android:layout_marginTop="16dp"-->
+        <!--                android:layout_marginRight="16dp"-->
+        <!--                android:clickable="true"-->
+        <!--                android:src="@android:drawable/ic_menu_edit"-->
+        <!--                android:visibility="invisible" />-->
+
+
+        <ImageView
+            android:id="@+id/profile_appbar_logo"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/profile_logo" />
+
+        <ImageView
+            android:id="@+id/profile_letter"
+            android:layout_width="30dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:clickable="true"
+            android:src="@drawable/letter" />
+
+        <ImageView
+            android:id="@+id/image_profile"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="5dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_background"
+            app:layout_constraintDimensionRatio="4:3"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_appbar_logo"
+            app:srcCompat="@drawable/profile_background" />
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="홍길동"
+            android:textColor="#000"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            app:layout_constraintLeft_toRightOf="@id/profile_guideline_v_start"
+            app:layout_constraintTop_toBottomOf="@id/image_profile" />
+
+
+        <TextView
+            android:id="@+id/profile_job_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="디자이너   27"
+            android:textColor="#000"
+            android:textSize="18sp"
+            app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_2"
+            app:layout_constraintTop_toTopOf="@id/profile_name" />
+
+        <TextView
+            android:id="@+id/profile_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="27살"
+            android:textColor="#000"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_2"
+            app:layout_constraintBottom_toBottomOf="@id/profile_name" />
+
+        <ImageView
+            android:id="@+id/profile_modify"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
+            app:layout_constraintTop_toTopOf="@id/profile_name"
+            app:layout_constraintBottom_toBottomOf="@id/profile_name"
+            android:clickable="true"
+            android:src="@drawable/profile_save" />
+
+
+        <View
+            android:id="@+id/profile_line_job"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="10dp"
+            android:background="#4527A0"
+            app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
+            app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
+            app:layout_constraintTop_toBottomOf="@id/profile_name" />
+
+
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:text="전화번호: "
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_1"
+            app:layout_constraintTop_toBottomOf="@id/profile_line_job"
+            />
+
+        <TextView
+            android:id="@+id/profile_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="aaa"
+            app:layout_constraintLeft_toRightOf="@id/textView10"
+            app:layout_constraintTop_toTopOf="@id/textView10" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="이메일: "
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_1"
+            app:layout_constraintTop_toBottomOf="@id/textView10" />
+
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="hong@gmail.com"
+            app:layout_constraintLeft_toRightOf="@id/textView5"
+            app:layout_constraintTop_toTopOf="@id/textView5" />
+
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="성별: "
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_1"
+            app:layout_constraintTop_toBottomOf="@id/textView5"  />
+
+        <TextView
+            android:id="@+id/profile_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="남자"
+            app:layout_constraintLeft_toRightOf="@id/textView11"
+            app:layout_constraintTop_toTopOf="@id/textView11" />
+
+
+        <View
+            android:id="@+id/divider_3"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="#4527A0"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/profile_gender" />
+
+        <Button
+            android:id="@+id/button_add_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="이미지+"
+            android:onClick="@{() -> viewModel.testUsersApi()}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider_3" />
+
+        <Button
+            android:id="@+id/button_add_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="글+"
+            app:layout_constraintStart_toEndOf="@+id/button_add_image"
+            app:layout_constraintTop_toTopOf="@+id/button_add_image" />
+
+        <Button
+            android:id="@+id/button_prev_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="prev User"
+            app:layout_constraintStart_toEndOf="@+id/button_add_text"
+            app:layout_constraintTop_toTopOf="@+id/button_add_text" />
+
+        <Button
+            android:id="@+id/button_next_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="next User"
+            app:layout_constraintStart_toEndOf="@+id/button_prev_user"
+            app:layout_constraintTop_toTopOf="@+id/button_prev_user" />
+
+
+        <LinearLayout
+            android:id="@+id/portfolio_layout"
+            android:layout_width="399dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="@+id/button_add_image"
+            app:layout_constraintTop_toBottomOf="@+id/button_add_image"
+            tools:layout_editor_absoluteX="1dp"
+            tools:layout_editor_absoluteY="236dp">
+
+        </LinearLayout>
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_guideline_v_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="10dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_guideline_v_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="28dp"
+            />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_guideline_v_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="150dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/profile_guideline_v_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="10dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
+
+<!--<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context="de.hdodenhof.xingapi.sample.ProfileFragment">-->
+
+<!--    <RelativeLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--        <ImageView-->
+<!--            android:id="@+id/profile_picture"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="256dp"-->
+<!--            android:scaleType="centerCrop"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/user_name"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignBottom="@id/profile_picture"-->
+<!--            android:paddingLeft="16dp"-->
+<!--            android:paddingRight="16dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="8dp"-->
+<!--            android:background="@color/primaryTranslucent"-->
+<!--            android:textColor="@color/primaryText"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Large"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/header_haves"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/profile_picture"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:text="Haves"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/haves"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/header_haves"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/header_wants"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/haves"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
+<!--            android:textAllCaps="true"-->
+<!--            android:text="Wants"/>-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/wants"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/header_wants"-->
+<!--            android:layout_marginLeft="16dp"-->
+<!--            android:layout_marginRight="16dp"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Small"/>-->
+
+<!--    </RelativeLayout>-->
+
+<!--</ScrollView>-->
