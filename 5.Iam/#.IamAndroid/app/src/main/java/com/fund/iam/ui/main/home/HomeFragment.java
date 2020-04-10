@@ -1,6 +1,7 @@
 package com.fund.iam.ui.main.home;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,12 +13,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
 import com.fund.iam.databinding.FragmentHomeBinding;
@@ -27,7 +30,11 @@ import com.fund.iam.ui.letter.LetterActivity;
 import com.fund.iam.ui.main.MainActivity;
 import com.orhanobut.logger.Logger;
 
+import java.io.ObjectStreamClass;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 
@@ -123,25 +130,46 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
     }
 
-
     /////////////////////////////
+
 
 
 
     private void initViews() {
         Log.d(TAG, "initViews");
 
+//        getViewModel().getJobList();
         getViewModel().getUserInfo();
         getViewModel().getUserPortfolio();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateUser() {
         Log.d(TAG, "updateUI");
 
+
+        // Use filter to find all elements greater than 20.
+//        IntStream result = Arrays.stream(values).filter(element -> element >= 20);
+
+//        // Find first match.
+//        OptionalInt firstMatch = result.findFirst();
+//
+//        // Print first matching int.
+//        if (firstMatch.isPresent()) {
+//            System.out.println("First: " + firstMatch.getAsInt());
+//        }
+
         User info = getViewModel().myInfo;
+        List<Job> jobList = getViewModel().listJob;
+
+        Job findJob = jobList.stream()
+                .filter(item -> item.getId() == Integer.parseInt(info.getJobList()))
+                .findAny()
+                .orElse(null);
+
         getViewDataBinding().profileName.setText(info.getUserName());
-        getViewDataBinding().profileAgeLocation.setText("" + info.getAge());
-        getViewDataBinding().profileName.setText(info.getUserName());
+        getViewDataBinding().profileJob.setText(findJob != null ? findJob.getName() : "직업 없음");
+        getViewDataBinding().profileAgeLocation.setText("" + info.getAge() + " 살");
         getViewDataBinding().profilePhone.setText(info.getPhone());
         getViewDataBinding().profileEmail.setText(info.getEmail());
         getViewDataBinding().profileGender.setText(info.getGender() == 0 ? "남자" : "여자");
@@ -190,7 +218,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 getViewDataBinding().portfolioLayout,
                 true);
 
-        TextView textEdit = (TextView) newLayout.findViewById(R.id.portfolioText_edit);
+        TextView textEdit = (TextView) newLayout.findViewById(R.id.portfolioText_text);
         textEdit.setId(PORTFOLIPO_EDIT_ID + portfolidIndex);
         textEdit.setText(text);
 
@@ -230,8 +258,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         Glide.with(getContext())
                 .load(url)
-                .placeholder(R.drawable.image_default)
+                .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
+                .fitCenter()
                 .into(imageImage);
 
         // for edit 모드
@@ -250,4 +279,12 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         portfolidIndex++;
     }
 
+
+    public void insertImage() {
+        Log.d(TAG, "insertImage");
+    }
+
+    public void insertText() {
+        Log.d(TAG, "insertText");
+    }
 }

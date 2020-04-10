@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.fund.iam.BR;
 import com.fund.iam.R;
@@ -21,7 +22,6 @@ import com.fund.iam.ui.base.BaseActivity;
 import com.fund.iam.ui.main.MainActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.kakao.auth.Session;
@@ -49,7 +49,6 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     }
 
     private CallbackManager mCallbackManager = CallbackManager.Factory.create();
-    ;
 
     @Override
     public LoginViewModel getViewModel() {
@@ -112,6 +111,7 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     @Override
     public void onSuccess(LoginResult loginResult) {
         getViewModel().firebaseAuthWithFaceBook(loginResult.getAccessToken());
+
     }
 
     @Override

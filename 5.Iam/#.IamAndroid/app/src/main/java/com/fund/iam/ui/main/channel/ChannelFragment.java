@@ -59,10 +59,9 @@ public class ChannelFragment extends BaseFragment<FragmentChannelBinding, Channe
     @Override
     public void getChannelInfo() {
 
-        getViewDataBinding().tvName.setText(getViewModel().channel.get(0).name);
+//        getViewDataBinding().tvName.setText(getViewModel().channel.get(0).name);
         getViewDataBinding().tvLocation.setText(getViewModel().channel.get(0).location);
-        getViewDataBinding().tvDescription.setText(getViewModel().channel.get(0).description);
-        //TODO 채널 생성일 정규식 쓰기
+//        getViewDataBinding().tvDescription.setText(getViewModel().channel.get(0).description);
 //        getViewDataBinding().tvCreateDate.setText(getViewModel().channel.get(0).createDate);
 
     }
@@ -87,12 +86,6 @@ public class ChannelFragment extends BaseFragment<FragmentChannelBinding, Channe
     private void initViews(View view) {
         int id = ChannelFragmentArgs.fromBundle(getArguments()).getChannelIdArg();
         getViewModel().getChannelInfo(id);
-        getViewDataBinding().btChanelUserList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     @Override

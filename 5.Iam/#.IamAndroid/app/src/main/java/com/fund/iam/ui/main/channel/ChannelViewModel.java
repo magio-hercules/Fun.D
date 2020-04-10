@@ -30,8 +30,8 @@ public class ChannelViewModel extends BaseViewModel<ChannelNavigator> {
 
         getCompositeDisposable().add(
                 getDataManager().postChannel(id)
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
+                        .observeOn(getSchedulerProvider().io())
+                        .subscribeOn(getSchedulerProvider().computation())
                         .subscribe(result -> {
                             Logger.d("postChannels success");
                             channel = result.body();

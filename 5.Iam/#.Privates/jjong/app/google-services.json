@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1085239602344",
+    "firebase_url": "https://i-am-81525.firebaseio.com",
+    "project_id": "i-am-81525",
+    "storage_bucket": "i-am-81525.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1085239602344:android:dd79419b6c1c2214cfa69d",
+        "android_client_info": {
+          "package_name": "com.fund.iam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1085239602344-ccac1t9br1funf2i3cdkgc45miree20s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.fund.iam",
+            "certificate_hash": "3036d85e403363d91ad58c0a54c7b524692cac3a"
+          }
+        },
+        {
+          "client_id": "1085239602344-ju2lh102r41fb6h3ghc2uut6m31rlm5n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAg5S94JhyFLmvy87o9qBqLg5G-R28RxMM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1085239602344-ju2lh102r41fb6h3ghc2uut6m31rlm5n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -27,5 +27,16 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
         
     }
 
+    public void getInitialData() {
+        getCompositeDisposable().add(getDataManager().postJobs()
+                .observeOn(getSchedulerProvider().io())
+                .subscribe(jobs -> getDataManager().setJobs(jobs.body())));
+
+        getCompositeDisposable().add(getDataManager().postLocations()
+                .observeOn(getSchedulerProvider().io())
+                .subscribe(locations -> getDataManager().setLocations(locations.body())));
+
+    }
+
 
 }

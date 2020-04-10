@@ -26,10 +26,18 @@ public class User {
     @SerializedName("job_list")
     private String jobList;
 
+    @SerializedName("location_list")
+    private int locationList;
+
+    @SerializedName("portfolio_list")
+    private int portfolioList;
+
+    @SerializedName("image_url")
+    private String imageUrl;
+
     private int age;
 
     private int gender;
 
-    @SerializedName("firebase_token")
-    private String firebaseToken;
+    private String token;
 }

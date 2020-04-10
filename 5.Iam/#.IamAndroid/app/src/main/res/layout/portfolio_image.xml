@@ -16,21 +16,12 @@
 
     <ImageView
         android:id="@+id/portfolioImage_image"
-        android:layout_width="306dp"
-        android:layout_height="150dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:scaleType="fitCenter"
         android:src="@drawable/image_default"
-        app:srcCompat="@drawable/default_image" />
-
-    <Button
-        android:visibility="gone"
-        android:id="@+id/portfolioImage_delete"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="삭제" />
-
+        app:srcCompat="@drawable/profile_default_picture" />
 
 </LinearLayout>

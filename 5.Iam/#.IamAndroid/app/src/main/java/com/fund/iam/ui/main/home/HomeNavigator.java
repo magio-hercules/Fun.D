@@ -11,4 +11,7 @@ public interface HomeNavigator extends BaseNavigator {
 
     void updateUser();
     void updatePortfolio();
+
+    void insertImage();
+    void insertText();
 }
