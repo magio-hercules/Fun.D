@@ -143,6 +143,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         getViewModel().getUserPortfolio();
     }
 
+    public void onSuccess() {
+        Log.d(TAG, "onSuccess");
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateUser() {
         Log.d(TAG, "updateUI");

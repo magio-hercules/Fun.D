@@ -107,6 +107,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Single<Response<Void>> postUpdatePortfolio( int id, int userId, int type, String text) {
+        return mAwsApiHelper.postUpdatePortfolio(id, userId, type, text);
+    }
+
+    @Override
     public Single<Response<List<Location>>> postLocations() {
         return mAwsApiHelper.postLocations();
     }
