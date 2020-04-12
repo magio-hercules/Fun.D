@@ -1,7 +1,6 @@
 package com.fund.iam.ui.main.home;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -13,9 +12,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,7 +36,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -60,7 +61,7 @@ import com.fund.iam.databinding.FragmentHomeEditBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.fund.iam.ui.letter.LetterActivity;
-import com.fund.iam.ui.main.MainActivity;
+import com.fund.iam.utils.RealPathUtil;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -213,7 +214,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //        Logger.i("onCreate");
 
         progressDialog = new ProgressDialog(getContext());
-        loadingStart();
+//        loadingStart();
 
         getViewModel().setNavigator(this);
         setHasOptionsMenu(true);
@@ -227,6 +228,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         // TODO, for test userId 가져오기
         userId = 1;
 
+
+        checkPermissions();
 
         initSpinnerList();
         initViews();
@@ -317,6 +320,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -336,12 +340,25 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     Bitmap image = readImageWithSampling(in, 800, 600);
                     in.close();
 
-                    Uri selectedimg = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedimg);
+                    Uri selectedImg = data.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),
+                            selectedImg);
+
+                    String imagePath = RealPathUtil.getRealPathFromURI_API19(getContext(), selectedImg);
+                    Log.i(TAG, "imagePath : " + imagePath);
+
+                    // 이미지를 상황에 맞게 회전시킨다
+                    ExifInterface exif = new ExifInterface(imagePath);
+                    int exifOrientation = exif.getAttributeInt(
+                                                ExifInterface.TAG_ORIENTATION,
+                                                ExifInterface.ORIENTATION_NORMAL);
+                    Bitmap rotatedBitmap = rotateBitmap(bitmap, exifOrientation);
+                    int exifDegree = exifOrientationToDegrees(exifOrientation);
+                    Log.i(TAG, "exifDegree : " + exifDegree);
 
 //                    makeImageContents(1, image, null);
-                    addPortfolioImage(bitmap);
-
+//                    addPortfolioImage(bitmap);
+                    addPortfolioImage(rotatedBitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -387,8 +404,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
     }
 
-    //아래는 권한 요청 Callback 함수입니다. PERMISSION_GRANTED로 권한을 획득했는지 확인할 수 있습니다. 아래에서는 !=를 사용했기에
-//권한 사용에 동의를 안했을 경우를 if문으로 코딩되었습니다.
+    //아래는 권한 요청 Callback 함수입니다. PERMISSION_GRANTED로 권한을 획득했는지 확인할 수 있습니다.
+    // 아래에서는 !=를 사용했기에 권한 사용에 동의를 안했을 경우를 if문으로 코딩되었습니다.
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult " + requestCode);
@@ -459,6 +476,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "watingCount is " + watingCount);
 
         if (bWaiting && watingCount == 0) {
+            // type 1: 수정사항 반영 완료
             loadingEnd(1);
         }
     }
@@ -643,6 +661,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         bWaiting = true;
         if (changeCount == 0) {
+            // type 2: 업데이트 항목 없음
             loadingEnd(2);
         }
     }
@@ -793,7 +812,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             }
         }
 
-        loadingEnd(0);
+//        loadingEnd(0);
     }
 
     private void addPortfolioText(int id, String text) {
@@ -976,7 +995,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
 
     ////////////////////
-    // image 추가 기능
+    // image 추가 기능 //
     ////////////////////
 
 
@@ -1004,6 +1023,87 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
     };
 
+    private Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
+
+        switch(orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0,
+                    bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        int column_index=0;
+        String[] proj = { MediaStore.Images.Media.DATA };
+
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj,
+                    null, null, null);
+        Log.d(TAG, "cursor.moveToFirst() : " + cursor.moveToFirst());
+        if(cursor.moveToFirst()) {
+            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            Log.d(TAG, "column_index : " + column_index);
+
+        }
+
+        Log.d(TAG, "proj[0] : " + proj[0]);
+        Log.d(TAG, "cursor.getColumnIndex(proj[0] : " + cursor.getColumnIndex(proj[0]));
+
+        String realPath = cursor.getString(column_index);
+        Log.d(TAG, "realPath : " + realPath);
+        cursor.close();
+        return realPath;
+    }
+
+
+    public int exifOrientationToDegrees(int exifOrientation) {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } else {
+            return 0;
+        }
+    }
+
     private boolean checkPermissions() {
         Log.d(TAG, "checkPermissions");
 
@@ -1018,13 +1118,17 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             }
         }
 
-        if (!permissionList.isEmpty()) { //권한이 추가되었으면 해당 리스트가 empty가 아니므로 request 즉 권한을 요청합니다.
-            ActivityCompat.requestPermissions((Activity)getContext(), permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
+        //권한이 추가되었으면 해당 리스트가 empty가 아니므로 request 즉 권한을 요청합니다.
+        if (!permissionList.isEmpty()) {
+            Log.d(TAG, "permissionList : " + permissionList.toString());
+
+            ActivityCompat.requestPermissions((Activity)getContext(),
+                    permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
             Log.d(TAG, "checkPermissions return false");
             return false;
         }
 
-        Log.d(TAG, "checkPermissions return true");
+        Log.d(TAG, "checkPermissions return true & permissionList is empty");
         return true;
     }
 
