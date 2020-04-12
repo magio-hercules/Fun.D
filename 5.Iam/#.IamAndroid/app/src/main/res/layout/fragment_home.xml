@@ -120,12 +120,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/image_profile"
+                android:id="@+id/profile_image_profile"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile_default_picture"
+                android:src="@drawable/profile_default_2"
                 app:layout_constraintRight_toRightOf="@id/profile_header"
                 app:layout_constraintTop_toBottomOf="@id/profile_header"
                 />
@@ -140,7 +140,7 @@
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
                 app:layout_constraintLeft_toRightOf="@id/profile_guideline_v_start"
-                app:layout_constraintTop_toBottomOf="@id/image_profile" />
+                app:layout_constraintTop_toBottomOf="@id/profile_image_profile" />
 
 
             <TextView

@@ -172,6 +172,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 .findAny()
                 .orElse(null);
 
+        Log.d(TAG, "url : " + info.getImageUrl());
+        Glide.with(getContext())
+                .load(info.getImageUrl())
+                .placeholder(R.drawable.profile_default_2)
+//                .apply(RequestOptions.centerCropTransform())
+                .fitCenter()
+//                .centerCrop()
+                .into(getViewDataBinding().profileImageProfile);
+
         getViewDataBinding().profileName.setText(info.getUserName());
         getViewDataBinding().profileJob.setText(findJob != null ? findJob.getName() : "직업 없음");
         getViewDataBinding().profileAgeLocation.setText("" + info.getAge() + " 살");

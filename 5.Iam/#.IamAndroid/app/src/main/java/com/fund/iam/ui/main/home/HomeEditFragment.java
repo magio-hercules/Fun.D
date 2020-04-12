@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,6 +46,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
@@ -674,9 +680,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 spinnerValueJob,
                 "직종");
 
-        initSpinner(getViewDataBinding().profileEditJobDetail,
-                spinnerValueJobDetail,
-                "세부직종");
+//        initSpinner(getViewDataBinding().profileEditJobDetail,
+//                spinnerValueJobDetail,
+//                "세부직종");
 
         initSpinner(getViewDataBinding().profileEditGender,
                 spinnerValueGender,
@@ -753,6 +759,21 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //            }
 //        }
 
+    }
+
+    private void moveScroll(boolean bDown) {
+        Log.d(TAG, "moveScroll");
+
+        getViewDataBinding().profileScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                if (bDown) {
+                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_DOWN);
+                } else {
+                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_UP);
+                }
+            }
+        });
     }
 
     public void updatePortfolio() {
@@ -853,6 +874,11 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         // 버튼을 찾기 위한 id
         portfolidIndex++;
+
+        // 신규 아이템 추가 시 scroll 최하단으로 이동
+        if (id == -1) {
+            moveScroll(true);
+        }
     }
 
     private void addPortfolioImage(int id, String url) {
@@ -916,6 +942,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //                .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
                 .fitCenter()
+                .listener(requestListener)
                 .into(imageImage);
 
         ImageView imageDelete = (ImageView) newLayout.findViewById(R.id.portfolioImage_delete);
@@ -930,6 +957,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         // 버튼을 찾기 위한 id
         portfolidIndex++;
+
+//        // 신규 아이템 추가 시 scroll 최하단으로 이동 -> listener로 이동
+//        moveScroll(true);
     }
 
     public void insertImage() {
@@ -950,7 +980,29 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     ////////////////////
 
 
+    private RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            Log.e(TAG, "onLoadFailed");
+            return false;
+        }
 
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            Log.d(TAG, "onResourceReady");
+            Log.d(TAG, "이미지 로딩 후 스크롤 이동");
+
+            new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            // 신규 아이템 추가 시 scroll 최하단으로 이동
+                            moveScroll(true);
+                        }
+                    }, 500);
+
+            return false;
+        }
+    };
 
     private boolean checkPermissions() {
         Log.d(TAG, "checkPermissions");

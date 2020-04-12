@@ -11,6 +11,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/profile_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
@@ -168,18 +169,18 @@
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_location"
                 />
 
-            <Spinner
-                android:id="@+id/profile_edit_job_detail"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/spinner_background"
-                android:popupBackground="#ffffff"
-                android:overlapAnchor="false"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
-                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_job"
-                />
+<!--            <Spinner-->
+<!--                android:id="@+id/profile_edit_job_detail"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/spinner_background"-->
+<!--                android:popupBackground="#ffffff"-->
+<!--                android:overlapAnchor="false"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_job"-->
+<!--                />-->
 
             <Spinner
                 android:id="@+id/profile_edit_gender"
@@ -191,7 +192,7 @@
                 android:overlapAnchor="false"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_job_detail"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_job"
                 />
 
             <Spinner
@@ -276,7 +277,6 @@
                 android:textColor="#ffffff"
                 android:textStyle="bold"
                 android:background="@drawable/layout_profile_save"
-                android:onClick="@{() -> viewModel.handleSave()}"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_insert_image"
