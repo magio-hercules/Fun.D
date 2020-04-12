@@ -110,11 +110,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
             case R.id.channel_create:
                 mNavController.navigate(R.id.navigation_create_channel);
                 break;
-
-            case R.id.btnLetter:
-                LetterActivity.start(this);
-                break;
-
         }
     }
 
