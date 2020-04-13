@@ -34,9 +34,10 @@ function postUserInfo(param) {
   });
 }
 
-function userInsert(param) {
-  console.log(`call userInsert`);
-  let queryString = `INSERT INTO ${DB_TABLE_USERINFO} SET ? `;
+function userLogin(param) {
+  console.log(`call userLogin`);
+  let queryString = `INSERT INTO ${DB_TABLE_USERINFO} SET ?, 
+  modify_date = now() ON DUPLICATE KEY UPDATE modify_date = now();`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
@@ -149,15 +150,17 @@ router.post("/info", function (req, res, next) {
     });
 });
 
-router.post(`/userInsert`, function (req, res, next) {
-  console.log(`API = /userInsert`);
-
-  userInsert(req.body)
+router.post(`/login`, function (req, res, next) {
+  console.log(`API = /login`);
+  userLogin(req.body)
+    .then((result) => {
+      return postUserInfo(req.body.email);
+    })
     .then((result) => {
       res.json(result);
     })
     .catch(function (err) {
-      console.log(`[userInsert] error : ${err}`);
+      console.log(`[login] error : ${err}`);
       res.end(`NOK`);
     });
 });
@@ -201,8 +204,7 @@ router.post("/portfolio", function (req, res, next) {
 router.post(`/portfolioInsert`, function (req, res, next) {
   console.log(`API = /portfolioInsert`);
 
-  if(req.body.type===1) {
-    
+  if (req.body.type === 1) {
   }
 
   portfolioInsert(req.body)

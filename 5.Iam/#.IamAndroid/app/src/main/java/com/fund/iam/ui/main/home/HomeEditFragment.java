@@ -1,9 +1,9 @@
 package com.fund.iam.ui.main.home;
 
 import android.Manifest;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -12,8 +12,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,8 +34,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -43,6 +47,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
@@ -53,6 +61,7 @@ import com.fund.iam.databinding.FragmentHomeEditBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.fund.iam.ui.letter.LetterActivity;
+import com.fund.iam.utils.RealPathUtil;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
@@ -132,7 +141,11 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     };
 
 
+    ///////////////////
     // Home variable //
+
+    // TODO, for test userId 가져오기
+    int userId;
 
     //권한 설정 변수
     private String[] permissions = {
@@ -151,14 +164,21 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     Uri photoURI;
 
     // Portfolio 관리 정보 //
-    // 추가될 신규 포트폴리오 (type, text or imageUrl)
+    // 추가될 신규 포트폴리오 (id, text or imageUrl)
     List<Map<Integer, String>> arrAddPortfolioText = new ArrayList<Map<Integer, String>>();
     List<Map<Integer, String>> arrAddPortfolioImage = new ArrayList<Map<Integer, String>>();
-    // 삭제될 기존 포트폴리오
+    // 삭제될 기존 포트폴리오 (id만 관리)
     List<Integer> arrDeletePortfolio = new ArrayList<Integer>();
+    // 수정될 기존 TEXT 포트폴리오 (id, text)
+    List<Map<Integer, String>> arrModifyPortfolio = new ArrayList<Map<Integer, String>>();
 
+    ProgressDialog progressDialog;
+    // API 호출 횟수를 count 하여 ProgressDialog 관리
+    boolean bWaiting = false;
+    int watingCount = 0;
 
-    // end of Home variable //
+    // Home variable //
+    ///////////////////
 
 
     public static HomeEditFragment newInstance() {
@@ -192,6 +212,10 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        Logger.i("onCreate");
+
+        progressDialog = new ProgressDialog(getContext());
+//        loadingStart();
+
         getViewModel().setNavigator(this);
         setHasOptionsMenu(true);
     }
@@ -200,6 +224,12 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // TODO, for test userId 가져오기
+        userId = 1;
+
+
+        checkPermissions();
 
         initSpinnerList();
         initViews();
@@ -290,6 +320,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -309,12 +340,25 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     Bitmap image = readImageWithSampling(in, 800, 600);
                     in.close();
 
-                    Uri selectedimg = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedimg);
+                    Uri selectedImg = data.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),
+                            selectedImg);
+
+                    String imagePath = RealPathUtil.getRealPathFromURI_API19(getContext(), selectedImg);
+                    Log.i(TAG, "imagePath : " + imagePath);
+
+                    // 이미지를 상황에 맞게 회전시킨다
+                    ExifInterface exif = new ExifInterface(imagePath);
+                    int exifOrientation = exif.getAttributeInt(
+                                                ExifInterface.TAG_ORIENTATION,
+                                                ExifInterface.ORIENTATION_NORMAL);
+                    Bitmap rotatedBitmap = rotateBitmap(bitmap, exifOrientation);
+                    int exifDegree = exifOrientationToDegrees(exifOrientation);
+                    Log.i(TAG, "exifDegree : " + exifDegree);
 
 //                    makeImageContents(1, image, null);
-                    addPortfolioImage(bitmap);
-
+//                    addPortfolioImage(bitmap);
+                    addPortfolioImage(rotatedBitmap);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -360,8 +404,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
     }
 
-    //아래는 권한 요청 Callback 함수입니다. PERMISSION_GRANTED로 권한을 획득했는지 확인할 수 있습니다. 아래에서는 !=를 사용했기에
-//권한 사용에 동의를 안했을 경우를 if문으로 코딩되었습니다.
+    //아래는 권한 요청 Callback 함수입니다. PERMISSION_GRANTED로 권한을 획득했는지 확인할 수 있습니다.
+    // 아래에서는 !=를 사용했기에 권한 사용에 동의를 안했을 경우를 if문으로 코딩되었습니다.
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         Log.d(TAG, "onRequestPermissionsResult " + requestCode);
@@ -425,6 +469,67 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     }
 
+    public void onSuccess() {
+        watingCount--;
+
+        Log.d(TAG, "onSuccess");
+        Log.d(TAG, "watingCount is " + watingCount);
+
+        if (bWaiting && watingCount == 0) {
+            // type 1: 수정사항 반영 완료
+            loadingEnd(1);
+        }
+    }
+
+    public void loadingStart() {
+        bWaiting = false;
+        watingCount = 0;
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    public void run() {
+                        if (progressDialog == null) {
+                            Log.e(TAG, "progressDialog is null");
+                        }
+                        progressDialog.setIndeterminate(true);
+                        progressDialog.setMessage("잠시만 기다려 주세요");
+                        progressDialog.show();
+                    }
+                }, 0);
+    }
+
+    public void loadingEnd(int type) {
+        int delay;
+        if (type == 0)
+            delay = 300;
+        else if (type == 1)
+            delay = 300;
+        else
+            delay = 500;
+
+        new android.os.Handler().postDelayed(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        progressDialog.dismiss();
+
+                        switch (type) {
+                            case 0:
+                                ;
+                                break;
+                            case 1:
+                                Toast.makeText(getContext(), "수정사항이 반영되었습니다.", Toast.LENGTH_LONG).show();
+                                break;
+                            case 2:
+                                Toast.makeText(getContext(), "변경사항이 없습니다.", Toast.LENGTH_LONG).show();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }, delay);
+    }
+
     private void handleSave(View view) {
         Log.d(TAG, "handleSave");
 
@@ -443,18 +548,14 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         EditText editView = null;
         String editText = "";
         String prevText = "";
+        // 포트폴리오 layout에 남아있는 view 정보
         for(int i=0; i<count; i++) {
             innerLayout = (LinearLayout)layout.getChildAt(i);
             v = innerLayout.getChildAt(1);
 
-            // 신규 아이템
-
-
             if (v instanceof ImageView) {
                 imageView = (ImageView) v;
                 Log.d(TAG, i + "번째 imageView url : " + imageView);
-
-                // TODO 이미지가 변경된지는 어떻게 알지? -> 별도의 arr로 관리하자 (arrAdd, arrDelete)
 
                 if (i < listPortfolio.size()) {
                     prevUrl = listPortfolio.get(i).getImageUrl();
@@ -468,6 +569,16 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 if (i < listPortfolio.size()) {
                     prevText = listPortfolio.get(i).getText();
                     Log.d(TAG, i + "번째 prevText : " + prevText);
+
+                    // 기존 포트폴리오 text 수정사항 체크
+                    if (!editText.equals(prevText)) {
+                        int _id = listPortfolio.get(i).getId();
+                        Log.d(TAG, "기존 아이템 수정 id : " + _id
+                                + ", 변경 전 : " + prevText + ", 변경 후 : " + editText);
+                        Map<Integer, String> map = new HashMap<Integer, String>();
+                        map.put(_id, editText);
+                        arrModifyPortfolio.add(map);
+                    }
                 }
             }
         }
@@ -475,24 +586,42 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "arrAddPortfolioText : " + arrAddPortfolioText.toString());
         Log.d(TAG, "arrAddPortfolioImage : " + arrAddPortfolioImage.toString());
         Log.d(TAG, "arrDeletePortfolio : " + arrDeletePortfolio.toString());
+        Log.d(TAG, "arrModifyPortfolio : " + arrModifyPortfolio.toString());
 
-        // TODO userId 가져오기
-        int userId = 1;
-
-        // 서버에 신규 리스트 추가 요청 (type 구분)
-
-        int _key;
+        int _id;
         String _text;
-        for (Map<Integer, String> port : arrAddPortfolioText) {
-//            Map.Entry<String, Object> entry = port.entrySet();
-            for (Map.Entry<Integer, String> entry : port.entrySet()) {
-                _key = entry.getKey();
-                _text = entry.getValue();
-                Log.d(TAG, "_key : " + _key + ", _text : " + _text);
 
+        loadingStart();
+
+        int changeCount = 0;
+        // STEP 1, 기존 리스트 변경 사항 발생시 update
+        for (Map<Integer, String> port : arrModifyPortfolio) {
+            for (Map.Entry<Integer, String> entry : port.entrySet()) {
+                _id = entry.getKey();
+                _text = entry.getValue();
+                Log.d(TAG, "_id : " + _id + ", _text : " + _text);
+
+                watingCount++;
+                changeCount++;
+                Log.d(TAG, "updatePortfolio watingCount is " + watingCount);
+                getViewModel().updatePortfolio(_id, userId, 1, _text);
+            }
+        }
+
+        // STEP 2, 신규 리스트 추가 요청 (type 구분 필요)
+        for (Map<Integer, String> port : arrAddPortfolioText) {
+            for (Map.Entry<Integer, String> entry : port.entrySet()) {
+                _id = entry.getKey();
+                _text = entry.getValue();
+                Log.d(TAG, "_key : " + _id + ", _text : " + _text);
+
+                watingCount++;
+                changeCount++;
+                Log.d(TAG, "insertPortfolioText watingCount is " + watingCount);
                 getViewModel().insertPortfolioText(_text);
             }
 
+            // TODO 이미지 추가 필요
 //            if (arrAddPortfolioText.contains(_id)) {
 //                Log.d(TAG, "추가 요청 id : " + _id);
 //                Log.d(TAG, "type : " + port.getType() +
@@ -502,9 +631,20 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //            }
         }
 
+        // STEP 2-1, 신규 리스트 추가 요청 (image), S3 API 구현 이후 제공 예정
+//        for (Map<Integer, String> port : arrAddPortfolioImage) {
+//            for (Map.Entry<Integer, String> entry : port.entrySet()) {
+//                _id = entry.getKey();
+//                _text = entry.getValue();
+//                Log.d(TAG, "_key : " + _id + ", _text : " + _text);
+//
+//                  watingCount++;
+//        changeCount++;
+//                getViewModel().insertPortfolioImage(null);
+//            }
+//        }
 
-        // 서버에 제거 리스트 삭제 요청
-        int _id;
+        // STEP 3, 제거 리스트 삭제 요청 (type 무관)
         for (Portfolio port : listPortfolio) {
             _id = port.getId();
             if (arrDeletePortfolio.contains(_id)) {
@@ -512,10 +652,18 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 Log.d(TAG, "type : " + port.getType() +
                 ", text or url : " + (port.getType() == 1 ? port.getText() : port.getImageUrl()));
 
+                watingCount++;
+                changeCount++;
+                Log.d(TAG, "deletePortfolioText watingCount is " + watingCount);
                 getViewModel().deletePortfolioText(port.getId());
             }
         }
 
+        bWaiting = true;
+        if (changeCount == 0) {
+            // type 2: 업데이트 항목 없음
+            loadingEnd(2);
+        }
     }
 
     public void initSpinnerList() {
@@ -551,9 +699,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 spinnerValueJob,
                 "직종");
 
-        initSpinner(getViewDataBinding().profileEditJobDetail,
-                spinnerValueJobDetail,
-                "세부직종");
+//        initSpinner(getViewDataBinding().profileEditJobDetail,
+//                spinnerValueJobDetail,
+//                "세부직종");
 
         initSpinner(getViewDataBinding().profileEditGender,
                 spinnerValueGender,
@@ -632,18 +780,26 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     }
 
+    private void moveScroll(boolean bDown) {
+        Log.d(TAG, "moveScroll");
+
+        getViewDataBinding().profileScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                if (bDown) {
+                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_DOWN);
+                } else {
+                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_UP);
+                }
+            }
+        });
+    }
+
     public void updatePortfolio() {
         Log.d(TAG, "updatePortfolio");
 
         List<Portfolio> portfolioList = getViewModel().myPortfolio;
-//        User userInfo = getViewModel().myInfo;
-
         for (Portfolio data: portfolioList) {
-//            if (data.getUserId() != userInfo.getId()) {
-//                Log.d(TAG, "data.getUserId() != userInfo.getId()");
-//                return;
-//            }
-
             switch (data.getType()) {
                 case 1: // TEXT
                     addPortfolioText(data.getId(), data.getText());
@@ -655,6 +811,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     break;
             }
         }
+
+//        loadingEnd(0);
     }
 
     private void addPortfolioText(int id, String text) {
@@ -666,27 +824,17 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         EditText _edit = (EditText) newLayout.findViewById(R.id.portfolioText_edit_text);
         _edit.setId(PORTFOLIPO_EDIT_ID + portfolidIndex);
         _edit.setText(text);
+
+        // for edit mode - add
         _edit.addTextChangedListener(new TextWatcher() {
-            @Override // 입력되는 텍스트에 변화가 있을 때
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override // 입력이 끝났을 때
             public void afterTextChanged(Editable arg0) {
                 String value = arg0.toString();
 
-                // 신규 포트폴리오
                 Map<Integer, String> map = new HashMap<Integer, String>();
                 if (id == -1) {
-//                    for (Map<Integer, String> port : arrAddPortfolioText) {
-////            Map.Entry<String, Object> entry = port.entrySet();
-//                        for (Map.Entry<Integer, String> entry : port.entrySet()) {
-//                            _key = entry.getKey();
-//                            _text = entry.getValue();
-
-
+                    // 신규 포트폴리오
                     // 중복 key가 있는지 체크
                     boolean bFind = false;
                     for(Map<Integer, String> port: arrAddPortfolioText) {
@@ -705,16 +853,20 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                         map.put(PORTFOLIPO_EDIT_ID + portfolidIndex, value);
                         arrAddPortfolioText.add(map);
                     }
+                } else {
+//                    // 기존 포트폴리오 수정사항은 handleSave에서 처리함
+//                    Log.d(TAG, "기존 아이템 수정 id : " + id + ", string : " + value);
+//                    map.put(id, value);
+//                    arrModifyPortfolio.add(map);
                 }
             }
-
             @Override // 입력하기 전
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override // 입력되는 텍스트에 변화가 있을 때
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
         });
 
-        // for edit mode
+        // for edit mode - delete
         ImageView deleteButton = (ImageView) newLayout.findViewById(R.id.portfolioText_edit_delete);
         deleteButton.setId(PORTFOLIPO_DELETE_ID + portfolidIndex);
         deleteButton.setOnClickListener(new View.OnClickListener(){
@@ -723,15 +875,17 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             public void onClick(View view) {
                 Log.d(TAG, "TEXT 삭제 버튼 클릭");
 
-                // 신규 추가 아이템이면 arrAddPortfolioText에서 삭제
-                // 기존 아이템이면 addDeletePortfolio에 추가
                 if (id == -1) {
+                    // 추가 아이템이면 arrAddPortfolioText에서 삭제
                     int editId = PORTFOLIPO_EDIT_ID + portfolidIndex;
-                    Log.d(TAG, "TEXT 삭제 버튼 클릭 - 신규 추가 아이템");
+                    Log.d(TAG, "TEXT 삭제 버튼 클릭 - 신규 추가 아이템에서 제거");
                     arrAddPortfolioText.removeIf(data -> data.containsKey(editId));
                 } else {
+                    // 기존 아이템이면 addDeletePortfolio에 추가
+                    // 기존 아이템이면 addModifyPortfolio에서 삭제
                     Log.d(TAG, "TEXT 삭제 버튼 클릭 - 기존 아이템");
                     arrDeletePortfolio.add(id);
+                    arrModifyPortfolio.removeIf(data -> data.containsKey(id));
                 }
                 getViewDataBinding().portfolioLayout.removeView((View) view.getParent());
             }
@@ -739,6 +893,11 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         // 버튼을 찾기 위한 id
         portfolidIndex++;
+
+        // 신규 아이템 추가 시 scroll 최하단으로 이동
+        if (id == -1) {
+            moveScroll(true);
+        }
     }
 
     private void addPortfolioImage(int id, String url) {
@@ -802,6 +961,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //                .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
                 .fitCenter()
+                .listener(requestListener)
                 .into(imageImage);
 
         ImageView imageDelete = (ImageView) newLayout.findViewById(R.id.portfolioImage_delete);
@@ -814,9 +974,11 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             }
         });
 
-
         // 버튼을 찾기 위한 id
         portfolidIndex++;
+
+//        // 신규 아이템 추가 시 scroll 최하단으로 이동 -> listener로 이동
+//        moveScroll(true);
     }
 
     public void insertImage() {
@@ -833,11 +995,114 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
 
     ////////////////////
-    // image 추가 기능
+    // image 추가 기능 //
     ////////////////////
 
 
+    private RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
+        @Override
+        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+            Log.e(TAG, "onLoadFailed");
+            return false;
+        }
 
+        @Override
+        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+            Log.d(TAG, "onResourceReady");
+            Log.d(TAG, "이미지 로딩 후 스크롤 이동");
+
+            new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            // 신규 아이템 추가 시 scroll 최하단으로 이동
+                            moveScroll(true);
+                        }
+                    }, 500);
+
+            return false;
+        }
+    };
+
+    private Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+        Matrix matrix = new Matrix();
+
+        switch(orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0,
+                    bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        } catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private String getRealPathFromURI(Uri contentUri) {
+        int column_index=0;
+        String[] proj = { MediaStore.Images.Media.DATA };
+
+        Cursor cursor = getActivity().getContentResolver().query(contentUri, proj,
+                    null, null, null);
+        Log.d(TAG, "cursor.moveToFirst() : " + cursor.moveToFirst());
+        if(cursor.moveToFirst()) {
+            column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            Log.d(TAG, "column_index : " + column_index);
+
+        }
+
+        Log.d(TAG, "proj[0] : " + proj[0]);
+        Log.d(TAG, "cursor.getColumnIndex(proj[0] : " + cursor.getColumnIndex(proj[0]));
+
+        String realPath = cursor.getString(column_index);
+        Log.d(TAG, "realPath : " + realPath);
+        cursor.close();
+        return realPath;
+    }
+
+
+    public int exifOrientationToDegrees(int exifOrientation) {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        } else {
+            return 0;
+        }
+    }
 
     private boolean checkPermissions() {
         Log.d(TAG, "checkPermissions");
@@ -853,13 +1118,17 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             }
         }
 
-        if (!permissionList.isEmpty()) { //권한이 추가되었으면 해당 리스트가 empty가 아니므로 request 즉 권한을 요청합니다.
-            ActivityCompat.requestPermissions((Activity)getContext(), permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
+        //권한이 추가되었으면 해당 리스트가 empty가 아니므로 request 즉 권한을 요청합니다.
+        if (!permissionList.isEmpty()) {
+            Log.d(TAG, "permissionList : " + permissionList.toString());
+
+            ActivityCompat.requestPermissions((Activity)getContext(),
+                    permissionList.toArray(new String[permissionList.size()]), MULTIPLE_PERMISSIONS);
             Log.d(TAG, "checkPermissions return false");
             return false;
         }
 
-        Log.d(TAG, "checkPermissions return true");
+        Log.d(TAG, "checkPermissions return true & permissionList is empty");
         return true;
     }
 

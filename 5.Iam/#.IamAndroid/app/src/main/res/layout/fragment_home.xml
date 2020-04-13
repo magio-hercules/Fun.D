@@ -120,12 +120,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <ImageView
-                android:id="@+id/image_profile"
+                android:id="@+id/profile_image_profile"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
-                android:src="@drawable/profile_default_picture"
+                android:src="@drawable/profile_default_2"
                 app:layout_constraintRight_toRightOf="@id/profile_header"
                 app:layout_constraintTop_toBottomOf="@id/profile_header"
                 />
@@ -140,7 +140,7 @@
                 android:textStyle="bold"
                 android:layout_marginTop="20dp"
                 app:layout_constraintLeft_toRightOf="@id/profile_guideline_v_start"
-                app:layout_constraintTop_toBottomOf="@id/image_profile" />
+                app:layout_constraintTop_toBottomOf="@id/profile_image_profile" />
 
 
             <TextView
@@ -277,110 +277,6 @@
                 tools:layout_editor_absoluteY="236dp">
 
             </LinearLayout>
-
-
-
-            <Button
-                android:id="@+id/button_add_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="이미지+"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/portfolio_layout" />
-
-            <Button
-                android:id="@+id/button_add_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="글+"
-                app:layout_constraintStart_toEndOf="@+id/button_add_image"
-                app:layout_constraintTop_toTopOf="@+id/button_add_image" />
-
-            <!--            <Button-->
-            <!--            android:visibility="gone"-->
-            <!--                android:id="@+id/button_get_user"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Portfolio"-->
-            <!--                app:layout_constraintStart_toEndOf="@+id/button_add_text"-->
-            <!--                app:layout_constraintTop_toTopOf="@+id/button_add_text" />-->
-
-            <!--            <Button-->
-            <!--                android:visibility="gone"-->
-            <!--                android:id="@+id/button_next_user"-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:text="Next User"-->
-            <!--                app:layout_constraintStart_toEndOf="@+id/button_get_user"-->
-            <!--                app:layout_constraintTop_toTopOf="@+id/button_get_user" />-->
-
-            <Button
-                android:id="@+id/btnLetterBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="actionNavigate"
-                android:text="test letterBox"
-                app:layout_constraintStart_toEndOf="@+id/button_add_text"
-                app:layout_constraintTop_toTopOf="@+id/button_add_text" />
-
-            <Button
-                android:id="@+id/btnLetter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="actionNavigate"
-                android:text="test letter"
-                app:layout_constraintStart_toEndOf="@+id/btnLetterBox"
-                app:layout_constraintTop_toTopOf="@+id/button_add_text" />
-
-
-            <!--            <LinearLayout-->
-            <!--                android:id="@+id/portfolio_layout_test"-->
-            <!--                android:layout_width="399dp"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:orientation="vertical"-->
-            <!--                app:layout_constraintStart_toStartOf="@+id/button_add_image"-->
-            <!--                app:layout_constraintTop_toBottomOf="@+id/button_next_user"-->
-            <!--                tools:layout_editor_absoluteX="1dp"-->
-            <!--                tools:layout_editor_absoluteY="236dp">-->
-
-            <!--                <Button-->
-            <!--                    android:id="@+id/btnLetterBox"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:onClick="actionNavigate"-->
-            <!--                    android:text="test letterBox"-->
-            <!--                    app:layout_constraintStart_toEndOf="@+id/button_add_text"-->
-            <!--                    app:layout_constraintTop_toTopOf="@+id/button_add_text" />-->
-
-            <!--                <Button-->
-            <!--                    android:id="@+id/btnLetter"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:onClick="actionNavigate"-->
-            <!--                    android:text="test letter"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintTop_toBottomOf="@id/btnLetterBox" />-->
-
-            <!--                <Button-->
-            <!--                    android:id="@+id/btnUsers"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:onClick="@{() -> viewModel.testUsersApi()}"-->
-            <!--                    android:text="test users"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintTop_toBottomOf="@id/btnLetter" />-->
-
-            <!--                <Button-->
-            <!--                    android:id="@+id/btnPortfolios"-->
-            <!--                    android:layout_width="wrap_content"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:onClick="@{() -> viewModel.testPortfolioApi()}"-->
-            <!--                    android:text="test portfolios"-->
-            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-            <!--                    app:layout_constraintTop_toBottomOf="@id/btnUsers" />-->
-            <!--            </LinearLayout>-->
-
 
 
 

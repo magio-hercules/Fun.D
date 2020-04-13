@@ -143,6 +143,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         getViewModel().getUserPortfolio();
     }
 
+    public void onSuccess() {
+        Log.d(TAG, "onSuccess");
+    }
+
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateUser() {
         Log.d(TAG, "updateUI");
@@ -166,6 +171,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 .filter(item -> item.getId() == Integer.parseInt(info.getJobList()))
                 .findAny()
                 .orElse(null);
+
+        Log.d(TAG, "url : " + info.getImageUrl());
+        Glide.with(getContext())
+                .load(info.getImageUrl())
+                .placeholder(R.drawable.profile_default_2)
+//                .apply(RequestOptions.centerCropTransform())
+                .fitCenter()
+//                .centerCrop()
+                .into(getViewDataBinding().profileImageProfile);
 
         getViewDataBinding().profileName.setText(info.getUserName());
         getViewDataBinding().profileJob.setText(findJob != null ? findJob.getName() : "직업 없음");

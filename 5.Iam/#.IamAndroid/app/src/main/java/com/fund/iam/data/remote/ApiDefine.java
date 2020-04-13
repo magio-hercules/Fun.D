@@ -18,6 +18,7 @@ public class ApiDefine {
         String API_PORTFOLIOS = "users/portfolio";          // 포트폴리오
         String API_INSERT_PORTFOLIO = "users/portfolioInsert";    // 포트폴리오 추가
         String API_DELETE_PORTFOLIO = "users/portfolioDelete";    // 포트폴리오 삭제
+        String API_UPDATE_PORTFOLIO = "users/portfolioUpdate";    // 포트폴리오 수정
         String API_LOGIN = "users/userInsert";              // 유저 로그인
 
         String API_CHANNELS = "channel/channer";            // 전체 채널 조회

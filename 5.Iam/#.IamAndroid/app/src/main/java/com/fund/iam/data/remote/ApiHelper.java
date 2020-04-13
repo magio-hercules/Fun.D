@@ -102,6 +102,8 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<Job>> postJobInfo(@Field("id") int jobId);
 
+    ///////////////
+    // 포트폴리오 //
     @FormUrlEncoded
     @POST(ApiDefine.Body.API_INSERT_PORTFOLIO)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
@@ -111,6 +113,15 @@ public interface ApiHelper {
     @POST(ApiDefine.Body.API_DELETE_PORTFOLIO)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<Void>> postDeletePortfolio(@Field("id") int id);
+
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_UPDATE_PORTFOLIO)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<Void>> postUpdatePortfolio(@Field("id") int id, @Field("user_id") int userId,
+                                               @Field("type") int type, @Field("text") String text);
+    // 포트폴리오 //
+    ///////////////
+
 
     // Firebase
     @POST(ApiDefine.Body.API_FCM_SEND)

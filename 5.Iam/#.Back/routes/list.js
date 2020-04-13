@@ -11,8 +11,8 @@ function postLocation(param) {
   console.log(`call postLocation`);
   let queryString = `SELECT * FROM ${DB_TABLE_LISTLOCATION}`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -25,8 +25,8 @@ function postLocationInfo(param) {
   console.log(`call postListLocationInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_LISTLOCATION} WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -39,8 +39,8 @@ function locationInsert(param) {
   console.log(`call locationInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_LISTLOCATION} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -54,8 +54,8 @@ function locationUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_LISTLOCATION} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -68,8 +68,8 @@ function postJob(param) {
   console.log(`call postJob`);
   let queryString = `SELECT * FROM ${DB_TABLE_LISTJOB}`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -82,8 +82,8 @@ function postJobInfo(param) {
   console.log(`call postListJobInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_LISTJOB} WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -96,8 +96,8 @@ function jobInsert(param) {
   console.log(`call jobInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_LISTJOB} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -111,8 +111,8 @@ function jobUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_LISTJOB} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -126,8 +126,8 @@ function postNotice(params) {
 
   let queryString = `SELECT * FROM ${DB_TABLE_LISTNOTICE}`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -138,46 +138,46 @@ function postNotice(params) {
 
 /* -------------- ::START:: Router Zone -------------- */
 
-router.post("/location", function(req, res, next) {
+router.post("/location", function (req, res, next) {
   console.log(`API = /location`);
 
   postLocation()
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postLocation] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/locationInfo", function(req, res, next) {
+router.post("/locationInfo", function (req, res, next) {
   console.log(`API = /locationInfo`);
 
   postLocationInfo(req.body.id)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[getListLocation] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/locationInsert`, function(req, res, next) {
+router.post(`/locationInsert`, function (req, res, next) {
   console.log(`API = /locationInsert`);
 
   locationInsert(req.body)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[locationInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/locationUpdate`, function(req, res, next) {
+router.post(`/locationUpdate`, function (req, res, next) {
   console.log(`API = /locationUpdate`);
 
   // 에러로 보내야됨
@@ -190,56 +190,56 @@ router.post(`/locationUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   locationUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[locationUpdate] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/job", function(req, res, next) {
+router.post("/job", function (req, res, next) {
   console.log(`API = /job`);
 
   postJob()
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[getListJob] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/jobInfo", function(req, res, next) {
+router.post("/jobInfo", function (req, res, next) {
   console.log(`API = /jobInfo`);
 
   postJobInfo(req.body.id)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[getListJob] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/jobInsert`, function(req, res, next) {
+router.post(`/jobInsert`, function (req, res, next) {
   console.log(`API = /jobInsert`);
 
   jobInsert(req.body)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[jobInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/jobUpdate`, function(req, res, next) {
+router.post(`/jobUpdate`, function (req, res, next) {
   console.log(`API = /jobUpdate`);
 
   // 에러로 보내야됨
@@ -252,24 +252,24 @@ router.post(`/jobUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   jobUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[jobUpdate] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/notice", function(req, res, next) {
+router.post("/notice", function (req, res, next) {
   console.log(`API = /notice`);
 
   postNotice()
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postNotice] error : ${err}`);
       res.end(`NOK`);
     });

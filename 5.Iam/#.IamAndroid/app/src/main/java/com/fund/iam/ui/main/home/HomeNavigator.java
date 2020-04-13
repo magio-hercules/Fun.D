@@ -14,4 +14,6 @@ public interface HomeNavigator extends BaseNavigator {
 
     void insertImage();
     void insertText();
+
+    void onSuccess();
 }

@@ -10,8 +10,8 @@ function postChanner(param) {
   console.log(`call postChannerInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_CHANNELINFO}`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -24,8 +24,8 @@ function postChannerInfo(param) {
   console.log(`call postChannerInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_CHANNELINFO} WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -38,8 +38,8 @@ function channerInsert(param) {
   console.log(`call channerInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_CHANNELINFO} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -53,8 +53,8 @@ function channerUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_CHANNELINFO} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -67,8 +67,8 @@ function postChannelUserInfo(param) {
   console.log(`call postChannelUserInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_CHANNELUSER} WHERE channel_id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -81,8 +81,8 @@ function userInsert(param) {
   console.log(`call userInsert`);
   let queryString = `INSERT INTO ${DB_TABLE_CHANNELUSER} SET ? `;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, param, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -96,8 +96,8 @@ function userUpdate(params) {
 
   let queryString = `UPDATE ${DB_TABLE_CHANNELUSER} SET ? WHERE id = ?`;
 
-  return new Promise(function(resolve, reject) {
-    db.query(queryString, params, function(err, result) {
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -108,46 +108,49 @@ function userUpdate(params) {
 
 /* -------------- ::START:: Router Zone -------------- */
 
-router.post("/channer", function(req, res, next) {
+router.post("/channer", function (req, res, next) {
   console.log(`API = /channer`);
 
   postChanner()
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postChanner] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/channerInfo", function(req, res, next) {
+router.post("/channerInfo", function (req, res, next) {
   console.log(`API = /channerInfo`);
 
   postChannerInfo(req.body.id)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postChannerInfo] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/channerInsert`, function(req, res, next) {
+router.post(`/channerInsert`, function (req, res, next) {
   console.log(`API = /channerInsert`);
 
   channerInsert(req.body)
-    .then(result => {
+    .then((result) => {
+      return postChannerInfo(result.insertId);
+    })
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[channerInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/channerUpdate`, function(req, res, next) {
+router.post(`/channerUpdate`, function (req, res, next) {
   console.log(`API = /channerUpdate`);
 
   // 에러로 보내야됨
@@ -160,43 +163,43 @@ router.post(`/channerUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   channerUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[channerUpdate] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post("/user", function(req, res, next) {
+router.post("/user", function (req, res, next) {
   console.log(`API = /user`);
 
   postChannelUserInfo(req.body.channel_id)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[postChannelUserInfo] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/userInsert`, function(req, res, next) {
+router.post(`/userInsert`, function (req, res, next) {
   console.log(`API = /userInsert`);
 
   userInsert(req.body)
-    .then(result => {
+    .then((result) => {
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[userInsert] error : ${err}`);
       res.end(`NOK`);
     });
 });
 
-router.post(`/userUpdate`, function(req, res, next) {
+router.post(`/userUpdate`, function (req, res, next) {
   console.log(`API = /userUpdate`);
 
   // 에러로 보내야됨
@@ -209,11 +212,11 @@ router.post(`/userUpdate`, function(req, res, next) {
   params.push(req.body.id);
 
   userUpdate(params)
-    .then(result => {
+    .then((result) => {
       console.log(result);
       res.json(result);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       console.log(`[userUpdate] error : ${err}`);
       res.end(`NOK`);
     });
