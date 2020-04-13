@@ -28,6 +28,7 @@ import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.fund.iam.ui.letter.LetterActivity;
 import com.fund.iam.ui.main.MainActivity;
+import com.fund.iam.ui.main.MainViewModel;
 import com.orhanobut.logger.Logger;
 
 import java.io.ObjectStreamClass;
@@ -45,10 +46,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
-    private final int PORTFOLIPO_TITLE_ID  = 0x3000;
-    private final int PORTFOLIPO_EDIT_ID  = 0x4000;
-    private final int PORTFOLIPO_DELETE_ID  = 0x5000;
-    private final int PORTFOLIPO_IMAGE_ID  = 0x6000;
+    private final int PORTFOLIPO_TITLE_ID = 0x3000;
+    private final int PORTFOLIPO_EDIT_ID = 0x4000;
+    private final int PORTFOLIPO_DELETE_ID = 0x5000;
+    private final int PORTFOLIPO_IMAGE_ID = 0x6000;
 
 
     @Inject
@@ -63,6 +64,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private int portfolidIndex = 1;
 
     //
+
+    private MainViewModel mainViewModel;
 
 
     public static HomeFragment newInstance() {
@@ -133,14 +136,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     /////////////////////////////
 
 
-
-
     private void initViews() {
-        Log.d(TAG, "initViews");
+        mainViewModel = (MainViewModel) getBaseActivity().getViewModel();
+        Log.d(TAG, "initViews " + mainViewModel.getTestString());
 
 //        getViewModel().getJobList();
         getViewModel().getUserInfo();
         getViewModel().getUserPortfolio();
+
     }
 
     public void onSuccess() {
@@ -207,7 +210,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         List<Portfolio> portfolioList = getViewModel().myPortfolio;
 //        User userInfo = getViewModel().myInfo;
 
-        for (Portfolio data: portfolioList) {
+        for (Portfolio data : portfolioList) {
 //            if (data.getUserId() != userInfo.getId()) {
 //                Log.d(TAG, "data.getUserId() != userInfo.getId()");
 //                return;

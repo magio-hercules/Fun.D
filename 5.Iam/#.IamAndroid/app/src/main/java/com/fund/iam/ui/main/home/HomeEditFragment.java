@@ -61,6 +61,8 @@ import com.fund.iam.databinding.FragmentHomeEditBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.fund.iam.ui.letter.LetterActivity;
+import com.fund.iam.ui.main.MainActivity;
+import com.fund.iam.ui.main.MainViewModel;
 import com.fund.iam.utils.RealPathUtil;
 import com.orhanobut.logger.Logger;
 
@@ -101,6 +103,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     @Inject
     DataManager dataManager;
+
+    private MainViewModel mainViewModel;
 
 
     //    Spinner spinner;
@@ -444,7 +448,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
 
     private void initViews() {
-        Log.d(TAG, "initViews");
+        mainViewModel = (MainViewModel) getBaseActivity().getViewModel();
+        Log.d(TAG, "initViews " + mainViewModel.getTestString());
 
 //        getViewModel().getJobList();
 

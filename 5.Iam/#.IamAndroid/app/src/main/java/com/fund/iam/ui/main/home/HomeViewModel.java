@@ -37,7 +37,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
     public HomeViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
-
+        Logger.d("HomeVIewModel constructor");
         // TODO userId 가져오기
         userId = 1;
 

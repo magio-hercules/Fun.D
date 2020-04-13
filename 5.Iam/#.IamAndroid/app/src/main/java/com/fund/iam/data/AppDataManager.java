@@ -34,6 +34,8 @@ public class AppDataManager implements DataManager {
 
     private List<Job> jobs;
     private List<Location> locations;
+    private User myInfo;
+    private List<Portfolio> myPortfolios;
 
 
     @Inject
@@ -59,7 +61,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Response<Void>> postLogin(LoginBody loginBody) {
+    public Single<Response<List<User>>> postLogin(LoginBody loginBody) {
         return mAwsApiHelper.postLogin(loginBody);
     }
 
@@ -169,5 +171,25 @@ public class AppDataManager implements DataManager {
     @Override
     public List<Location> getLocations() {
         return locations;
+    }
+
+    @Override
+    public void setMyInfo(User user) {
+        myInfo = user;
+    }
+
+    @Override
+    public User getMyInfo() {
+        return myInfo;
+    }
+
+    @Override
+    public List<Portfolio> getMyPortfolios() {
+        return myPortfolios;
+    }
+
+    @Override
+    public void setMyPortfolios(List<Portfolio> portfolios) {
+        myPortfolios = portfolios;
     }
 }

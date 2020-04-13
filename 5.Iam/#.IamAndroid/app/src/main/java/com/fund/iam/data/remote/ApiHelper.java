@@ -41,7 +41,7 @@ public interface ApiHelper {
     // 로그인
     @POST(ApiDefine.Body.API_LOGIN)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Single<Response<Void>> postLogin(@Body LoginBody loginBody);
+    Single<Response<List<User>>> postLogin(@Body LoginBody loginBody);
 
     // 카카오 토큰 인증 (사용 X)
     @POST(ApiDefine.Body.API_KAKAO_VERIFY_TOKEN)

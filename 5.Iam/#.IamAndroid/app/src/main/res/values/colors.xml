@@ -9,8 +9,7 @@
     <color name="purpleLight">#B6AAD9</color>
     <color name="red">#F34B4B</color>
     <color name="pink">#F89A9A</color>
-    <color name="navPressed">#7859BC</color>
-
+    <color name="navColor">#7859BC</color>
 
     <color name="background">#333333</color>
     <color name="accent">#7E57C2</color>
