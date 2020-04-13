@@ -6,6 +6,7 @@ import com.fund.iam.ui.login.LoginActivity;
 import com.fund.iam.ui.main.MainActivity;
 import com.fund.iam.ui.main.bookmark.BookmarkFragmentProvider;
 import com.fund.iam.ui.main.channel.ChannelFragmentProvider;
+import com.fund.iam.ui.main.channel.ChannelUserListFragmentProvider;
 import com.fund.iam.ui.main.channel.CreateChannelFragmentProvider;
 import com.fund.iam.ui.main.home.HomeEditFragmentProvider;
 import com.fund.iam.ui.main.home.HomeFragmentProvider;
@@ -36,7 +37,8 @@ public abstract class ActivityBuilder {
             SettingFragmentProvider.class,
             LetterBoxFragmentProvider.class,
             CreateChannelFragmentProvider.class,
-            ChannelFragmentProvider.class
+            ChannelFragmentProvider.class,
+            ChannelUserListFragmentProvider.class
     })
     abstract MainActivity bindMainActivity();
 
