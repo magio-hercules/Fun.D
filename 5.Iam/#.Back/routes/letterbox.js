@@ -3,12 +3,18 @@ var router = express.Router();
 const db = require(`../config/db_connections`)();
 const DB_TABLE_LETTERBOXMESSAGE = `letterbox_message`;
 const DB_TABLE_LETTERBOXINFO = `letterbox_info`;
-
+const DB_TABLE_USERINFO = `user_info`;
 /* -------------- ::START:: API Function Zone -------------- */
 
 function postLetterBoxInfo(param) {
   console.log(`call postLetterBoxInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXINFO} WHERE user_id = ?`;
+  let queryString = `SELECT A.id, A.user_id, A.friend_id, B.token, B.image_url, B.user_name, B.email, B.job_list
+  FROM ${DB_TABLE_LETTERBOXINFO} AS A 
+  JOIN ${DB_TABLE_USERINFO} AS B 
+  ON A.friend_id = B.id
+  WHERE A.user_id = ?`;
+
+  //let queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXINFO} WHERE user_id = ?`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
@@ -72,7 +78,8 @@ function postLetterBoxMessageInfo(param) {
 
 function messageInsert(param) {
   console.log(`call messageInsert`);
-  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} SET ? `;
+  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} SET ?, 
+    modify_date = now() ON DUPLICATE KEY UPDATE modify_date = now();`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
@@ -88,6 +95,21 @@ function messageUpdate(params) {
   console.log(`call messageUpdate`);
 
   let queryString = `UPDATE ${DB_TABLE_LETTERBOXMESSAGE} SET ? WHERE id = ?`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function msg(params) {
+  console.log(`call messageUpdate`);
+
+  let queryString = `SELECT * FROM ${DB_TABLE_LETTERBOXINFO} WHERE user_id =? AND friend_id = ?`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, params, function (err, result) {
@@ -175,7 +197,18 @@ router.post("/message", function (req, res, next) {
 router.post(`/messageInsert`, function (req, res, next) {
   console.log(`API = /messageInsert`);
 
+  let params = [];
+
+  params.push(req.body.user_id);
+
+  if (req.body.friend_id !== undefined) {
+    params.push(req.body.friend_id);
+  }
+
   messageInsert(req.body)
+    .then((result) => {
+      return postLetterBoxMessageInfo(params);
+    })
     .then((result) => {
       res.json(result);
     })
@@ -207,5 +240,37 @@ router.post(`/messageUpdate`, function (req, res, next) {
       res.end(`NOK`);
     });
 });
+
+//TEST
+router.post(`/msg`, function (req, res, next) {
+  console.log(`API = /msg`);
+
+  let params = [];
+  params.push(req.body.user_id);
+  params.push(req.body.friend_id);
+
+  msg(params)
+    .then((result) => {
+      console.log(result[0].id);
+      if (result[0].id !== undefined) {
+        console.log("1");
+        res.json(result);
+      } else {
+        console.log("2");
+        return letterboxInsert(params);
+      }
+    })
+    .then((result) => {
+      console.log("3");
+      res.json(result);
+    })
+    .catch(function (err) {
+      console.log("4");
+
+      console.log(`[msg] error : ${err}`);
+      res.end(`hihi`);
+    });
+});
+//TEST
 
 module.exports = router;
