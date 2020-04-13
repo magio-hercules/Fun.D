@@ -119,21 +119,47 @@
         android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
         android:label="@string/title_notice"
         tools:layout="@layout/fragment_policy" />
+
+
     <fragment
         android:id="@+id/navigation_create_channel"
         android:name="com.fund.iam.ui.main.channel.CreateChannelFragment"
         android:label="채널생성"
         tools:layout="@layout/fragment_create_channel">
 
+        <action
+            android:id="@+id/action_main_channel"
+            app:destination="@id/navigation_channel"
+            app:popUpTo="@id/navigation_create_channel"
+            app:popUpToInclusive="true"/>
     </fragment>
+
     <fragment
         android:id="@+id/navigation_channel"
         android:name="com.fund.iam.ui.main.channel.ChannelFragment"
         android:label="채널메인"
-        tools:layout="@layout/fragment_create_channel" >
+        tools:layout="@layout/fragment_channel" >
         <argument
             android:name="channelIdArg"
             app:argType="integer"
             android:defaultValue="1" />
+        <action
+            android:id="@+id/action_channelUserList"
+            app:destination="@id/channelUserListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/channelUserListFragment"
+        android:name="com.fund.iam.ui.main.channel.ChannelUserListFragment"
+        android:label="ChannelUserListFragment"
+        tools:layout="@layout/fragment_channel_user_list">
+
+        <argument
+            android:name="channelIdArg"
+            app:argType="integer"
+            android:defaultValue="1"/>
+
+    </fragment>
+
+
+
 </navigation>

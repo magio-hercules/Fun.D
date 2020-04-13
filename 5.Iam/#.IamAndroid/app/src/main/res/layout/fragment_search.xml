@@ -51,7 +51,7 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.card.MaterialCardView
-                    android:id="@+id/bt_chanel_list"
+                    android:id="@+id/bt_channel_list"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     app:cardCornerRadius="15dp"
@@ -79,7 +79,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/bt_chanel_list"
+                    app:layout_constraintStart_toEndOf="@+id/bt_channel_list"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <com.google.android.material.textview.MaterialTextView

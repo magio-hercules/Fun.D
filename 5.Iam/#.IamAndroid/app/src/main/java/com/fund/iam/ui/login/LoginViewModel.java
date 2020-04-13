@@ -2,16 +2,12 @@ package com.fund.iam.ui.login;
 
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.fund.iam.BuildConfig;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
@@ -34,19 +30,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
-import com.kakao.network.ErrorResult;
-import com.kakao.usermgmt.UserManagement;
-import com.kakao.usermgmt.callback.MeV2ResponseCallback;
-import com.kakao.usermgmt.response.MeV2Response;
 import com.kakao.util.exception.KakaoException;
 import com.orhanobut.logger.Logger;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 
-import io.reactivex.Single;
 import lombok.Getter;
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
@@ -75,8 +63,8 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
+                        //Todo : AWS API 연동;
                         getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(acct.getEmail(), acct.getDisplayName(), acct.getIdToken(), acct.getPhotoUrl().toString()))
-
                                 .observeOn(getSchedulerProvider().ui())
                                 .subscribeOn(getSchedulerProvider().io())
                                 .subscribe(testVoid -> {
@@ -94,20 +82,8 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        GraphRequest request = GraphRequest.newMeRequest(acct, (object, response) -> {
-                            try {
-                                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(response.getJSONObject().getString("email"), Profile.getCurrentProfile().getName(), acct.getToken(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString()))
-                                        .observeOn(getSchedulerProvider().ui())
-                                        .subscribeOn(getSchedulerProvider().io())
-                                        .subscribe(testVoid -> getNavigator().startMainActivity(), onError -> getNavigator().handleError(onError)));
-                            } catch (JSONException e) {
-                                getNavigator().handleError(e);
-                            }
-                        });
-                        Bundle parameters = new Bundle();
-                        parameters.putString("fields", "email");
-                        request.setParameters(parameters);
-                        request.executeAsync();
+                        //Todo : AWS API 연동;
+                        getNavigator().startMainActivity();
                     } else {
                         getNavigator().handleError(new Throwable("firebaseAuthWithFaceBook failed."));
                     }
@@ -118,36 +94,16 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
 
     @Override
     public void onSessionOpened() {
-        UserManagement.getInstance().me(new MeV2ResponseCallback() {
-            @Override
-            public void onSessionClosed(ErrorResult errorResult) {
-                getNavigator().handleError(errorResult.getException());
-            }
-
-            @Override
-            public void onSuccess(MeV2Response result) {
-                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(result.getKakaoAccount().getEmail(), result.getKakaoAccount().getProfile().getNickname(), getDataManager().getPushToken(), result.getKakaoAccount().getProfile().getThumbnailImageUrl()))
-
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
-                        .subscribe(testVoid -> {
-                            Logger.d("result " + testVoid.isSuccessful());
-                            getNavigator().startMainActivity();
-                        }, onError -> getNavigator().handleError(onError)));
-
-            }
-        });
-
-//        getCompositeDisposable().add(getDataManager().postVerifyToken(Session.getCurrentSession().getTokenInfo().getAccessToken())
-//                .observeOn(getSchedulerProvider().ui())
-//                .subscribeOn(getSchedulerProvider().io())
-//                .subscribe(user -> {
-//                    if(user.isSuccessful()) {
-//                        mFirebaseAuth.signInWithCustomToken(user.body().getFirebaseToken());
-//                    } else {
-//                        Logger.e("firebase kakao Auth Error " + user.errorBody().toString());
-//                    }
-//                }, onError -> getNavigator().handleError(onError)));
+        getCompositeDisposable().add(getDataManager().postVerifyToken(Session.getCurrentSession().getTokenInfo().getAccessToken())
+                .observeOn(getSchedulerProvider().ui())
+                .subscribeOn(getSchedulerProvider().io())
+                .subscribe(user -> {
+                    if(user.isSuccessful()) {
+                        mFirebaseAuth.signInWithCustomToken(user.body().getToken());
+                    } else {
+                        Logger.e("firebase kakao Auth Error " + user.errorBody().toString());
+                    }
+                }, onError -> getNavigator().handleError(onError)));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package com.fund.iam.ui.main.channel;
 
+import android.view.View;
+
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.Channel;
 import com.fund.iam.di.provider.ResourceProvider;
@@ -23,7 +25,7 @@ public class CreateChannelViewModel extends BaseViewModel<CreateChannelNavigator
 
     }
 
-    public void getNewChannelInfo(int ownerId, String name, String purpose, String location, String description, String password) {
+    public void getNewChannelInfo(View view, int ownerId, String name, String purpose, String location, String description, String password) {
 
         Logger.i("getNewChannelInfo");
 
@@ -36,7 +38,7 @@ public class CreateChannelViewModel extends BaseViewModel<CreateChannelNavigator
                             channel = result.body();
                             Logger.d("result.body"+channel);
 
-                            getNavigator().createChannel();
+                            getNavigator().createChannel(view);
 
                         }, onError -> getNavigator().handleError(onError))
         );

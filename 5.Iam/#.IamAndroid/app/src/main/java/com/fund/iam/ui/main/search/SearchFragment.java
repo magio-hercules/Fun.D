@@ -43,7 +43,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     private SearchListChannelAdapter adapter_channels;
     private SearchListUserAdapter adapter_users;
     private SearchListUserFilterAdapter adapter_filter;
-    int TabState = 1;
 
 
     @Inject
@@ -105,8 +104,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        getViewDataBinding().setViewModel(getViewModel());
-
         initViews(view);
 
     }
@@ -116,11 +113,11 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
 
-        getViewDataBinding().btChanelList.setOnClickListener(new View.OnClickListener() {
+        getViewDataBinding().btChannelList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
-                getViewDataBinding().btChanelList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
+                getViewDataBinding().btChannelList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                 getViewDataBinding().etSearch.setHint("채널을 검색하세요");
                 getViewDataBinding().userOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.VISIBLE);
@@ -128,7 +125,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.VISIBLE);
 
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
-                TabState = 1;
+                getViewModel().TabState = 1;
                 getViewDataBinding().etSearchInput.setText("");
             }
         });
@@ -136,7 +133,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         getViewDataBinding().btUserList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getViewDataBinding().btChanelList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
+                getViewDataBinding().btChannelList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
                 getViewDataBinding().etSearch.setHint("유저를 검색하세요");
                 getViewDataBinding().userOptionSet.setVisibility(View.VISIBLE);
@@ -145,7 +142,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.VISIBLE);
 
                 imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
-                TabState = 2;
+                getViewModel().TabState = 2;
                 getViewDataBinding().etSearchInput.setText("");
             }
         });
@@ -158,7 +155,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (TabState==1) {
+                if (getViewModel().TabState==1) {
                     adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
                 } else {
                     adapter_users.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
@@ -242,11 +239,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             }
         });
 
-        String[] spinner_str_user_region = {"-","서울특별시", "부산광역시","인천광역시","대구광역시", "광주광역시", "대전광역시", " 울산광역시", "세종시", "경기도", "강원도", "충청남도", "충청북도", "경상북도","경상남도", "전라북도","전라남도", "제주도"};
-        String[] spinner_str_user_job =  {"-","기획자","개발자", "디자이너", "마케터"};
-        String[] spinner_str_user_gender = {"-","남자","여자"};
-        String[] spinner_str_user_age = {"-","10대", "20대","30대","40대", "50대 이상"};
-
         Spinner spinner_region = bottomSheetDialog.findViewById(R.id.spinner_region);
         spinner_region.setGravity(Gravity.RIGHT);
         Spinner spinner_job = bottomSheetDialog.findViewById(R.id.spinner_job);
@@ -257,7 +249,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         spinner_age.setGravity(Gravity.RIGHT);
 
 
-        final ArrayAdapter<String> adapter_spinner_user_region = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_region) {
+        final ArrayAdapter<String> adapter_spinner_user_region = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,getViewModel().spinner_str_user_region) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -269,7 +261,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         };
 
 
-        final ArrayAdapter<String> adapter_spinner_user_job = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_job) {
+        final ArrayAdapter<String> adapter_spinner_user_job = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,getViewModel().spinner_str_user_job) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -281,7 +273,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
         };
 
-        final ArrayAdapter<String> adapter_spinner_user_gender = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_gender) {
+        final ArrayAdapter<String> adapter_spinner_user_gender = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,getViewModel().spinner_str_user_gender) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -291,7 +283,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             }
 
         };
-        final ArrayAdapter<String> adapter_spinner_user_age = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,spinner_str_user_age) {
+        final ArrayAdapter<String> adapter_spinner_user_age = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,getViewModel().spinner_str_user_age) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

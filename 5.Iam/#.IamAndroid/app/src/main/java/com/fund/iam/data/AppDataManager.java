@@ -3,6 +3,7 @@ package com.fund.iam.data;
 
 import com.fund.iam.data.local.prefs.PreferencesHelper;
 import com.fund.iam.data.model.Channel;
+import com.fund.iam.data.model.ChannelUser;
 import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.Notice;
@@ -89,6 +90,17 @@ public class AppDataManager implements DataManager {
     @Override
     public Single<Response<List<Channel>>> postChannel(int id) {
         return mAwsApiHelper.postChannel(id);
+    }
+
+    // 특정채널 전체유저 조회
+    @Override
+    public Single<Response<List<ChannelUser>>> postChannelUsers(int id) {
+        return mAwsApiHelper.postChannelUsers(id);
+    }
+    // 특정채널 유저 가입하기
+    @Override
+    public Single<Response<List<ChannelUser>>> postChannelUserInsert(int channel_id, int user_id) {
+        return mAwsApiHelper.postChannelUserInsert(channel_id, user_id);
     }
 
     @Override

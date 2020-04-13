@@ -1,6 +1,7 @@
 package com.fund.iam.data.remote;
 
 import com.fund.iam.data.model.Channel;
+import com.fund.iam.data.model.ChannelUser;
 import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.Notice;
@@ -68,6 +69,18 @@ public interface ApiHelper {
     @POST(ApiDefine.Body.API_CHANNEL)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<List<Channel>>> postChannel(@Field("id") int id);
+
+    // 특정채널 전체유저조회
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_CHANNEL_USERS)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<List<ChannelUser>>> postChannelUsers(@Field("channel_id") int id);
+
+    // 특정채널 유저 가입
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_CHANNEL_USER_INSERT)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<List<ChannelUser>>> postChannelUserInsert(@Field("channel_id") int channel_id, @Field("user_id") int user_id);
 
     // 특정채널 조회
     @POST(ApiDefine.Body.API_LOCATIONS)
