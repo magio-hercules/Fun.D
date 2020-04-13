@@ -14,7 +14,14 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
 
     public IntroViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
-        getCompositeDisposable().add(Observable.timer(3, TimeUnit.SECONDS).subscribe(time -> checkAuth()));
+        getCompositeDisposable().add(
+                Observable.combineLatest(getDataManager().postJobs().toObservable(), getDataManager().postLocations().toObservable(), Observable.timer(3, TimeUnit.SECONDS), (jobs, locations, timeSet) -> {
+                    getDataManager().setJobs(jobs.body());
+                    getDataManager().setLocations(locations.body());
+                    return timeSet;
+                })
+                        .subscribe(timeSet -> checkAuth()));
+
     }
 
     private void checkAuth() {

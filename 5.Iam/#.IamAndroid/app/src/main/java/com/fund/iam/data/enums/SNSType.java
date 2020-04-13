@@ -2,15 +2,15 @@ package com.fund.iam.data.enums;
 
 public enum SNSType {
 
-    GOOGLE(0), FACEBOOK(1), KAKAO(2);
+    GOOGLE("GOOGLE"), FACEBOOK("FACEBOOK"), KAKAO("KAKAO");
 
-    private int snsType;
+    private String snsType;
 
-    SNSType(int snsType) {
+    SNSType(String snsType) {
         this.snsType = snsType;
     }
 
-    public int getSnsType() {
+    public String getSnsType() {
         return snsType;
     }
 }

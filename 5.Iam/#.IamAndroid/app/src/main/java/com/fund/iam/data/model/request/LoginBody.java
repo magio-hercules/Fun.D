@@ -21,4 +21,7 @@ public class LoginBody {
     @SerializedName("image_url")
     private String imageUrl;
 
+    @SerializedName("sns_type")
+    private String snsType;
+
 }

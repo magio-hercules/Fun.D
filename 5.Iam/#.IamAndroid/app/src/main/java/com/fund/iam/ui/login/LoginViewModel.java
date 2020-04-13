@@ -15,6 +15,7 @@ import com.facebook.Profile;
 import com.fund.iam.BuildConfig;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.enums.SNSType;
 import com.fund.iam.data.model.request.LoginBody;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
@@ -75,7 +76,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(acct.getEmail(), acct.getDisplayName(), acct.getIdToken(), acct.getPhotoUrl().toString()))
+                        getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(acct.getEmail(), acct.getDisplayName(), acct.getIdToken(), acct.getPhotoUrl().toString(),SNSType.GOOGLE.getSnsType()))
                                 .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                                 .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                                 .observeOn(getSchedulerProvider().ui())
@@ -103,7 +104,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
                     if (task.isSuccessful()) {
                         GraphRequest request = GraphRequest.newMeRequest(acct, (object, response) -> {
                             try {
-                                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(response.getJSONObject().getString("email"), Profile.getCurrentProfile().getName(), acct.getToken(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString()))
+                                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(response.getJSONObject().getString("email"), Profile.getCurrentProfile().getName(), acct.getToken(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString(), SNSType.FACEBOOK.getSnsType()))
                                         .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                                         .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                                         .observeOn(getSchedulerProvider().ui())
@@ -144,7 +145,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
 
             @Override
             public void onSuccess(MeV2Response result) {
-                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(result.getKakaoAccount().getEmail(), result.getKakaoAccount().getProfile().getNickname(), getDataManager().getPushToken(), result.getKakaoAccount().getProfile().getThumbnailImageUrl()))
+                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(result.getKakaoAccount().getEmail(), result.getKakaoAccount().getProfile().getNickname(), getDataManager().getPushToken(), result.getKakaoAccount().getProfile().getThumbnailImageUrl(), SNSType.KAKAO.getSnsType()))
                         .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                         .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                         .observeOn(getSchedulerProvider().ui())

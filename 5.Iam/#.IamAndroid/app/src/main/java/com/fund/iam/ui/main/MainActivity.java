@@ -74,7 +74,6 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         super.onCreate(savedInstanceState);
         getViewModel().setNavigator(this);
         initViews();
-        getViewModel().getInitialData();
     }
 
     @Override
