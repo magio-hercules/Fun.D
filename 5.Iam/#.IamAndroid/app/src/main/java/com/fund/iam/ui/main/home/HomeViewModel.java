@@ -3,26 +3,17 @@ package com.fund.iam.ui.main.home;
 
 import android.graphics.Bitmap;
 import android.util.Log;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
-import com.fund.iam.data.model.request.LoginBody;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
-
-import io.reactivex.Maybe;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private static final String TAG = "[IAM][HOME][VM]";

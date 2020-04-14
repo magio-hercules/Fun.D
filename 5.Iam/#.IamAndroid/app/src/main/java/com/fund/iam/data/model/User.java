@@ -35,9 +35,25 @@ public class User {
     @SerializedName("image_url")
     private String imageUrl;
 
+    @SerializedName("sns_type")
+    private String snsType;
+
     private int age;
 
     private int gender;
 
     private String token;
+
+    public User(String email, String userName, String token, String imageUrl, String snsType) {
+        this.email = email;
+        this.userName = userName;
+        this.token = token;
+        this.imageUrl = imageUrl;
+        this.snsType = snsType;
+    }
+
+    public User(String email, String snsType) {
+        this.email = email;
+        this.snsType = snsType;
+    }
 }

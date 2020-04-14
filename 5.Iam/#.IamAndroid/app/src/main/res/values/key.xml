@@ -2,6 +2,8 @@
 <resources>
     <!-- Preference -->
     <string name="key_push_token">key_push_token</string>
+    <string name="key_auth_email">key_auth_email</string>
+    <string name="key_auth_sns_type">key_auth_sns_type</string>
 
     <!-- Bus -->
 

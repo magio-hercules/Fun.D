@@ -9,7 +9,6 @@ import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.Notice;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
-import com.fund.iam.data.model.request.LoginBody;
 import com.fund.iam.data.model.request.PushBody;
 import com.fund.iam.data.remote.ApiHelper;
 
@@ -19,10 +18,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.inject.Singleton;
 
-import io.reactivex.Maybe;
 import io.reactivex.Single;
-import lombok.Getter;
-import lombok.Setter;
 import retrofit2.Response;
 
 @Singleton
@@ -61,7 +57,7 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Response<List<User>>> postLogin(LoginBody loginBody) {
+    public Single<Response<List<User>>> postLogin(User loginBody) {
         return mAwsApiHelper.postLogin(loginBody);
     }
 
@@ -176,6 +172,8 @@ public class AppDataManager implements DataManager {
     @Override
     public void setMyInfo(User user) {
         myInfo = user;
+        setAuthEmail(myInfo.getEmail());
+        setAuthSnsType(myInfo.getSnsType());
     }
 
     @Override
@@ -191,5 +189,25 @@ public class AppDataManager implements DataManager {
     @Override
     public void setMyPortfolios(List<Portfolio> portfolios) {
         myPortfolios = portfolios;
+    }
+
+    @Override
+    public void setAuthEmail(String value) {
+        mPreferencesHelper.setAuthEmail(value);
+    }
+
+    @Override
+    public String getAuthEmail() {
+        return mPreferencesHelper.getAuthEmail();
+    }
+
+    @Override
+    public void setAuthSnsType(String value) {
+        mPreferencesHelper.setAuthSnsType(value);
+    }
+
+    @Override
+    public String getAuthSnsType() {
+        return mPreferencesHelper.getAuthSnsType();
     }
 }

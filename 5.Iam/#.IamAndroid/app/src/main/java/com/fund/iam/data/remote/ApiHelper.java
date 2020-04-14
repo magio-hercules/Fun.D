@@ -7,18 +7,15 @@ import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.Notice;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
-import com.fund.iam.data.model.request.LoginBody;
 import com.fund.iam.data.model.request.PushBody;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
 import io.reactivex.Single;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
@@ -41,7 +38,7 @@ public interface ApiHelper {
     // 로그인
     @POST(ApiDefine.Body.API_LOGIN)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Single<Response<List<User>>> postLogin(@Body LoginBody loginBody);
+    Single<Response<List<User>>> postLogin(@Body User user);
 
     // 카카오 토큰 인증 (사용 X)
     @POST(ApiDefine.Body.API_KAKAO_VERIFY_TOKEN)

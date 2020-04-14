@@ -3,20 +3,15 @@ package com.fund.iam.ui.login;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
+import android.util.Log;
 
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.fund.iam.BuildConfig;
-import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.enums.SNSType;
-import com.fund.iam.data.model.request.LoginBody;
+import com.fund.iam.data.model.User;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
@@ -24,15 +19,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.kakao.auth.AccessTokenCallback;
 import com.kakao.auth.ISessionCallback;
 import com.kakao.auth.Session;
 import com.kakao.network.ErrorResult;
@@ -43,14 +34,12 @@ import com.kakao.util.exception.KakaoException;
 import com.orhanobut.logger.Logger;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-import io.reactivex.Single;
 import lombok.Getter;
-
-import static androidx.core.app.ActivityCompat.startActivityForResult;
 
 public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISessionCallback {
 
@@ -76,14 +65,14 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(acct.getEmail(), acct.getDisplayName(), acct.getIdToken(), acct.getPhotoUrl().toString(),SNSType.GOOGLE.getSnsType()))
+                        getCompositeDisposable().add(getDataManager().postLogin(new User(acct.getEmail(), acct.getDisplayName(), acct.getIdToken(), acct.getPhotoUrl().toString(), SNSType.GOOGLE.getSnsType()))
                                 .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                                 .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                                 .observeOn(getSchedulerProvider().ui())
                                 .subscribeOn(getSchedulerProvider().io())
                                 .subscribe(portFolio -> {
                                     Logger.d("result " + portFolio.isSuccessful());
-                                    if(portFolio.isSuccessful()) {
+                                    if (portFolio.isSuccessful()) {
                                         getDataManager().setMyPortfolios(portFolio.body());
                                         getNavigator().startMainActivity();
                                     } else {
@@ -104,14 +93,20 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
                     if (task.isSuccessful()) {
                         GraphRequest request = GraphRequest.newMeRequest(acct, (object, response) -> {
                             try {
-                                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(response.getJSONObject().getString("email"), Profile.getCurrentProfile().getName(), acct.getToken(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString(), SNSType.FACEBOOK.getSnsType()))
+                                Logger.d("facebook response " + response.getJSONObject());
+                                Logger.d("facebook profile name " + Profile.getCurrentProfile().getName());
+                                Logger.d("facebook profile url " + Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString());
+                                Logger.d("facebook profile token " + acct.getToken());
+
+
+                                getCompositeDisposable().add(getDataManager().postLogin(new User(response.getJSONObject().getString("email"), Profile.getCurrentProfile().getName(), acct.getToken(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString(), SNSType.FACEBOOK.getSnsType()))
                                         .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                                         .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                                         .observeOn(getSchedulerProvider().ui())
                                         .subscribeOn(getSchedulerProvider().io())
                                         .subscribe(portFolio -> {
                                             Logger.d("result " + portFolio.isSuccessful());
-                                            if(portFolio.isSuccessful()) {
+                                            if (portFolio.isSuccessful()) {
                                                 getDataManager().setMyPortfolios(portFolio.body());
                                                 getNavigator().startMainActivity();
                                             } else {
@@ -145,21 +140,79 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
 
             @Override
             public void onSuccess(MeV2Response result) {
-                getCompositeDisposable().add(getDataManager().postLogin(new LoginBody(result.getKakaoAccount().getEmail(), result.getKakaoAccount().getProfile().getNickname(), getDataManager().getPushToken(), result.getKakaoAccount().getProfile().getThumbnailImageUrl(), SNSType.KAKAO.getSnsType()))
-                        .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
-                        .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
-                        .subscribe(portFolio -> {
-                            Logger.d("result " + portFolio.isSuccessful());
-                            if(portFolio.isSuccessful()) {
-                                getDataManager().setMyPortfolios(portFolio.body());
-                                getNavigator().startMainActivity();
-                            } else {
-                                Logger.e("Login Error");
-                            }
+                if (result.getKakaoAccount().emailNeedsAgreement().getBoolean()) {
+                    getNavigator().showKakaoAuthPopup();
+                } else {
+                    getCompositeDisposable().add(getDataManager().postLogin(new User(result.getKakaoAccount().getEmail(), result.getKakaoAccount().getProfile().getNickname(), getDataManager().getPushToken(), result.getKakaoAccount().getProfile().getThumbnailImageUrl(), SNSType.KAKAO.getSnsType()))
+                            .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
+                            .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
+                            .observeOn(getSchedulerProvider().ui())
+                            .subscribeOn(getSchedulerProvider().io())
+                            .subscribe(portFolio -> {
+                                if (portFolio.isSuccessful()) {
+                                    getDataManager().setMyPortfolios(portFolio.body());
+                                    getNavigator().startMainActivity();
+                                } else {
+                                    Logger.e("Login Error");
+                                }
 
-                        }, onError -> getNavigator().handleError(onError)));
+                            }, onError -> getNavigator().handleError(onError)));
+                }
+// 필요한 동의항목의 scope ID (개발자사이트 해당 동의항목 설정에서 확인 가능)
+
+
+// 사용자 동의 요청
+
+
+//                UserAccount kakaoAccount = result.getKakaoAccount();
+//                if (kakaoAccount != null) {
+//
+//                    // 이메일
+//                    String email = kakaoAccount.getEmail();
+//
+//                    if (email != null) {
+//                        Log.i("KAKAO_API", "email: " + email);
+//
+//                    } else if (kakaoAccount.emailNeedsAgreement() == OptionalBoolean.TRUE) {
+//                        // 동의 요청 후 이메일 획득 가능
+//                        // 단, 선택 동의로 설정되어 있다면 서비스 이용 시나리오 상에서 반드시 필요한 경우에만 요청해야 합니다.
+//
+//                    } else {
+//                        // 이메일 획득 불가
+//                    }
+//
+//                    // 프로필
+//                    Profile profile = kakaoAccount.getProfile();
+//
+//                    if (profile != null) {
+//                        Log.d("KAKAO_API", "nickname: " + profile.getNickname());
+//                        Log.d("KAKAO_API", "profile image: " + profile.getProfileImageUrl());
+//                        Log.d("KAKAO_API", "thumbnail image: " + profile.getThumbnailImageUrl());
+//
+//                    } else if (kakaoAccount.profileNeedsAgreement() == OptionalBoolean.TRUE) {
+//                        // 동의 요청 후 프로필 정보 획득 가능
+//
+//                    } else {
+//                        // 프로필 획득 불가
+//                    }
+//                }
+
+
+//                getCompositeDisposable().add(getDataManager().postLogin(new User("test@daum.net"/*result.getKakaoAccount().getEmail()*/, result.getKakaoAccount().getProfile().getNickname(), getDataManager().getPushToken(), result.getKakaoAccount().getProfile().getThumbnailImageUrl(), SNSType.KAKAO.getSnsType()))
+//                        .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
+//                        .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
+//                        .observeOn(getSchedulerProvider().ui())
+//                        .subscribeOn(getSchedulerProvider().io())
+//                        .subscribe(portFolio -> {
+//                            Logger.d("portFolio " + portFolio.isSuccessful());
+//                            if (portFolio.isSuccessful()) {
+//                                getDataManager().setMyPortfolios(portFolio.body());
+//                                getNavigator().startMainActivity();
+//                            } else {
+//                                Logger.e("Login Error");
+//                            }
+//
+//                        }, onError -> getNavigator().handleError(onError)));
 
             }
         });

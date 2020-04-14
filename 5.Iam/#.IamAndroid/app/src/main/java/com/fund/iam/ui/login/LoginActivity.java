@@ -24,8 +24,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
+import com.kakao.auth.AccessTokenCallback;
 import com.kakao.auth.Session;
+import com.kakao.auth.authorization.accesstoken.AccessToken;
+import com.kakao.network.ErrorResult;
 import com.orhanobut.logger.Logger;
+
+import java.util.Arrays;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -83,6 +89,8 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
 
             case RC_KAKAO_SIGN_IN:
                 Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data);
+
+
                 break;
 
             case RC_GOOGLE_SIGN_IN:
@@ -117,6 +125,22 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     @Override
     public void onCancel() {
 
+    }
+
+    @Override
+    public void showKakaoAuthPopup() {
+        Session.getCurrentSession().updateScopes(this, Arrays.asList("account_email"), new AccessTokenCallback() {
+
+            @Override
+            public void onAccessTokenReceived(AccessToken accessToken) {
+                getViewModel().onSessionOpened();
+            }
+
+            @Override
+            public void onAccessTokenFailure(ErrorResult errorResult) {
+                handleError(errorResult.getException());
+            }
+        });
     }
 
     @Override

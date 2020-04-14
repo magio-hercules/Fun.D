@@ -6,4 +6,12 @@ public interface PreferencesHelper {
 
     String getPushToken();
 
+    void setAuthEmail(String value);
+
+    String getAuthEmail();
+
+    void setAuthSnsType(String value);
+
+    String getAuthSnsType();
+
 }
