@@ -27,7 +27,7 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
     }
 
     private void checkAuth() {
-        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+        if (/*FirebaseAuth.getInstance().getCurrentUser() == null || */getDataManager().getAuthEmail() == null) {
             getNavigator().startLoginActivity();
         } else {
             getCompositeDisposable().add(getDataManager().postLogin(new User(getDataManager().getAuthEmail(), getDataManager().getAuthSnsType()))
