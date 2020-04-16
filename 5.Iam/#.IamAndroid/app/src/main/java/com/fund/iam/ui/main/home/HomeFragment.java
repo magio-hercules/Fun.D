@@ -127,10 +127,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initViews() {
-//        getViewModel().getJobList();
-//        getViewModel().getUserInfo();
-//        getViewModel().getUserPortfolio();
-
         updateUser();
         updatePortfolio();
     }

@@ -443,12 +443,6 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     private void initViews() {
         Log.d(TAG, "initViews");
 
-//        getViewModel().getJobList();
-
-        // TODO : 필요시 edit용 함수를 만들예정
-//        getViewModel().getUserInfo();
-//        getViewModel().getUserPortfolio();
-
         updateUser();
         updatePortfolio();
     }

@@ -36,51 +36,8 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     }
 
 
-//    public void testUsersApi() {
-//        getCompositeDisposable().add(getDataManager().postUsers(1).subscribe(result -> {
-//            Logger.d(result.body());
-//        }));
-//    }
-//
-//    public void testPortfolioApi() {
-//        getCompositeDisposable().add(getDataManager().postPortfolios(1).subscribe(result -> {
-//            Logger.d(result.body());
-//        }));
-//    }
-
-
-//    public Maybe<Response<List<User>>> getUserData(int userId) {
-//            return getDataManager().postUsers(userId)
-//                .observeOn(getSchedulerProvider().ui())
-//                .subscribeOn(getSchedulerProvider().io())
-//                .subscribe(result -> {
-//                    Log.d(TAG, "postUsers success");
-//                    List<User> arrResult = result.body();
-//                    myInfo = (User)arrResult.get(0);
-//                    Log.d(TAG, "result.body " + myInfo);
-//
-//                    getNavigator().updateUser();
-//                }, onError -> getNavigator().handleError(onError)));
-////        return Single.just(Collections.singletonList("Hello")) // (1)
-////                .map(organizations -> {
-////                    if (organizations.isEmpty()) {
-////                        throw Exceptions.propagate(new NullPointerException("List is empty"));
-////                    }
-////                    return organizations;
-////                }).doOnSuccess(organizations -> {
-////                    // do something with organizations list
-////                });
-//    }
-
     public void getUserInfo() {
         Log.d(TAG, "getUserInfo");
-
-//        makeRequestToServiceA()
-//                .flatMap(responseFromServiceA -> makeRequestToServiceB(responseFromServiceA),
-//                        (responseFromServiceA, responseFromServiceB) -> Observable.just("here is combined result!"))
-
-//                  firstNetworkCall().subscribeOn(Schedulers.io())
-//                .mergeWith(secondNetworkCall().subscribeOn(Schedulers.io())
 
         getCompositeDisposable().add(
                 getDataManager().postJobs()
@@ -105,57 +62,6 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
                             getNavigator().updateUser();
                         }, onError -> getNavigator().handleError(onError)));
-
-
-//        getCompositeDisposable().add(
-//                getDataManager().postUsers(userId)
-//                .observeOn(getSchedulerProvider().ui())
-//                .subscribeOn(getSchedulerProvider().io())
-//                .subscribe(result -> {
-//                    Logger.d("postUsers success");
-//                    List<User> arrResult = result.body();
-//                    myInfo = (User)arrResult.get(0);
-//                    Log.d(TAG, "result.body " + myInfo);
-//
-//                    getNavigator().updateUser();
-//                }, onError -> getNavigator().handleError(onError)));
-
-//        retrofitService.getUserInfo(userId).enqueue(new Callback<List<UserInfo>>() {
-//            @Override
-//            public void onResponse(@NonNull Call<List<UserInfo>> call,
-//                                   @NonNull Response<List<UserInfo>> response) {
-//                if (response.isSuccessful()) {
-//                    Log.e(TAG, "======================================");
-//                    Log.e(TAG, "response.isSuccessful getUserInfo 출력 시작");
-//
-//                    List<UserInfo> userList = response.body();
-//                    mUserList = userList;
-//                    for (UserInfo data: userList) {
-//                        Log.d("data.getId()", data.getId() + "");
-//                        Log.d("data.getEmail()", data.getEmail());
-//                        Log.d("data.getUser_name()", data.getUser_name());
-//                        Log.d("data.getNick_name()", data.getNick_name());
-//
-//                        if (data.getId() == userId) {
-//                            changeUIUserInfo(data);
-//                        }
-//                    }
-//
-//                    getUserPortfolio();
-//
-//                    Log.e(TAG, "response.isSuccessful getUserInfo 출력 끝");
-//                    Log.e(TAG, "======================================");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<List<UserInfo>> call, @NonNull Throwable t) {
-//                Log.d(TAG, "retrofitService.getUserInfo onFailure");
-//
-//                Toast.makeText(getActivity(), "서버를 확인해 주세요.", Toast.LENGTH_SHORT).show();
-//            }
-//        });
-
     }
 
 
@@ -178,18 +84,6 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
         Log.d(TAG, "end getUserInfo");
     }
-
-
-//    public void handleLetterBox() {
-//        Log.d(TAG, "handleLetterBox");
-//
-//        getNavigator().startLetterActivity();
-//    }
-
-//    public void handleModify() {
-//        Log.d(TAG, "handleModify");
-//
-//    }
 
     public void handleInsertImage() {
         Log.d(TAG, "handleInsertImage");
@@ -232,35 +126,6 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     // Edit mode
     ////////////////////////////////////
 
-    public void getUserInfoEdit() {
-        Log.d(TAG, "getUserInfoEdit");
-
-        getCompositeDisposable().add(
-                getDataManager().postJobs()
-                        .flatMap(result -> {
-                            Log.d(TAG, "postJobList success");
-//                            Logger.d(result.body());
-
-                            listJob = result.body();
-//                            Logger.d(listJob);
-
-                            return getDataManager().postUsers(getDataManager().getMyInfo().getId());
-                        })
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
-                        .subscribe(result -> {
-                            Log.d(TAG, "postUsers success");
-//                            Logger.d(result.body());
-
-                            List<User> arrResult = result.body();
-                            myInfo = (User)arrResult.get(0);
-//                            Logger.d("result.body " + myInfo);
-
-                            getNavigator().updateUser();
-                            getNavigator().onSuccess();
-                        }, onError -> getNavigator().handleError(onError)));
-
-    }
 
     public void insertPortfolioText(String text) {
         Log.d(TAG, "insertPortfolioText : " + text);
