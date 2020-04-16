@@ -61,8 +61,6 @@ import com.fund.iam.databinding.FragmentHomeEditBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.fund.iam.ui.letter.LetterActivity;
-import com.fund.iam.ui.main.MainActivity;
-import com.fund.iam.ui.main.MainViewModel;
 import com.fund.iam.utils.RealPathUtil;
 import com.orhanobut.logger.Logger;
 
@@ -103,8 +101,6 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     @Inject
     DataManager dataManager;
-
-    private MainViewModel mainViewModel;
 
 
     //    Spinner spinner;
@@ -147,9 +143,6 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     ///////////////////
     // Home variable //
-
-    // TODO, for test userId 가져오기
-    int userId;
 
     //권한 설정 변수
     private String[] permissions = {
@@ -224,14 +217,13 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         setHasOptionsMenu(true);
     }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // TODO, for test userId 가져오기
-        userId = 1;
-
+        // View is created so postpone the transition
+//        postponeEnterTransition();
 
         checkPermissions();
 
@@ -294,7 +286,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         super.onPause();
 
         try {
-//            Log.e(TAG, "onPause registerReceiver unregister OK");
+//            Log.d(TAG, "onPause registerReceiver unregister OK");
 //            getContext().unregisterReceiver(mYourBroadcastReceiver);
 //            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mYourBroadcastReceiver);
         } catch (IllegalArgumentException e){
@@ -312,7 +304,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mYourBroadcastReceiver);
 
         try {
-            Log.e(TAG, "onDestroyView registerReceiver unregister OK");
+            Log.d(TAG, "onDestroyView registerReceiver unregister OK");
 //            getContext().unregisterReceiver(mYourBroadcastReceiver);
             LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(mYourBroadcastReceiver);
         } catch (IllegalArgumentException e){
@@ -447,17 +439,18 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     /////////////////////////////
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initViews() {
-        mainViewModel = (MainViewModel) getBaseActivity().getViewModel();
-        Log.d(TAG, "initViews " + mainViewModel.getTestString());
+        Log.d(TAG, "initViews");
 
 //        getViewModel().getJobList();
 
         // TODO : 필요시 edit용 함수를 만들예정
-        getViewModel().getUserInfo();
-        getViewModel().getUserPortfolio();
+//        getViewModel().getUserInfo();
+//        getViewModel().getUserPortfolio();
 
-
+        updateUser();
+        updatePortfolio();
     }
 
     private void initHandlers() {
@@ -538,7 +531,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     private void handleSave(View view) {
         Log.d(TAG, "handleSave");
 
-        List<Portfolio> listPortfolio = getViewModel().myPortfolio;
+//        List<Portfolio> listPortfolio = getViewModel().myPortfolio;
+        List<Portfolio> listPortfolio = dataManager.getMyPortfolios();
+
 
         // 전체 리스트 중 id가 없는 항목만 API를 요청하여 추가
         LinearLayout layout = getViewDataBinding().portfolioLayout;
@@ -609,7 +604,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 watingCount++;
                 changeCount++;
                 Log.d(TAG, "updatePortfolio watingCount is " + watingCount);
-                getViewModel().updatePortfolio(_id, userId, 1, _text);
+                getViewModel().updatePortfolio(_id,
+                        dataManager.getMyInfo().getId(), 1, _text);
             }
         }
 
@@ -745,13 +741,15 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateUser() {
-        Log.d(TAG, "updateUI");
+        Log.d(TAG, "updateUser");
 
-        User info = getViewModel().myInfo;
-        List<Job> jobList = getViewModel().listJob;
+//        User info = getViewModel().myInfo;
+//        List<Job> jobList = getViewModel().listJob;
+        User info = dataManager.getMyInfo();
+        List<Job> jobList = dataManager.getJobs();
 
         Job findJob = jobList.stream()
-                .filter(item -> item.getId() == Integer.parseInt(info.getJobList()))
+                .filter(item -> info.getJobList() != null && item.getId() == Integer.parseInt(info.getJobList()))
                 .findAny()
                 .orElse(null);
 
@@ -763,6 +761,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //                .apply(RequestOptions.centerCropTransform())
                 .fitCenter()
                 .into(getViewDataBinding().profileEditProfile);
+//                .into(getViewDataBinding().profileImageProfile);
 
         getViewDataBinding().profileEditNickname.setText(info.getNickName());
         getViewDataBinding().profileEditName.setText(info.getUserName());
@@ -803,7 +802,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     public void updatePortfolio() {
         Log.d(TAG, "updatePortfolio");
 
-        List<Portfolio> portfolioList = getViewModel().myPortfolio;
+//        List<Portfolio> portfolioList = getViewModel().myPortfolio;
+        List<Portfolio> portfolioList = dataManager.getMyPortfolios();
+
         for (Portfolio data: portfolioList) {
             switch (data.getType()) {
                 case 1: // TEXT

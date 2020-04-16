@@ -18,8 +18,6 @@ import java.util.List;
 public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private static final String TAG = "[IAM][HOME][VM]";
 
-    int userId = 1;
-
     public List<Job> listJob = null;
 
     public User myInfo = null;
@@ -29,8 +27,6 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     public HomeViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
         Logger.d("HomeVIewModel constructor");
-        // TODO userId 가져오기
-        userId = 1;
 
         subscribeEvent();
     }
@@ -52,20 +48,6 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //        }));
 //    }
 
-
-    public void getJobList() {
-        Log.d(TAG, "postJobList");
-
-        getCompositeDisposable().add(
-                getDataManager().postJobs()
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
-                        .subscribe(result -> {
-                            Log.d(TAG, "postJobList success");
-                            listJob = result.body();
-                            Log.d(TAG, "listJob is " + listJob);
-                        }, onError -> getNavigator().handleError(onError)));
-    }
 
 //    public Maybe<Response<List<User>>> getUserData(int userId) {
 //            return getDataManager().postUsers(userId)
@@ -101,28 +83,28 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //                .mergeWith(secondNetworkCall().subscribeOn(Schedulers.io())
 
         getCompositeDisposable().add(
-            getDataManager().postJobs()
-            .flatMap(result -> {
-                Log.d(TAG, "postJobList success");
+                getDataManager().postJobs()
+                        .flatMap(result -> {
+                            Log.d(TAG, "postJobList success");
 //                Logger.d(result.body());
 
-                listJob = result.body();
+                            listJob = result.body();
 //                Logger.d(listJob);
 
-                return getDataManager().postUsers(userId);
-            })
-            .observeOn(getSchedulerProvider().ui())
-            .subscribeOn(getSchedulerProvider().io())
-            .subscribe(result -> {
-                Log.d(TAG, "postUsers success");
+                            return getDataManager().postUsers(getDataManager().getMyInfo().getId());
+                        })
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribe(result -> {
+                            Log.d(TAG, "postUsers success");
 //                Logger.d(result.body());
 
-                List<User> arrResult = result.body();
-                myInfo = (User)arrResult.get(0);
-                Log.d(TAG, "result.body " + myInfo);
+                            List<User> arrResult = result.body();
+                            myInfo = (User)arrResult.get(0);
+                            Log.d(TAG, "result.body " + myInfo);
 
-                getNavigator().updateUser();
-            }, onError -> getNavigator().handleError(onError)));
+                            getNavigator().updateUser();
+                        }, onError -> getNavigator().handleError(onError)));
 
 
 //        getCompositeDisposable().add(
@@ -181,7 +163,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         Log.d(TAG, "getUserPortfolio");
 
         getCompositeDisposable().add(
-                getDataManager().postPortfolios(1)
+                getDataManager().postPortfolios(getDataManager().getMyInfo().getId())
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
@@ -262,7 +244,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                             listJob = result.body();
 //                            Logger.d(listJob);
 
-                            return getDataManager().postUsers(userId);
+                            return getDataManager().postUsers(getDataManager().getMyInfo().getId());
                         })
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
@@ -286,15 +268,15 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
         getCompositeDisposable().add(
 //            getDataManager().postInsertPortfolio(newPortfolio)
-                getDataManager().postInsertPortfolio(userId, 1, text)
-            .observeOn(getSchedulerProvider().ui())
-            .subscribeOn(getSchedulerProvider().io())
-            .subscribe(result -> {
-                Log.d(TAG, "postInsertPortfolio success");
+                getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 1, text)
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribe(result -> {
+                            Log.d(TAG, "postInsertPortfolio success");
 //                Logger.d("insertPortfolioText success");
 //                Logger.d(result.body());
-                getNavigator().onSuccess();
-            }, onError -> getNavigator().handleError(onError)));
+                            getNavigator().onSuccess();
+                        }, onError -> getNavigator().handleError(onError)));
     }
 
     public void insertPortfolioImage(Bitmap bitmap) {
@@ -317,7 +299,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //                            return getDataManager().postInsertPortfolio(newPortfolio);
 //                        })
                 // image url 사용하도록 API 수정 필요
-                getDataManager().postInsertPortfolio(userId, 2, s3Url)
+                getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 2, s3Url)
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
@@ -352,15 +334,15 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //        Portfolio newPortfolio = new Portfolio(userId, 1, text, "");
 
         getCompositeDisposable().add(
-            getDataManager().postUpdatePortfolio(id, userId, type, text)
-                .observeOn(getSchedulerProvider().ui())
-                .subscribeOn(getSchedulerProvider().io())
-                .subscribe(result -> {
-                    Log.d(TAG, "postDeletePortfolio success");
+                getDataManager().postUpdatePortfolio(id, userId, type, text)
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribe(result -> {
+                            Log.d(TAG, "postDeletePortfolio success");
 //                            Logger.d("postDeletePortfolio success");
 //                            Logger.d(result.body());
-                    getNavigator().onSuccess();
-                }, onError -> getNavigator().handleError(onError))
+                            getNavigator().onSuccess();
+                        }, onError -> getNavigator().handleError(onError))
         );
     }
 }

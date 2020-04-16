@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -15,8 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.bumptech.glide.Glide;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
@@ -27,20 +26,11 @@ import com.fund.iam.databinding.FragmentHomeBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.fund.iam.ui.letter.LetterActivity;
-import com.fund.iam.ui.main.MainActivity;
-import com.fund.iam.ui.main.MainViewModel;
 import com.orhanobut.logger.Logger;
 
-import java.io.ObjectStreamClass;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import javax.inject.Inject;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewModel> implements HomeNavigator, View.OnClickListener {
 
@@ -64,9 +54,6 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private int portfolidIndex = 1;
 
     //
-
-    private MainViewModel mainViewModel;
-
 
     public static HomeFragment newInstance() {
         Bundle args = new Bundle();
@@ -99,11 +86,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        Logger.i("onCreate");
+
         getViewModel().setNavigator(this);
         setHasOptionsMenu(true);
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -136,14 +125,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     /////////////////////////////
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void initViews() {
-        mainViewModel = (MainViewModel) getBaseActivity().getViewModel();
-        Log.d(TAG, "initViews " + mainViewModel.getTestString());
-
 //        getViewModel().getJobList();
-        getViewModel().getUserInfo();
-        getViewModel().getUserPortfolio();
+//        getViewModel().getUserInfo();
+//        getViewModel().getUserPortfolio();
 
+        updateUser();
+        updatePortfolio();
     }
 
     public void onSuccess() {
@@ -167,11 +156,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //            System.out.println("First: " + firstMatch.getAsInt());
 //        }
 
-        User info = getViewModel().myInfo;
-        List<Job> jobList = getViewModel().listJob;
+//        User info = getViewModel().myInfo;
+//        List<Job> jobList = getViewModel().listJob;
+        User info = dataManager.getMyInfo();
+        List<Job> jobList = dataManager.getJobs();
+        Logger.d(info);
+        Logger.d(jobList);
 
         Job findJob = jobList.stream()
-                .filter(item -> item.getId() == Integer.parseInt(info.getJobList()))
+                .filter(item -> info.getJobList() != null && item.getId() == Integer.parseInt(info.getJobList()))
                 .findAny()
                 .orElse(null);
 
@@ -201,14 +194,13 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //                addPortfolioText(data.getText());
 //            }
 //        }
-
     }
 
     public void updatePortfolio() {
         Log.d(TAG, "updatePortfolio");
 
-        List<Portfolio> portfolioList = getViewModel().myPortfolio;
-//        User userInfo = getViewModel().myInfo;
+//        List<Portfolio> portfolioList = getViewModel().myPortfolio;
+        List<Portfolio> portfolioList = dataManager.getMyPortfolios();
 
         for (Portfolio data : portfolioList) {
 //            if (data.getUserId() != userInfo.getId()) {

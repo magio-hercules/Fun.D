@@ -21,7 +21,6 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:scaleType="fitCenter"
-        android:src="@drawable/image_default"
-        app:srcCompat="@drawable/profile_default_picture" />
+        android:src="@drawable/profile_default_picture"/>
 
 </LinearLayout>
