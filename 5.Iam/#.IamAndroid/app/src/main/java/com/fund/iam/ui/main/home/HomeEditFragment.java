@@ -16,6 +16,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -64,7 +65,10 @@ import com.fund.iam.ui.letter.LetterActivity;
 import com.fund.iam.utils.RealPathUtil;
 import com.orhanobut.logger.Logger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -75,6 +79,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -131,6 +139,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             "여자",
     };
 
+    // TODO : DB에 테이블로 추가될 정보
     String[] spinnerValueAge = {
             "10대",
             "20대",
@@ -163,7 +172,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     // Portfolio 관리 정보 //
     // 추가될 신규 포트폴리오 (id, text or imageUrl)
     List<Map<Integer, String>> arrAddPortfolioText = new ArrayList<Map<Integer, String>>();
-    List<Map<Integer, String>> arrAddPortfolioImage = new ArrayList<Map<Integer, String>>();
+//    List<Map<Integer, String>> arrAddPortfolioImage = new ArrayList<Map<Integer, String>>();
+    List<Integer> arrAddPortfolioImage = new ArrayList<Integer>();
     // 삭제될 기존 포트폴리오 (id만 관리)
     List<Integer> arrDeletePortfolio = new ArrayList<Integer>();
     // 수정될 기존 TEXT 포트폴리오 (id, text)
@@ -173,6 +183,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     // API 호출 횟수를 count 하여 ProgressDialog 관리
     boolean bWaiting = false;
     int watingCount = 0;
+
+    // 이미지 정보
+    Bitmap mBitmapAvatar;
 
     // Home variable //
     ///////////////////
@@ -456,6 +469,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 Log.d(TAG, "profile_edit_save onClick");
 
                 handleSave(view);
+//                handleUpload();
             }
         });
 
@@ -468,6 +482,10 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "watingCount is " + watingCount);
 
         if (bWaiting && watingCount == 0) {
+            getViewModel().handleUserInfo();
+
+            getViewDataBinding().profileEditCancel.performClick();
+
             // type 1: 수정사항 반영 완료
             loadingEnd(1);
         }
@@ -511,6 +529,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                                 break;
                             case 1:
                                 Toast.makeText(getContext(), "수정사항이 반영되었습니다.", Toast.LENGTH_LONG).show();
+
                                 break;
                             case 2:
                                 Toast.makeText(getContext(), "변경사항이 없습니다.", Toast.LENGTH_LONG).show();
@@ -522,12 +541,59 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 }, delay);
     }
 
+    private void handleUpload() {
+        Log.d(TAG, "handleUpload");
+
+        mBitmapAvatar = ((BitmapDrawable)getViewDataBinding().profileEditProfile.getDrawable()).getBitmap();
+        if (mBitmapAvatar == null) {
+            Log.d(TAG, "mBitmapAvatar is null");
+
+        } else {
+            Log.d(TAG, "mBitmapAvatar is not null");
+
+            uploadImage(mBitmapAvatar);
+        }
+    }
+
     private void handleSave(View view) {
         Log.d(TAG, "handleSave");
 
+        loadingStart();
+        int changeCount = 0;
+
+        // 프로필 정보 update
+//        new User(String imageUrl, String userName, String nickName, String email,
+//                String location, String job, int gender, int age);
+        User userInfo = dataManager.getMyInfo();
+        String _imageUrl = userInfo.getImageUrl();
+        String _userName = getViewDataBinding().profileEditName.getText().toString();
+        String _nickName = getViewDataBinding().profileEditNickname.getText().toString();
+        String _email = getViewDataBinding().profileEditEmail.getText().toString();
+        String _phone = getViewDataBinding().profileEditPhone.getText().toString();
+        String _location = "" + (getViewDataBinding().profileEditLocation.getSelectedItemPosition() + 1);
+        String _job = "" + (getViewDataBinding().profileEditJob.getSelectedItemPosition() + 1);
+        int _gender = getViewDataBinding().profileEditGender.getSelectedItemPosition();
+        int _age = getViewDataBinding().profileEditAge.getSelectedItemPosition();
+
+        // 변경사항 확인
+        if (!userInfo.getUserName().equals(_userName) || !userInfo.getNickName().equals(_nickName)
+            || !userInfo.getEmail().equals(_email) || !userInfo.getLocationList().equals(_location)
+            || !userInfo.getJobList().equals(_job)
+            || userInfo.getGender() != _gender || userInfo.getAge() != _age) {
+            User updateUserInfo = new User(userInfo.getId(), userInfo.getSnsType(), _imageUrl,
+                    _userName, _nickName, _email, _phone,
+                    _location, _job, _gender, _age);
+            Logger.d("업데이트 될 유저정보 : " + updateUserInfo);
+
+            watingCount++;
+            changeCount++;
+            getViewModel().handleUserUpdate(updateUserInfo);
+        } else {
+            Log.d(TAG, "유저 프로필은 변경사항 없음");
+        }
+
 //        List<Portfolio> listPortfolio = getViewModel().myPortfolio;
         List<Portfolio> listPortfolio = dataManager.getMyPortfolios();
-
 
         // 전체 리스트 중 id가 없는 항목만 API를 요청하여 추가
         LinearLayout layout = getViewDataBinding().portfolioLayout;
@@ -585,10 +651,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         int _id;
         String _text;
 
-        loadingStart();
-
-        int changeCount = 0;
-        // STEP 1, 기존 리스트 변경 사항 발생시 update
+        // STEP 1, 기존 리스트 변경 사항 발생시 update (현재는 text type만 update 가능)
         for (Map<Integer, String> port : arrModifyPortfolio) {
             for (Map.Entry<Integer, String> entry : port.entrySet()) {
                 _id = entry.getKey();
@@ -627,17 +690,31 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
 
         // STEP 2-1, 신규 리스트 추가 요청 (image), S3 API 구현 이후 제공 예정
-//        for (Map<Integer, String> port : arrAddPortfolioImage) {
-//            for (Map.Entry<Integer, String> entry : port.entrySet()) {
-//                _id = entry.getKey();
-//                _text = entry.getValue();
-//                Log.d(TAG, "_key : " + _id + ", _text : " + _text);
-//
-//                  watingCount++;
-//        changeCount++;
-//                getViewModel().insertPortfolioImage(null);
-//            }
-//        }
+        Bitmap bitmap = null;
+        ImageView newImageView = null;
+        for (int _imageId : arrAddPortfolioImage) {
+            Log.d(TAG, "_imageId : " + _imageId);
+
+            watingCount++;
+            changeCount++;
+
+            // id에 해당하는 이미지 뷰 가져오기
+//            bitmap = ((BitmapDrawable)getViewDataBinding().profileEditProfile.getDrawable()).getBitmap();
+
+
+            newImageView = (ImageView) getViewDataBinding().portfolioLayout.findViewById(_imageId);
+            if (newImageView == null) {
+                Log.d(TAG, "newImageView is null");
+                return;
+            }
+            bitmap = ((BitmapDrawable)newImageView.getDrawable()).getBitmap();
+            if (bitmap != null) {
+                Log.d(TAG, "bitmap is not null");
+                uploadImage(bitmap);
+            } else {
+                Log.d(TAG, "bitmap is null");
+            }
+        }
 
         // STEP 3, 제거 리스트 삭제 요청 (type 무관)
         for (Portfolio port : listPortfolio) {
@@ -661,6 +738,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void initSpinnerList() {
 //        SpinnerAdapter adapter = new SpinnerAdapter(getContext(), R.layout.spinner_item);
 ////        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
@@ -686,12 +764,22 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //            }
 //        });
 
+
+
+        String[] locationList;
+        locationList = dataManager.getLocations().stream()
+                            .map(item -> item.getName()).toArray(String[]::new);
+
+        String[] jobList;
+        jobList = (String[])dataManager.getJobs().stream()
+                            .map(item -> item.getName()).toArray(String[]::new);
+
         initSpinner(getViewDataBinding().profileEditLocation,
-                    spinnerValueLocation,
+                locationList,
                 "거주지");
 
         initSpinner(getViewDataBinding().profileEditJob,
-                spinnerValueJob,
+                jobList,
                 "직종");
 
 //        initSpinner(getViewDataBinding().profileEditJobDetail,
@@ -747,7 +835,6 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 .findAny()
                 .orElse(null);
 
-
         Log.d(TAG, "url : " + info.getImageUrl());
         Glide.with(getContext())
                 .load(info.getImageUrl())
@@ -760,10 +847,18 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         getViewDataBinding().profileEditNickname.setText(info.getNickName());
         getViewDataBinding().profileEditName.setText(info.getUserName());
         getViewDataBinding().profileEditEmail.setText(info.getEmail());
-//        getViewDataBinding().profileEditJob.setText(findJob != null ? findJob.getName() : "직업 없음");
-//        getViewDataBinding().profileEditLocation.setText();
-//        getViewDataBinding().profileEditPhone.setText(info.getPhone());
-//        getViewDataBinding().profileEditGender.setText(info.getGender() == 0 ? "남자" : "여자");
+        getViewDataBinding().profileEditPhone.setText(info.getPhone());
+        if (info.getLocationList() != null) {
+            // DB id가 1부터 시작함
+            getViewDataBinding().profileEditLocation.setSelection(Integer.parseInt(info.getLocationList()) - 1);
+        }
+        if (info.getJobList() != null) {
+            // DB id가 1부터 시작함
+            getViewDataBinding().profileEditJob.setSelection(Integer.parseInt(info.getJobList()) - 1);
+        }
+        getViewDataBinding().profileEditGender.setSelection(info.getGender());
+        getViewDataBinding().profileEditAge.setSelection(info.getAge());
+
 
 //        List<PortfolioInfo> portfolioList = response.body();
 //        mPortfolioList = portfolioList;
@@ -922,10 +1017,26 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         ImageView imageDelete = (ImageView) newLayout.findViewById(R.id.portfolioImage_delete);
         imageDelete.setId(PORTFOLIPO_DELETE_ID + portfolidIndex);
         imageDelete.setOnClickListener(new View.OnClickListener(){
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "IMAGE 삭제 버튼 클릭");
-                arrDeletePortfolio.add(id);
+//                arrDeletePortfolio.add(id);
+//                getViewDataBinding().portfolioLayout.removeView((View) view.getParent());
+
+                if (id == -1) {
+                    // 추가 아이템이면 arrAddPortfolioText에서 삭제
+                    int editId = PORTFOLIPO_EDIT_ID + portfolidIndex;
+                    Log.d(TAG, "TEXT 삭제 버튼 클릭 - 신규 추가 아이템에서 제거");
+                    arrAddPortfolioImage.removeIf(data -> data == editId);
+                } else {
+                    // 기존 아이템이면 addDeletePortfolio에 추가
+                    // 기존 아이템이면 addModifyPortfolio에서 삭제
+                    Log.d(TAG, "TEXT 삭제 버튼 클릭 - 기존 아이템");
+                    arrDeletePortfolio.add(id);
+                    // 이미지는 수정하기 기능이 없음
+//                    arrModifyPortfolio.removeIf(data -> data.containsKey(id));
+                }
                 getViewDataBinding().portfolioLayout.removeView((View) view.getParent());
             }
         });
@@ -973,6 +1084,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 getViewDataBinding().portfolioLayout.removeView((View) view.getParent());
             }
         });
+
+        arrAddPortfolioImage.add(PORTFOLIPO_IMAGE_ID + portfolidIndex);
 
         // 버튼을 찾기 위한 id
         portfolidIndex++;
@@ -1422,6 +1535,62 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         Bitmap bitmap = BitmapFactory.decodeFile(photoPath, bmOptions);
         imageView.setImageBitmap(bitmap);
+    }
+
+    private void uploadImage(Bitmap bitmap) {
+        try {
+            File filesDir = getContext().getFilesDir();
+            File file = new File(filesDir, "image" + ".png");
+
+            User userInfo = dataManager.getMyInfo();
+
+            String fileName = userInfo.getEmail() + "_" + userInfo.getSnsType() + ".jpg";
+            Log.d(TAG, "uploadImage fileName : " + fileName);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            RequestBody reqFileName = RequestBody.create(MediaType.parse("text/plain"), fileName);
+
+//            getViewModel().uploadImage(bitmap);
+            getViewModel().insertPortfolioImage(body, reqFileName);
+
+
+//            Call<ResponseBody> req = apiService.postImage(body, name);
+//            req.enqueue(new Callback<ResponseBody>() {
+//                @Override
+//                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//
+//                    if (response.code() == 200) {
+//                        textView.setText("Uploaded Successfully!");
+//                        textView.setTextColor(Color.BLUE);
+//                    }
+//
+//                    Toast.makeText(getApplicationContext(), response.code() + " ", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                @Override
+//                public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                    textView.setText("Uploaded Failed!");
+//                    textView.setTextColor(Color.RED);
+//                    Toast.makeText(getApplicationContext(), "Request failed", Toast.LENGTH_SHORT).show();
+//                    t.printStackTrace();
+//                }
+//            });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private final BroadcastReceiver mYourBroadcastReceiver = new BroadcastReceiver() {

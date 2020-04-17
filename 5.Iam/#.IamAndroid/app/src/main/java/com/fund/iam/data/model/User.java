@@ -27,10 +27,7 @@ public class User {
     private String jobList;
 
     @SerializedName("location_list")
-    private int locationList;
-
-    @SerializedName("portfolio_list")
-    private int portfolioList;
+    private String locationList;
 
     @SerializedName("image_url")
     private String imageUrl;
@@ -43,6 +40,21 @@ public class User {
     private int gender;
 
     private String token;
+
+    public User(int id, String snsType, String imageUrl, String userName, String nickName,
+                String email, String phone, String location, String job, int gender, int age) {
+        this.id = id;
+        this.snsType = snsType;
+        this.imageUrl = imageUrl;
+        this.userName = userName;
+        this.nickName = nickName;
+        this.email = email;
+        this.phone = phone;
+        this.locationList = location;
+        this.jobList = job;
+        this.gender = gender;
+        this.age = age;
+    }
 
     public User(String email, String userName, String token, String imageUrl, String snsType) {
         this.email = email;

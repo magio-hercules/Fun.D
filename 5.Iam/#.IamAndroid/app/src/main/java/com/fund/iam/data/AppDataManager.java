@@ -19,6 +19,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 
 @Singleton
@@ -47,8 +49,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Response<List<User>>> postUsers(int userId) {
-        return mAwsApiHelper.postUsers(userId);
+    public Single<Response<List<User>>> postUserInfo(int userId) {
+        return mAwsApiHelper.postUserInfo(userId);
+    }
+
+    @Override
+    public Single<Response<List<User>>> postUserUpdate(User user) {
+        return mAwsApiHelper.postUserUpdate(user);
     }
 
     @Override
@@ -119,6 +126,11 @@ public class AppDataManager implements DataManager {
     @Override
     public Single<Response<Void>> postUpdatePortfolio( int id, int userId, int type, String text) {
         return mAwsApiHelper.postUpdatePortfolio(id, userId, type, text);
+    }
+
+    @Override
+    public Single<Response<String>> postUploadImage(MultipartBody.Part image, RequestBody fileName) {
+        return mAwsApiHelper.postUploadImage(image, fileName);
     }
 
     @Override

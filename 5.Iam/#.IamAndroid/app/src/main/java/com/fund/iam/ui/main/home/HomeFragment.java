@@ -20,6 +20,7 @@ import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.Job;
+import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
 import com.fund.iam.databinding.FragmentHomeBinding;
@@ -41,6 +42,15 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private final int PORTFOLIPO_DELETE_ID = 0x5000;
     private final int PORTFOLIPO_IMAGE_ID = 0x6000;
 
+    // TODO : DB에 테이블로 추가될 정보
+    String[] spinnerValueAge = {
+            "10대",
+            "20대",
+            "30대",
+            "40대",
+            "50대",
+            "60대",
+    };
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -156,11 +166,19 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //        List<Job> jobList = getViewModel().listJob;
         User info = dataManager.getMyInfo();
         List<Job> jobList = dataManager.getJobs();
+        List<Location> locationList = dataManager.getLocations();
         Logger.d(info);
         Logger.d(jobList);
+        Logger.d(locationList);
 
         Job findJob = jobList.stream()
                 .filter(item -> info.getJobList() != null && item.getId() == Integer.parseInt(info.getJobList()))
+                .findAny()
+                .orElse(null);
+
+
+        Location findLocation = locationList.stream()
+                .filter(item -> info.getLocationList() != null && item.getId() == Integer.parseInt(info.getLocationList()))
                 .findAny()
                 .orElse(null);
 
@@ -175,10 +193,16 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         getViewDataBinding().profileName.setText(info.getUserName());
         getViewDataBinding().profileJob.setText(findJob != null ? findJob.getName() : "직업 없음");
-        getViewDataBinding().profileAgeLocation.setText("" + info.getAge() + " 살");
+        getViewDataBinding().profileAge.setText(spinnerValueAge[info.getAge()]);
+        getViewDataBinding().profileLocation.setText(findLocation != null ? findLocation.getName() : "");
+
+        getViewDataBinding().profileNick.setText(info.getNickName());
         getViewDataBinding().profilePhone.setText(info.getPhone());
         getViewDataBinding().profileEmail.setText(info.getEmail());
+        getViewDataBinding().profileLocation2.setText(findLocation != null ? findLocation.getName() : "");
+        getViewDataBinding().profileJob2.setText(findJob != null ? findJob.getName() : "직업 없음");
         getViewDataBinding().profileGender.setText(info.getGender() == 0 ? "남자" : "여자");
+        getViewDataBinding().profileAge2.setText(spinnerValueAge[info.getAge()]);
 
 //        List<PortfolioInfo> portfolioList = response.body();
 //        mPortfolioList = portfolioList;

@@ -1,8 +1,6 @@
 package com.fund.iam.ui.main;
 
 
-import androidx.databinding.ObservableField;
-
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.bus.NavigateBus;
 import com.fund.iam.di.provider.ResourceProvider;
@@ -26,6 +24,7 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
         Logger.d("MainViewModel constructor");
         subscribeEvent();
 
+        initData();
     }
 
     private void subscribeEvent() {
@@ -34,5 +33,7 @@ public class MainViewModel extends BaseViewModel<MainNavigator> {
         
     }
 
+    private void initData() {
 
+    }
 }

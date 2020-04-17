@@ -12,17 +12,19 @@ public class ApiDefine {
     public interface Body {
 
         String API_FCM_SEND = "fcm/send";                   // 메시지 보내기
-        String API_KAKAO_VERIFY_TOKEN = "verifyToken";       // 카카오 토큰 인증
+        String API_KAKAO_VERIFY_TOKEN = "verifyToken";      // 카카오 토큰 인증
 
-        String API_USERS = "users";                         // 메시지 보내기
+        String API_USERSALL = "users";                      // 전체 유저 조회
+        String API_USER_INFO = "users/info";                // 메시지 보내기
+        String API_USER_UPDATE = "users/userUpdate";        // 유저 정보 업데이트
+        String API_LOGIN = "users/login";                   // 유저 로그인
+
         String API_PORTFOLIOS = "users/portfolio";          // 포트폴리오
         String API_INSERT_PORTFOLIO = "users/portfolioInsert";    // 포트폴리오 추가
         String API_DELETE_PORTFOLIO = "users/portfolioDelete";    // 포트폴리오 삭제
         String API_UPDATE_PORTFOLIO = "users/portfolioUpdate";    // 포트폴리오 수정
-        String API_LOGIN = "users/login";                   // 유저 로그인
 
         String API_CHANNELS = "channel/channer";            // 전체 채널 조회
-        String API_USERSALL = "users";                      // 전체 유저 조회
         String API_NEW_CHANNEL = "channel/channerInsert";   // 신규 채널 생성
         String API_CHANNEL = "channel/channerInfo";         // 특정 채널 조회
         String API_CHANNEL_USERS = "channel/user";          // 특정 채널 전체유저 조회
