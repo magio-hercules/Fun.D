@@ -577,7 +577,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         // 변경사항 확인
         if (!userInfo.getUserName().equals(_userName) || !userInfo.getNickName().equals(_nickName)
-            || !userInfo.getEmail().equals(_email) || !userInfo.getLocationList().equals(_location)
+            || !userInfo.getEmail().equals(_email) || !userInfo.getPhone().equals(_phone)
+            || !userInfo.getLocationList().equals(_location)
             || !userInfo.getJobList().equals(_job)
             || userInfo.getGender() != _gender || userInfo.getAge() != _age) {
             User updateUserInfo = new User(userInfo.getId(), userInfo.getSnsType(), _imageUrl,
