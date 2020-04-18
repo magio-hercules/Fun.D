@@ -35,6 +35,12 @@ public class ApiDefine {
         String API_JOBS = "list/job";                       // 전체 직업 조회
         String API_LIST_JOB_INFO = "list/jobInfo";          // 직업 정보
 
+        String API_LETTER_BOX_INFO = "letterbox/letterboxInfo";          // 쪽지함
+        String API_LETTER = "letterbox/message";          // 쪽지내용
+        String API_LETTER_INSERT = "letterbox/messageInsert";          // 쪽지내용 입력하기
+
+        String API_VERSION_CHECK = "store/apps/details";
+
     }
 
 }

@@ -73,8 +73,8 @@
         tools:layout="@layout/fragment_setting" >
 
         <action
-            android:id="@+id/action_info_update"
-            app:destination="@id/navigation_info_update" />
+            android:id="@+id/action_update"
+            app:destination="@id/navigation_update" />
 
         <action
             android:id="@+id/action_contact_us"
@@ -83,10 +83,6 @@
         <action
             android:id="@+id/action_privacy"
             app:destination="@id/navigation_privacy" />
-
-        <action
-            android:id="@+id/action_policy"
-            app:destination="@id/navigation_policy" />
 
     </fragment>
 
@@ -97,29 +93,22 @@
         tools:layout="@layout/fragment_notice" />
 
     <fragment
-        android:id="@+id/navigation_info_update"
-        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
-        android:label="@string/title_notice"
-        tools:layout="@layout/fragment_info_update" />
+        android:id="@+id/navigation_update"
+        android:name="com.fund.iam.ui.main.more.setting.update.UpdateFragment"
+        android:label="@string/title_update"
+        tools:layout="@layout/fragment_update" />
 
     <fragment
         android:id="@+id/navigation_contact_us"
-        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
-        android:label="@string/title_notice"
+        android:name="com.fund.iam.ui.main.more.setting.contact_us.ContactUsFragment"
+        android:label="@string/title_contact_us"
         tools:layout="@layout/fragment_contact_us" />
 
     <fragment
         android:id="@+id/navigation_privacy"
-        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
-        android:label="@string/title_notice"
+        android:name="com.fund.iam.ui.main.more.setting.privacy.PrivacyFragment"
+        android:label="@string/title_privacy"
         tools:layout="@layout/fragment_privacy" />
-
-    <fragment
-        android:id="@+id/navigation_policy"
-        android:name="com.fund.iam.ui.main.letterbox.LetterBoxFragment"
-        android:label="@string/title_notice"
-        tools:layout="@layout/fragment_policy" />
-
 
     <fragment
         android:id="@+id/navigation_create_channel"

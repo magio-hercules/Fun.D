@@ -13,6 +13,9 @@ import com.fund.iam.ui.main.home.HomeFragmentProvider;
 import com.fund.iam.ui.main.letterbox.LetterBoxFragmentProvider;
 import com.fund.iam.ui.main.more.notice.NoticeFragmentProvider;
 import com.fund.iam.ui.main.more.setting.SettingFragmentProvider;
+import com.fund.iam.ui.main.more.setting.contact_us.ContactUsFragmentProvider;
+import com.fund.iam.ui.main.more.setting.privacy.PrivacyFragmentProvider;
+import com.fund.iam.ui.main.more.setting.update.UpdateFragmentProvider;
 import com.fund.iam.ui.main.search.SearchFragmentProvider;
 import com.fund.iam.ui.main.more.MoreFragmentProvider;
 
@@ -35,6 +38,9 @@ public abstract class ActivityBuilder {
             MoreFragmentProvider.class,
             NoticeFragmentProvider.class,
             SettingFragmentProvider.class,
+            UpdateFragmentProvider.class,
+            ContactUsFragmentProvider.class,
+            PrivacyFragmentProvider.class,
             LetterBoxFragmentProvider.class,
             CreateChannelFragmentProvider.class,
             ChannelFragmentProvider.class,

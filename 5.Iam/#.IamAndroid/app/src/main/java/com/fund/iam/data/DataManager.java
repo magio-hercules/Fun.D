@@ -11,6 +11,10 @@ import java.util.List;
 
 public interface DataManager extends PreferencesHelper, ApiHelper/*, DbHelper*/ {
 
+    void setMarketVersion(String version);
+
+    String getMarketVersion();
+
     void setMyInfo(User user);
 
     void setJobs(List<Job> jobs);

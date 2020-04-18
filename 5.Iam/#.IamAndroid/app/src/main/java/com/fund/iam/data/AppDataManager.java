@@ -5,12 +5,17 @@ import com.fund.iam.data.local.prefs.PreferencesHelper;
 import com.fund.iam.data.model.Channel;
 import com.fund.iam.data.model.ChannelUser;
 import com.fund.iam.data.model.Job;
+import com.fund.iam.data.model.Letter;
+import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.Notice;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
+import com.fund.iam.data.model.VersionPage;
 import com.fund.iam.data.model.request.PushBody;
 import com.fund.iam.data.remote.ApiHelper;
+
+import org.w3c.dom.Document;
 
 import java.util.List;
 
@@ -28,8 +33,10 @@ public class AppDataManager implements DataManager {
 
     private final PreferencesHelper mPreferencesHelper;
     private final ApiHelper mAwsApiHelper;
+    private final ApiHelper mGoogleApiHelper;
     private final ApiHelper mFirebaseApiHelper;
 
+    private String marketVersion;
     private List<Job> jobs;
     private List<Location> locations;
     private User myInfo;
@@ -37,9 +44,10 @@ public class AppDataManager implements DataManager {
 
 
     @Inject
-    public AppDataManager(PreferencesHelper preferencesHelper, @Named("aws") ApiHelper awsApiHelper, @Named("firebase") ApiHelper firebaseApiHelper) {
+    public AppDataManager(PreferencesHelper preferencesHelper, @Named("aws") ApiHelper awsApiHelper, @Named("firebase") ApiHelper firebaseApiHelper, @Named("google") ApiHelper googleApiHelper) {
         mPreferencesHelper = preferencesHelper;
         mAwsApiHelper = awsApiHelper;
+        mGoogleApiHelper = googleApiHelper;
         mFirebaseApiHelper = firebaseApiHelper;
     }
 
@@ -148,6 +156,26 @@ public class AppDataManager implements DataManager {
         return mAwsApiHelper.postNotices();
     }
 
+    @Override
+    public Single<Response<List<LetterBox>>> postLetterBoxes(int userId) {
+        return mAwsApiHelper.postLetterBoxes(userId);
+    }
+
+    @Override
+    public Single<Response<List<Letter>>> postMessage(int userId, int friendId) {
+        return mAwsApiHelper.postMessage(userId, friendId);
+    }
+
+    @Override
+    public Single<Response<Void>> postMessageInsert(int userId, int friendId, String message) {
+        return mAwsApiHelper.postMessageInsert(userId, friendId, message);
+    }
+
+    @Override
+    public Single<Response<VersionPage>> getVersion(String packageName) {
+        return mGoogleApiHelper.getVersion(packageName);
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -179,6 +207,16 @@ public class AppDataManager implements DataManager {
     @Override
     public List<Location> getLocations() {
         return locations;
+    }
+
+    @Override
+    public void setMarketVersion(String version) {
+        this.marketVersion = version;
+    }
+
+    @Override
+    public String getMarketVersion() {
+        return marketVersion;
     }
 
     @Override

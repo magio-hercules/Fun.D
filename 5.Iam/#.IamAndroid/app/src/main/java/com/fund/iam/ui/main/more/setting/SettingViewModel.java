@@ -11,6 +11,7 @@ import androidx.databinding.ObservableField;
 
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.bus.NavigateBus;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
@@ -31,8 +32,20 @@ public class SettingViewModel extends BaseViewModel<SettingNavigator> {
 
     private void initViewContents() {
         currentVersion.set(String.format(getResourceProvider().getString(R.string.version_current), CommonUtils.getVersionName(mContext)));
-        versionState.set(getResourceProvider().getString(R.string.version_state_normal));
-        versionStateColor.set(getResourceProvider().getColor(R.color.red));
+        versionState.set(CommonUtils.getVersionName(mContext).equals(getDataManager().getMarketVersion()) ? getResourceProvider().getString(R.string.version_state_normal) : getResourceProvider().getString(R.string.version_state_old));
+        versionStateColor.set(CommonUtils.getVersionName(mContext).equals(getDataManager().getMarketVersion()) ? getResourceProvider().getColor(R.color.black) : getResourceProvider().getColor(R.color.red));
+    }
+
+    public void onPrivacyClick() {
+        NavigateBus.getInstance().sendDestination(R.id.navigation_privacy);
+    }
+
+    public void onUpdateClick() {
+        NavigateBus.getInstance().sendDestination(R.id.navigation_update);
+    }
+
+    public void onContactUsClick() {
+        NavigateBus.getInstance().sendDestination(R.id.navigation_contact_us);
     }
 
 
