@@ -5,3 +5,4 @@
 .gradle/
 .DS_Store
 3.Offstand/#.Source/OffStand/.idea/gradle.xml
+node_modules/*
