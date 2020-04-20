@@ -72,9 +72,9 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
     public void createChannel(View view) {
 
         // TODO 서버에서 채널 id 받아서 채널 페이지로 전달하기 현재는 임시 코드
-//        Logger.i("CreateChannelFragment:channel_id"+getViewModel().channel.id);
+        Logger.i("CreateChannelFragment:channel_id"+getViewModel().channels.get(0).id);
         CreateChannelFragmentDirections.ActionMainChannel action = CreateChannelFragmentDirections.actionMainChannel();
-        action.setChannelIdArg(1);
+        action.setChannelIdArg(getViewModel().channels.get(0).id);
         Navigation.findNavController(view).navigate(action);
     }
 
@@ -301,12 +301,12 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
                 channel.name = getViewDataBinding().etNameInput.getText().toString();
                 channel.purpose = getViewDataBinding().etPurposeInput.getText().toString();
                 channel.location = getViewDataBinding().etLocationInput.getText().toString();
-                channel.description = getViewDataBinding().etLocationInput.getText().toString();
+                channel.description = getViewDataBinding().etDescriptionInput.getText().toString();
                 channel.password = getViewDataBinding().etPasswordInput.getText().toString();
                 // TODO ownerID를 받아서 서버로 보내야함.
-//                getViewModel().getNewChannelInfo(view,1,channel.name,channel.purpose,channel.location,channel.description,channel.password);
+                getViewModel().getNewChannelInfo(view,1,channel.name,channel.purpose,channel.location,channel.description,channel.password);
                 // 임시코드...
-                createChannel(view);
+//                createChannel(view);
             }
         });
 

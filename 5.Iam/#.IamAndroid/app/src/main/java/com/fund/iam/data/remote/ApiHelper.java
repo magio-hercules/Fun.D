@@ -59,7 +59,7 @@ public interface ApiHelper {
     @FormUrlEncoded
     @POST(ApiDefine.Body.API_NEW_CHANNEL)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Single<Response<Channel>> postCreateChannel(@Field("owner_id") int ownerId, @Field("name") String name, @Field("purpose") String purpose,@Field("location") String location ,@Field("description") String description, @Field("password")String password);
+    Single<Response<List<Channel>>> postCreateChannel(@Field("owner_id") int ownerId, @Field("name") String name, @Field("purpose") String purpose,@Field("location") String location ,@Field("description") String description, @Field("password")String password);
 
     // 특정채널 조회
     @FormUrlEncoded
@@ -84,7 +84,7 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<List<Location>>> postLocations();
 
-    // 특정채널 조회
+    // 전체직업 조회
     @POST(ApiDefine.Body.API_JOBS)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<List<Job>>> postJobs();

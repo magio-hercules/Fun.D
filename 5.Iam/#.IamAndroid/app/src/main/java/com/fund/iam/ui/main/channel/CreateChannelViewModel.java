@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CreateChannelViewModel extends BaseViewModel<CreateChannelNavigator> {
 
-    public Channel channel = null;
+    public List<Channel> channels = null;
 
     public CreateChannelViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
@@ -35,8 +35,8 @@ public class CreateChannelViewModel extends BaseViewModel<CreateChannelNavigator
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
                             Logger.d("postCreateChannels success");
-                            channel = result.body();
-                            Logger.d("result.body"+channel);
+                            channels = result.body();
+                            Logger.d("result.body"+channels);
 
                             getNavigator().createChannel(view);
 
