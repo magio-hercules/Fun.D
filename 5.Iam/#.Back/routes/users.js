@@ -86,19 +86,23 @@ function portfolioInsert(body) {
   console.log(`call portfolioInsert`);
 
   let queryString = `INSERT INTO ${DB_TABLE_USERPORTFOLIO} SET ? `;
-
-  let _text;
-  if (body.type === 1) {
-    _text = "text";
-  } else if (body.type === 2) {
-    _text = "image_url";
+  console.log(body);
+  let insertInfo;
+  if (Number(body.type) === 1) {
+    insertInfo = {
+      user_id: body.user_id,
+      type: body.type,
+      text: body.text,
+    };
+  } else if (Number(body.type) === 2) {
+    insertInfo = {
+      user_id: body.user_id,
+      type: body.type,
+      image_url: body.text,
+    };
   }
-
-  let insertInfo = {
-    user_id: body.user_id,
-    type: body.type,
-    _text: body.text,
-  };
+  console.log(queryString);
+  console.log(insertInfo);
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, insertInfo, function (err, result) {

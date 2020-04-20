@@ -45,7 +45,8 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                             Log.d(TAG, "postJobList success");
 //                            Logger.d(result.body());
 
-                            return getDataManager().postUserInfo(getDataManager().getMyInfo().getId());
+//                            return getDataManager().postUserInfo(getDataManager().getMyInfo().getId());
+                            return getDataManager().postUserInfo(getDataManager().getMyInfo().getEmail(), getDataManager().getMyInfo().getSnsType());
                         })
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
@@ -77,7 +78,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                             getNavigator().updatePortfolio();
                         }, onError -> getNavigator().handleError(onError)));
 
-        Log.d(TAG, "end getUserInfo");
+        Log.d(TAG, "end getUserPortfolio");
     }
 
     public void handleInsertImage() {
@@ -212,18 +213,28 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     public void handleUserInfo() {
         Log.d(TAG, "handleUserInfo");
 
+        User userInfo = getDataManager().getMyInfo();
+        Log.d(TAG, "myInfo id : " + userInfo.getId() + ", email: " + userInfo.getEmail()
+        + ", snsType: " + userInfo.getSnsType());
+
         getCompositeDisposable().add(
-                getDataManager().postUserInfo(getDataManager().getMyInfo().getId())
-                        .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
+                getDataManager().postUserInfo(userInfo.getEmail(), userInfo.getSnsType())
+                        .doOnSuccess(info -> {
+                            Log.d(TAG, "postUserInfo success");
+                            getDataManager().setMyInfo(info.body().get(0));
+                        })
+                        .flatMap(info -> getDataManager().postPortfolios(info.body().get(0).getId()))
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
-                        .subscribe(result -> {
-                            Log.d(TAG, "postUserInfo success");
-
-                            getNavigator().updateUser();
+                        .subscribe(portFolio -> {
+                            if (portFolio.isSuccessful()) {
+                                Log.d(TAG, "postPortfolios success");
+                                getDataManager().setMyPortfolios(portFolio.body());
+                                getNavigator().goBack();
+                            } else {
+                                Logger.e("Login Error");
+                            }
                         }, onError -> getNavigator().handleError(onError)));
-
-        Log.d(TAG, "end getUserInfo");
     }
 
     public void handleUserUpdate(User updateInfo) {
@@ -238,7 +249,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                     if (portFolio.isSuccessful()) {
 //                        getDataManager().setMyPortfolios(portFolio.body());
 
-                        getNavigator().updateUser();
+//                        getNavigator().updateUser();
                         getNavigator().onSuccess();
                     } else {
                         Logger.e("Login Error");

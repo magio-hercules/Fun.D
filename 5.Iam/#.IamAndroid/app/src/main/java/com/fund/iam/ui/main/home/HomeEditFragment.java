@@ -215,7 +215,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
     @Override
     public void goBack() {
-        getBaseActivity().onFragmentDetached(TAG);
+//        getBaseActivity().onFragmentDetached(TAG);
+        getViewDataBinding().profileEditCancel.performClick();
     }
 
     @Override
@@ -484,7 +485,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         if (bWaiting && watingCount == 0) {
             getViewModel().handleUserInfo();
 
-            getViewDataBinding().profileEditCancel.performClick();
+            // goBack으로 대체
+//            getViewDataBinding().profileEditCancel.performClick();
 
             // type 1: 수정사항 반영 완료
             loadingEnd(1);
@@ -551,7 +553,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         } else {
             Log.d(TAG, "mBitmapAvatar is not null");
 
-            uploadImage(mBitmapAvatar);
+            uploadImage(mBitmapAvatar, -1);
         }
     }
 
@@ -711,7 +713,11 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             bitmap = ((BitmapDrawable)newImageView.getDrawable()).getBitmap();
             if (bitmap != null) {
                 Log.d(TAG, "bitmap is not null");
-                uploadImage(bitmap);
+
+                int newImageViewId = newImageView.getId();
+                Log.d(TAG, "newImageViewId : " + newImageViewId);
+
+                uploadImage(bitmap, newImageViewId);
             } else {
                 Log.d(TAG, "bitmap is null");
             }
@@ -871,7 +877,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //                addPortfolioText(data.getText());
 //            }
 //        }
-
+        Log.d(TAG, "updateUser end");
     }
 
     private void moveScroll(boolean bDown) {
@@ -909,6 +915,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
 
 //        loadingEnd(0);
+        Log.d(TAG, "updatePortfolio end");
     }
 
     private void addPortfolioText(int id, String text) {
@@ -1538,14 +1545,15 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         imageView.setImageBitmap(bitmap);
     }
 
-    private void uploadImage(Bitmap bitmap) {
+    private void uploadImage(Bitmap bitmap, int viewId) {
         try {
             File filesDir = getContext().getFilesDir();
             File file = new File(filesDir, "image" + ".png");
 
             User userInfo = dataManager.getMyInfo();
 
-            String fileName = userInfo.getEmail() + "_" + userInfo.getSnsType() + ".jpg";
+            String fileName = userInfo.getEmail() + "_" + userInfo.getSnsType()
+                    + "_" + viewId + ".jpg";
             Log.d(TAG, "uploadImage fileName : " + fileName);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();

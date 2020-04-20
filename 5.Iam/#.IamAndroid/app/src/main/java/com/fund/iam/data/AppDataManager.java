@@ -15,8 +15,6 @@ import com.fund.iam.data.model.VersionPage;
 import com.fund.iam.data.model.request.PushBody;
 import com.fund.iam.data.remote.ApiHelper;
 
-import org.w3c.dom.Document;
-
 import java.util.List;
 
 import javax.inject.Inject;
@@ -57,8 +55,8 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Response<List<User>>> postUserInfo(int userId) {
-        return mAwsApiHelper.postUserInfo(userId);
+    public Single<Response<List<User>>> postUserInfo(String email, String snsType) {
+        return mAwsApiHelper.postUserInfo(email, snsType);
     }
 
     @Override

@@ -137,6 +137,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initViews() {
+        Log.d(TAG, "initViews");
+
         updateUser();
         updatePortfolio();
     }
@@ -148,7 +150,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateUser() {
-        Log.d(TAG, "updateUI");
+        Log.d(TAG, "updateUser");
 
 
         // Use filter to find all elements greater than 20.
@@ -214,6 +216,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //                addPortfolioText(data.getText());
 //            }
 //        }
+
+        Log.d(TAG, "updateUser end");
     }
 
     public void updatePortfolio() {
@@ -221,6 +225,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
 //        List<Portfolio> portfolioList = getViewModel().myPortfolio;
         List<Portfolio> portfolioList = dataManager.getMyPortfolios();
+        Log.d(TAG, "updatePortfolio count : " + portfolioList.size()) ;
 
         for (Portfolio data : portfolioList) {
 //            if (data.getUserId() != userInfo.getId()) {

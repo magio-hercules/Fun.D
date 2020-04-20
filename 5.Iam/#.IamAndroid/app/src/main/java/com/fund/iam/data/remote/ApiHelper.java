@@ -12,8 +12,6 @@ import com.fund.iam.data.model.User;
 import com.fund.iam.data.model.VersionPage;
 import com.fund.iam.data.model.request.PushBody;
 
-import org.w3c.dom.Document;
-
 import java.util.List;
 
 import io.reactivex.Single;
@@ -38,7 +36,7 @@ public interface ApiHelper {
     @FormUrlEncoded
     @POST(ApiDefine.Body.API_USER_INFO)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Single<Response<List<User>>> postUserInfo(@Field("id") int userId);
+    Single<Response<List<User>>> postUserInfo(@Field("email") String email, @Field("sns_type") String snsType);
 
     // 유저 정보
     @POST(ApiDefine.Body.API_USER_UPDATE)
