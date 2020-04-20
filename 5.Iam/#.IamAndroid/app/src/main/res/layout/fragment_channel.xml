@@ -68,10 +68,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:singleLine="true"
+            android:layout_marginEnd="16dp"
+            android:lineSpacingExtra="8dp"
+            android:maxLines="2"
+            android:singleLine="false"
             android:textColor="#111111"
             android:textSize="24sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bt_ChanelUserList"
             tools:text="앱개발 기술 세미나" />
@@ -149,9 +154,9 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:text="채널 생성일: 2020-03-06"
             app:layout_constraintBottom_toTopOf="@+id/bt_multi"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="채널 생성일: 2020-03-06" />
 
         <Button
             android:id="@+id/bt_multi"

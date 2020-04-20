@@ -93,7 +93,7 @@ public class AppDataManager implements DataManager {
 
     // 신규채널 생성
     @Override
-    public Single<Response<Channel>> postCreateChannel(int ownerId, String name, String purpose, String location, String description, String password) {
+    public Single<Response<List<Channel>>> postCreateChannel(int ownerId, String name, String purpose, String location, String description, String password) {
         return mAwsApiHelper.postCreateChannel(ownerId, name, purpose, location, description, password);
     }
 

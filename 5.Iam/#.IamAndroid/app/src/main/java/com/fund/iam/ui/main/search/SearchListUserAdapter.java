@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fund.iam.R;
+import com.fund.iam.data.model.Job;
+import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.User;
 import com.kakao.util.helper.log.Logger;
 
@@ -20,7 +22,13 @@ import java.util.List;
 public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAdapter.ViewHolder> {
 
     private List<User> usersModel = new ArrayList<>();
+    private List<Job> jobsModel = new ArrayList<>();
+    private List<Location> locationsModel = new ArrayList<>();
+
+    private List<User> usersModel_filter = new ArrayList<>();
+    public List<String> user_filters = new ArrayList<>();
     private List<User> usersModel_filterKeyword = new ArrayList<>();
+
     String KeyWord;
 
     @NonNull
@@ -35,24 +43,17 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        switch (usersModel_filterKeyword.get(position).getJobList()) {
-            case "0":
-                holder.tv_jobList.setText("기획자");
-                holder.tv_jobList.setBackgroundColor(Color.parseColor("#4BDFF3"));
-                break;
+        holder.tv_jobList.setText("");
+        holder.tv_jobList.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
 
-            case "1":
-                holder.tv_jobList.setText("디자이너");
-                holder.tv_jobList.setBackgroundColor(Color.parseColor("#F34B4B"));
-                break;
+        for (int i=0; i< jobsModel.size(); i++) {
 
-            case "2":
-                holder.tv_jobList.setText("개발자");
-                holder.tv_jobList.setBackgroundColor(Color.parseColor("#4EF34B"));
-                break;
-            default:
-                holder.tv_jobList.setText("");
-
+            if (usersModel_filterKeyword.get(position).getJobList() != null) {
+                if (Integer.parseInt(usersModel_filterKeyword.get(position).getJobList()) == jobsModel.get(i).getId()) {
+                    holder.tv_jobList.setText(jobsModel.get(i).getName());
+                    holder.tv_jobList.setBackgroundColor(Color.parseColor(jobsModel.get(i).getColor()));
+                }
+            }
         }
 
         holder.tv_userName.setText(usersModel_filterKeyword.get(position).getUserName());
@@ -89,15 +90,31 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
         }
     }
 
-    public void setModel_Users(List<User> usersModel) {
+    public void setModel_Users(List<User> usersModel, List<Job> jobsModel) {
         this.usersModel = usersModel;
+        this.jobsModel = jobsModel;
+        this.usersModel_filter = usersModel;
+        notifyDataSetChanged();
+    }
+
+    public void setUserFilter(List<Location> locationsModel, List<String> user_filters) {
+        this.locationsModel = locationsModel;
+        this.user_filters = user_filters;
+        usersModel_filter.removeAll(usersModel_filter);
+        for (int i=0; i<usersModel.size(); i++) {
+            if(usersModel.get(i).getLocationList() == Integer.parseInt(user_filters.get(0))-1) {
+                usersModel_filter.add(usersModel.get(i));
+            }
+
+        }
+
     }
 
     public void setKeyWord(String keyWord) {
         this.KeyWord = keyWord;
         usersModel_filterKeyword.removeAll(usersModel_filterKeyword);
         for (int i=0; i<usersModel.size(); i++) {
-            if(usersModel.get(i).getUserName().contains(keyWord.toUpperCase())) {
+            if(usersModel.get(i).getUserName().toUpperCase().contains(keyWord.toUpperCase())) {
                 usersModel_filterKeyword.add(usersModel.get(i));
             }
         }
