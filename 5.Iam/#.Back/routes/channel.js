@@ -91,6 +91,54 @@ function userInsert(param) {
   });
 }
 
+function userInsertChannel(param) {
+  console.log(`call userInsert`);
+  let queryString = `UPDATE ${DB_TABLE_CHANNELINFO} SET now_user = now_user + 1 WHERE id = ?`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function userDeleteChannel(param) {
+  console.log(`call userDeleteChannel`);
+
+  let params = [];
+  params.push(param.channel_id);
+  params.push(param.user_id);
+
+  let queryString = `DELETE FROM ${DB_TABLE_CHANNELUSER} WHERE channel_id = ? AND user_id = ?`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function DeleteNowUser(param) {
+  console.log(`call userDeleteChannel`);
+
+  let queryString = `UPDATE ${DB_TABLE_CHANNELINFO} SET now_user = now_user - 1 WHERE id = ?`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
 function userUpdate(params) {
   console.log(`call userUpdate`);
 
@@ -191,10 +239,31 @@ router.post(`/userInsert`, function (req, res, next) {
 
   userInsert(req.body)
     .then((result) => {
+      return userInsertChannel(req.body.channel_id);
+    })
+    .then((result) => {
       res.json(result);
     })
     .catch(function (err) {
       console.log(`[userInsert] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/userDeleteChannel`, function (req, res, next) {
+  console.log(`API = /userDeleteChannel`);
+
+  console.log(req.body);
+
+  userDeleteChannel(req.body)
+    .then((result) => {
+      return DeleteNowUser(req.body.channel_id);
+    })
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(function (err) {
+      console.log(`[userDeleteChannel] error : ${err}`);
       res.end(`NOK`);
     });
 });

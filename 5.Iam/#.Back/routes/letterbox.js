@@ -26,12 +26,38 @@ function postLetterBoxInfo(param) {
   });
 }
 
-function letterboxInsert(param) {
+function letterboxInsertUser(param) {
   console.log(`call letterboxInsert`);
-  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXINFO} SET ? `;
+
+  let params = [];
+  params.push(param.user_id);
+  params.push(param.friend_id);
+
+  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXINFO} (user_id, friend_id) VALUES (? , ?)  
+  ON DUPLICATE KEY UPDATE modify_date = now();`;
 
   return new Promise(function (resolve, reject) {
-    db.query(queryString, param, function (err, result) {
+    db.query(queryString, params, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function letterboxInsertFriend(param) {
+  console.log(`call letterboxInsert`);
+
+  let params = [];
+  params.push(param.friend_id);
+  params.push(param.user_id);
+
+  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXINFO} (user_id, friend_id) VALUES (? , ?)  
+  ON DUPLICATE KEY UPDATE modify_date = now();`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -76,13 +102,38 @@ function postLetterBoxMessageInfo(param) {
   });
 }
 
-function messageInsert(param) {
-  console.log(`call messageInsert`);
-  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} SET ?, 
-    modify_date = now() ON DUPLICATE KEY UPDATE modify_date = now();`;
+function messageInsertUser(param) {
+  console.log(`call messageInsertUser`);
+
+  let params = [];
+  params.push(param.user_id);
+  params.push(param.friend_id);
+  params.push(param.message);
+
+  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} (user_id, friend_id, message) VALUES (?, ? , ?)`;
 
   return new Promise(function (resolve, reject) {
-    db.query(queryString, param, function (err, result) {
+    db.query(queryString, params, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function messageInsertFriend(param) {
+  console.log(`call messageInsertFriend`);
+
+  let params = [];
+  params.push(param.friend_id);
+  params.push(param.user_id);
+  params.push(param.message);
+
+  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} (user_id, friend_id, message) VALUES (?, ? , ?)`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -139,7 +190,10 @@ router.post("/letterboxInfo", function (req, res, next) {
 router.post(`/letterboxInsert`, function (req, res, next) {
   console.log(`API = /letterboxInsert`);
 
-  letterboxInsert(req.body)
+  letterboxInsertUser(req.body)
+    .then((result) => {
+      return letterboxInsertFriend(req.body);
+    })
     .then((result) => {
       res.json(result);
     })
@@ -205,17 +259,19 @@ router.post(`/messageInsert`, function (req, res, next) {
     params.push(req.body.friend_id);
   }
 
-  messageInsert(req.body)
+  messageInsertUser(req.body)
     .then((result) => {
-      return res.json(result);
+      return messageInsertFriend(req.body);
     })
-    // .then((result) => {
-    //   console.log(result);
-    //   console.log(result[0]);
-    //   console.log(result.data);
-
-    //   res.json(result[0]);
-    // })
+    .then((result) => {
+      return letterboxInsertUser(req.body);
+    })
+    .then((result) => {
+      return letterboxInsertFriend(req.body);
+    })
+    .then((result) => {
+      res.json(result);
+    })
     .catch(function (err) {
       console.log(`[messageInsert] error : ${err}`);
       res.end(`NOK`);
