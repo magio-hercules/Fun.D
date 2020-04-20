@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Location {
 
+    private int id;
     private String name;
     private String description;
 }

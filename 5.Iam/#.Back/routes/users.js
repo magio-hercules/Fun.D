@@ -20,12 +20,16 @@ function postUser(param) {
   });
 }
 
-function postUserInfo(param) {
+function postUserInfo(email, sns_type) {
   console.log(`call postUserInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_USERINFO} WHERE email = ?`;
+  let queryString = `SELECT * FROM ${DB_TABLE_USERINFO} WHERE email = ? AND sns_type = ?`;
+
+  let params = [];
+  params.push(email);
+  params.push(sns_type);
 
   return new Promise(function (resolve, reject) {
-    db.query(queryString, param, function (err, result) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -78,12 +82,30 @@ function postPortfolioInfo(param) {
   });
 }
 
-function portfolioInsert(param) {
+function portfolioInsert(body) {
   console.log(`call portfolioInsert`);
+
   let queryString = `INSERT INTO ${DB_TABLE_USERPORTFOLIO} SET ? `;
+  console.log(body);
+  let insertInfo;
+  if (Number(body.type) === 1) {
+    insertInfo = {
+      user_id: body.user_id,
+      type: body.type,
+      text: body.text,
+    };
+  } else if (Number(body.type) === 2) {
+    insertInfo = {
+      user_id: body.user_id,
+      type: body.type,
+      image_url: body.text,
+    };
+  }
+  console.log(queryString);
+  console.log(insertInfo);
 
   return new Promise(function (resolve, reject) {
-    db.query(queryString, param, function (err, result) {
+    db.query(queryString, insertInfo, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -140,7 +162,7 @@ router.post("/", function (req, res, next) {
 router.post("/info", function (req, res, next) {
   console.log(`API = /info`);
 
-  postUserInfo(req.body.email)
+  postUserInfo(req.body.email, req.body.sns_type)
     .then((result) => {
       res.json(result);
     })
@@ -152,9 +174,11 @@ router.post("/info", function (req, res, next) {
 
 router.post(`/login`, function (req, res, next) {
   console.log(`API = /login`);
+
   userLogin(req.body)
     .then((result) => {
-      return postUserInfo(req.body.email);
+      // console.result(result);
+      return postUserInfo(req.body.email, req.body.sns_type);
     })
     .then((result) => {
       res.json(result);
@@ -179,7 +203,10 @@ router.post(`/userUpdate`, function (req, res, next) {
 
   userUpdate(params)
     .then((result) => {
-      console.log(result);
+      // console.result(result);
+      return postUserInfo(req.body.email, req.body.sns_type);
+    })
+    .then((result) => {
       res.json(result);
     })
     .catch(function (err) {
@@ -203,9 +230,6 @@ router.post("/portfolio", function (req, res, next) {
 
 router.post(`/portfolioInsert`, function (req, res, next) {
   console.log(`API = /portfolioInsert`);
-
-  if (req.body.type === 1) {
-  }
 
   portfolioInsert(req.body)
     .then((result) => {

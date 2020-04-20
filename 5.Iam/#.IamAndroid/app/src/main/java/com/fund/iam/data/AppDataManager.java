@@ -5,10 +5,13 @@ import com.fund.iam.data.local.prefs.PreferencesHelper;
 import com.fund.iam.data.model.Channel;
 import com.fund.iam.data.model.ChannelUser;
 import com.fund.iam.data.model.Job;
+import com.fund.iam.data.model.Letter;
+import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.Notice;
 import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
+import com.fund.iam.data.model.VersionPage;
 import com.fund.iam.data.model.request.PushBody;
 import com.fund.iam.data.remote.ApiHelper;
 
@@ -19,6 +22,8 @@ import javax.inject.Named;
 import javax.inject.Singleton;
 
 import io.reactivex.Single;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 
 @Singleton
@@ -26,8 +31,10 @@ public class AppDataManager implements DataManager {
 
     private final PreferencesHelper mPreferencesHelper;
     private final ApiHelper mAwsApiHelper;
+    private final ApiHelper mGoogleApiHelper;
     private final ApiHelper mFirebaseApiHelper;
 
+    private String marketVersion;
     private List<Job> jobs;
     private List<Location> locations;
     private User myInfo;
@@ -35,9 +42,10 @@ public class AppDataManager implements DataManager {
 
 
     @Inject
-    public AppDataManager(PreferencesHelper preferencesHelper, @Named("aws") ApiHelper awsApiHelper, @Named("firebase") ApiHelper firebaseApiHelper) {
+    public AppDataManager(PreferencesHelper preferencesHelper, @Named("aws") ApiHelper awsApiHelper, @Named("firebase") ApiHelper firebaseApiHelper, @Named("google") ApiHelper googleApiHelper) {
         mPreferencesHelper = preferencesHelper;
         mAwsApiHelper = awsApiHelper;
+        mGoogleApiHelper = googleApiHelper;
         mFirebaseApiHelper = firebaseApiHelper;
     }
 
@@ -47,8 +55,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Response<List<User>>> postUsers(int userId) {
-        return mAwsApiHelper.postUsers(userId);
+    public Single<Response<List<User>>> postUserInfo(String email, String snsType) {
+        return mAwsApiHelper.postUserInfo(email, snsType);
+    }
+
+    @Override
+    public Single<Response<List<User>>> postUserUpdate(User user) {
+        return mAwsApiHelper.postUserUpdate(user);
     }
 
     @Override
@@ -122,6 +135,11 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Single<Response<String>> postUploadImage(MultipartBody.Part image, RequestBody fileName) {
+        return mAwsApiHelper.postUploadImage(image, fileName);
+    }
+
+    @Override
     public Single<Response<List<Location>>> postLocations() {
         return mAwsApiHelper.postLocations();
     }
@@ -134,6 +152,26 @@ public class AppDataManager implements DataManager {
     @Override
     public Single<Response<List<Notice>>> postNotices() {
         return mAwsApiHelper.postNotices();
+    }
+
+    @Override
+    public Single<Response<List<LetterBox>>> postLetterBoxes(int userId) {
+        return mAwsApiHelper.postLetterBoxes(userId);
+    }
+
+    @Override
+    public Single<Response<List<Letter>>> postMessage(int userId, int friendId) {
+        return mAwsApiHelper.postMessage(userId, friendId);
+    }
+
+    @Override
+    public Single<Response<Void>> postMessageInsert(int userId, int friendId, String message) {
+        return mAwsApiHelper.postMessageInsert(userId, friendId, message);
+    }
+
+    @Override
+    public Single<Response<VersionPage>> getVersion(String packageName) {
+        return mGoogleApiHelper.getVersion(packageName);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -167,6 +205,16 @@ public class AppDataManager implements DataManager {
     @Override
     public List<Location> getLocations() {
         return locations;
+    }
+
+    @Override
+    public void setMarketVersion(String version) {
+        this.marketVersion = version;
+    }
+
+    @Override
+    public String getMarketVersion() {
+        return marketVersion;
     }
 
     @Override

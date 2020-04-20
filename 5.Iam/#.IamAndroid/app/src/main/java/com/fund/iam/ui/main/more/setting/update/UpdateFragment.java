@@ -1,6 +1,7 @@
-package com.fund.iam.ui.main.more.notice;
+package com.fund.iam.ui.main.more.setting.update;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.Toast;
 
@@ -9,31 +10,23 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.fund.iam.BR;
 import com.fund.iam.R;
-import com.fund.iam.data.DataManager;
-import com.fund.iam.data.model.Notice;
-import com.fund.iam.databinding.FragmentNoticeBinding;
+import com.fund.iam.databinding.FragmentPrivacyBinding;
+import com.fund.iam.databinding.FragmentUpdateBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.orhanobut.logger.Logger;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
 import static androidx.appcompat.app.ActionBar.DISPLAY_SHOW_CUSTOM;
 
-public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, NoticeViewModel> implements NoticeNavigator, View.OnClickListener {
 
-    public static final String TAG = NoticeFragment.class.getSimpleName();
+public class UpdateFragment extends BaseFragment<FragmentUpdateBinding, UpdateViewModel> implements UpdateNavigator, View.OnClickListener {
+
+    public static final String TAG = UpdateFragment.class.getSimpleName();
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
-
-    @Inject
-    DataManager dataManager;
-
-    @Inject
-    NoticeAdapter noticeAdapter;
 
     @Override
     public int getBindingVariable() {
@@ -42,12 +35,12 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, NoticeVi
 
     @Override
     public int getLayoutId() {
-        return R.layout.fragment_notice;
+        return R.layout.fragment_update;
     }
 
     @Override
-    public NoticeViewModel getViewModel() {
-        return new ViewModelProvider(getViewModelStore(), viewModelProviderFactory).get(NoticeViewModel.class);
+    public UpdateViewModel getViewModel() {
+        return new ViewModelProvider(getViewModelStore(), viewModelProviderFactory).get(UpdateViewModel.class);
     }
 
     @Override
@@ -69,7 +62,6 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, NoticeVi
         super.onViewCreated(view, savedInstanceState);
         setupActionBar();
         initViews();
-        getViewModel().getDummyNotices();
     }
 
     private void setupActionBar() {
@@ -79,19 +71,14 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, NoticeVi
     }
 
     private void initViews() {
-        //Todo : RecyclerView 로 변경 scroll error
-        getViewDataBinding().notices.setAdapter(noticeAdapter);
-        getViewDataBinding().notices.setNestedScrollingEnabled(true);
+
     }
+
+
 
     @Override
     public void onClick(View view) {
         goBack();
-    }
-
-    @Override
-    public void onRepositoriesChanged(List<Notice> notices) {
-        noticeAdapter.addItems(notices);
     }
 
     @Override

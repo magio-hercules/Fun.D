@@ -20,11 +20,14 @@ import com.fund.iam.databinding.ActivityLoginBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseActivity;
 import com.fund.iam.ui.main.MainActivity;
+import com.fund.iam.utils.CommentKeyBoardFix;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.orhanobut.logger.Logger;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -67,13 +70,20 @@ public class LetterActivity extends BaseActivity<ActivityLetterBinding, LetterVi
     }
 
     private void initViews() {
+        new CommentKeyBoardFix(this);
         getViewDataBinding().letters.setLayoutManager(new LinearLayoutManager(this));
         getViewDataBinding().letters.setAdapter(letterAdapter);
     }
 
     @Override
+    public void onLetterSet(List<Letter> letters) {
+        letterAdapter.addItems(letters);
+    }
+
+    @Override
     public void onLetterAdd(Letter letter) {
         letterAdapter.addItem(letter);
+        getViewDataBinding().letters.scrollToPosition(letterAdapter.getItemCount() - 1);
     }
 
     @Override

@@ -207,11 +207,15 @@ router.post(`/messageInsert`, function (req, res, next) {
 
   messageInsert(req.body)
     .then((result) => {
-      return postLetterBoxMessageInfo(params);
+      return res.json(result);
     })
-    .then((result) => {
-      res.json(result);
-    })
+    // .then((result) => {
+    //   console.log(result);
+    //   console.log(result[0]);
+    //   console.log(result.data);
+
+    //   res.json(result[0]);
+    // })
     .catch(function (err) {
       console.log(`[messageInsert] error : ${err}`);
       res.end(`NOK`);

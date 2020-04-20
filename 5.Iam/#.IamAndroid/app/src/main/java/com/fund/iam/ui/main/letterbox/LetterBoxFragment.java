@@ -84,7 +84,7 @@ public class LetterBoxFragment extends BaseFragment<FragmentLetterboxBinding, Le
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initViews();
-        getViewModel().dummyLetterBoxes();
+//        getViewModel().dummyLetterBoxes();
     }
 
     private void initViews() {

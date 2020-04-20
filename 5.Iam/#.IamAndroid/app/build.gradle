@@ -9,7 +9,8 @@ android {
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
         versionCode 1
-        versionName "v1.0"
+//        versionName "1.0.0"//최종 릴리즈 부터 [major].[minor].[patch] 형태
+        versionName "1.0"//테스트 용으로 오프섯다 버전으로 함
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // SVG 세팅...
@@ -39,6 +40,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "AWS_URL", "\"http://ec2-15-164-210-60.ap-northeast-2.compute.amazonaws.com:3000\"")
             buildConfigField("String", "FCM_URL", "\"https://fcm.googleapis.com\"")
+            buildConfigField("String", "PLAYSTORE_URL", "\"https://play.google.com\"")
             buildConfigField("String", "GOOGLE_SIGN_URL", "\"1085239602344-ju2lh102r41fb6h3ghc2uut6m31rlm5n.apps.googleusercontent.com\"")
         }
 
@@ -48,6 +50,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField("String", "AWS_URL", "\"http://ec2-15-164-210-60.ap-northeast-2.compute.amazonaws.com:3000\"")
             buildConfigField("String", "FCM_URL", "\"https://fcm.googleapis.com\"")
+            buildConfigField("String", "PLAYSTORE_URL", "\"https://play.google.com\"")
             buildConfigField("String", "GOOGLE_SIGN_URL", "\"1085239602344-ju2lh102r41fb6h3ghc2uut6m31rlm5n.apps.googleusercontent.com\"")
         }
     }
@@ -126,6 +129,9 @@ dependencies {
     // 머티리얼 디자인 세팅
     implementation dependencies.material
     implementation dependencies.cardview
+
+    implementation 'pl.droidsonroids:jspoon:1.0.0'
+    implementation 'pl.droidsonroids.retrofit2:converter-jspoon:1.0.0'
 
 
 }

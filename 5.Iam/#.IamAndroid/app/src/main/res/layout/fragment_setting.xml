@@ -38,8 +38,8 @@
                 android:gravity="center"
                 android:text="@string/title_setting"
                 android:textColor="@color/black"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
         </androidx.appcompat.widget.Toolbar>
 
 
@@ -51,12 +51,13 @@
             app:layout_constraintGuide_percent=".165" />
 
         <include
-            android:id="@+id/item_info_update"
+            android:id="@+id/item_update"
             layout="@layout/item_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toTopOf="@id/item_contact_us"
             app:layout_constraintTop_toBottomOf="@id/guide_header"
+            bind:clickEvent="@{() ->viewModel.onUpdateClick()}"
             bind:status="@{viewModel.versionState}"
             bind:statusColor="@{viewModel.versionStateColor}"
             bind:subTitle="@{viewModel.currentVersion}"
@@ -67,8 +68,9 @@
             layout="@layout/item_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            bind:clickEvent="@{() ->viewModel.onContactUsClick()}"
             app:layout_constraintBottom_toTopOf="@id/item_privacy"
-            app:layout_constraintTop_toBottomOf="@id/item_info_update"
+            app:layout_constraintTop_toBottomOf="@id/item_update"
             bind:title="@{@string/title_contact_us}" />
 
         <include
@@ -76,17 +78,9 @@
             layout="@layout/item_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/item_policy"
             app:layout_constraintTop_toBottomOf="@id/item_contact_us"
+            bind:clickEvent="@{() ->viewModel.onPrivacyClick()}"
             bind:title="@{@string/title_privacy}" />
-
-        <include
-            android:id="@+id/item_policy"
-            layout="@layout/item_setting"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/item_privacy"
-            bind:title="@{@string/title_policy}" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

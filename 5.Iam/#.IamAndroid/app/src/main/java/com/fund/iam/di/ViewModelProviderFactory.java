@@ -21,6 +21,9 @@ import com.fund.iam.ui.main.letterbox.LetterBoxViewModel;
 import com.fund.iam.ui.main.more.MoreViewModel;
 import com.fund.iam.ui.main.more.notice.NoticeViewModel;
 import com.fund.iam.ui.main.more.setting.SettingViewModel;
+import com.fund.iam.ui.main.more.setting.contact_us.ContactUsViewModel;
+import com.fund.iam.ui.main.more.setting.privacy.PrivacyViewModel;
+import com.fund.iam.ui.main.more.setting.update.UpdateViewModel;
 import com.fund.iam.ui.main.search.SearchViewModel;
 
 import javax.inject.Inject;
@@ -45,7 +48,7 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
         if (modelClass.isAssignableFrom(IntroViewModel.class)) {
-            return (T) new IntroViewModel(dataManager, schedulerProvider, resourceProvider);
+            return (T) new IntroViewModel(context, dataManager, schedulerProvider, resourceProvider);
         } else if (modelClass.isAssignableFrom(LoginViewModel.class)) {
             return (T) new LoginViewModel(context, dataManager, schedulerProvider, resourceProvider);
         } else if (modelClass.isAssignableFrom(MainViewModel.class)) {
@@ -72,6 +75,12 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
             return (T) new ChannelViewModel(dataManager, schedulerProvider, resourceProvider);
         } else if (modelClass.isAssignableFrom(ChannelUserListViewModel.class)) {
             return (T) new ChannelUserListViewModel(dataManager, schedulerProvider, resourceProvider);
+        } else if (modelClass.isAssignableFrom(PrivacyViewModel.class)) {
+            return (T) new PrivacyViewModel(dataManager, schedulerProvider, resourceProvider);
+        } else if (modelClass.isAssignableFrom(UpdateViewModel.class)) {
+            return (T) new UpdateViewModel(context, dataManager, schedulerProvider, resourceProvider);
+        } else if (modelClass.isAssignableFrom(ContactUsViewModel.class)) {
+            return (T) new ContactUsViewModel(dataManager, schedulerProvider, resourceProvider);
         }
         throw new IllegalArgumentException("Unknown class name");
     }

@@ -87,7 +87,6 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
         }
         TextView content = convertView.findViewById(R.id.content);
         content.setText(notice.getContent());
-        Logger.d("content " + childPosition + ", " + notice.getContent());
         return convertView;
     }
 

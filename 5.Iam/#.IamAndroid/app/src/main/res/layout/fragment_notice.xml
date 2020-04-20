@@ -51,21 +51,31 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent=".165" />
 
-        <ExpandableListView
-            android:id="@+id/notices"
+        <ScrollView
+            android:id="@+id/scrolls"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:divider="@color/purpleLight"
-            android:dividerHeight="1dp"
-            android:groupIndicator="@null"
-            app:layout_constraintTop_toBottomOf="@id/guide_header" />
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guide_header">
+
+            <ExpandableListView
+                android:id="@+id/notices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:divider="@color/purpleLight"
+                android:dividerHeight="1dp"
+                android:groupIndicator="@null"
+                app:layout_constraintTop_toBottomOf="@id/guide_header" />
+        </ScrollView>
+
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/purpleLight"
-            app:layout_constraintBottom_toBottomOf="@id/notices" />
+            app:layout_constraintBottom_toBottomOf="@id/scrolls" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

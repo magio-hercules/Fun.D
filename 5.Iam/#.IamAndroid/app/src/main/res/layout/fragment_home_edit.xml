@@ -126,6 +126,23 @@
                 />
 
             <EditText
+                android:id="@+id/profile_edit_phone"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/layout_edittext"
+                android:ems="10"
+                android:gravity="center_vertical"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:hint="연락처"
+                android:textColorHint="#c9c9c9"
+                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_email"
+                />
+
+            <EditText
                 android:visibility="gone"
                 android:id="@+id/profile_edit_homepage"
                 android:layout_width="0dp"
@@ -153,7 +170,7 @@
                 android:overlapAnchor="false"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_homepage"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_phone"
                 />
 
             <Spinner
