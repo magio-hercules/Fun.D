@@ -1,6 +1,8 @@
 package com.fund.iam.ui.main.home;
 
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.fund.iam.data.DataManager;
@@ -10,23 +12,34 @@ import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
 import com.orhanobut.logger.Logger;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
+import io.reactivex.Single;
+import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Response;
 
 public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     private static final String TAG = "[IAM][HOME][VM]";
 
 //    public List<Job> listJob = null;
 
-//    public User myInfo = null;
+    //    public User myInfo = null;
 //    public List<Portfolio> myPortfolio = null;
+    private Context mContext;
 
 
-    public HomeViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
+    public HomeViewModel(Context context, DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
         Logger.d("HomeVIewModel constructor");
+
+        mContext = context;
 
         subscribeEvent();
     }
@@ -94,28 +107,6 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
     }
 
-    public void handleSave() {
-        Log.d(TAG, "handleSave");
-
-        // 전체 리스트 중 id가 없는 항목만 API를 요청하여 추가
-//        this.getUserPortfolio();
-
-//                portfolio_layout
-//        LinearLayout layout = setupLayout();
-//        int count = layout.getChildCount();
-//        View v = null;
-//        for(int i=0; i<count; i++) {
-//            v = layout.getChildAt(i);
-//            //do something with your child element
-//        }
-
-        // 신규 리스트 추가
-
-
-        // 타입에 따라 포트폴리오 추가
-//        insertPortfolioText(text)
-    }
-
 
 
     ////////////////////////////////////
@@ -149,7 +140,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                 // s3 업로드 이후 구현
                 getDataManager().postUploadImage(body, fileName)
                         .flatMap(result -> {
-                              // result로 url 을 받아온 이후
+                            // result로 url 을 받아온 이후
                             Log.d(TAG, "postUploadImage success");
 
                             final String s3Url = result.body();
@@ -161,7 +152,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
                             return getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 2, s3Url);
                         })
-                // image url 사용하도록 API 수정 필요
+                        // image url 사용하도록 API 수정 필요
 //                getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 2, s3Url)
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
@@ -172,6 +163,24 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
                             getNavigator().onSuccess();
                         }, onError -> getNavigator().handleError(onError)));
+    }
+
+
+    public Single<Response<Void>> singleInsertText(String text) {
+        return getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 1, text);
+    }
+
+    public Single<Response<Void>> singleInsertImage(MultipartBody.Part body, RequestBody fileName) {
+        return getDataManager().postUploadImage(body, fileName)
+                .flatMap(result -> {
+                    // result로 url 을 받아온 이후
+                    Log.d(TAG, "postUploadImage success");
+
+                    final String s3Url = result.body();
+                    Logger.d(s3Url);
+
+                    return getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 2, s3Url);
+                });
     }
 
     public void deletePortfolioText(int id) {
@@ -215,7 +224,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
         User userInfo = getDataManager().getMyInfo();
         Log.d(TAG, "myInfo id : " + userInfo.getId() + ", email: " + userInfo.getEmail()
-        + ", snsType: " + userInfo.getSnsType());
+                + ", snsType: " + userInfo.getSnsType());
 
         getCompositeDisposable().add(
                 getDataManager().postUserInfo(userInfo.getEmail(), userInfo.getSnsType())
@@ -271,5 +280,40 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
                             getNavigator().onSuccess();
                         }, onError -> getNavigator().handleError(onError)));
+    }
+
+    private void uploadImage(Bitmap bitmap, int viewId) {
+        try {
+
+            File filesDir = mContext.getFilesDir();
+            File file = new File(filesDir, "image" + ".png");
+
+            User userInfo = getDataManager().getMyInfo();
+
+            String fileName = userInfo.getEmail() + "_" + userInfo.getSnsType()
+                    + "_" + viewId + ".jpg";
+            Log.d(TAG, "uploadImage fileName : " + fileName);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            RequestBody reqFileName = RequestBody.create(MediaType.parse("text/plain"), fileName);
+
+//            getViewModel().uploadImage(bitmap);
+            insertPortfolioImage(body, reqFileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

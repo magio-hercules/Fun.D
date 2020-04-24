@@ -49,7 +49,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             "30대",
             "40대",
             "50대",
-            "60대",
+            "60대 이상",
     };
 
     @Inject
@@ -273,6 +273,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
 
     private void addPortfolioImage(String url) {
+        Log.d(TAG, "addPortfolioImage url : " + url);
         LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         LinearLayout newLayout = (LinearLayout) inflater.inflate(R.layout.portfolio_image,
                 getViewDataBinding().portfolioLayout,

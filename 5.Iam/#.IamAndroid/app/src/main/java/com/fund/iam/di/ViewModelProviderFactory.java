@@ -58,7 +58,7 @@ public class ViewModelProviderFactory extends ViewModelProvider.NewInstanceFacto
         } else if (modelClass.isAssignableFrom(SearchViewModel.class)) {
             return (T) new SearchViewModel(dataManager, schedulerProvider, resourceProvider);
         } else if (modelClass.isAssignableFrom(HomeViewModel.class)) {
-            return (T) new HomeViewModel(dataManager, schedulerProvider, resourceProvider);
+            return (T) new HomeViewModel(context, dataManager, schedulerProvider, resourceProvider);
         } else if (modelClass.isAssignableFrom(BookmarkViewModel.class)) {
             return (T) new BookmarkViewModel(dataManager, schedulerProvider, resourceProvider);
         } else if (modelClass.isAssignableFrom(LetterBoxViewModel.class)) {

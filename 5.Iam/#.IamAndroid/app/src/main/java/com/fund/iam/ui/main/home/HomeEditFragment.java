@@ -31,6 +31,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,8 +73,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -80,9 +84,17 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.exceptions.UndeliverableException;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subscribers.DisposableSubscriber;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import retrofit2.Response;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -172,7 +184,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     // Portfolio 관리 정보 //
     // 추가될 신규 포트폴리오 (id, text or imageUrl)
     List<Map<Integer, String>> arrAddPortfolioText = new ArrayList<Map<Integer, String>>();
-//    List<Map<Integer, String>> arrAddPortfolioImage = new ArrayList<Map<Integer, String>>();
+    //    List<Map<Integer, String>> arrAddPortfolioImage = new ArrayList<Map<Integer, String>>();
     List<Integer> arrAddPortfolioImage = new ArrayList<Integer>();
     // 삭제될 기존 포트폴리오 (id만 관리)
     List<Integer> arrDeletePortfolio = new ArrayList<Integer>();
@@ -229,6 +241,36 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         getViewModel().setNavigator(this);
         setHasOptionsMenu(true);
+
+        RxJavaPlugins.setErrorHandler(e -> {
+            if (e instanceof UndeliverableException) { e = e.getCause();
+            }
+
+            if ((e instanceof IOException) || (e instanceof SocketException)) {
+                // fine, irrelevant network problem or API that throws on cancellation
+                return;
+            }
+
+            if (e instanceof InterruptedException) {
+                // fine, some blocking code was interrupted by a dispose call
+                // return;
+            }
+
+            if ((e instanceof NullPointerException) || (e instanceof IllegalArgumentException)) {
+                // that's likely a bug in the application
+                Thread.currentThread().getUncaughtExceptionHandler()
+                        .uncaughtException(Thread.currentThread(), e);
+                return;
+            }
+            if (e instanceof IllegalStateException) {
+                // that's a bug in RxJava or in a custom operator
+                Thread.currentThread().getUncaughtExceptionHandler()
+                        .uncaughtException(Thread.currentThread(), e);
+                return;
+            }
+
+            Log.e("RxJava_HOOK", "Undeliverable exception received, not sure what to do " + e.getMessage());
+        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -360,8 +402,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     // 이미지를 상황에 맞게 회전시킨다
                     ExifInterface exif = new ExifInterface(imagePath);
                     int exifOrientation = exif.getAttributeInt(
-                                                ExifInterface.TAG_ORIENTATION,
-                                                ExifInterface.ORIENTATION_NORMAL);
+                            ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_NORMAL);
                     Bitmap rotatedBitmap = rotateBitmap(bitmap, exifOrientation);
                     int exifDegree = exifOrientationToDegrees(exifOrientation);
                     Log.i(TAG, "exifDegree : " + exifDegree);
@@ -465,6 +507,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "initHandlers");
 
         getViewDataBinding().profileEditSave.setOnClickListener(new Button.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "profile_edit_save onClick");
@@ -483,13 +526,13 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "watingCount is " + watingCount);
 
         if (bWaiting && watingCount == 0) {
-            getViewModel().handleUserInfo();
+//            getViewModel().handleUserInfo();
 
             // goBack으로 대체
 //            getViewDataBinding().profileEditCancel.performClick();
 
             // type 1: 수정사항 반영 완료
-            loadingEnd(1);
+//            loadingEnd(1);
         }
     }
 
@@ -511,6 +554,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     }
 
     public void loadingEnd(int type) {
+        Log.d(TAG, "loadingEnd type : " + type);
         int delay;
         if (type == 0)
             delay = 300;
@@ -531,10 +575,14 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                                 break;
                             case 1:
                                 Toast.makeText(getContext(), "수정사항이 반영되었습니다.", Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "수정사항이 반영되었습니다.");
+                                Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!!!");
 
                                 break;
                             case 2:
                                 Toast.makeText(getContext(), "변경사항이 없습니다.", Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "변경사항이 없습니다.");
+                                Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!!!");
                                 break;
                             default:
                                 break;
@@ -543,46 +591,65 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 }, delay);
     }
 
-    private void handleUpload() {
-        Log.d(TAG, "handleUpload");
+    // for test
+//    private void handleUpload() {
+//        Log.d(TAG, "handleUpload");
+//
+//        mBitmapAvatar = ((BitmapDrawable)getViewDataBinding().profileEditProfile.getDrawable()).getBitmap();
+//        if (mBitmapAvatar == null) {
+//            Log.d(TAG, "mBitmapAvatar is null");
+//
+//        } else {
+//            Log.d(TAG, "mBitmapAvatar is not null");
+//
+//            uploadImage(mBitmapAvatar, -1);
+//        }
+//    }
 
-        mBitmapAvatar = ((BitmapDrawable)getViewDataBinding().profileEditProfile.getDrawable()).getBitmap();
-        if (mBitmapAvatar == null) {
-            Log.d(TAG, "mBitmapAvatar is null");
+    private ArrayList<Map<Integer, String>> dummy = new ArrayList<>();
+    int newImageViewId;
 
-        } else {
-            Log.d(TAG, "mBitmapAvatar is not null");
-
-            uploadImage(mBitmapAvatar, -1);
-        }
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void handleSave(View view) {
+        Log.d(TAG, "!!!!!!!!!!!!!!!!!!!!!!!!");
         Log.d(TAG, "handleSave");
 
         loadingStart();
         int changeCount = 0;
 
-        // 프로필 정보 update
-//        new User(String imageUrl, String userName, String nickName, String email,
-//                String location, String job, int gender, int age);
+
+        String[] locationList;
+        locationList = dataManager.getLocations().stream()
+                .map(item -> item.getName()).toArray(String[]::new);
+
+        String[] jobList;
+        jobList = (String[])dataManager.getJobs().stream()
+                .map(item -> item.getName()).toArray(String[]::new);
+
+        // STEP 0, 프로필 정보 update
         User userInfo = dataManager.getMyInfo();
         String _imageUrl = userInfo.getImageUrl();
         String _userName = getViewDataBinding().profileEditName.getText().toString();
         String _nickName = getViewDataBinding().profileEditNickname.getText().toString();
         String _email = getViewDataBinding().profileEditEmail.getText().toString();
         String _phone = getViewDataBinding().profileEditPhone.getText().toString();
-        String _location = "" + (getViewDataBinding().profileEditLocation.getSelectedItemPosition() + 1);
-        String _job = "" + (getViewDataBinding().profileEditJob.getSelectedItemPosition() + 1);
-        int _gender = getViewDataBinding().profileEditGender.getSelectedItemPosition();
-        int _age = getViewDataBinding().profileEditAge.getSelectedItemPosition();
+
+        String _locationStr = getViewDataBinding().profileEditLocation.getText().toString();
+        String _jobStr = getViewDataBinding().profileEditJob.getText().toString();
+        String _location = "" + (Arrays.asList(locationList).indexOf(_locationStr) + 1);
+        String _job = "" + (Arrays.asList(jobList).indexOf(_jobStr) + 1);
+
+        String _genderStr = getViewDataBinding().profileEditGender.getText().toString();
+        String _ageStr = getViewDataBinding().profileEditAge.getText().toString();
+        int _gender = Arrays.asList(spinnerValueGender).indexOf(_genderStr);
+        int _age = Arrays.asList(spinnerValueAge).indexOf(_ageStr);
 
         // 변경사항 확인
-        if (!userInfo.getUserName().equals(_userName) || !userInfo.getNickName().equals(_nickName)
-            || !userInfo.getEmail().equals(_email) || !userInfo.getPhone().equals(_phone)
-            || !userInfo.getLocationList().equals(_location)
-            || !userInfo.getJobList().equals(_job)
-            || userInfo.getGender() != _gender || userInfo.getAge() != _age) {
+        if (userInfo.getUserName() != _userName || userInfo.getNickName() != _nickName
+                || userInfo.getEmail() != _email || userInfo.getPhone()  != _phone
+                || userInfo.getLocationList() != _location
+                || userInfo.getJobList() !=  _job
+                || userInfo.getGender() != _gender || userInfo.getAge() != _age) {
             User updateUserInfo = new User(userInfo.getId(), userInfo.getSnsType(), _imageUrl,
                     _userName, _nickName, _email, _phone,
                     _location, _job, _gender, _age);
@@ -595,7 +662,6 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             Log.d(TAG, "유저 프로필은 변경사항 없음");
         }
 
-//        List<Portfolio> listPortfolio = getViewModel().myPortfolio;
         List<Portfolio> listPortfolio = dataManager.getMyPortfolios();
 
         // 전체 리스트 중 id가 없는 항목만 API를 요청하여 추가
@@ -611,6 +677,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         EditText editView = null;
         String editText = "";
         String prevText = "";
+
         // 포트폴리오 layout에 남아있는 view 정보
         for(int i=0; i<count; i++) {
             innerLayout = (LinearLayout)layout.getChildAt(i);
@@ -669,67 +736,13 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             }
         }
 
-        // STEP 2, 신규 리스트 추가 요청 (type 구분 필요)
-        for (Map<Integer, String> port : arrAddPortfolioText) {
-            for (Map.Entry<Integer, String> entry : port.entrySet()) {
-                _id = entry.getKey();
-                _text = entry.getValue();
-                Log.d(TAG, "_key : " + _id + ", _text : " + _text);
-
-                watingCount++;
-                changeCount++;
-                Log.d(TAG, "insertPortfolioText watingCount is " + watingCount);
-                getViewModel().insertPortfolioText(_text);
-            }
-
-            // TODO 이미지 추가 필요
-//            if (arrAddPortfolioText.contains(_id)) {
-//                Log.d(TAG, "추가 요청 id : " + _id);
-//                Log.d(TAG, "type : " + port.getType() +
-//                        ", text or url : " + (port.getType() == 1 ? port.getText() : port.getImageUrl()));
-//
-//                insertPortfolioText(text);
-//            }
-        }
-
-        // STEP 2-1, 신규 리스트 추가 요청 (image), S3 API 구현 이후 제공 예정
-        Bitmap bitmap = null;
-        ImageView newImageView = null;
-        for (int _imageId : arrAddPortfolioImage) {
-            Log.d(TAG, "_imageId : " + _imageId);
-
-            watingCount++;
-            changeCount++;
-
-            // id에 해당하는 이미지 뷰 가져오기
-//            bitmap = ((BitmapDrawable)getViewDataBinding().profileEditProfile.getDrawable()).getBitmap();
-
-
-            newImageView = (ImageView) getViewDataBinding().portfolioLayout.findViewById(_imageId);
-            if (newImageView == null) {
-                Log.d(TAG, "newImageView is null");
-                return;
-            }
-            bitmap = ((BitmapDrawable)newImageView.getDrawable()).getBitmap();
-            if (bitmap != null) {
-                Log.d(TAG, "bitmap is not null");
-
-                int newImageViewId = newImageView.getId();
-                Log.d(TAG, "newImageViewId : " + newImageViewId);
-
-                uploadImage(bitmap, newImageViewId);
-            } else {
-                Log.d(TAG, "bitmap is null");
-            }
-        }
-
-        // STEP 3, 제거 리스트 삭제 요청 (type 무관)
+        // STEP 2, 제거 리스트 삭제 요청 (type 무관)
         for (Portfolio port : listPortfolio) {
             _id = port.getId();
             if (arrDeletePortfolio.contains(_id)) {
                 Log.d(TAG, "삭제 요청 id : " + _id);
                 Log.d(TAG, "type : " + port.getType() +
-                ", text or url : " + (port.getType() == 1 ? port.getText() : port.getImageUrl()));
+                        ", text or url : " + (port.getType() == 1 ? port.getText() : port.getImageUrl()));
 
                 watingCount++;
                 changeCount++;
@@ -738,7 +751,141 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             }
         }
 
+        // STEP 2, 신규 리스트 추가 요청 (type 구분 필요)
+        changeCount += arrAddPortfolioText.size();
+
+        Observable.fromIterable(arrAddPortfolioText)
+                .concatMapSingle(item -> {
+                    Log.d(TAG, "item : " + item);
+
+                    int addId = item.keySet().hashCode();
+                    String addText = item.get(addId);
+                    Log.d(TAG, "id : " + addId + ", text : " + addText);
+
+                    watingCount++;
+                    Log.d(TAG, "insertPortfolioText watingCount is " + watingCount);
+
+                    // 비어있는 text 포트폴리오는 제외되었기 때문에 "" 으로 들어온 정보는 이미지로 판단할수 있음
+                    if (addText == "") {
+                        Log.d(TAG, "이미지 추가");
+
+                        Bitmap bitmap = null;
+                        ImageView newImageView = null;
+                        newImageView = (ImageView) getViewDataBinding().portfolioLayout.findViewById(addId);
+                        if (newImageView == null) {
+                            Log.e(TAG, "newImageView is null");
+                            return Single.error(new Throwable("test error"));
+                        }
+
+                        bitmap = ((BitmapDrawable)newImageView.getDrawable()).getBitmap();
+                        if (bitmap != null) {
+                            Log.d(TAG, "bitmap is not null");
+
+                            int newImageViewId = newImageView.getId();
+                            Log.d(TAG, "newImageViewId : " + newImageViewId);
+
+                            Log.d(TAG, "ADD Portfolio image id : " + addId);
+                            return singleUploadImage(bitmap, newImageViewId);
+                        } else {
+                            Log.d(TAG, "bitmap is null");
+                            return Single.error(new Throwable("test error"));
+                        }
+                    } else {
+                        Log.d(TAG, "텍스트 추가");
+//                        return getViewModel().singleInsertText(addText);
+                        return getViewModel().singleInsertText(addText);
+                    }
+
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(result -> {
+                    Log.d(TAG, "끝");
+                    Log.d(TAG, result.toString());
+                }, onError -> {
+                    Log.d(TAG, "test error " + onError);
+
+                }, () -> {
+                    Log.d(TAG, "수행 완료");
+                    Log.d(TAG, "getViewModel().handleUserInfo()");
+                    Log.d(TAG, "loadingEnd(1)");
+                    loadingEnd(1);
+                    getViewModel().handleUserInfo();
+                });
+
+        // STEP 2, 변경 전
+//        Bitmap bitmap = null;
+//        ImageView newImageView = null;
+//        for (Map<Integer, String> port : arrAddPortfolioText) {
+//            for (Map.Entry<Integer, String> entry : port.entrySet()) {
+//                _id = entry.getKey();
+//                _text = entry.getValue();
+//                Log.d(TAG, "_key : " + _id + ", _text : " + _text);
+//
+//                watingCount++;
+//                changeCount++;
+//                Log.d(TAG, "insertPortfolioText watingCount is " + watingCount);
+//
+//                if (!_text.equals("")) { // 텍스트 추가
+//                    Log.d(TAG, "ADD Portfolio text id : " + _id);
+//
+//                    getViewModel().insertPortfolioText(_text);
+//                } else {
+//                    newImageView = (ImageView) getViewDataBinding().portfolioLayout.findViewById(_id);
+//                    if (newImageView == null) {
+//                        Log.e(TAG, "newImageView is null");
+//                        return;
+//                    }
+//                    bitmap = ((BitmapDrawable)newImageView.getDrawable()).getBitmap();
+//                    if (bitmap != null) {
+//                        Log.d(TAG, "bitmap is not null");
+//
+//                        int newImageViewId = newImageView.getId();
+//                        Log.d(TAG, "newImageViewId : " + newImageViewId);
+//
+//                        Log.d(TAG, "ADD Portfolio image id : " + _id);
+//                        uploadImage(bitmap, newImageViewId);
+//                    } else {
+//                        Log.d(TAG, "bitmap is null");
+//                    }
+//                }
+//            }
+//        }
+
+        // STEP 2-1, 신규 리스트 추가 요청 (image), S3 API 구현 이후 제공 예정
+//        Bitmap bitmap = null;
+//        ImageView newImageView = null;
+//        for (int _imageId : arrAddPortfolioImage) {
+//            Log.d(TAG, "_imageId : " + _imageId);
+//
+//            watingCount++;
+//            changeCount++;
+//
+//            // id에 해당하는 이미지 뷰 가져오기
+////            bitmap = ((BitmapDrawable)getViewDataBinding().profileEditProfile.getDrawable()).getBitmap();
+//
+//
+//            newImageView = (ImageView) getViewDataBinding().portfolioLayout.findViewById(_imageId);
+//            if (newImageView == null) {
+//                Log.d(TAG, "newImageView is null");
+//                return;
+//            }
+//            bitmap = ((BitmapDrawable)newImageView.getDrawable()).getBitmap();
+//            if (bitmap != null) {
+//                Log.d(TAG, "bitmap is not null");
+//
+//                int newImageViewId = newImageView.getId();
+//                Log.d(TAG, "newImageViewId : " + newImageViewId);
+//
+//                uploadImage(bitmap, newImageViewId);
+//            } else {
+//                Log.d(TAG, "bitmap is null");
+//            }
+//        }
+
+
         bWaiting = true;
+        Log.d(TAG, "changeCount is " + changeCount);
         if (changeCount == 0) {
             // type 2: 업데이트 항목 없음
             loadingEnd(2);
@@ -771,35 +918,37 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //            }
 //        });
 
-
-
         String[] locationList;
         locationList = dataManager.getLocations().stream()
-                            .map(item -> item.getName()).toArray(String[]::new);
+                .map(item -> item.getName()).toArray(String[]::new);
 
         String[] jobList;
         jobList = (String[])dataManager.getJobs().stream()
-                            .map(item -> item.getName()).toArray(String[]::new);
+                .map(item -> item.getName()).toArray(String[]::new);
 
-        initSpinner(getViewDataBinding().profileEditLocation,
-                locationList,
-                "거주지");
+//        initSpinner(getViewDataBinding().profileEditLocation,
+//                locationList,
+//                "거주지");
+        initAutoCompleteText(getViewDataBinding().profileEditLocation, locationList);
 
-        initSpinner(getViewDataBinding().profileEditJob,
-                jobList,
-                "직종");
+//        initSpinner(getViewDataBinding().profileEditJob,
+//                jobList,
+//                "직종");
+        initAutoCompleteText(getViewDataBinding().profileEditJob, jobList);
 
 //        initSpinner(getViewDataBinding().profileEditJobDetail,
 //                spinnerValueJobDetail,
 //                "세부직종");
 
-        initSpinner(getViewDataBinding().profileEditGender,
-                spinnerValueGender,
-                "성별");
+//        initSpinner(getViewDataBinding().profileEditGender,
+//                spinnerValueGender,
+//                "성별");
+        initAutoCompleteText(getViewDataBinding().profileEditGender, spinnerValueGender);
 
-        initSpinner(getViewDataBinding().profileEditAge,
-                spinnerValueAge,
-                "나이대");
+//        initSpinner(getViewDataBinding().profileEditAge,
+//                spinnerValueAge,
+//                "나이대");
+        initAutoCompleteText(getViewDataBinding().profileEditAge, spinnerValueAge);
     }
 
     private void initSpinner(Spinner spinner, String[] valueList, String hint) {
@@ -827,6 +976,14 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         });
     }
 
+    private void initAutoCompleteText(AutoCompleteTextView autoCompleteTextView, String[] valueList) {
+        Log.d(TAG, "initAutoCompleteText");
+
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, valueList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), R.layout.layout_hint_box,
+                                                    R.id.tvHintCompletion, valueList);
+        autoCompleteTextView.setAdapter(adapter);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateUser() {
@@ -855,16 +1012,24 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         getViewDataBinding().profileEditName.setText(info.getUserName());
         getViewDataBinding().profileEditEmail.setText(info.getEmail());
         getViewDataBinding().profileEditPhone.setText(info.getPhone());
-        if (info.getLocationList() != null) {
+
+        AutoCompleteTextView acTextView = null;
+
+        if (info.getLocationList() != null && Integer.parseInt(info.getLocationList()) > 0) {
             // DB id가 1부터 시작함
-            getViewDataBinding().profileEditLocation.setSelection(Integer.parseInt(info.getLocationList()) - 1);
+            acTextView = getViewDataBinding().profileEditLocation;
+            acTextView.setText(acTextView.getAdapter().getItem(Integer.parseInt(info.getLocationList())-1).toString(), false);
         }
-        if (info.getJobList() != null) {
+        if (info.getJobList() != null && Integer.parseInt(info.getJobList()) > 0) {
             // DB id가 1부터 시작함
-            getViewDataBinding().profileEditJob.setSelection(Integer.parseInt(info.getJobList()) - 1);
+            acTextView = getViewDataBinding().profileEditJob;
+            acTextView.setText(acTextView.getAdapter().getItem(Integer.parseInt(info.getJobList())-1).toString(), false);
         }
-        getViewDataBinding().profileEditGender.setSelection(info.getGender());
-        getViewDataBinding().profileEditAge.setSelection(info.getAge());
+        acTextView = getViewDataBinding().profileEditGender;
+        acTextView.setText(acTextView.getAdapter().getItem(info.getGender()).toString(), false);
+        acTextView = getViewDataBinding().profileEditAge;
+        acTextView.setText(acTextView.getAdapter().getItem(info.getAge()).toString(), false);
+
 
 
 //        List<PortfolioInfo> portfolioList = response.body();
@@ -1033,10 +1198,11 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //                getViewDataBinding().portfolioLayout.removeView((View) view.getParent());
 
                 if (id == -1) {
-                    // 추가 아이템이면 arrAddPortfolioText에서 삭제
+                    // 추가 아이템이면 arrAddPortfolioImage에서 삭제
                     int editId = PORTFOLIPO_EDIT_ID + portfolidIndex;
                     Log.d(TAG, "TEXT 삭제 버튼 클릭 - 신규 추가 아이템에서 제거");
-                    arrAddPortfolioImage.removeIf(data -> data == editId);
+//                    arrAddPortfolioImage.removeIf(data -> data == editId);
+                    arrAddPortfolioText.removeIf(data -> data.containsKey(editId));
                 } else {
                     // 기존 아이템이면 addDeletePortfolio에 추가
                     // 기존 아이템이면 addModifyPortfolio에서 삭제
@@ -1093,7 +1259,10 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             }
         });
 
-        arrAddPortfolioImage.add(PORTFOLIPO_IMAGE_ID + portfolidIndex);
+//        arrAddPortfolioImage.add(PORTFOLIPO_IMAGE_ID + portfolidIndex);
+        Map<Integer, String> map = new HashMap<Integer, String>();
+        map.put(PORTFOLIPO_IMAGE_ID + portfolidIndex, "");
+        arrAddPortfolioText.add(map);
 
         // 버튼을 찾기 위한 id
         portfolidIndex++;
@@ -1195,7 +1364,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         String[] proj = { MediaStore.Images.Media.DATA };
 
         Cursor cursor = getActivity().getContentResolver().query(contentUri, proj,
-                    null, null, null);
+                null, null, null);
         Log.d(TAG, "cursor.moveToFirst() : " + cursor.moveToFirst());
         if(cursor.moveToFirst()) {
             column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
@@ -1602,6 +1771,40 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
     }
 
+    private Single<Response<Void>> singleUploadImage(Bitmap bitmap, int viewId) {
+        try {
+            File filesDir = getContext().getFilesDir();
+            File file = new File(filesDir, "image" + ".png");
+
+            User userInfo = dataManager.getMyInfo();
+
+            String fileName = userInfo.getEmail() + "_" + userInfo.getSnsType()
+                    + "_" + viewId + ".jpg";
+            Log.d(TAG, "uploadImage fileName : " + fileName);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            RequestBody reqFileName = RequestBody.create(MediaType.parse("text/plain"), fileName);
+
+            return getViewModel().singleInsertImage(body, reqFileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Single.error(new Throwable("test error"));
+    }
+
     private final BroadcastReceiver mYourBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1647,4 +1850,23 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
     };
 
+    static class CustomSubscriber<T> extends DisposableSubscriber<T> {
+        @Override
+        public void onNext(T t) {
+//            System.out.println(Thread.currentThread().getName() + " onNext( " + t + " )");
+            Log.d(TAG, "onNext");
+        }
+
+        @Override
+        public void onError(Throwable t) {
+//            System.out.println(Thread.currentThread().getName() + " onError( " + t + ")");
+            Log.d(TAG, "onError");
+        }
+
+        @Override
+        public void onComplete() {
+//            System.out.println(Thread.currentThread().getName() + " onComplete()");
+            Log.d(TAG, "onComplete");
+        }
+    }
 }

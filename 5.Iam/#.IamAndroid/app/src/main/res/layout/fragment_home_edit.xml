@@ -34,6 +34,23 @@
             app:layout_constraintTop_toTopOf="parent"
             >
 
+
+            <TextView
+                android:id="@+id/profile_edit_save2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="저장하기"
+                android:textStyle="bold"
+                android:textSize="12sp"
+                android:textColor="#7E57C2"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/letter"
+                android:onClick="actionNavigate"
+                app:layout_constraintLeft_toLeftOf="@id/profile_header"
+                app:layout_constraintTop_toTopOf="@id/profile_header"
+                app:layout_constraintBottom_toBottomOf="@id/profile_header"
+                />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,126 +82,270 @@
 
             <ImageView
                 android:id="@+id/profile_edit_profile"
-                android:layout_width="91dp"
-                android:layout_height="88dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
                 android:src="@drawable/profile_default_2"
-                app:layout_constraintDimensionRatio="4:3"
+                app:layout_constraintDimensionRatio="3:3"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintTop_toBottomOf="@id/profile_header"
+                app:layout_constraintBottom_toBottomOf="@id/profile_edit_name_layout"
                 />
 
-            <EditText
-                android:id="@+id/profile_edit_nickname"
+<!--            <EditText-->
+<!--                android:id="@+id/profile_edit_nickname"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginLeft="11dp"-->
+<!--                android:background="@drawable/layout_edittext"-->
+<!--                android:ems="10"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="12sp"-->
+<!--                android:hint="닉네임"-->
+<!--                android:textColorHint="#c9c9c9"-->
+<!--                app:layout_constraintLeft_toRightOf="@id/profile_edit_profile"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_header" />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_nickname_layout"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
-                android:background="@drawable/layout_edittext"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:hint="닉네임"
-                android:textColorHint="#c9c9c9"
+                android:hint="별명"
+                app:counterMaxLength="20"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintLeft_toRightOf="@id/profile_edit_profile"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_header" />
+                app:layout_constraintTop_toBottomOf="@id/profile_header"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_edit_nickname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:completionHintView="@layout/layout_hint_box"
+                    android:completionThreshold="1"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textColorHint="#c9c9c9"
+                    android:singleLine="true"
+                    android:nextFocusDown="@id/profile_edit_name"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
 
-            <EditText
-                android:id="@+id/profile_edit_name"
+<!--            <EditText-->
+<!--                android:id="@+id/profile_edit_name2"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginLeft="11dp"-->
+<!--                android:background="@drawable/layout_edittext"-->
+<!--                android:ems="10"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="12sp"-->
+<!--                android:hint="이름"-->
+<!--                android:textColorHint="#c9c9c9"-->
+<!--                app:layout_constraintBottom_toBottomOf="@id/profile_edit_profile"-->
+<!--                app:layout_constraintLeft_toRightOf="@id/profile_edit_profile"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end" />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_name_layout"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="11dp"
-                android:background="@drawable/layout_edittext"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="12sp"
+                android:layout_marginTop="8dp"
                 android:hint="이름"
-                android:textColorHint="#c9c9c9"
+                app:counterMaxLength="20"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_nickname_layout"
                 app:layout_constraintBottom_toBottomOf="@id/profile_edit_profile"
                 app:layout_constraintLeft_toRightOf="@id/profile_edit_profile"
-                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end" />
+                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_edit_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textColorHint="#c9c9c9"
+                    android:singleLine="true"
+                    android:nextFocusDown="@id/profile_edit_email"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/profile_edit_email"
+<!--            <EditText-->
+<!--                android:id="@+id/profile_edit_email"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/layout_edittext"-->
+<!--                android:ems="10"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="12sp"-->
+<!--                android:hint="이메일"-->
+<!--                android:textColorHint="#c9c9c9"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_profile"-->
+<!--                />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_email_layout"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/layout_edittext"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="12sp"
                 android:hint="이메일"
-                android:textColorHint="#c9c9c9"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
-                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
+                app:counterMaxLength="20"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintTop_toBottomOf="@id/profile_edit_profile"
-                />
+                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_edit_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textColorHint="#c9c9c9"
+                    android:singleLine="true"
+                    android:nextFocusDown="@id/profile_edit_phone"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:id="@+id/profile_edit_phone"
+<!--            <EditText-->
+<!--                android:id="@+id/profile_edit_phone"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/layout_edittext"-->
+<!--                android:ems="10"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="12sp"-->
+<!--                android:hint="연락처"-->
+<!--                android:textColorHint="#c9c9c9"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_email_layout"-->
+<!--                />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_phone_layout"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/layout_edittext"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="12sp"
                 android:hint="연락처"
-                android:textColorHint="#c9c9c9"
+                app:counterMaxLength="20"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_email"
-                />
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_email_layout"
+                >
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/profile_edit_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/black"
+                    android:textSize="12sp"
+                    android:textColorHint="#c9c9c9"
+                    android:singleLine="true"
+                    android:nextFocusDown="@id/profile_edit_location_layout"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <EditText
-                android:visibility="gone"
-                android:id="@+id/profile_edit_homepage"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/layout_edittext"
-                android:ems="10"
-                android:gravity="center_vertical"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                android:hint="홈페이지"
-                android:textColorHint="#c9c9c9"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
-                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_email"
-                />
 
-            <Spinner
-                android:id="@+id/profile_edit_location"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginTop="8dp"
-                android:background="@drawable/spinner_background"
-                android:popupBackground="#ffffff"
-                android:overlapAnchor="false"
-                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
-                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_phone"
-                />
 
-            <Spinner
-                android:id="@+id/profile_edit_job"
+<!--            <EditText-->
+<!--                android:visibility="gone"-->
+<!--                android:id="@+id/profile_edit_homepage"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/layout_edittext"-->
+<!--                android:ems="10"-->
+<!--                android:gravity="center_vertical"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="12sp"-->
+<!--                android:hint="홈페이지"-->
+<!--                android:textColorHint="#c9c9c9"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_email_layout"-->
+<!--                />-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/profile_edit_location2"-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/spinner_background"-->
+<!--                android:popupBackground="#ffffff"-->
+<!--                android:overlapAnchor="false"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_phone_layout"-->
+<!--                />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_location_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/spinner_background"
-                android:popupBackground="#ffffff"
-                android:overlapAnchor="false"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_location"
-                />
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_phone_layout">
+                <!-- Google themselves instruct us to use the deprecated editable attribute -->
+                <AutoCompleteTextView
+                    android:id="@+id/profile_edit_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable='false'
+                    android:cursorVisible='false'
+                    android:hint="거주지"
+                    android:textSize="12sp"
+                    android:nextFocusDown="@id/profile_edit_job_layout"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <Spinner-->
+<!--                android:id="@+id/profile_edit_job2"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/spinner_background"-->
+<!--                android:popupBackground="#ffffff"-->
+<!--                android:overlapAnchor="false"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_location_layout"-->
+<!--                />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_job_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_location_layout">
+                <!-- Google themselves instruct us to use the deprecated editable attribute -->
+                <AutoCompleteTextView
+                    android:id="@+id/profile_edit_job"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable='false'
+                    android:cursorVisible='false'
+                    android:hint="직종"
+                    android:textSize="12sp"
+                    android:nextFocusDown="@id/profile_edit_gender_layout" />
+            </com.google.android.material.textfield.TextInputLayout>
 
 <!--            <Spinner-->
 <!--                android:id="@+id/profile_edit_job_detail"-->
@@ -199,33 +360,71 @@
 <!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_job"-->
 <!--                />-->
 
-            <Spinner
-                android:id="@+id/profile_edit_gender"
+<!--            <Spinner-->
+<!--                android:id="@+id/profile_edit_gender"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/spinner_background"-->
+<!--                android:popupBackground="#ffffff"-->
+<!--                android:overlapAnchor="false"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_job_layout"-->
+<!--                />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_gender_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/spinner_background"
-                android:popupBackground="#ffffff"
-                android:overlapAnchor="false"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_job"
-                />
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_job_layout">
+                <AutoCompleteTextView
+                    android:id="@+id/profile_edit_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable='false'
+                    android:cursorVisible='false'
+                    android:hint="성별"
+                    android:textSize="12sp"
+                    android:nextFocusDown="@id/profile_edit_age_layout"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <Spinner
-                android:id="@+id/profile_edit_age"
+<!--            <Spinner-->
+<!--                android:id="@+id/profile_edit_age"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:background="@drawable/spinner_background"-->
+<!--                android:popupBackground="#ffffff"-->
+<!--                android:overlapAnchor="false"-->
+<!--                tools:layout_editor_absoluteX="16dp"-->
+<!--                tools:layout_editor_absoluteY="209dp"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/profile_edit_gender_layout"-->
+<!--                />-->
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/profile_edit_age_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="0dp"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/spinner_background"
-                android:popupBackground="#ffffff"
-                android:overlapAnchor="false"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="209dp"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_gender"
-                />
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_gender_layout">
+                <AutoCompleteTextView
+                    android:id="@+id/profile_edit_age"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable='false'
+                    android:cursorVisible='false'
+                    android:hint="나이대"
+                    android:textSize="12sp"
+                    android:nextFocusDown="@id/profile_edit_nickname"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <View
                 android:id="@+id/profile_edit_divider"
@@ -234,7 +433,7 @@
                 android:background="#4527A0"
                 android:layout_marginTop="20dp"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/profile_edit_age" />
+                app:layout_constraintTop_toBottomOf="@+id/profile_edit_age_layout" />
 
             <LinearLayout
                 android:id="@+id/portfolio_layout"
@@ -300,19 +499,44 @@
                 app:layout_constraintBottom_toBottomOf="parent" />
 
 
-            <View
-                android:visibility="gone"
-                android:id="@+id/profile_edit_line"
-                android:layout_width="0dp"
+
+
+            <Spinner
+                android:id="@+id/subject_spinner"
+                android:layout_width="1dp"
                 android:layout_height="1dp"
-                android:layout_marginTop="20dp"
-                android:background="#4527A0"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="60dp"
+                android:background="#000000"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:spinnerMode="dialog"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"
-                app:layout_constraintTop_toBottomOf="@id/profile_edit_name" />
+                app:layout_constraintTop_toBottomOf="@id/profile_edit_save"
+                android:visibility="gone" />
 
 
+<!--            <android.support.design.widget.TextInputLayout-->
+<!--                android:id="@+id/input_layout_subject"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:theme="@style/TextLabel"-->
+<!--                app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"-->
+<!--                app:layout_constraintRight_toRightOf="@id/profile_edit_guideline_v_end"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/subject_spinner"-->
+<!--                app:errorTextAppearance="@style/error_appearance">-->
 
+<!--                <EditText-->
+<!--                    android:id="@+id/input_subject"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="@string/subject_label"-->
+<!--                    android:inputType="textEmailSubject"-->
+<!--                    android:maxLength="55"-->
+<!--                    android:textColor="@color/editText" />-->
+<!--            </android.support.design.widget.TextInputLayout>-->
 
 
 
