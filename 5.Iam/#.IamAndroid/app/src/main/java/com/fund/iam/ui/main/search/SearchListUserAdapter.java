@@ -1,9 +1,11 @@
 package com.fund.iam.ui.main.search;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -11,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fund.iam.R;
+import com.fund.iam.data.bus.LetterBoxBus;
 import com.fund.iam.data.model.Job;
+import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.User;
+import com.fund.iam.ui.letter.LetterActivity;
 import com.kakao.util.helper.log.Logger;
 
 import java.util.ArrayList;
@@ -30,11 +35,11 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     private List<User> usersModel_filterKeyword = new ArrayList<>();
 
     String KeyWord;
-
+    private Context mContext;
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+        mContext = parent.getContext();
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_list,parent,false);
 
         return new SearchListUserAdapter.ViewHolder(v);
@@ -67,6 +72,11 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
             }
         });
 
+        holder.iv_letter.setOnClickListener(v -> {
+            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel_filterKeyword.get(position).getId(),usersModel_filterKeyword.get(position).getUserName(),usersModel_filterKeyword.get(position).getImageUrl(),usersModel_filterKeyword.get(position).getToken()));
+            LetterActivity.start(mContext);
+        });
+
     }
 
     @Override
@@ -80,6 +90,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
         public final TextView tv_email;
         public final TextView tv_userName;
         public final TextView tv_jobList;
+        public final ImageView iv_letter;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -87,6 +98,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
             tv_email = itemView.findViewById(R.id.tv_email);
             tv_userName = itemView.findViewById(R.id.tv_userName);
             tv_jobList = itemView.findViewById(R.id.tv_jobList);
+            iv_letter = itemView.findViewById(R.id.imageView5);
         }
     }
 

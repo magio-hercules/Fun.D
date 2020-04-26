@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewModel"
-            type="com.fund.iam.ui.main.channel.CreateChannelViewModel"/>
+            type="com.fund.iam.ui.main.channel.CreateChannelViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,25 +69,22 @@
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="@+id/materialCardView3"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/materialCardView3"
-            app:strokeColor="#C9C9C9"
-            app:strokeWidth="1dp">
+            app:layout_constraintStart_toEndOf="@+id/materialCardView3">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/et_name"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:boxBackgroundColor="#FFFFFF"
-                app:boxStrokeWidth="0dp"
-                app:boxStrokeWidthFocused="0dp">
+                app:boxBackgroundColor="#FFFFFF">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/et_name_input"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="채널이름"
-                    android:singleLine="true"
-                    android:nextFocusDown="@id/et_purpose_input"/>
+                    android:nextFocusDown="@id/et_purpose_input"
+                    android:singleLine="true" />
             </com.google.android.material.textfield.TextInputLayout>
 
         </com.google.android.material.card.MaterialCardView>
@@ -267,7 +265,6 @@
         </com.google.android.material.card.MaterialCardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </layout>

@@ -65,9 +65,15 @@ public class NoticeViewModel extends BaseViewModel<NoticeNavigator> {
     }
 
 
-
     private void subscribeEvent() {
-
+        getCompositeDisposable().add(getDataManager().postNotices()
+                .observeOn(getSchedulerProvider().ui())
+                .subscribeOn(getSchedulerProvider().io())
+                .subscribe(notices -> {
+                    if (notices.isSuccessful()) {
+                        getNavigator().onRepositoriesChanged(notices.body());
+                    }
+                }, onError -> getNavigator().handleError(onError)));
     }
 
 }

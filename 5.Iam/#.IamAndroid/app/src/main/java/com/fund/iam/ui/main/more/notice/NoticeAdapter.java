@@ -1,20 +1,29 @@
 package com.fund.iam.ui.main.more.notice;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.fund.iam.R;
 import com.fund.iam.data.model.Notice;
 import com.orhanobut.logger.Logger;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class NoticeAdapter extends BaseExpandableListAdapter {
 
+    private SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSX", Locale.KOREA);
+    private SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd", Locale.KOREA);
     private List<Notice> notices;
 
     public NoticeAdapter(List<Notice> notices) {
@@ -69,7 +78,12 @@ public class NoticeAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.item_notice, null);
         }
         TextView date = convertView.findViewById(R.id.date);
-        date.setText(notice.getDate());
+        try {
+            date.setText(outputFormat.format(inputFormat.parse(notice.getDate())));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         TextView title = convertView.findViewById(R.id.title);
         title.setText(notice.getTitle());
         ImageView arrow = convertView.findViewById(R.id.arrow);

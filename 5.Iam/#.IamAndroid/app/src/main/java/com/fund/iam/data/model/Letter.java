@@ -16,8 +16,14 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Letter {
 
-    @SerializedName("friend_id")
+    @SerializedName("user_id")
     private int id;
+
+    @SerializedName("friend_id")
+    private int friendId;
+
+    @SerializedName("message_owner")
+    private int messageOwner;
 
     private int type;
 

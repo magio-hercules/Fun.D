@@ -29,4 +29,10 @@ public class LetterBox {
 
     private String jobColor;
 
+    public LetterBox(int id, String name, String imageUrl, String token) {
+        this.id = id;
+        this.name = name;
+        this.imageUrl = imageUrl;
+        this.token = token;
+    }
 }

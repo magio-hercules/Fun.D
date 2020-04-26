@@ -69,7 +69,6 @@ public class NoticeFragment extends BaseFragment<FragmentNoticeBinding, NoticeVi
         super.onViewCreated(view, savedInstanceState);
         setupActionBar();
         initViews();
-        getViewModel().getDummyNotices();
     }
 
     private void setupActionBar() {

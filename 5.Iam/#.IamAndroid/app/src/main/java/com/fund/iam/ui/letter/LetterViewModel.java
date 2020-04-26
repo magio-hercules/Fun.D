@@ -58,8 +58,8 @@ public class LetterViewModel extends BaseViewModel<LetterNavigator> {
                     if (result.isSuccessful()) {
                         List<Letter> letters = result.body();
                         letters = Stream.of(letters).map(message -> {
-                            message.setType(message.getId() == remoteUserId ? LetterType.REMOTE.getLetterType() : LetterType.LOCAL.getLetterType());
-                            message.setImageUrl(message.getId() == remoteUserId ? remoteImageUrl : null);
+                            message.setType(message.getMessageOwner() != 0 ? LetterType.LOCAL.getLetterType() : LetterType.REMOTE.getLetterType());
+                            message.setImageUrl(message.getMessageOwner() != 0 ? null : remoteImageUrl);
                             return message;
                         }).toList();
                         getNavigator().onLetterSet(letters);
