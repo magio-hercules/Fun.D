@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 
 import io.reactivex.Single;
 import okhttp3.MediaType;
@@ -49,29 +48,31 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
     }
 
 
-    public void getUserInfo() {
-        Log.d(TAG, "getUserInfo");
+    public void getUserInfo(String email, String type) {
+        Log.d(TAG, "getUserInfo email : " + email + ", type : " + type);
 
         getCompositeDisposable().add(
-                getDataManager().postJobs()
-                        .flatMap(result -> {
-                            Log.d(TAG, "postJobList success");
-//                            Logger.d(result.body());
+                getDataManager().postUserInfo(email, type)
+//                        .doOnSuccess(info -> {
+//                            Log.d(TAG, "postUserInfo success");
+//                            getNavigator().updateUser(info.body().get(0));
+//                        })
+//                        .flatMap(info -> getDataManager().postPortfolios(info.body().get(0).getId()))
+                        .flatMap(info -> {
+                            Log.d(TAG, "postUserInfo success");
+                            getNavigator().updateUser(info.body().get(0));
 
-//                            return getDataManager().postUserInfo(getDataManager().getMyInfo().getId());
-                            return getDataManager().postUserInfo(getDataManager().getMyInfo().getEmail(), getDataManager().getMyInfo().getSnsType());
+                            return getDataManager().postPortfolios(info.body().get(0).getId());
                         })
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
-                        .subscribe(result -> {
-                            Log.d(TAG, "postUserInfo success");
-//                Logger.d(result.body());
-
-                            List<User> arrResult = result.body();
-//                            myInfo = (User)arrResult.get(0);
-//                            Log.d(TAG, "result.body " + myInfo);
-
-                            getNavigator().updateUser();
+                        .subscribe(portFolio -> {
+                            if (portFolio.isSuccessful()) {
+                                Log.d(TAG, "postPortfolios success");
+                                getNavigator().updatePortfolio(portFolio.body());
+                            } else {
+                                Logger.e("getUserInfo Error");
+                            }
                         }, onError -> getNavigator().handleError(onError)));
     }
 

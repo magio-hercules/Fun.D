@@ -317,7 +317,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     @Override
     public void handleError(Throwable throwable) {
         Logger.e("handleError " + throwable.getMessage());
-        Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), throwable.getMessage(), Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -514,6 +514,15 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
                 handleSave(view);
 //                handleUpload();
+            }
+        });
+
+        getViewDataBinding().profileEditSave2.setOnClickListener(new Button.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "profile_edit_save2 onClick");
+                getViewDataBinding().profileEditSave.performClick();
             }
         });
 
@@ -754,6 +763,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         // STEP 2, 신규 리스트 추가 요청 (type 구분 필요)
         changeCount += arrAddPortfolioText.size();
 
+        final int checkAddCount = arrAddPortfolioText.size();
+        final int checkChangeCount = changeCount;
+
         Observable.fromIterable(arrAddPortfolioText)
                 .concatMapSingle(item -> {
                     Log.d(TAG, "item : " + item);
@@ -795,7 +807,6 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //                        return getViewModel().singleInsertText(addText);
                         return getViewModel().singleInsertText(addText);
                     }
-
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -806,10 +817,18 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     Log.d(TAG, "test error " + onError);
 
                 }, () -> {
-                    Log.d(TAG, "수행 완료");
+                    Log.d(TAG, "addCount is : "+ checkAddCount);
+                    Log.d(TAG, "changeCount is " + checkChangeCount);
+
+                    if (checkChangeCount == 0 && checkAddCount == 0) {
+                        // type 2: 변경사항이 없습니다
+                        loadingEnd(2);
+                    } else {
+                        // type 1: 수정사항이 반영되었습니다
+                        loadingEnd(1);
+                    }
+
                     Log.d(TAG, "getViewModel().handleUserInfo()");
-                    Log.d(TAG, "loadingEnd(1)");
-                    loadingEnd(1);
                     getViewModel().handleUserInfo();
                 });
 
@@ -885,11 +904,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
 
         bWaiting = true;
-        Log.d(TAG, "changeCount is " + changeCount);
-        if (changeCount == 0) {
-            // type 2: 업데이트 항목 없음
-            loadingEnd(2);
-        }
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -985,6 +1000,22 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         autoCompleteTextView.setAdapter(adapter);
     }
 
+
+    private void moveScroll(boolean bDown) {
+        Log.d(TAG, "moveScroll");
+
+        getViewDataBinding().profileScroll.post(new Runnable() {
+            @Override
+            public void run() {
+                if (bDown) {
+                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_DOWN);
+                } else {
+                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_UP);
+                }
+            }
+        });
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateUser() {
         Log.d(TAG, "updateUser");
@@ -1045,20 +1076,6 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "updateUser end");
     }
 
-    private void moveScroll(boolean bDown) {
-        Log.d(TAG, "moveScroll");
-
-        getViewDataBinding().profileScroll.post(new Runnable() {
-            @Override
-            public void run() {
-                if (bDown) {
-                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_DOWN);
-                } else {
-                    getViewDataBinding().profileScroll.fullScroll(ScrollView.FOCUS_UP);
-                }
-            }
-        });
-    }
 
     public void updatePortfolio() {
         Log.d(TAG, "updatePortfolio");
@@ -1081,6 +1098,16 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
 //        loadingEnd(0);
         Log.d(TAG, "updatePortfolio end");
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void updateUser(User info) {
+        Log.d(TAG, "updateUser info");
+    }
+
+    public void updatePortfolio(List<Portfolio> portfolioList) {
+        Log.d(TAG, "updatePortfolio info");
     }
 
     private void addPortfolioText(int id, String text) {

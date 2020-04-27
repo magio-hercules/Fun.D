@@ -62,6 +62,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     //
 
     private int portfolidIndex = 1;
+    private boolean bMyProfile = true;
 
     //
 
@@ -139,8 +140,22 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     private void initViews() {
         Log.d(TAG, "initViews");
 
-        updateUser();
-        updatePortfolio();
+        String email = HomeFragmentArgs.fromBundle(getArguments()).getArgProfileEmail();
+        String type = HomeFragmentArgs.fromBundle(getArguments()).getArgProfileType();
+
+        Log.d(TAG, "email : " + email + ", type : " + type);
+
+        if (email != null && type != null) {
+            bMyProfile = false;
+
+            getViewDataBinding().profileImageLetter.setVisibility(View.INVISIBLE);
+            getViewDataBinding().profileImageModify.setVisibility(View.INVISIBLE);
+
+            getViewModel().getUserInfo(email, type);
+        } else {
+            updateUser();
+            updatePortfolio();
+        }
     }
 
     public void onSuccess() {
@@ -233,6 +248,82 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //                return;
 //            }
 
+            switch (data.getType()) {
+                case 1: // TEXT
+                    addPortfolioText(data.getText());
+                    break;
+                case 2: // IMAGE
+                    addPortfolioImage(data.getImageUrl());
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void updateUser(User info) {
+        Log.d(TAG, "updateUser info");
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Log.d(TAG, "runOnUiThread");
+
+                        List<Job> jobList = dataManager.getJobs();
+                        List<Location> locationList = dataManager.getLocations();
+                        Logger.d(info);
+                        Logger.d(jobList);
+                        Logger.d(locationList);
+
+                        Job findJob = jobList.stream()
+                                .filter(item -> info.getJobList() != null && item.getId() == Integer.parseInt(info.getJobList()))
+                                .findAny()
+                                .orElse(null);
+
+                        Location findLocation = locationList.stream()
+                                .filter(item -> info.getLocationList() != null && item.getId() == Integer.parseInt(info.getLocationList()))
+                                .findAny()
+                                .orElse(null);
+
+                        Log.d(TAG, "url : " + info.getImageUrl());
+
+                        Glide.with(getContext())
+                                .load(info.getImageUrl())
+                                .placeholder(R.drawable.profile_default_2)
+                //                .apply(RequestOptions.centerCropTransform())
+                                .fitCenter()
+                //                .centerCrop()
+                                .into(getViewDataBinding().profileImageProfile);
+
+                        getViewDataBinding().profileName.setText(info.getUserName());
+                        getViewDataBinding().profileJob.setText(findJob != null ? findJob.getName() : "직업 없음");
+                        getViewDataBinding().profileAge.setText(spinnerValueAge[info.getAge()]);
+                        getViewDataBinding().profileLocation.setText(findLocation != null ? findLocation.getName() : "");
+
+                        getViewDataBinding().profileNick.setText(info.getNickName());
+                        getViewDataBinding().profilePhone.setText(info.getPhone());
+                        getViewDataBinding().profileEmail.setText(info.getEmail());
+                        getViewDataBinding().profileLocation2.setText(findLocation != null ? findLocation.getName() : "");
+                        getViewDataBinding().profileJob2.setText(findJob != null ? findJob.getName() : "직업 없음");
+                        getViewDataBinding().profileGender.setText(info.getGender() == 0 ? "남자" : "여자");
+                        getViewDataBinding().profileAge2.setText(spinnerValueAge[info.getAge()]);
+
+                    }
+                });
+            }
+        }).start();
+
+   }
+
+    public void updatePortfolio(List<Portfolio> portfolioList) {
+        Log.d(TAG, "updatePortfolio list count : " + portfolioList.size());
+
+        for (Portfolio data : portfolioList) {
             switch (data.getType()) {
                 case 1: // TEXT
                     addPortfolioText(data.getText());

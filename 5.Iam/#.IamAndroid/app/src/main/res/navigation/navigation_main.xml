@@ -9,6 +9,17 @@
         android:id="@+id/navigation_home"
         android:name="com.fund.iam.ui.main.home.HomeFragment"
         tools:layout="@layout/fragment_home">
+        <argument
+            android:name="argProfileEmail"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <argument
+            android:name="argProfileType"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
         <action
             android:id="@+id/action_letterbox"
             app:destination="@id/navigation_letterbox" />
@@ -43,6 +54,9 @@
         <action
             android:id="@+id/action_main_channel"
             app:destination="@id/navigation_channel" />
+        <action
+            android:id="@+id/action_navigation_home"
+            app:destination="@id/navigation_home" />
     </fragment>
 
     <fragment

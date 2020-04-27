@@ -2,6 +2,7 @@ package com.fund.iam.ui.main.search;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fund.iam.R;
@@ -69,6 +71,16 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
             public void onClick(View v) {
                 Toast.makeText(holder.itemView.getContext(),position+"",Toast.LENGTH_SHORT).show();
                 Logger.i("클릭"+position);
+
+                User userInfo = usersModel_filterKeyword.get(position);
+                String email = userInfo.getEmail();
+                String type = userInfo.getSnsType();
+                Log.d("Search", "email : " + email + ", sns_type : " + type);
+
+                SearchFragmentDirections.ActionNavigationHome action = SearchFragmentDirections.actionNavigationHome();
+                action.setArgProfileEmail(email);
+                action.setArgProfileType(type);
+                Navigation.findNavController(v).navigate(action);
             }
         });
 
@@ -114,7 +126,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
         this.user_filters = user_filters;
         usersModel_filter.removeAll(usersModel_filter);
         for (int i=0; i<usersModel.size(); i++) {
-            if(usersModel.get(i).getLocationList() == Integer.parseInt(user_filters.get(0))-1) {
+            if(Integer.parseInt(usersModel.get(i).getLocationList()) == Integer.parseInt(user_filters.get(0))-1) {
                 usersModel_filter.add(usersModel.get(i));
             }
 

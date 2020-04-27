@@ -1,7 +1,10 @@
 package com.fund.iam.ui.main.home;
 
+import com.fund.iam.data.model.Portfolio;
 import com.fund.iam.data.model.User;
 import com.fund.iam.ui.base.BaseNavigator;
+
+import java.util.List;
 
 public interface HomeNavigator extends BaseNavigator {
     
@@ -11,6 +14,8 @@ public interface HomeNavigator extends BaseNavigator {
 
     void updateUser();
     void updatePortfolio();
+    void updateUser(User userInfo);
+    void updatePortfolio(List<Portfolio> portfolioList);
 
     void insertImage();
     void insertText();
