@@ -19,11 +19,13 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -51,6 +53,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -392,11 +395,12 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     Bitmap image = readImageWithSampling(in, 800, 600);
                     in.close();
 
-                    Uri selectedImg = data.getData();
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),
-                            selectedImg);
+                    Uri imageUri = data.getData();
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+                                                getActivity().getContentResolver(),
+                                                imageUri);
 
-                    String imagePath = RealPathUtil.getRealPathFromURI_API19(getContext(), selectedImg);
+                    String imagePath = RealPathUtil.getRealPathFromURI_API19(getContext(), imageUri);
                     Log.i(TAG, "imagePath : " + imagePath);
 
                     // 이미지를 상황에 맞게 회전시킨다
@@ -420,12 +424,67 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 if (resultCode == RESULT_OK) {
                     Log.i(TAG, "REQUEST_IMAGE_CROP OK");
 
-                    galleryAddPic();
+//                    galleryAddPic();
 
                     File storageDir = new File(Environment.getExternalStorageDirectory() + "/Pictures", "IAM");
                     Log.i(TAG, "storageDir: " + storageDir.toString());
                     Log.i(TAG, "mCurrentPhotoPath: " + mCurrentPhotoPath);
                     Log.i(TAG, "imageUri.getPath(): " + imageUri.getPath());
+
+                    MediaScannerConnection.scanFile(getContext(),
+//                            new String[]{file.getAbsolutePath()},
+                        new String[]{imageUri.getPath()},
+                        null,
+                        new MediaScannerConnection.OnScanCompletedListener() {
+                            @Override
+                            public void onScanCompleted(String path, Uri uri) {
+                                Log.v(TAG, "file:" + path + "was scanned success");
+
+//                                    makeImageContents(3, null, contentUri);
+
+//                                final Handler handler = new Handler();
+                                Handler handler = new Handler(Looper.getMainLooper());
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Log.d(TAG, "runOnUiThread");
+
+                                                Toast.makeText(getContext(), "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show();
+
+                                                try {
+                                                    File f = new File(mCurrentPhotoPath);
+                                                    Uri imageUri = Uri.fromFile(f);
+//                                                    Log.v(TAG, "call makeImageContents type 3");
+//                                                    makeImageContents(3, null, selectedImg);
+
+                                                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(),
+                                                            imageUri);
+
+                                                    String imagePath = RealPathUtil.getRealPathFromURI_API19(getContext(), imageUri);
+                                                    Log.i(TAG, "imagePath : " + imagePath);
+
+                                                    // 이미지를 상황에 맞게 회전시킨다
+                                                    ExifInterface exif = new ExifInterface(imagePath);
+                                                    int exifOrientation = exif.getAttributeInt(
+                                                            ExifInterface.TAG_ORIENTATION,
+                                                            ExifInterface.ORIENTATION_NORMAL);
+                                                    Bitmap rotatedBitmap = rotateBitmap(bitmap, exifOrientation);
+                                                    int exifDegree = exifOrientationToDegrees(exifOrientation);
+                                                    Log.i(TAG, "exifDegree : " + exifDegree);
+
+                                                    addPortfolioImage(rotatedBitmap);
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }, 0);
+                            }
+                        });
                 }
                 break;
 
@@ -1033,6 +1092,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "url : " + info.getImageUrl());
         Glide.with(getContext())
                 .load(info.getImageUrl())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.profile_default_2)
 //                .apply(RequestOptions.centerCropTransform())
                 .fitCenter()
@@ -1245,6 +1306,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "url : " + url);
         Glide.with(getContext())
                 .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
                 .fitCenter()
@@ -1272,6 +1335,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 .load(bitmap)
 //                .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .fitCenter()
                 .listener(requestListener)
                 .into(imageImage);
@@ -1501,6 +1566,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.i(TAG, "after galleryAddPic");
         Toast.makeText(getContext(), "사진이 앨범에 저장되었습니다.", Toast.LENGTH_SHORT).show();
 
+
 //        makeImageContents(3, null, imageUri);
     }
 
@@ -1649,10 +1715,10 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         cropIntent.setFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         cropIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         cropIntent.setDataAndType(imageUri, "image/*");
-        cropIntent.putExtra("outputX", 100); // crop한 이미지의 x축 크기, 결과물의 크기
-        cropIntent.putExtra("outputY", 100); // crop한 이미지의 y축 크기
-        cropIntent.putExtra("aspectX", 1); // crop 박스의 x축 비율, 1&1이면 정사각형
-        cropIntent.putExtra("aspectY", 1); // crop 박스의 y축 비율
+        cropIntent.putExtra("outputX", 800); // crop한 이미지의 x축 크기, 결과물의 크기
+        cropIntent.putExtra("outputY", 600); // crop한 이미지의 y축 크기
+        cropIntent.putExtra("aspectX", 4); // crop 박스의 x축 비율, 1&1이면 정사각형
+        cropIntent.putExtra("aspectY", 3); // crop 박스의 y축 비율
         cropIntent.putExtra("scale", true);
         cropIntent.putExtra("output", imageUri); // 크랍된 이미지를 해당 경로에 저장
 

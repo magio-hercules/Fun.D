@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
@@ -202,6 +203,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         Log.d(TAG, "url : " + info.getImageUrl());
         Glide.with(getContext())
                 .load(info.getImageUrl())
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.profile_default_2)
 //                .apply(RequestOptions.centerCropTransform())
                 .fitCenter()
@@ -294,6 +297,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
                         Glide.with(getContext())
                                 .load(info.getImageUrl())
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .skipMemoryCache(true)
                                 .placeholder(R.drawable.profile_default_2)
                 //                .apply(RequestOptions.centerCropTransform())
                                 .fitCenter()
@@ -384,6 +389,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 
         Glide.with(getContext())
                 .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .skipMemoryCache(true)
                 .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
                 .fitCenter()
