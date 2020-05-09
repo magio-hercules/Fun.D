@@ -413,6 +413,10 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     }
 
 
+    public void insertProfile() {
+        Log.d(TAG, "insertProfile");
+    }
+
     public void insertImage() {
         Log.d(TAG, "insertImage");
     }

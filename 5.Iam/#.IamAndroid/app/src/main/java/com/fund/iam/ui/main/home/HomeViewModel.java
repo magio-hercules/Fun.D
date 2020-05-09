@@ -95,6 +95,12 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         Log.d(TAG, "end getUserPortfolio");
     }
 
+    public void handleInsertProfile() {
+        Log.d(TAG, "handleInsertProfile");
+
+        getNavigator().insertProfile();
+    }
+
     public void handleInsertImage() {
         Log.d(TAG, "handleInsertImage");
 
@@ -166,6 +172,31 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                         }, onError -> getNavigator().handleError(onError)));
     }
 
+    public Single<Response<String>> singleUploadImage(MultipartBody.Part body, RequestBody fileName) {
+//    public String singleUploadImage(MultipartBody.Part body, RequestBody fileName) {
+         return getDataManager().postUploadImage(body, fileName);
+////                .flatMap(result -> {
+////                    // result로 url 을 받아온 이후
+////                    Log.d(TAG, "postUploadImage success");
+////
+////                    final String s3Url = result.body();
+////                    Log.d(TAG, "s3Url : " + s3Url);
+////
+//////                    return Single<Response<String>>(s3Url);
+////                    return s3Url;
+////                });
+//                .observeOn(getSchedulerProvider().ui())
+//                .subscribeOn(getSchedulerProvider().io())
+//                .subscribe(result -> {
+//                    // result로 url 을 받아온 이후
+//                    Log.d(TAG, "postUploadImage success");
+//
+//                    String s3Url = result.body();
+//                    Log.d(TAG, "s3Url : " + s3Url);
+//
+//                    return s3Url;
+//                }, onError -> getNavigator().handleError(onError)));
+    }
 
     public Single<Response<Void>> singleInsertText(String text) {
         return getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 1, text);

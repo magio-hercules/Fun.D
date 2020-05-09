@@ -184,6 +184,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     Uri imageUri;
     Uri photoURI;
 
+    // 프로필 이미지인지 체크
+    boolean bProfile = false;
+
     // Portfolio 관리 정보 //
     // 추가될 신규 포트폴리오 (id, text or imageUrl)
     List<Map<Integer, String>> arrAddPortfolioText = new ArrayList<Map<Integer, String>>();
@@ -416,6 +419,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 //                    addPortfolioImage(bitmap);
                     addPortfolioImage(rotatedBitmap);
                 } catch (Exception e) {
+                    bProfile = false;
                     e.printStackTrace();
                 }
                 break;
@@ -477,6 +481,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
                                                     addPortfolioImage(rotatedBitmap);
                                                 } catch (Exception e) {
+                                                    bProfile = false;
                                                     e.printStackTrace();
                                                 }
                                             }
@@ -718,14 +723,39 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 || userInfo.getLocationList() != _location
                 || userInfo.getJobList() !=  _job
                 || userInfo.getGender() != _gender || userInfo.getAge() != _age) {
-            User updateUserInfo = new User(userInfo.getId(), userInfo.getSnsType(), _imageUrl,
-                    _userName, _nickName, _email, _phone,
-                    _location, _job, _gender, _age);
-            Logger.d("업데이트 될 유저정보 : " + updateUserInfo);
 
-            watingCount++;
-            changeCount++;
-            getViewModel().handleUserUpdate(updateUserInfo);
+            if (bProfile) {
+                ImageView profileImage = getViewDataBinding().profileEditProfile;
+
+                Bitmap bitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
+                if (bitmap != null) {
+                    Log.d(TAG, "Profile image bitmap is not null");
+
+                        singleUploadProfile(bitmap)
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribeOn(Schedulers.io())
+                            .subscribe(result -> {
+                                String newUrl = result.toString();
+                                Log.d(TAG, "newUrl : " + newUrl);
+
+                                newUrl = result.body().toString();
+                                Log.d(TAG, "singleUploadProfile success");
+                                Log.d(TAG, "newUrl : " + newUrl);
+
+                                User updateUserInfo = new User(userInfo.getId(), userInfo.getSnsType(), newUrl,
+                                        _userName, _nickName, _email, _phone,
+                                        _location, _job, _gender, _age);
+                                Logger.d("업데이트 될 유저정보 : " + updateUserInfo);
+
+                                getViewModel().handleUserUpdate(updateUserInfo);
+                            }, onError -> Log.d(TAG, "test error " + onError));
+
+                    watingCount++;
+                    changeCount++;
+                }
+            }
+
+
         } else {
             Log.d(TAG, "유저 프로필은 변경사항 없음");
         }
@@ -1320,51 +1350,67 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
     private void addPortfolioImage(Bitmap bitmap) {
         Log.d(TAG, "addPortfolioImage bitmap ");
 
-        LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout newLayout = (LinearLayout) inflater.inflate(R.layout.portfolio_image_edit,
-                getViewDataBinding().portfolioLayout,
-                true);
-
-        ImageView imageImage = (ImageView) newLayout.findViewById(R.id.portfolioImage_image);
-//        imageImage.setImageResource(R.drawable.profile_default);  // imageView에 내용 추가
-        imageImage.setId(PORTFOLIPO_IMAGE_ID + portfolidIndex);
-        Log.d(TAG, "imageview size  (width: " + imageImage.getWidth());
-        Log.d(TAG, "imageview size  (height: " + imageImage.getHeight());
-
-        Glide.with(getContext())
-                .load(bitmap)
+        if (bProfile) {
+            Glide.with(getContext())
+                    .load(bitmap)
 //                .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .fitCenter()
-                .listener(requestListener)
-                .into(imageImage);
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .listener(requestListener)
+                    .into(getViewDataBinding().profileEditProfile);
+        } else {
+            LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LinearLayout newLayout = (LinearLayout) inflater.inflate(R.layout.portfolio_image_edit,
+                    getViewDataBinding().portfolioLayout,
+                    true);
 
-        ImageView imageDelete = (ImageView) newLayout.findViewById(R.id.portfolioImage_delete);
-        imageDelete.setId(PORTFOLIPO_DELETE_ID + portfolidIndex);
-        imageDelete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "IMAGE 삭제 버튼 클릭");
-                getViewDataBinding().portfolioLayout.removeView((View) view.getParent());
-            }
-        });
+            ImageView imageImage = (ImageView) newLayout.findViewById(R.id.portfolioImage_image);
+//        imageImage.setImageResource(R.drawable.profile_default);  // imageView에 내용 추가
+            imageImage.setId(PORTFOLIPO_IMAGE_ID + portfolidIndex);
+            Log.d(TAG, "imageview size  (width: " + imageImage.getWidth());
+            Log.d(TAG, "imageview size  (height: " + imageImage.getHeight());
+
+            Glide.with(getContext())
+                    .load(bitmap)
+//                .placeholder(R.drawable.profile_default_picture)
+//                .apply(RequestOptions.centerCropTransform())
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .fitCenter()
+                    .listener(requestListener)
+                    .into(imageImage);
+
+            ImageView imageDelete = (ImageView) newLayout.findViewById(R.id.portfolioImage_delete);
+            imageDelete.setId(PORTFOLIPO_DELETE_ID + portfolidIndex);
+            imageDelete.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "IMAGE 삭제 버튼 클릭");
+                    getViewDataBinding().portfolioLayout.removeView((View) view.getParent());
+                }
+            });
 
 //        arrAddPortfolioImage.add(PORTFOLIPO_IMAGE_ID + portfolidIndex);
-        Map<Integer, String> map = new HashMap<Integer, String>();
-        map.put(PORTFOLIPO_IMAGE_ID + portfolidIndex, "");
-        arrAddPortfolioText.add(map);
+            Map<Integer, String> map = new HashMap<Integer, String>();
+            map.put(PORTFOLIPO_IMAGE_ID + portfolidIndex, "");
+            arrAddPortfolioText.add(map);
 
-        // 버튼을 찾기 위한 id
-        portfolidIndex++;
+            // 버튼을 찾기 위한 id
+            portfolidIndex++;
 
 //        // 신규 아이템 추가 시 scroll 최하단으로 이동 -> listener로 이동
 //        moveScroll(true);
+        }
+    }
+
+    public void insertProfile() {
+        bProfile = true;
+        selectImage();
     }
 
     public void insertImage() {
-
         selectImage();
     }
 
@@ -1540,6 +1586,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             @Override
             public void onClick(DialogInterface dialog, int which)
             {
+                bProfile = false;
                 dialog.dismiss();
             }
         };
@@ -1862,6 +1909,40 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Single<Response<String>> singleUploadProfile(Bitmap bitmap) {
+        try {
+            File filesDir = getContext().getFilesDir();
+            File file = new File(filesDir, "image" + ".png");
+
+            User userInfo = dataManager.getMyInfo();
+
+            String fileName = userInfo.getEmail() + "_" + userInfo.getSnsType()
+                    + "_profile.jpg";
+            Log.d(TAG, "uploadImage fileName : " + fileName);
+
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            FileOutputStream fos = new FileOutputStream(file);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("file", file.getName(), reqFile);
+            RequestBody reqFileName = RequestBody.create(MediaType.parse("text/plain"), fileName);
+
+            return getViewModel().singleUploadImage(body, reqFileName);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return Single.error(new Throwable("test error"));
     }
 
     private Single<Response<Void>> singleUploadImage(Bitmap bitmap, int viewId) {

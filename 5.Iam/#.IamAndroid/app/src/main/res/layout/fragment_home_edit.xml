@@ -87,6 +87,7 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerCrop"
                 android:src="@drawable/profile_default_2"
+                android:onClick="@{() -> viewModel.handleInsertProfile()}"
                 app:layout_constraintDimensionRatio="3:3"
                 app:layout_constraintLeft_toLeftOf="@id/profile_edit_guideline_v_start"
                 app:layout_constraintTop_toBottomOf="@id/profile_header"
