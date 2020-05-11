@@ -33,7 +33,8 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     private List<Location> locationsModel = new ArrayList<>();
 
     private List<User> usersModel_filter = new ArrayList<>();
-    public List<String> user_filters = new ArrayList<>();
+    private List<User> usersModel_filter_result = new ArrayList<>();
+    public List<Integer> user_filters = new ArrayList<>();
     private List<User> usersModel_filterKeyword = new ArrayList<>();
 
     String KeyWord;
@@ -121,25 +122,70 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
         notifyDataSetChanged();
     }
 
-    public void setUserFilter(List<Location> locationsModel, List<String> user_filters) {
+    public void setUserFilter(List<Location> locationsModel, List<Integer> user_filters) {
         this.locationsModel = locationsModel;
         this.user_filters = user_filters;
         usersModel_filter.removeAll(usersModel_filter);
+        usersModel_filter_result.removeAll(usersModel_filter_result);
+
+        // 지역
         for (int i=0; i<usersModel.size(); i++) {
-            if(Integer.parseInt(usersModel.get(i).getLocationList()) == Integer.parseInt(user_filters.get(0))-1) {
-                usersModel_filter.add(usersModel.get(i));
+
+            if (usersModel.get(i).getLocationList() != null) {
+                if (user_filters.get(0) == 0 || Integer.parseInt(usersModel.get(i).getLocationList()) ==user_filters.get(0)-1) {
+                    usersModel_filter.add(usersModel.get(i));
+                }
             }
 
         }
+//        // 직종
+//        for (int i=0; i<usersModel_filter.size(); i++) {
+//
+//            if(usersModel_filter.get(i).getJobList() != null) {
+//                if (user_filters.get(1) == 0 || Integer.parseInt(usersModel_filter.get(i).getJobList()) == user_filters.get(1)-1) {
+//                    usersModel_filter_result.add(usersModel_filter.get(i));
+//                }
+//            }
+//        }
+//        usersModel_filter.removeAll(usersModel_filter);
+//        usersModel_filter.addAll(usersModel_filter_result);
+//        usersModel_filter_result.removeAll(usersModel_filter_result);
+//
+//        // 성별
+//
+//        for (int i=0; i<usersModel_filter.size(); i++) {
+//
+//            if (user_filters.get(2) == 0 || usersModel_filter.get(i).getGender() == user_filters.get(2)-1) {
+//                usersModel_filter_result.add(usersModel_filter.get(i));
+//            }
+//        }
+//        usersModel_filter.removeAll(usersModel_filter);
+//        usersModel_filter.addAll(usersModel_filter_result);
+//        usersModel_filter_result.removeAll(usersModel_filter_result);
+//
+//        // 나이대
+//
+//        for (int i=0; i<usersModel_filter.size(); i++) {
+//
+//            if (user_filters.get(3) == 0 || usersModel_filter.get(i).getAge() == user_filters.get(3)-1) {
+//                usersModel_filter_result.add(usersModel_filter.get(i));
+//            }
+//        }
+//        usersModel_filter.removeAll(usersModel_filter);
+//        usersModel_filter.addAll(usersModel_filter_result);
+//        usersModel_filter_result.removeAll(usersModel_filter_result);
 
     }
+
+
+
 
     public void setKeyWord(String keyWord) {
         this.KeyWord = keyWord;
         usersModel_filterKeyword.removeAll(usersModel_filterKeyword);
-        for (int i=0; i<usersModel.size(); i++) {
-            if(usersModel.get(i).getUserName().toUpperCase().contains(keyWord.toUpperCase())) {
-                usersModel_filterKeyword.add(usersModel.get(i));
+        for (int i=0; i<usersModel_filter.size(); i++) {
+            if(usersModel_filter.get(i).getUserName().toUpperCase().contains(keyWord.toUpperCase())) {
+                usersModel_filterKeyword.add(usersModel_filter.get(i));
             }
         }
         notifyDataSetChanged();

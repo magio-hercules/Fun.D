@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.model.Channel;
 import com.fund.iam.databinding.FragmentSearchBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
@@ -32,6 +33,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -48,6 +51,8 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     private Spinner spinner_job;
     private Spinner spinner_gender;
     private Spinner spinner_age;
+    private ChannelComparator comp;
+    private List<Channel> channelsFilter;
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -86,6 +91,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     public void updateChannels() {
         adapter_channels.setModel_Channels(getViewModel().channels);
         adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
+
     }
 
     @Override
@@ -121,15 +127,14 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             public void onClick(View v) {
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
                 getViewDataBinding().btChannelList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-                getViewDataBinding().etSearch.setHint("채널을 검색하세요");
                 getViewDataBinding().userOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.VISIBLE);
-
-                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
                 getViewModel().TabState = 1;
                 getViewDataBinding().etSearchInput.setText("");
+                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
+                getViewDataBinding().etSearch.clearFocus();
             }
         });
 
@@ -138,15 +143,14 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             public void onClick(View v) {
                 getViewDataBinding().btChannelList.setCardBackgroundColor(Color.parseColor("#7E57C2"));
                 getViewDataBinding().btUserList.setCardBackgroundColor(Color.parseColor("#FFFFFF"));
-                getViewDataBinding().etSearch.setHint("유저를 검색하세요");
                 getViewDataBinding().userOptionSet.setVisibility(View.VISIBLE);
                 getViewDataBinding().channelOptionSet.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.INVISIBLE);
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.VISIBLE);
-
-                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
                 getViewModel().TabState = 2;
                 getViewDataBinding().etSearchInput.setText("");
+                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
+                getViewDataBinding().etSearch.clearFocus();
             }
         });
 
@@ -195,12 +199,25 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         };
         getViewDataBinding().spinner.setGravity(Gravity.CENTER);
         getViewDataBinding().spinner.setAdapter(adapter_spinner);
+        comp = new ChannelComparator();
+        channelsFilter = new ArrayList<Channel>();
         getViewDataBinding().spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Logger.i("SearchFragment:"+getViewDataBinding().spinner.getSelectedItem().toString()+"is selected");
+                // TODO 최신순, 인원순 정렬하기
+                if (position==0) {
+                    adapter_channels.setModel_Channels(getViewModel().channels);
+                    adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
 
+                } else if (position == 1) {
+                    channelsFilter.removeAll(getViewModel().channels);
+                    channelsFilter.addAll(getViewModel().channels);
+                    Collections.sort(channelsFilter, comp);
+                    adapter_channels.setModel_Channels(channelsFilter);
+                    adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
+                }
+                Logger.i("SearchFragment:"+getViewDataBinding().spinner.getSelectedItem().toString()+"is selected");
             }
 
             @Override
@@ -208,6 +225,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
             }
         });
+
 
         getViewDataBinding().recyclerViewFilter.setHasFixedSize(true);
         getViewDataBinding().recyclerViewFilter.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
@@ -334,12 +352,13 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         bt_apply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 구현 중..
                 getViewModel().user_filters.removeAll(getViewModel().user_filters);
-                getViewModel().user_filters.add(spinner_location.getSelectedItemPosition()+"");
-                getViewModel().user_filters.add(spinner_job.getSelectedItemPosition()+"");
-                getViewModel().user_filters.add(spinner_gender.getSelectedItemPosition()+"");
-                getViewModel().user_filters.add(spinner_age.getSelectedItemPosition()+"");
+                getViewModel().user_filters.add(spinner_location.getSelectedItemPosition());
+                getViewModel().user_filters.add(spinner_job.getSelectedItemPosition());
+                getViewModel().user_filters.add(spinner_gender.getSelectedItemPosition());
+                getViewModel().user_filters.add(spinner_age.getSelectedItemPosition());
+                adapter_users.setUserFilter(getViewModel().locations, getViewModel().user_filters );
+                adapter_users.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
                 adapter_filter.setUserFilter(getViewModel().locations,getViewModel().jobs,getViewModel().spinner_str_user_gender,getViewModel().spinner_str_user_age, getViewModel().user_filters);
                 bottomSheetDialog.dismiss();
             }

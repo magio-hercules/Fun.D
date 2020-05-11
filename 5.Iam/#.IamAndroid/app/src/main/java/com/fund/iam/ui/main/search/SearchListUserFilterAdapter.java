@@ -25,7 +25,10 @@ public class SearchListUserFilterAdapter extends RecyclerView.Adapter<SearchList
     private String[] spinner_str_user_age = null;
 
     // 필터값 순서: 지역, 직종, 성별, 나이대
-    public List<String> user_filters = new ArrayList<>();
+    public List<Integer> user_filters = new ArrayList<>();
+    public List<Integer> user_filters_view = new ArrayList<>();
+
+    Integer ItemCount=0;
 
     @NonNull
     @Override
@@ -38,48 +41,46 @@ public class SearchListUserFilterAdapter extends RecyclerView.Adapter<SearchList
     @Override
     public void onBindViewHolder(@NonNull ViewHoder holder, int position) {
 
-        holder.itemView.setVisibility(View.GONE);
+        for (int i = ItemCount; i < user_filters_view.size();i++) {
+            if(user_filters.get(i) != 0) {
+                switch (ItemCount) {
+                    // 지역
+                    case 0:
+                        holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#FF7070"));
+                        holder.tv_filtername.setText(locationsModel.get(user_filters_view.get(position)-1).getName());
+                        ItemCount++;
+                        break;
+                    // 직종
+                    case 1:
+                        holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#4EF34B"));
+                        holder.tv_filtername.setText(jobsModel.get(user_filters_view.get(position)-1).getName());
+                        ItemCount++;
+                        break;
+                    // 성별
+                    case 2:
+                        holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#B6D7FF"));
+                        holder.tv_filtername.setText(spinner_str_user_gender[user_filters_view.get(position)]);
+                        ItemCount++;
+                        break;
+                    // 나이대
+                    case 3:
+                        holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#FFE2B6"));
+                        holder.tv_filtername.setText(spinner_str_user_age[user_filters_view.get(position)]);
+                        ItemCount++;
+                        break;
+                    default:
+                }
+                break;
 
-        if (!user_filters.get(position).equals("0")) {
-
-
-            switch (position) {
-                // 지역
-                case 0:
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#FF7070"));
-                    holder.tv_filtername.setText(locationsModel.get(Integer.parseInt(user_filters.get(position))-1).getName());
-                    break;
-                // 직종
-                case 1:
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#4EF34B"));
-                    holder.tv_filtername.setText(jobsModel.get(Integer.parseInt(user_filters.get(position))-1).getName());
-                    break;
-                // 성별
-                case 2:
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#B6D7FF"));
-                    holder.tv_filtername.setText(spinner_str_user_gender[Integer.parseInt(user_filters.get(position))]);
-                    break;
-                // 나이대
-                case 3:
-                    holder.itemView.setVisibility(View.VISIBLE);
-                    holder.cv_filtername.setCardBackgroundColor(Color.parseColor("#FFE2B6"));
-                    holder.tv_filtername.setText(spinner_str_user_age[Integer.parseInt(user_filters.get(position))]);
-                    break;
-
-                default:
+            } else {
+                ItemCount++;
             }
         }
-
-
-
     }
 
     @Override
     public int getItemCount() {
-        return user_filters.size();
+        return user_filters_view.size();
     }
 
     public static class ViewHoder extends RecyclerView.ViewHolder {
@@ -95,12 +96,19 @@ public class SearchListUserFilterAdapter extends RecyclerView.Adapter<SearchList
         }
     }
 
-    public void setUserFilter(List<Location> locationsModel, List<Job> jobsModel, String[] spinner_str_user_gender, String[] spinner_str_user_age, List<String> user_filters) {
+    public void setUserFilter(List<Location> locationsModel, List<Job> jobsModel, String[] spinner_str_user_gender, String[] spinner_str_user_age, List<Integer> user_filters) {
         this.locationsModel = locationsModel;
         this.jobsModel = jobsModel;
         this.spinner_str_user_gender = spinner_str_user_gender;
         this.spinner_str_user_age = spinner_str_user_age;
         this.user_filters = user_filters;
+        user_filters_view.removeAll(user_filters_view);
+        for(int i = 0 ; i<user_filters.size(); i++ ) {
+            if(user_filters.get(i) != 0) {
+                user_filters_view.add(user_filters.get(i));
+            }
+        }
+        ItemCount = 0;
         notifyDataSetChanged();
     }
 }

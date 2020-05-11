@@ -28,7 +28,8 @@ public class ApiDefine {
         String API_NEW_CHANNEL = "channel/channerInsert";   // 신규 채널 생성
         String API_CHANNEL = "channel/channerInfo";         // 특정 채널 조회
         String API_CHANNEL_USERS = "channel/user";          // 특정 채널 전체유저 조회
-        String API_CHANNEL_USER_INSERT = "channerInsert";   // 특정 채널 유저가입
+        String API_CHANNEL_USER_INSERT = "channel/userInsert";   // 특정 채널 유저가입
+        String API_CHANNEL_USER_DELETE = "channel/userDeleteChannel";   // 특정 채널 유저탈퇴
 
         String API_NOTICES = "list/notice";                 // 전체 공지사항 조회
         String API_LOCATIONS = "list/location";             // 전체 장소 조회

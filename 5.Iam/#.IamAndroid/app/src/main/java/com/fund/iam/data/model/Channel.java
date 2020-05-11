@@ -16,6 +16,9 @@ public class Channel {
 
     public String password;
 
+    @SerializedName("now_user")
+    public int nowUser;
+
     @SerializedName("max_user")
     public int maxUser;
 

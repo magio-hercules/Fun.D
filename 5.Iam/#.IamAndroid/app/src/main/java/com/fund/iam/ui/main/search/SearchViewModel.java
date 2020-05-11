@@ -21,11 +21,11 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
     public List<Job> jobs = null;
     public List<Location> locations = null;
     // 필터값 순서: 지역, 직종, 성별, 나이대
-    public List<String> user_filters = new ArrayList<>();
+    public List<Integer> user_filters = new ArrayList<>();
     public int TabState = 1;
 
     public String[] spinner_str_user_gender = {"  선택없음  ","남자","여자"};
-    public String[] spinner_str_user_age = {"  선택없음  ","10대 이하", "20대","30대","40대", "50대 이상"};
+    public String[] spinner_str_user_age = {"  선택없음  ","10대", "20대","30대","40대", "50대", "60대 이상"};
 
 
     public SearchViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
@@ -36,10 +36,10 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
     private void subscribeEvent() {
         // 필터값 저장 초기값 설정: 지역, 직종, 성별, 나이대 순..
-        user_filters.add("0");
-        user_filters.add("0");
-        user_filters.add("0");
-        user_filters.add("0");
+        user_filters.add(0);
+        user_filters.add(0);
+        user_filters.add(0);
+        user_filters.add(0);
 
     }
 

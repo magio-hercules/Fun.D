@@ -55,6 +55,11 @@ public class ChannelUserListFragment extends BaseFragment<FragmentChannelUserLis
     }
 
     @Override
+    public void getUsersInfo() {
+        // TODO 어댑터 연결하기11111
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.i("CreateUserListFragment:onCreate");
@@ -71,6 +76,9 @@ public class ChannelUserListFragment extends BaseFragment<FragmentChannelUserLis
     }
 
     private void initViews(View view) {
+
+        getViewModel().channelId = ChannelFragmentArgs.fromBundle(getArguments()).getChannelIdArg();
+        getViewModel().getChannelUserInfo(getViewModel().channelId);
 
     }
 

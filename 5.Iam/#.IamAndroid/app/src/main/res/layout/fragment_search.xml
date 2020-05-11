@@ -34,7 +34,7 @@
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/materialCardView"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
+            android:layout_height="52dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
@@ -55,6 +55,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/bt_user_list"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -76,6 +77,7 @@
                     android:layout_height="match_parent"
                     app:cardBackgroundColor="#7E57C2"
                     app:cardCornerRadius="15dp"
+                    app:cardElevation="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -103,27 +105,31 @@
             android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
             app:cardCornerRadius="15dp"
+            app:cardElevation="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialCardView"
-            app:strokeColor="#7E57C2"
-            app:strokeWidth="1dp">
+            app:layout_constraintTop_toBottomOf="@+id/materialCardView">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                android:focusableInTouchMode="true">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/et_search"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="4dp"
-                    android:hint="채널을 검색하세요"
+                    android:hint="검색"
                     app:boxBackgroundColor="#FFFFFF"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="0dp"
+                    app:boxCornerRadiusBottomEnd="15dp"
+                    app:boxCornerRadiusBottomStart="15dp"
+                    app:boxCornerRadiusTopEnd="15dp"
+                    app:boxCornerRadiusTopStart="15dp"
+                    app:boxStrokeWidth="1dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/imageView2"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -132,6 +138,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:imeOptions="actionDone"
+                        android:paddingEnd="42dp"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -139,12 +146,12 @@
                     android:id="@+id/imageView2"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginEnd="8dp"
                     android:layout_marginBottom="4dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/et_search"
                     app:srcCompat="@drawable/ic_search" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -156,7 +163,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
@@ -194,7 +201,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"

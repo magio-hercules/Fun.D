@@ -6,4 +6,6 @@ public interface ChannelUserListNavigator extends BaseNavigator {
 
     void goBack();
 
+    void getUsersInfo();
+
 }

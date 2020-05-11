@@ -101,6 +101,13 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
         getViewDataBinding().btCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                assert imm != null;
+                imm.hideSoftInputFromWindow(getViewDataBinding().etName.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(getViewDataBinding().etPurpose.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(getViewDataBinding().etLocation.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(getViewDataBinding().etDescription.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(getViewDataBinding().etPassword.getWindowToken(),0);
                 getActivity().getSupportFragmentManager().popBackStack();
             }
         });
@@ -303,10 +310,7 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
                 channel.location = getViewDataBinding().etLocationInput.getText().toString();
                 channel.description = getViewDataBinding().etDescriptionInput.getText().toString();
                 channel.password = getViewDataBinding().etPasswordInput.getText().toString();
-                // TODO ownerID를 받아서 서버로 보내야함.
-                getViewModel().getNewChannelInfo(view,1,channel.name,channel.purpose,channel.location,channel.description,channel.password);
-                // 임시코드...
-//                createChannel(view);
+                getViewModel().getNewChannelInfo(view,dataManager.getMyInfo().getId(),channel.name,channel.purpose,channel.location,channel.description,channel.password);
             }
         });
 

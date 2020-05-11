@@ -92,7 +92,14 @@ public interface ApiHelper {
     @FormUrlEncoded
     @POST(ApiDefine.Body.API_CHANNEL_USER_INSERT)
     @Headers({ApiDefine.Header.ACCEPT_JSON})
-    Single<Response<List<ChannelUser>>> postChannelUserInsert(@Field("channel_id") int channel_id, @Field("user_id") int user_id);
+    Single<Response<Void>>postChannelUserInsert(@Field("channel_id") int channel_id, @Field("user_id") int user_id);
+
+    // 특정 채널 유저 탈퇴
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_CHANNEL_USER_DELETE)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<Void>>postChannelUserDelete(@Field("channel_id") int channel_id, @Field("user_id") int user_id);
+
 
     // 특정채널 조회
     @POST(ApiDefine.Body.API_LOCATIONS)

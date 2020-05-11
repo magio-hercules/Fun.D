@@ -110,8 +110,14 @@ public class AppDataManager implements DataManager {
     }
     // 특정채널 유저 가입하기
     @Override
-    public Single<Response<List<ChannelUser>>> postChannelUserInsert(int channel_id, int user_id) {
+    public Single<Response<Void>> postChannelUserInsert(int channel_id, int user_id) {
         return mAwsApiHelper.postChannelUserInsert(channel_id, user_id);
+    }
+
+    // 특정채널 유저 탈퇴하기
+    @Override
+    public Single<Response<Void>> postChannelUserDelete(int channel_id, int user_id) {
+        return mAwsApiHelper.postChannelUserDelete(channel_id, user_id);
     }
 
     @Override

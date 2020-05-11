@@ -14,7 +14,6 @@ public class ChannelViewModel extends BaseViewModel<ChannelNavigator> {
 
     public List<Channel> channel = null;
     public List<ChannelUser> channelUsers = null;
-    public List<ChannelUser> channelUserInsertResult = null;
     public int channelId = 0;
     public int isJoin = 0;
 
@@ -67,20 +66,34 @@ public class ChannelViewModel extends BaseViewModel<ChannelNavigator> {
         );
     }
 
-    public void getChannelUserInsert(int channel_id, int user_id) {
+    public void setChannelUserInsert(int channel_id, int user_id) {
 
-        Logger.i("getChannelUserInsert");
+        Logger.i("setChannelUserInsert");
 
         getCompositeDisposable().add(
                 getDataManager().postChannelUserInsert(channel_id, user_id)
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
-                            Logger.d("postChannelUserInsert success");
-                            channelUserInsertResult = result.body();
-                            Logger.d("result.body"+channelUserInsertResult);
+                            Logger.d("postChannelUserInsert success: channel_id: "+channel_id+" user_id: "+ user_id);
 
-                            getNavigator().getUsersInfo();
+                            getNavigator().getChannelInfo();
+
+                        }, onError -> getNavigator().handleError(onError))
+        );
+    }
+
+    public void setChannelUserDelete(int channel_id, int user_id) {
+        Logger.i("setChannelUserDelete");
+
+        getCompositeDisposable().add(
+                getDataManager().postChannelUserDelete(channel_id, user_id)
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribe(result -> {
+                            Logger.d("postChannelUserDelete success: channel_id: "+channel_id+" user_id: "+ user_id);
+
+                            getNavigator().getChannelInfo();
 
                         }, onError -> getNavigator().handleError(onError))
         );

@@ -67,8 +67,8 @@ public class ChannelFragment extends BaseFragment<FragmentChannelBinding, Channe
         getViewDataBinding().tvCreateDate.setText("채널 생성일: "+getViewModel().channel.get(0).createDate.substring(0, 10));
 
 
-        //TODO ownerId와 서버 ownerId와 비교 해야 함...지금은 임시코드...
-        if(getViewModel().channel.get(0).ownerId== 1) {
+        // 채널주인용 코드
+        if(getViewModel().channel.get(0).ownerId== dataManager.getMyInfo().getId()) {
 
             getViewDataBinding().btMulti.setText("채널 수정하기");
             getViewDataBinding().btMulti.setOnClickListener(new View.OnClickListener() {
@@ -85,9 +85,11 @@ public class ChannelFragment extends BaseFragment<FragmentChannelBinding, Channe
     @Override
     public void getUsersInfo() {
 
-        // TODO 실제 UserId와 서버의 채널 상 UserId와 비교하기... 임시코드...
+        getViewModel().isJoin = 0;
+
+        // 게스트용 코드: 가입여부 체크
         for(int i=0; i< getViewModel().channelUsers.size();i++){
-            if (getViewModel().channelUsers.get(i).userId == 1) {
+            if (getViewModel().channelUsers.get(i).userId == dataManager.getMyInfo().getId()) {
                 getViewModel().isJoin = 1;
             }
         }
@@ -96,8 +98,8 @@ public class ChannelFragment extends BaseFragment<FragmentChannelBinding, Channe
             getViewDataBinding().btMulti.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO 채널 가입, 서버 연결 필요
-//                    getViewModel().getChannelUserInsert(getViewModel().channelId,1);
+                    // 채널가입 코드
+                    getViewModel().setChannelUserInsert(getViewModel().channelId,dataManager.getMyInfo().getId());
                 }
             });
         } else {
@@ -105,7 +107,8 @@ public class ChannelFragment extends BaseFragment<FragmentChannelBinding, Channe
             getViewDataBinding().btMulti.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    // TODO 채널 탈퇴 서버 API 필요
+                    // 채널 탈퇴 코드
+                    getViewModel().setChannelUserDelete(getViewModel().channelId,dataManager.getMyInfo().getId());
                 }
             });
         }
