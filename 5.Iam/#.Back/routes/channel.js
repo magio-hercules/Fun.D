@@ -64,6 +64,25 @@ function channerUpdate(params) {
   });
 }
 
+function channerList(user_id) {
+  console.log(`call channerList`);
+
+  let queryString = `SELECT DISTINCT INFO.id, INFO.name, INFO.description, INFO.image_url 
+                     FROM ${DB_TABLE_CHANNELUSER} JOIN ${DB_TABLE_CHANNELINFO} AS INFO 
+                     ON ${DB_TABLE_CHANNELUSER}.channel_id = INFO.id
+                     WHERE user_id = ?
+                     ORDER BY id ASC`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, user_id, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
 function postChannelUserInfo(param) {
   console.log(`call postChannelUserInfo`);
 
@@ -217,6 +236,20 @@ router.post(`/channerUpdate`, function (req, res, next) {
   params.push(req.body.id);
 
   channerUpdate(params)
+    .then((result) => {
+      console.log(result);
+      res.json(result);
+    })
+    .catch(function (err) {
+      console.log(`[channerUpdate] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/channerList`, function (req, res, next) {
+  console.log(`API = /channerList`);
+
+  channerList(req.body.user_id)
     .then((result) => {
       console.log(result);
       res.json(result);
