@@ -41,7 +41,7 @@ function postUserInfo(email, sns_type) {
 function userLogin(param) {
   console.log(`call userLogin`);
   let queryString = `INSERT INTO ${DB_TABLE_USERINFO} SET ?, 
-  modify_date = now() ON DUPLICATE KEY UPDATE modify_date = now();`;
+  modify_date = now() ON DUPLICATE KEY UPDATE token=?, modify_date = now();`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
@@ -175,7 +175,10 @@ router.post("/info", function (req, res, next) {
 router.post(`/login`, function (req, res, next) {
   console.log(`API = /login`);
 
-  userLogin(req.body)
+  let param = [];
+  param.push(req.body);
+  param.push(req.body.token);
+  userLogin(param)
     .then((result) => {
       // console.result(result);
       return postUserInfo(req.body.email, req.body.sns_type);
