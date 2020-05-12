@@ -16,6 +16,7 @@ public interface HomeNavigator extends BaseNavigator {
     void updatePortfolio();
     void updateUser(User userInfo);
     void updatePortfolio(List<Portfolio> portfolioList);
+    void updateBookmark(boolean flag);
 
     void insertProfile();
     void insertImage();

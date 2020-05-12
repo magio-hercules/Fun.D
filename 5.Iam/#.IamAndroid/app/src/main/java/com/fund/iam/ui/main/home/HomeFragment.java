@@ -152,6 +152,8 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
             getViewDataBinding().profileImageLetter.setVisibility(View.INVISIBLE);
             getViewDataBinding().profileImageModify.setVisibility(View.INVISIBLE);
 
+            getViewDataBinding().profileImageStar.setVisibility(View.VISIBLE);
+
             getViewModel().getUserInfo(email, type);
         } else {
             updateUser();
@@ -238,6 +240,21 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
         Log.d(TAG, "updateUser end");
     }
 
+    public void updateBookmark(boolean flag) {
+        Log.d(TAG, "updatePortfolio");
+
+        if (bMyProfile) {
+            Log.d(TAG, "bMyProfile is true");
+            return;
+        }
+
+        if (getViewModel().getBookmarkUser()) {
+            getViewDataBinding().profileImageStar.setImageResource(R.drawable.ic_bookmark_star_pressed);
+        } else {
+            getViewDataBinding().profileImageStar.setImageResource(R.drawable.ic_bookmark_star_normal);
+        }
+    }
+
     public void updatePortfolio() {
         Log.d(TAG, "updatePortfolio");
 
@@ -317,6 +334,11 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                         getViewDataBinding().profileJob2.setText(findJob != null ? findJob.getName() : "직업 없음");
                         getViewDataBinding().profileGender.setText(info.getGender() == 0 ? "남자" : "여자");
                         getViewDataBinding().profileAge2.setText(spinnerValueAge[info.getAge()]);
+
+                        // 다른 유저의 프로필 정보
+                        if (!bMyProfile) {
+                            getViewModel().getBookmarkUserInfo(dataManager.getMyInfo().getId(), info.getId());
+                        }
 
                     }
                 });

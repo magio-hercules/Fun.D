@@ -176,6 +176,21 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
+    public Single<Response<List<User>>> postBookmarkUser(int userId) {
+        return mAwsApiHelper.postBookmarkUser(userId);
+    }
+
+    @Override
+    public Single<Response<Void>> postBookmarkUserInsert(int userId, int friendId) {
+        return mAwsApiHelper.postBookmarkUserInsert(userId, friendId);
+    }
+
+    @Override
+    public Single<Response<Void>> postBookmarkUserDelete(int userId, int friendId) {
+        return mAwsApiHelper.postBookmarkUserDelete(userId, friendId);
+    }
+
+    @Override
     public Single<Response<VersionPage>> getVersion(String packageName) {
         return mGoogleApiHelper.getVersion(packageName);
     }

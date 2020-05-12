@@ -40,6 +40,10 @@ public class ApiDefine {
         String API_LETTER = "letterbox/message";          // 쪽지내용
         String API_LETTER_INSERT = "letterbox/messageInsert";          // 쪽지내용 입력하기
 
+        String API_BOOKMARK_USER = "bookmark/user";                       // 북마크 유저
+        String API_BOOKMARK_USER_INSERT = "bookmark/userInsert";          // 북마크 유저 추가
+        String API_BOOKMARK_USER_DELETE = "bookmark/userDelete";          // 북마크 유저 삭제
+
         String API_VERSION_CHECK = "store/apps/details";
 
     }
