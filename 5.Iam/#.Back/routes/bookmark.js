@@ -86,6 +86,25 @@ function userInsert(param) {
   });
 }
 
+function userDelete(param) {
+  console.log(`call userDelete`);
+
+  let params = [];
+  params.push(param.user_id);
+  params.push(param.friend_id);
+
+  let queryString = `DELETE FROM ${DB_TABLE_BOOKMARKUSER} WHERE user_id = ? AND friend_id = ?`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
 function userUpdate(params) {
   console.log(`call userUpdate`);
 
@@ -174,6 +193,19 @@ router.post(`/userInsert`, function (req, res, next) {
     })
     .catch(function (err) {
       console.log(`[userInsert] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/userDelete`, function (req, res, next) {
+  console.log(`API = /userDelete`);
+
+  userDelete(req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(function (err) {
+      console.log(`[userDelete] error : ${err}`);
       res.end(`NOK`);
     });
 });
