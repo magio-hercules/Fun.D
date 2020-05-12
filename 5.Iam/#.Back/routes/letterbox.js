@@ -109,8 +109,9 @@ function messageInsertUser(param) {
   params.push(param.user_id);
   params.push(param.friend_id);
   params.push(param.message);
+  params.push(param.user_id);
 
-  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} (user_id, friend_id, message) VALUES (?, ? , ?)`;
+  let queryString = `INSERT INTO ${DB_TABLE_LETTERBOXMESSAGE} (user_id, friend_id, message, message_owner) VALUES (?, ? , ?, ?)`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, params, function (err, result) {

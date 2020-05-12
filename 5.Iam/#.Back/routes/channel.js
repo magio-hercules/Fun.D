@@ -3,6 +3,7 @@ var router = express.Router();
 const db = require(`../config/db_connections`)();
 const DB_TABLE_CHANNELINFO = `channel_info`;
 const DB_TABLE_CHANNELUSER = `channel_user`;
+const DB_TABLE_USERINFO = `user_info`;
 
 /* -------------- ::START:: API Function Zone -------------- */
 
@@ -65,7 +66,12 @@ function channerUpdate(params) {
 
 function postChannelUserInfo(param) {
   console.log(`call postChannelUserInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_CHANNELUSER} WHERE channel_id = ?`;
+
+  let queryString = `SELECT A.id, A.channel_id, A.user_id, B.email, B.user_name, B.nick_name,
+  B.sns_type, B.token, B.image_url, B.age, B.gender, B.phone, B.job_list, B.location_list, B.portfolio_list, 
+  A.create_date, A.modify_date FROM ${DB_TABLE_CHANNELUSER} AS A JOIN ${DB_TABLE_USERINFO} AS B
+  ON A.user_id = B.id
+  WHERE A.channel_id = ?`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {

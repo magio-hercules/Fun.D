@@ -51,7 +51,7 @@ function channelUpdate(params) {
 
 function postBookMarkUserInfo(param) {
   console.log(`call postBookMarkUserInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_BOOKMARKUSER} WHERE id = ?`;
+  let queryString = `SELECT * FROM ${DB_TABLE_BOOKMARKUSER} WHERE user_id = ?`;
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
@@ -146,7 +146,7 @@ router.post(`/channelUpdate`, function (req, res, next) {
 router.post("/user", function (req, res, next) {
   console.log(`API = /user`);
 
-  postBookMarkUserInfo(req.body.id)
+  postBookMarkUserInfo(req.body.user_id)
     .then((result) => {
       res.json(result);
     })
