@@ -180,6 +180,10 @@ public class AppDataManager implements DataManager {
         return mGoogleApiHelper.getVersion(packageName);
     }
 
+    @Override
+    public Single<Response<List<Channel>>> postBookmarkChannels(int id) {
+        return mAwsApiHelper.postBookmarkChannels(id);
+    }
 
     @Override
     public Single<Response<List<User>>> postBookmarkUsers(int id) {
