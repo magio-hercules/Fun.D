@@ -1167,6 +1167,10 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         Log.d(TAG, "updateUser end");
     }
 
+    public void updateBookmark(boolean flag) {
+        Log.d(TAG, "updatePortfolio");
+
+    }
 
     public void updatePortfolio() {
         Log.d(TAG, "updatePortfolio");

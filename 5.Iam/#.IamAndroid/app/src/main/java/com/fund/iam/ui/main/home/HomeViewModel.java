@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.Single;
 import okhttp3.MediaType;
@@ -33,12 +34,19 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //    public List<Portfolio> myPortfolio = null;
     private Context mContext;
 
+    private int mUserId = -1;
+    private int mFriendId = -1;
+    private boolean mBookmarkUser;
+
+
 
     public HomeViewModel(Context context, DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
         Logger.d("HomeVIewModel constructor");
 
         mContext = context;
+
+        mBookmarkUser = false;
 
         subscribeEvent();
     }
@@ -47,6 +55,9 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 
     }
 
+    public boolean getBookmarkUser() {
+        return mBookmarkUser;
+    }
 
     public void getUserInfo(String email, String type) {
         Log.d(TAG, "getUserInfo email : " + email + ", type : " + type);
@@ -73,6 +84,36 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                             } else {
                                 Logger.e("getUserInfo Error");
                             }
+                        }, onError -> getNavigator().handleError(onError)));
+    }
+
+    public void getBookmarkUserInfo(int user_id, int friend_id) {
+        Log.d(TAG, "getBookmarkUserInfo user_id : " + user_id + ", friend_id : " + friend_id);
+
+        mUserId = user_id;
+        mFriendId = friend_id;
+
+        getCompositeDisposable().add(
+                getDataManager().postBookmarkUser(user_id)
+//                        .doOnSuccess(info -> {
+//                            Log.d(TAG, "postUserInfo success");
+//                            getNavigator().updateUser(info.body().get(0));
+//                        })
+                        .observeOn(getSchedulerProvider().ui())
+                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribe(info -> {
+                            Log.d(TAG, "getBookmarkUserInfo success");
+
+                            mBookmarkUser = false;
+                            List<User> userList = info.body();
+                            for (User userInfo : userList) {
+                                if (userInfo.getId() == friend_id) {
+                                    mBookmarkUser = true;
+                                    break;
+                                }
+                            }
+
+                            getNavigator().updateBookmark(mBookmarkUser);
                         }, onError -> getNavigator().handleError(onError)));
     }
 
@@ -113,6 +154,43 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         getNavigator().insertText();
 
     }
+
+    public void toggleBookmark() {
+        Log.d(TAG, "toggleBookmark");
+
+        Log.d(TAG, "getBookmarkUserInfo userId : " + mUserId + ", friend_id : " + mFriendId);
+
+        if (mBookmarkUser) {
+            getCompositeDisposable().add(
+                    getDataManager().postBookmarkUserDelete(mUserId, mFriendId)
+//                        .doOnSuccess(info -> {
+//                            Log.d(TAG, "postUserInfo success");
+//                            getNavigator().updateUser(info.body().get(0));
+//                        })
+                            .observeOn(getSchedulerProvider().ui())
+                            .subscribeOn(getSchedulerProvider().io())
+                            .subscribe(info -> {
+                                Log.d(TAG, "postBookmarkUserDelete success");
+                                mBookmarkUser = !mBookmarkUser;
+                                getNavigator().updateBookmark(mBookmarkUser);
+                            }, onError -> getNavigator().handleError(onError)));
+        } else {
+            getCompositeDisposable().add(
+                    getDataManager().postBookmarkUserInsert(mUserId, mFriendId)
+//                        .doOnSuccess(info -> {
+//                            Log.d(TAG, "postUserInfo success");
+//                            getNavigator().updateUser(info.body().get(0));
+//                        })
+                            .observeOn(getSchedulerProvider().ui())
+                            .subscribeOn(getSchedulerProvider().io())
+                            .subscribe(info -> {
+                                Log.d(TAG, "postBookmarkUserInsert success");
+                                mBookmarkUser = !mBookmarkUser;
+                                getNavigator().updateBookmark(mBookmarkUser);
+                            }, onError -> getNavigator().handleError(onError)));
+        }
+    }
+
 
 
 

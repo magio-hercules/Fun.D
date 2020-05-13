@@ -3,6 +3,7 @@ var router = express.Router();
 const db = require(`../config/db_connections`)();
 const DB_TABLE_BOOKMARKCHANNEL = `bookmark_channel`;
 const DB_TABLE_BOOKMARKUSER = `bookmark_user`;
+const DB_TABLE_USERINFO = `user_info`;
 
 /* -------------- ::START:: API Function Zone -------------- */
 
@@ -51,7 +52,15 @@ function channelUpdate(params) {
 
 function postBookMarkUserInfo(param) {
   console.log(`call postBookMarkUserInfo`);
-  let queryString = `SELECT * FROM ${DB_TABLE_BOOKMARKUSER} WHERE user_id = ?`;
+
+  let queryString = `SELECT B.id, B.email, B.user_name, B.nick_name,
+                    B.sns_type, B.token, B.image_url, B.age, B.gender, B.phone, B.job_list, B.location_list, B.portfolio_list, 
+                    A.create_date, A.modify_date 
+                    FROM ${DB_TABLE_BOOKMARKUSER} AS A JOIN ${DB_TABLE_USERINFO} AS B
+                    ON A.friend_id = B.id
+                    WHERE A.user_id = ?
+                    ORDER BY id ASC`;
+  console.log(queryString);
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
@@ -69,6 +78,25 @@ function userInsert(param) {
 
   return new Promise(function (resolve, reject) {
     db.query(queryString, param, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
+function userDelete(param) {
+  console.log(`call userDelete`);
+
+  let params = [];
+  params.push(param.user_id);
+  params.push(param.friend_id);
+
+  let queryString = `DELETE FROM ${DB_TABLE_BOOKMARKUSER} WHERE user_id = ? AND friend_id = ?`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, params, function (err, result) {
       if (err) {
         reject(err);
       }
@@ -165,6 +193,19 @@ router.post(`/userInsert`, function (req, res, next) {
     })
     .catch(function (err) {
       console.log(`[userInsert] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post(`/userDelete`, function (req, res, next) {
+  console.log(`API = /userDelete`);
+
+  userDelete(req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(function (err) {
+      console.log(`[userDelete] error : ${err}`);
       res.end(`NOK`);
     });
 });

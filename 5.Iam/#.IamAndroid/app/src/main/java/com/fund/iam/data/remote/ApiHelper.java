@@ -172,6 +172,29 @@ public interface ApiHelper {
     ////////////
     // 이미지 //
 
+
+    ///////////
+    // 북마크 //
+
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_BOOKMARK_USER)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<List<User>>> postBookmarkUser(@Field("user_id") int userId);
+
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_BOOKMARK_USER_INSERT)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<Void>> postBookmarkUserInsert(@Field("user_id") int userId, @Field("friend_id") int friendId);
+
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_BOOKMARK_USER_DELETE)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<Void>> postBookmarkUserDelete(@Field("user_id") int userId, @Field("friend_id") int friendId);
+
+    // 북마크 //
+    ///////////
+
+
     @Multipart
     @POST("/upload")
     Single<Response<String>> postUploadImage(@Part MultipartBody.Part image,
