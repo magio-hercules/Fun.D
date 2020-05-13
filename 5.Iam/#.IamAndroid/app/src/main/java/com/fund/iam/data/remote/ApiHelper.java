@@ -116,6 +116,18 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<List<Notice>>> postNotices();
 
+    // 북마크한 채널 조회
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_BOOKMARK_CHANNELS)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<List<Channel>>> postBookmarkChannels (@Field("user_id") int id);
+
+    // 북마크한 유저 조회
+    @FormUrlEncoded
+    @POST(ApiDefine.Body.API_BOOKMARK_USERS)
+    @Headers({ApiDefine.Header.ACCEPT_JSON})
+    Single<Response<List<User>>> postBookmarkUsers (@Field("user_id") int id);
+
     @FormUrlEncoded
     @POST(ApiDefine.Body.API_LIST_JOB_INFO)
     @Headers({ApiDefine.Header.ACCEPT_JSON})

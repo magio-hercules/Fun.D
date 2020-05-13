@@ -40,7 +40,11 @@
     <fragment
         android:id="@+id/navigation_bookmark"
         android:name="com.fund.iam.ui.main.bookmark.BookmarkFragment"
-        tools:layout="@layout/fragment_bookmark" />
+        tools:layout="@layout/fragment_bookmark" >
+        <action
+            android:id="@+id/action_navigation_bookmark_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_search"

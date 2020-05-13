@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="58dp"
+    android:background="#00000000">
+
+    <ImageView
+        android:id="@+id/iv_userProfile"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <ImageView
+        android:id="@+id/iv_userSendedMessage"
+        android:layout_width="21dp"
+        android:layout_height="13dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginRight="23dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
+    <TextView
+        android:id="@+id/tv_userEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:text="email"
+        android:textColor="#FFF5F5"
+        app:layout_constraintStart_toEndOf="@+id/iv_userProfile"
+        app:layout_constraintTop_toBottomOf="@+id/tv_userName" />
+
+    <TextView
+        android:id="@+id/tv_userJob"
+        android:layout_width="76dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:background="#C4C4C4"
+        android:gravity="center"
+        android:text="직종"
+        android:textColor="#000000"
+        android:textSize="10sp"
+        app:layout_constraintStart_toEndOf="@+id/tv_userName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="8dp"
+        android:text="name"
+        android:textColor="#FFF5F5"
+        app:layout_constraintStart_toEndOf="@+id/iv_userProfile"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#333333"
+    tools:context=".UserActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/iv_userBackground"
+                    android:layout_width="0dp"
+                    android:layout_height="200dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_addToFriend"
+                    app:srcCompat="@drawable/ic_launcher_background" />
+
+                <ImageView
+                    android:id="@+id/iv_bookmark"
+                    android:layout_width="42dp"
+                    android:layout_height="62dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_userBackground"
+                    app:layout_constraintTop_toTopOf="@+id/iv_userBackground"
+                    app:srcCompat="@drawable/ic_launcher_foreground" />
+
+                <ImageView
+                    android:id="@+id/iv_userInformationBackground"
+                    android:layout_width="0dp"
+                    android:layout_height="215dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_userBackground"
+                    app:srcCompat="@drawable/ic_launcher_background" />
+
+                <ImageView
+                    android:id="@+id/iv_userProfile"
+                    android:layout_width="212dp"
+                    android:layout_height="194dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="3dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_userBackground"
+                    app:layout_constraintTop_toTopOf="@+id/iv_userBackground"
+                    app:layout_constraintVertical_bias="1.0"
+                    app:srcCompat="@drawable/ic_launcher_background"
+                    tools:layout_editor_absoluteX="89dp"
+                    android:background="@drawable/user_profile_background"/>
+
+                <TextView
+                    android:id="@+id/tv_addToFriend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="122dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:text="내가 친구추가"
+                    android:textColor="#FFFAFA"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="48dp"
+                    android:text="User"
+                    android:textColor="#FFFAFA"
+                    android:textSize="24sp"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_userName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="18dp"
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginTop="49dp"
+                    android:text="이름"
+                    android:textColor="#FDFBFB"
+                    android:textSize="36sp"
+                    app:layout_constraintStart_toStartOf="@+id/iv_userInformationBackground"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_userBackground" />
+
+                <TextView
+                    android:id="@+id/tv_job"
+                    android:layout_width="76dp"
+                    android:layout_height="16dp"
+                    android:layout_marginStart="22dp"
+                    android:layout_marginLeft="22dp"
+                    android:layout_marginTop="3dp"
+                    android:background="#C4C4C4"
+                    android:gravity="center"
+                    android:text="직종"
+                    android:textColor="#000000"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="@+id/iv_userInformationBackground"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_userName" />
+
+                <TextView
+                    android:id="@+id/tv_userInformation"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="9dp"
+                    android:text="TextView"
+                    android:textColor="#FAEDED"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_userInformationBackground"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_userInformationBackground"
+                    app:layout_constraintStart_toStartOf="@+id/iv_userInformationBackground"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_job" />
+
+                <ImageView
+                    android:id="@+id/iv_sendNote"
+                    android:layout_width="42dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="66dp"
+                    android:layout_marginEnd="13dp"
+                    android:layout_marginRight="13dp"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_userInformationBackground"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_userBackground"
+                    app:srcCompat="@drawable/ic_launcher_foreground" />
+
+                <TextView
+                    android:id="@+id/tv_sendNote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:text="쪽지 보내기"
+                    android:textColor="#FCF3F3"
+                    android:textSize="10sp"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_userInformationBackground"
+                    app:layout_constraintTop_toBottomOf="@+id/iv_sendNote" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

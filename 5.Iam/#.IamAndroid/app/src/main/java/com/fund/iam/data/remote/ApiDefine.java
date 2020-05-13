@@ -42,6 +42,9 @@ public class ApiDefine {
 
         String API_VERSION_CHECK = "store/apps/details";
 
+        String API_BOOKMARK_CHANNELS = "channel/channerList";  // 북마크한 채널 목록
+        String API_BOOKMARK_USERS = "bookmark/user";        // 북마크한 유저 목록
+
     }
 
 }
