@@ -14,13 +14,29 @@
         android:layout_height="wrap_content"
         android:textSize="24dp" />
 
-    <ImageView
+<!--    <ImageView-->
+<!--        android:id="@+id/portfolioImage_image"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_weight="1"-->
+<!--        android:scaleType="fitCenter"-->
+<!--        android:src="@drawable/profile_default_picture"/>-->
+
+    <com.fund.iam.ui.main.home.FixedCenterCrop
         android:id="@+id/portfolioImage_image"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:scaleType="fitCenter"
+        android:layout_centerInParent="true"
+        android:scaleType="centerCrop"
         android:src="@drawable/profile_default_picture"/>
+
+<!--    <com.fund.iam.ui.main.home.FixedCenterCrop-->
+<!--        android:id="@+id/imgLoginBackground"-->
+<!--        android:src="@drawable/profile_default_picture"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:scaleType="centerCrop" />-->
 
 </LinearLayout>

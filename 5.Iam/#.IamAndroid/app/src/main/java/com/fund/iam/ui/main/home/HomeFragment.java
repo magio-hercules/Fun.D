@@ -209,7 +209,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 .skipMemoryCache(true)
                 .placeholder(R.drawable.profile_default_2)
 //                .apply(RequestOptions.centerCropTransform())
-                .fitCenter()
+                .centerCrop()
 //                .centerCrop()
                 .into(getViewDataBinding().profileImageProfile);
 
@@ -318,7 +318,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                                 .skipMemoryCache(true)
                                 .placeholder(R.drawable.profile_default_2)
                 //                .apply(RequestOptions.centerCropTransform())
-                                .fitCenter()
+                                .centerCrop()
                 //                .centerCrop()
                                 .into(getViewDataBinding().profileImageProfile);
 
@@ -415,7 +415,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
                 .skipMemoryCache(true)
                 .placeholder(R.drawable.profile_default_picture)
 //                .apply(RequestOptions.centerCropTransform())
-                .fitCenter()
+                .centerInside()
                 .into(imageImage);
 
         // for edit 모드
