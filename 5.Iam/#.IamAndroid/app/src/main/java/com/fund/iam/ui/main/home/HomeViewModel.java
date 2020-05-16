@@ -223,10 +223,10 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         // image를 s3에 올린 이후 받은 url을 DB에 insert
         getCompositeDisposable().add(
                 // s3 업로드 이후 구현
-                getDataManager().postUploadImage(body, fileName)
+                getDataManager().postImageUpload(body, fileName)
                         .flatMap(result -> {
                             // result로 url 을 받아온 이후
-                            Log.d(TAG, "postUploadImage success");
+                            Log.d(TAG, "postImageUpload success");
 
                             final String s3Url = result.body();
                             Logger.d(s3Url);
@@ -250,12 +250,12 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                         }, onError -> getNavigator().handleError(onError)));
     }
 
-    public Single<Response<String>> singleUploadImage(MultipartBody.Part body, RequestBody fileName) {
-//    public String singleUploadImage(MultipartBody.Part body, RequestBody fileName) {
-         return getDataManager().postUploadImage(body, fileName);
+    public Single<Response<String>> singleImageUpload(MultipartBody.Part body, RequestBody fileName) {
+//    public String singleImageUpload(MultipartBody.Part body, RequestBody fileName) {
+         return getDataManager().postImageUpload(body, fileName);
 ////                .flatMap(result -> {
 ////                    // result로 url 을 받아온 이후
-////                    Log.d(TAG, "postUploadImage success");
+////                    Log.d(TAG, "postImageUpload success");
 ////
 ////                    final String s3Url = result.body();
 ////                    Log.d(TAG, "s3Url : " + s3Url);
@@ -267,7 +267,7 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //                .subscribeOn(getSchedulerProvider().io())
 //                .subscribe(result -> {
 //                    // result로 url 을 받아온 이후
-//                    Log.d(TAG, "postUploadImage success");
+//                    Log.d(TAG, "postImageUpload success");
 //
 //                    String s3Url = result.body();
 //                    Log.d(TAG, "s3Url : " + s3Url);
@@ -276,15 +276,19 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //                }, onError -> getNavigator().handleError(onError)));
     }
 
+    public Single<Response<Void>> singleImageDelete(RequestBody fileName) {
+        return getDataManager().postImageDelete(fileName);
+    }
+
     public Single<Response<Void>> singleInsertText(String text) {
         return getDataManager().postInsertPortfolio(getDataManager().getMyInfo().getId(), 1, text);
     }
 
     public Single<Response<Void>> singleInsertImage(MultipartBody.Part body, RequestBody fileName) {
-        return getDataManager().postUploadImage(body, fileName)
+        return getDataManager().postImageUpload(body, fileName)
                 .flatMap(result -> {
                     // result로 url 을 받아온 이후
-                    Log.d(TAG, "postUploadImage success");
+                    Log.d(TAG, "postImageUpload success");
 
                     final String s3Url = result.body();
                     Logger.d(s3Url);
@@ -293,14 +297,20 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
                 });
     }
 
-    public void deletePortfolioText(int id) {
-        Log.d(TAG, "DeletePortfolioText  id : " + id);
+    public void deletePortfolioText(int type, int id, String value) {
+        Log.d(TAG, "DeletePortfolioText type: " + type + ", id : " + id + ", value : " + value);
 
+
+        RequestBody reqFileName = RequestBody.create(MediaType.parse("text/plain"), value);
 
 //        Portfolio newPortfolio = new Portfolio(userId, 1, text, "");
 
         getCompositeDisposable().add(
-                getDataManager().postDeletePortfolio(id)
+                getDataManager().postImageDelete(reqFileName)
+                        .flatMap(result -> {
+                            Log.d(TAG, "postImageDelete success");
+                            return getDataManager().postDeletePortfolio(id);
+                        })
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
@@ -308,7 +318,9 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
 //                            Logger.d("postDeletePortfolio success");
 //                            Logger.d(result.body());
                             getNavigator().onSuccess();
-                        }, onError -> getNavigator().handleError(onError)));
+                        }, onError -> Logger.e("deletePortfolioText Error")));
+
+
     }
 
     public void updatePortfolio(int id, int userId, int type, String text) {
@@ -381,11 +393,11 @@ public class HomeViewModel extends BaseViewModel<HomeNavigator> {
         Log.d(TAG, "uploadImage  fileName : " + fileName);
 
         getCompositeDisposable().add(
-                getDataManager().postUploadImage(body, fileName)
+                getDataManager().postImageUpload(body, fileName)
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
-                            Log.d(TAG, "postUploadImage success");
+                            Log.d(TAG, "postImageUpload success");
                             Logger.d(result.body());
 
                             getNavigator().onSuccess();

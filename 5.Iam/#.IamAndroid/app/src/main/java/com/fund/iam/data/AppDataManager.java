@@ -141,8 +141,13 @@ public class AppDataManager implements DataManager {
     }
 
     @Override
-    public Single<Response<String>> postUploadImage(MultipartBody.Part image, RequestBody fileName) {
-        return mAwsApiHelper.postUploadImage(image, fileName);
+    public Single<Response<String>> postImageUpload(MultipartBody.Part image, RequestBody fileName) {
+        return mAwsApiHelper.postImageUpload(image, fileName);
+    }
+
+    @Override
+    public Single<Response<Void>> postImageDelete(RequestBody fileName) {
+        return mAwsApiHelper.postImageDelete(fileName);
     }
 
     @Override

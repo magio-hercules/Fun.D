@@ -148,14 +148,16 @@
                 android:id="@+id/profile_job"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
                 android:text="직업"
                 android:textColor="#000"
                 android:textSize="18sp"
-                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_2"
+                app:layout_constraintLeft_toRightOf="@id/profile_name"
                 app:layout_constraintTop_toTopOf="@id/profile_name" />
 
             <TextView
                 android:id="@+id/profile_age"
+                android:visibility="invisible"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -170,10 +172,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:layout_marginLeft="20dp"
                 android:text="거주지"
                 android:textColor="#000"
                 android:textSize="16sp"
-                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_2"
+                app:layout_constraintLeft_toRightOf="@id/profile_name"
                 app:layout_constraintBottom_toBottomOf="@id/profile_name" />
 
             <ImageView
@@ -354,7 +357,8 @@
                 android:layout_height="1dp"
                 android:background="#4527A0"
                 android:layout_marginTop="30dp"
-                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintLeft_toLeftOf="@id/profile_guideline_v_start"
+                app:layout_constraintRight_toRightOf="@id/profile_guideline_v_end"
                 app:layout_constraintTop_toBottomOf="@+id/profile_age2_label" />
 
 

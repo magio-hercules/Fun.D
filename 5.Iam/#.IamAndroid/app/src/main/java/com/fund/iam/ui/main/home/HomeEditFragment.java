@@ -731,7 +731,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 if (bitmap != null) {
                     Log.d(TAG, "Profile image bitmap is not null");
 
-                        singleUploadProfile(bitmap)
+                    singlProfileUpload(bitmap)
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribeOn(Schedulers.io())
                             .subscribe(result -> {
@@ -739,7 +739,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                                 Log.d(TAG, "newUrl : " + newUrl);
 
                                 newUrl = result.body().toString();
-                                Log.d(TAG, "singleUploadProfile success");
+                                Log.d(TAG, "singlProfileUpload success");
                                 Log.d(TAG, "newUrl : " + newUrl);
 
                                 User updateUserInfo = new User(userInfo.getId(), userInfo.getSnsType(), newUrl,
@@ -838,14 +838,15 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         for (Portfolio port : listPortfolio) {
             _id = port.getId();
             if (arrDeletePortfolio.contains(_id)) {
+                String value = port.getType() == 1 ? port.getText() : port.getImageUrl();
                 Log.d(TAG, "삭제 요청 id : " + _id);
                 Log.d(TAG, "type : " + port.getType() +
-                        ", text or url : " + (port.getType() == 1 ? port.getText() : port.getImageUrl()));
+                        ", text or url : " + value);
 
                 watingCount++;
                 changeCount++;
                 Log.d(TAG, "deletePortfolioText watingCount is " + watingCount);
-                getViewModel().deletePortfolioText(port.getId());
+                getViewModel().deletePortfolioText(port.getType(), port.getId(), value);
             }
         }
 
@@ -854,6 +855,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
 
         final int checkAddCount = arrAddPortfolioText.size();
         final int checkChangeCount = changeCount;
+        int index = 0;
 
         Observable.fromIterable(arrAddPortfolioText)
                 .concatMapSingle(item -> {
@@ -885,8 +887,12 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                             int newImageViewId = newImageView.getId();
                             Log.d(TAG, "newImageViewId : " + newImageViewId);
 
-                            Log.d(TAG, "ADD Portfolio image id : " + addId);
-                            return singleUploadImage(bitmap, newImageViewId);
+                            SimpleDateFormat formatter = new SimpleDateFormat("yyMMddHHmmss");
+                            Date date = new Date();
+                            String fileIndex = formatter.format(date) + newImageViewId;
+
+                            Log.d(TAG, "fileIndex : " + fileIndex);
+                            return singleImageUpload(bitmap, fileIndex);
                         } else {
                             Log.d(TAG, "bitmap is null");
                             return Single.error(new Throwable("test error"));
@@ -1915,7 +1921,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         }
     }
 
-    private Single<Response<String>> singleUploadProfile(Bitmap bitmap) {
+    private Single<Response<String>> singlProfileUpload(Bitmap bitmap) {
         try {
             File filesDir = getContext().getFilesDir();
             File file = new File(filesDir, "image" + ".png");
@@ -1940,7 +1946,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     MultipartBody.Part.createFormData("file", file.getName(), reqFile);
             RequestBody reqFileName = RequestBody.create(MediaType.parse("text/plain"), fileName);
 
-            return getViewModel().singleUploadImage(body, reqFileName);
+            return getViewModel().singleImageUpload(body, reqFileName);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -1949,7 +1955,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         return Single.error(new Throwable("test error"));
     }
 
-    private Single<Response<Void>> singleUploadImage(Bitmap bitmap, int viewId) {
+    private Single<Response<Void>> singleImageUpload(Bitmap bitmap, String fileIndex) {
         try {
             File filesDir = getContext().getFilesDir();
             File file = new File(filesDir, "image" + ".png");
@@ -1957,7 +1963,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
             User userInfo = dataManager.getMyInfo();
 
             String fileName = userInfo.getEmail() + "_" + userInfo.getSnsType()
-                    + "_" + viewId + ".jpg";
+                    + "_" + fileIndex + ".jpg";
             Log.d(TAG, "uploadImage fileName : " + fileName);
 
             ByteArrayOutputStream bos = new ByteArrayOutputStream();

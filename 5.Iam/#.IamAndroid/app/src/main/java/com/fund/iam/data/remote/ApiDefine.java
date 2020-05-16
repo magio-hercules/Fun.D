@@ -49,6 +49,8 @@ public class ApiDefine {
         String API_BOOKMARK_CHANNELS = "channel/channerList";  // 북마크한 채널 목록
         String API_BOOKMARK_USERS = "bookmark/user";        // 북마크한 유저 목록
 
+        String API_IMAGE_UPLOAD = "upload/";                         // 이미지 업로드
+        String API_IMAGE_DELETE = "upload/delete";                   // 이미지 삭제
     }
 
 }

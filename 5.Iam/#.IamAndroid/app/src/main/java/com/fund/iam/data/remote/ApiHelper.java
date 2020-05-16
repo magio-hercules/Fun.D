@@ -169,10 +169,6 @@ public interface ApiHelper {
     @Headers({ApiDefine.Header.ACCEPT_JSON})
     Single<Response<Void>> postMessageInsert(@Field("user_id") int userId, @Field("friend_id") int friendId, @Field("message") String message);
 
-    ////////////
-    // 이미지 //
-
-
     ///////////
     // 북마크 //
 
@@ -195,11 +191,18 @@ public interface ApiHelper {
     ///////////
 
 
+    ////////////
+    // 이미지 //
+
     @Multipart
-    @POST("/upload")
-    Single<Response<String>> postUploadImage(@Part MultipartBody.Part image,
+    @POST(ApiDefine.Body.API_IMAGE_UPLOAD)
+    Single<Response<String>> postImageUpload(@Part MultipartBody.Part image,
                                            @Part("fileName") RequestBody fileName);
 //                                           @Part("upload") RequestBody name);
+
+    @Multipart
+    @POST(ApiDefine.Body.API_IMAGE_UPLOAD)
+    Single<Response<Void>> postImageDelete(@Part("fileName") RequestBody fileName);
 
     // 이미지 //
     ///////////
