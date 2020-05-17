@@ -120,7 +120,6 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     private void initViews(View view) {
 
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        assert imm != null;
 
         getViewDataBinding().btChannelList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,8 +321,10 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             }
         });
 
-        getViewModel().getJobsInfo();
-        getViewModel().getLocationsInfo();
+        getViewModel().jobs = dataManager.getJobs();
+        updateJobs();
+        getViewModel().locations = dataManager.getLocations();
+        updateLocations();
 
         // User필터 BottomSheet 클릭리스너 코드
         getViewDataBinding().btUserFilter.setOnClickListener(new View.OnClickListener() {

@@ -51,7 +51,7 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
         getCompositeDisposable().add(
                 getDataManager().postChannels()
                 .observeOn(getSchedulerProvider().ui())
-                .subscribeOn(getSchedulerProvider().io())
+                .subscribeOn(getSchedulerProvider().newThread())
                 .subscribe(result -> {
                     Logger.d("postChannels success");
                     channels = result.body();
@@ -69,7 +69,7 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
         getCompositeDisposable().add(
                 getDataManager().postUsersAll()
-                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribeOn(getSchedulerProvider().newThread())
                         .observeOn(getSchedulerProvider().ui())
                         .subscribe(result -> {
                             Logger.d("postUsers success");
@@ -89,7 +89,7 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
         getCompositeDisposable().add(
                 getDataManager().postJobs()
-                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribeOn(getSchedulerProvider().newThread())
                         .observeOn(getSchedulerProvider().ui())
                         .subscribe(result -> {
                             Logger.d("postJobs success");

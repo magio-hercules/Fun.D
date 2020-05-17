@@ -89,7 +89,7 @@ public class ChannelFragment extends BaseFragment<FragmentChannelBinding, Channe
 
         // 게스트용 코드: 가입여부 체크
         for(int i=0; i< getViewModel().channelUsers.size();i++){
-            if (getViewModel().channelUsers.get(i).userId == dataManager.getMyInfo().getId()) {
+            if (getViewModel().channelUsers.get(i).getUserId() == dataManager.getMyInfo().getId()) {
                 getViewModel().isJoin = 1;
             }
         }

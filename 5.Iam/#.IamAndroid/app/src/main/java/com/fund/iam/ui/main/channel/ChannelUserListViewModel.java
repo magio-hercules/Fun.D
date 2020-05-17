@@ -2,6 +2,7 @@ package com.fund.iam.ui.main.channel;
 
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.ChannelUser;
+import com.fund.iam.data.model.Job;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
@@ -30,7 +31,7 @@ public class ChannelUserListViewModel extends BaseViewModel<ChannelUserListNavig
         getCompositeDisposable().add(
                 getDataManager().postChannelUsers(channel_id)
                         .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribeOn(getSchedulerProvider().newThread())
                         .subscribe(result -> {
                             Logger.d("postChannelUsers success");
                             channelUsers = result.body();

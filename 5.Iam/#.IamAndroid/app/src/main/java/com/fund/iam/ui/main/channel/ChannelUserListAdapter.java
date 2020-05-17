@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fund.iam.R;
 import com.fund.iam.data.model.ChannelUser;
+import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.User;
 import com.kakao.util.helper.log.Logger;
 
@@ -20,7 +21,8 @@ import java.util.List;
 
 public class ChannelUserListAdapter extends RecyclerView.Adapter<ChannelUserListAdapter.ViewHolder> {
 
-    private List<User> usersModel = new ArrayList<>();
+    private List<ChannelUser> usersModel = new ArrayList<>();
+    private List<Job> jobsModel = new ArrayList<>();
 
 
     @NonNull
@@ -34,25 +36,19 @@ public class ChannelUserListAdapter extends RecyclerView.Adapter<ChannelUserList
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        switch (usersModel.get(position).getJobList()) {
-            case "0":
-                holder.tv_jobList.setText("기획자");
-                holder.tv_jobList.setBackgroundColor(Color.parseColor("#4BDFF3"));
-                break;
+        holder.tv_jobList.setText("");
+        holder.tv_jobList.setBackgroundColor(Color.parseColor("#FFFFFFFF"));
 
-            case "1":
-                holder.tv_jobList.setText("디자이너");
-                holder.tv_jobList.setBackgroundColor(Color.parseColor("#F34B4B"));
-                break;
+        for (int i=0; i< jobsModel.size(); i++) {
 
-            case "2":
-                holder.tv_jobList.setText("개발자");
-                holder.tv_jobList.setBackgroundColor(Color.parseColor("#4EF34B"));
-                break;
-            default:
-                holder.tv_jobList.setText("");
-
+            if (usersModel.get(position).getJobList() != null) {
+                if (Integer.parseInt(usersModel.get(position).getJobList()) == jobsModel.get(i).getId()) {
+                    holder.tv_jobList.setText(jobsModel.get(i).getName());
+                    holder.tv_jobList.setBackgroundColor(Color.parseColor(jobsModel.get(i).getColor()));
+                }
+            }
         }
+
 
         holder.tv_userName.setText(usersModel.get(position).getUserName());
         holder.tv_email.setText(usersModel.get(position).getEmail());
@@ -88,7 +84,9 @@ public class ChannelUserListAdapter extends RecyclerView.Adapter<ChannelUserList
         }
     }
 
-    public void setModel_User(List<User> userModel) {
+    public void setModel_User(List<ChannelUser> userModel, List<Job> jobsModel) {
         this.usersModel = userModel;
+        this.jobsModel = jobsModel;
+        notifyDataSetChanged();
     }
 }

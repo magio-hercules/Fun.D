@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.fund.iam.BR;
 import com.fund.iam.R;
@@ -13,6 +14,7 @@ import com.fund.iam.data.DataManager;
 import com.fund.iam.databinding.FragmentChannelUserListBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
+import com.fund.iam.ui.main.search.SearchListUserAdapter;
 import com.orhanobut.logger.Logger;
 
 import javax.inject.Inject;
@@ -20,6 +22,7 @@ import javax.inject.Inject;
 public class ChannelUserListFragment extends BaseFragment<FragmentChannelUserListBinding, ChannelUserListViewModel> implements ChannelUserListNavigator, View.OnClickListener {
 
     public static final String TAG = ChannelUserListFragment.class.getSimpleName();
+    private ChannelUserListAdapter adapter_channelusers;
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -56,7 +59,8 @@ public class ChannelUserListFragment extends BaseFragment<FragmentChannelUserLis
 
     @Override
     public void getUsersInfo() {
-        // TODO 어댑터 연결하기11111
+
+        adapter_channelusers.setModel_User(getViewModel().channelUsers, dataManager.getJobs());
     }
 
     @Override
@@ -78,6 +82,13 @@ public class ChannelUserListFragment extends BaseFragment<FragmentChannelUserLis
     private void initViews(View view) {
 
         getViewModel().channelId = ChannelFragmentArgs.fromBundle(getArguments()).getChannelIdArg();
+
+
+        getViewDataBinding().rvChannelUserList.setHasFixedSize(true);
+        getViewDataBinding().rvChannelUserList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        adapter_channelusers = new ChannelUserListAdapter();
+        getViewDataBinding().rvChannelUserList.setAdapter(adapter_channelusers);
+
         getViewModel().getChannelUserInfo(getViewModel().channelId);
 
     }

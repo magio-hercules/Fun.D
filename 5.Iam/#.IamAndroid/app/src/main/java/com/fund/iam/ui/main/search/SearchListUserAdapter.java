@@ -39,6 +39,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
 
     String KeyWord;
     private Context mContext;
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

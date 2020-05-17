@@ -4,6 +4,7 @@ import android.view.View;
 
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.Channel;
+import com.fund.iam.data.model.Job;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
@@ -32,7 +33,7 @@ public class CreateChannelViewModel extends BaseViewModel<CreateChannelNavigator
         getCompositeDisposable().add(
                 getDataManager().postCreateChannel(ownerId, name, purpose, location, description, password)
                         .observeOn(getSchedulerProvider().ui())
-                        .subscribeOn(getSchedulerProvider().io())
+                        .subscribeOn(getSchedulerProvider().newThread())
                         .subscribe(result -> {
                             Logger.d("postCreateChannels success");
                             channels = result.body();
