@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.fund.iam.R;
 import com.fund.iam.data.model.Channel;
 import com.kakao.util.helper.log.Logger;
@@ -38,9 +39,10 @@ public class SearchListChannelAdapter extends RecyclerView.Adapter<SearchListCha
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Glide.with(holder.itemView.getContext())
-                .load(R.drawable.search_food_sample)
-                .centerCrop()
+        Glide.with(holder.imageView.getContext())
+                .load(channelsModel.get(position).getImageUrl())
+                .placeholder(R.drawable.channel_icon)
+                .apply(RequestOptions.centerCropTransform())
                 .into(holder.imageView);
 
         holder.tv_name.setText(channelsModel_filterKeyword.get(position).name);

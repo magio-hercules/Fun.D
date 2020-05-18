@@ -1,114 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="80dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginBottom="4dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/white"
+        tools:context=".HomeActivity">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_user"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/iv_email"
+            android:id="@+id/iv_jobList"
+            android:layout_width="95dp"
+            android:layout_height="0dp"
+            android:src="@drawable/label_blue"
+            app:layout_constraintBottom_toBottomOf="@id/tv_jobList"
+            app:layout_constraintEnd_toEndOf="@id/tv_jobList"
+            app:layout_constraintStart_toStartOf="@id/tv_jobList"
+            app:layout_constraintTop_toTopOf="@id/tv_jobList" />
+
+        <TextView
+            android:id="@+id/tv_jobList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="22dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="15dp"
+            android:gravity="center"
+            android:minWidth="80dp"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="2dp"
+            android:text="test"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tv_email"
+            app:layout_constraintStart_toEndOf="@id/iv_user"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_email" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_user_information"
-            android:layout_width="240dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/iv_email"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="46dp"
-                android:layout_height="46dp"
-                android:layout_marginStart="11dp"
-                android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/search_food_sample" />
-
-            <TextView
-                android:id="@+id/tv_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="12dp"
-                android:text="Name"
-                android:textColor="#000000"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintCircleRadius="18dp"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/tv_email"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="14dp"
-                android:layout_marginTop="5dp"
-                android:text="email"
-                android:textColor="#000000"
-                android:textSize="12sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/imageView"
-                app:layout_constraintTop_toBottomOf="@+id/tv_name" />
-
-            <TextView
-                android:id="@+id/tv_jobList"
-                android:layout_width="50dp"
-                android:layout_height="11dp"
-                android:layout_marginTop="13dp"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/layout_job_background"
-                android:text="JOB"
-                android:textAlignment="center"
-                android:textColor="#000000"
-                android:textSize="7sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintVertical_chainStyle="packed" />
 
 
         <TextView
-            android:id="@+id/tv_messageCount"
+            android:id="@+id/tv_userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/layout_received_count"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:text="+999"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="9sp"
+            android:layout_marginStart="13dp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/iv_email"
-            app:layout_constraintTop_toTopOf="@+id/iv_email" />
+            app:layout_constraintBottom_toBottomOf="@id/tv_jobList"
+            app:layout_constraintStart_toEndOf="@id/tv_jobList"
+            app:layout_constraintTop_toTopOf="@id/tv_jobList" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="13dp"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_user"
+            app:layout_constraintTop_toBottomOf="@id/tv_jobList" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="30dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="22dp"
+            android:src="@drawable/letter"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</com.google.android.material.card.MaterialCardView>
+</layout>

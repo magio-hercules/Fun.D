@@ -2,6 +2,9 @@ package com.fund.iam.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import lombok.Data;
+
+@Data
 public class Channel {
 
     public int id;
@@ -13,6 +16,9 @@ public class Channel {
     public String purpose;
 
     public String location;
+
+    @SerializedName("image_url")
+    public String imageUrl;
 
     public String password;
 

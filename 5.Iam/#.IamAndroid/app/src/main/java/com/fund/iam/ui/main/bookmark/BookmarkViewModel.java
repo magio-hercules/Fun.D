@@ -10,13 +10,14 @@ import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookmarkViewModel extends BaseViewModel<BookmarkNavigator> {
 
-    public List<Channel> channels = null;
-    public List<User> users = null;
-    public List<Job> jobs = null;
+    public List<Channel> channels = new ArrayList<>();
+    public List<User> users = new ArrayList<>();
+    public List<Job> jobs = new ArrayList<>();
 
     public BookmarkViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);

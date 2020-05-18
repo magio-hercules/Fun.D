@@ -1,6 +1,7 @@
 package com.fund.iam.ui.main.search;
 
 
+import com.annimon.stream.Stream;
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.Channel;
 import com.fund.iam.data.model.Job;
@@ -68,14 +69,19 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
         getCompositeDisposable().add(
                 getDataManager().postUsersAll()
+
                         .subscribeOn(getSchedulerProvider().newThread())
                         .observeOn(getSchedulerProvider().ui())
                         .subscribe(result -> {
                             Logger.d("postUsers success");
-                            users = result.body();
-                            Logger.d("result.body"+users);
+                            if(result.isSuccessful()) {
+                                users = result.body();
+                                Logger.d("result.body"+users);
+                                getNavigator().updateUsers(Stream.of(users).filterNot(user -> user.getId() == getDataManager().getMyInfo().getId()).toList(), getDataManager().getJobs());
+                            } else {
+                                getNavigator().handleError(new Throwable("user api error"));
+                            }
 
-                            getNavigator().updateUsers(users, getDataManager().getJobs());
 
                         }, onError -> getNavigator().handleError(onError))
         );
