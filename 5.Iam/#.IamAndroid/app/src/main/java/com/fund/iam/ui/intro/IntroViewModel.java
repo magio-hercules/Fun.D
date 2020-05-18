@@ -59,7 +59,7 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
         if (/*FirebaseAuth.getInstance().getCurrentUser() == null || */getDataManager().getAuthEmail() == null) {
             getNavigator().startLoginActivity();
         } else {
-            getCompositeDisposable().add(getDataManager().postLogin(new User(getDataManager().getAuthEmail(), getDataManager().getAuthSnsType()))
+            getCompositeDisposable().add(getDataManager().postLogin(new User(getDataManager().getAuthEmail(), getDataManager().getPushToken(), getDataManager().getAuthSnsType()))
                     .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                     .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                     .observeOn(getSchedulerProvider().ui())

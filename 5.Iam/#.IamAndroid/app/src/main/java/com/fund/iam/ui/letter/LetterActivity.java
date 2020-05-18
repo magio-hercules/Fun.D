@@ -64,7 +64,7 @@ public class LetterActivity extends BaseActivity<ActivityLetterBinding, LetterVi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         getViewModel().setNavigator(this);
         initViews();
     }
@@ -78,6 +78,8 @@ public class LetterActivity extends BaseActivity<ActivityLetterBinding, LetterVi
     @Override
     public void onLetterSet(List<Letter> letters) {
         letterAdapter.addItems(letters);
+        getViewDataBinding().letters.scrollToPosition(letterAdapter.getItemCount() - 1);
+
     }
 
     @Override

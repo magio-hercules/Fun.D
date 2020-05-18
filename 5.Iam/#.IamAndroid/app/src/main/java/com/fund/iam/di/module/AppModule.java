@@ -1,6 +1,7 @@
 package com.fund.iam.di.module;
 
 import android.app.Application;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -108,6 +109,11 @@ public class AppModule {
     @Provides
     NoticeAdapter provideNoticeAdapter() {
         return new NoticeAdapter(new ArrayList<>());
+    }
+
+    @Provides
+    NotificationManager provideNotificationManager(Context context) {
+        return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
 }

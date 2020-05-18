@@ -21,7 +21,7 @@ public interface DataManager extends PreferencesHelper, ApiHelper/*, DbHelper*/ 
 
     void setLocations(List<Location> locations);
 
-    void setMyPortfolios(List<Portfolio> portfilios);
+    void setMyPortfolios(List<Portfolio> portfolios);
 
     User getMyInfo();
 

@@ -26,6 +26,8 @@ import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.Channel;
+import com.fund.iam.data.model.Job;
+import com.fund.iam.data.model.User;
 import com.fund.iam.databinding.FragmentSearchBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
@@ -87,16 +89,16 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         getBaseActivity().onFragmentDetached(TAG);
     }
 
-    @Override
-    public void updateChannels() {
-        adapter_channels.setModel_Channels(getViewModel().channels);
-        adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
 
+    @Override
+    public void updateChannels(List<Channel> channels) {
+        adapter_channels.setModel_Channels(channels);
+        adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
     }
 
     @Override
-    public void updateUsers() {
-        adapter_users.setModel_Users(getViewModel().users,getViewModel().jobs);
+    public void updateUsers(List<User> users, List<Job> jobs) {
+        adapter_users.setModel_Users(users, jobs);
         adapter_users.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
     }
 
@@ -132,7 +134,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().recyclerViewChannels.setVisibility(View.VISIBLE);
                 getViewModel().TabState = 1;
                 getViewDataBinding().etSearchInput.setText("");
-                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(), 0);
                 getViewDataBinding().etSearch.clearFocus();
             }
         });
@@ -148,7 +150,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewDataBinding().recyclerViewUsers.setVisibility(View.VISIBLE);
                 getViewModel().TabState = 2;
                 getViewDataBinding().etSearchInput.setText("");
-                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(),0);
+                imm.hideSoftInputFromWindow(getViewDataBinding().etSearch.getWindowToken(), 0);
                 getViewDataBinding().etSearch.clearFocus();
             }
         });
@@ -161,7 +163,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (getViewModel().TabState==1) {
+                if (getViewModel().TabState == 1) {
                     adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
                 } else {
                     adapter_users.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
@@ -175,11 +177,9 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         });
 
 
-
-
         String[] spinner_str_channel = {"최신순", "참여인원많은순"};
 
-        final ArrayAdapter<String> adapter_spinner = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.support_simple_spinner_dropdown_item,spinner_str_channel) {
+        final ArrayAdapter<String> adapter_spinner = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), R.layout.support_simple_spinner_dropdown_item, spinner_str_channel) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -191,7 +191,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             @Override
             public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                 View v = super.getDropDownView(position, convertView, parent);
-                ((TextView)v).setTextColor(Color.parseColor("#7E57C2"));
+                ((TextView) v).setTextColor(Color.parseColor("#7E57C2"));
                 return v;
             }
 
@@ -205,7 +205,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 // TODO 최신순, 인원순 정렬하기
-                if (position==0) {
+                if (position == 0) {
                     adapter_channels.setModel_Channels(getViewModel().channels);
                     adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
 
@@ -216,7 +216,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                     adapter_channels.setModel_Channels(channelsFilter);
                     adapter_channels.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
                 }
-                Logger.i("SearchFragment:"+getViewDataBinding().spinner.getSelectedItem().toString()+"is selected");
+                Logger.i("SearchFragment:" + getViewDataBinding().spinner.getSelectedItem().toString() + "is selected");
             }
 
             @Override
@@ -227,10 +227,9 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
 
         getViewDataBinding().recyclerViewFilter.setHasFixedSize(true);
-        getViewDataBinding().recyclerViewFilter.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL,false));
+        getViewDataBinding().recyclerViewFilter.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         adapter_filter = new SearchListUserFilterAdapter();
         getViewDataBinding().recyclerViewFilter.setAdapter(adapter_filter);
-
 
 
         getViewDataBinding().recyclerViewChannels.setHasFixedSize(true);
@@ -268,7 +267,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
         spinner_age = bottomSheetDialog.findViewById(R.id.spinner_age);
         spinner_age.setGravity(Gravity.RIGHT);
 
-        final ArrayAdapter<String> adapter_spinner_user_gender = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,getViewModel().spinner_str_user_gender) {
+        final ArrayAdapter<String> adapter_spinner_user_gender = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), R.layout.item_search_spinner, getViewModel().spinner_str_user_gender) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -279,7 +278,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
         };
 
-        final ArrayAdapter<String> adapter_spinner_user_age = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,getViewModel().spinner_str_user_age) {
+        final ArrayAdapter<String> adapter_spinner_user_age = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), R.layout.item_search_spinner, getViewModel().spinner_str_user_age) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -297,7 +296,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Logger.i("SearchFragment:"+spinner_gender.getSelectedItem().toString()+"is selected");
+                Logger.i("SearchFragment:" + spinner_gender.getSelectedItem().toString() + "is selected");
 
             }
 
@@ -311,7 +310,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Logger.i("SearchFragment:"+spinner_age.getSelectedItem().toString()+"is selected");
+                Logger.i("SearchFragment:" + spinner_age.getSelectedItem().toString() + "is selected");
 
             }
 
@@ -358,9 +357,9 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
                 getViewModel().user_filters.add(spinner_job.getSelectedItemPosition());
                 getViewModel().user_filters.add(spinner_gender.getSelectedItemPosition());
                 getViewModel().user_filters.add(spinner_age.getSelectedItemPosition());
-                adapter_users.setUserFilter(getViewModel().locations, getViewModel().user_filters );
+                adapter_users.setUserFilter(getViewModel().locations, getViewModel().user_filters);
                 adapter_users.setKeyWord(getViewDataBinding().etSearchInput.getText().toString());
-                adapter_filter.setUserFilter(getViewModel().locations,getViewModel().jobs,getViewModel().spinner_str_user_gender,getViewModel().spinner_str_user_age, getViewModel().user_filters);
+                adapter_filter.setUserFilter(getViewModel().locations, getViewModel().jobs, getViewModel().spinner_str_user_gender, getViewModel().spinner_str_user_age, getViewModel().user_filters);
                 bottomSheetDialog.dismiss();
             }
         });
@@ -380,13 +379,14 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
 
     @Override
     public void updateJobs() {
-        ArrayList arrayList_jobs = new ArrayList<>();;
-        for(int i =0; i<getViewModel().jobs.size(); i++) {
+        ArrayList arrayList_jobs = new ArrayList<>();
+        ;
+        for (int i = 0; i < getViewModel().jobs.size(); i++) {
             arrayList_jobs.add(getViewModel().jobs.get(i).getName());
         }
-        arrayList_jobs.add(0,"  선택없음  ");
+        arrayList_jobs.add(0, "  선택없음  ");
 
-        final ArrayAdapter<String> adapter_spinner_user_job = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner, arrayList_jobs) {
+        final ArrayAdapter<String> adapter_spinner_user_job = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), R.layout.item_search_spinner, arrayList_jobs) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -405,7 +405,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Logger.i("SearchFragment:"+spinner_job.getSelectedItem().toString()+"is selected");
+                Logger.i("SearchFragment:" + spinner_job.getSelectedItem().toString() + "is selected");
 
             }
 
@@ -422,14 +422,15 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
     @Override
     public void updateLocations() {
 
-        ArrayList arrayList_locations = new ArrayList<>();;
-        for(int i =0; i<getViewModel().locations.size(); i++) {
+        ArrayList arrayList_locations = new ArrayList<>();
+        ;
+        for (int i = 0; i < getViewModel().locations.size(); i++) {
             arrayList_locations.add(getViewModel().locations.get(i).getName());
         }
-        arrayList_locations.add(0,"  선택없음  ");
+        arrayList_locations.add(0, "  선택없음  ");
 
         // 서버에서 Location리스트를 받아와 User필터에 세팅
-        final ArrayAdapter<String> adapter_spinner_user_location = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()),R.layout.item_search_spinner,arrayList_locations) {
+        final ArrayAdapter<String> adapter_spinner_user_location = new ArrayAdapter<String>(Objects.requireNonNull(getActivity()), R.layout.item_search_spinner, arrayList_locations) {
             @NonNull
             @Override
             public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -446,7 +447,7 @@ public class SearchFragment extends BaseFragment<FragmentSearchBinding, SearchVi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                Logger.i("SearchFragment:"+spinner_location.getSelectedItem().toString()+"is selected");
+                Logger.i("SearchFragment:" + spinner_location.getSelectedItem().toString() + "is selected");
 
             }
 

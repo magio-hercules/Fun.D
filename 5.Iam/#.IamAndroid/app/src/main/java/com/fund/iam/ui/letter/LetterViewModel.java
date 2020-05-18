@@ -69,10 +69,14 @@ public class LetterViewModel extends BaseViewModel<LetterNavigator> {
     }
 
     public void onSend() {
+        Logger.d("onSend 1");
         if (input.get() == null || input.get().length() == 0) return;
+        Logger.d("onSend remoteToken " + remoteToken);
+        Logger.d("onSend remoteUserId " + remoteUserId);
         pushBody.setTo(remoteToken);
         pushBody.setPriority("high");
         localLetter.setMessage(input.get());
+
         pushBody.setData(localLetter);
         getCompositeDisposable().add(
                 getDataManager().postMessageInsert(getDataManager().getMyInfo().getId(), remoteUserId, input.get())
@@ -80,11 +84,12 @@ public class LetterViewModel extends BaseViewModel<LetterNavigator> {
                         .observeOn(getSchedulerProvider().ui())
                         .subscribeOn(getSchedulerProvider().io())
                         .subscribe(result -> {
+                            Logger.d("result " + result.isSuccessful());
                             if (result.isSuccessful()) {
                                 getNavigator().onLetterAdd(new Letter(LetterType.LOCAL.getLetterType(), input.get()));
                                 input.set("");
                             }
-                        }));
+                        }, onError -> getNavigator().handleError(onError)));
 
     }
 }

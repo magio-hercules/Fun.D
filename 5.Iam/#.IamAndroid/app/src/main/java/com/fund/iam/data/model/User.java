@@ -64,8 +64,9 @@ public class User {
         this.snsType = snsType;
     }
 
-    public User(String email, String snsType) {
+    public User(String email, String token, String snsType) {
         this.email = email;
+        this.token = token;
         this.snsType = snsType;
     }
 }

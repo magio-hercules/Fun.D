@@ -16,9 +16,9 @@ import java.util.List;
 
 public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
-    public List<Channel> channels = null;
-    public List<User> users = null;
-    public List<Job> jobs = null;
+    public List<Channel> channels = new ArrayList<>();
+    public List<User> users = new ArrayList<>();
+    public List<Job> jobs = new ArrayList<>();
     public List<Location> locations = null;
     // 필터값 순서: 지역, 직종, 성별, 나이대
     public List<Integer> user_filters = new ArrayList<>();
@@ -43,7 +43,6 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
 
     }
 
-
     public void getChannelsInfo() {
 
         Logger.i("getChannelsInfo");
@@ -57,7 +56,7 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
                     channels = result.body();
                     Logger.d("result.body"+channels);
 
-                    getNavigator().updateChannels();
+                    getNavigator().updateChannels(channels);
 
                 }, onError -> getNavigator().handleError(onError))
         );
@@ -76,51 +75,10 @@ public class SearchViewModel extends BaseViewModel<SearchNavigator> {
                             users = result.body();
                             Logger.d("result.body"+users);
 
-                            getNavigator().updateUsers();
+                            getNavigator().updateUsers(users, getDataManager().getJobs());
 
                         }, onError -> getNavigator().handleError(onError))
         );
-
-    }
-
-    public void getJobsInfo() {
-
-        Logger.i("getJobsInfo");
-
-        getCompositeDisposable().add(
-                getDataManager().postJobs()
-                        .subscribeOn(getSchedulerProvider().newThread())
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribe(result -> {
-                            Logger.d("postJobs success");
-                            jobs = result.body();
-                            Logger.d("result.body"+jobs);
-
-                            getNavigator().updateJobs();
-
-                        }, onError -> getNavigator().handleError(onError))
-        );
-
-    }
-
-    public void getLocationsInfo() {
-
-        Logger.i("getLocationsInfo");
-
-        getCompositeDisposable().add(
-                getDataManager().postLocations()
-                        .subscribeOn(getSchedulerProvider().io())
-                        .observeOn(getSchedulerProvider().ui())
-                        .subscribe(result -> {
-                            Logger.d("postLocations success");
-                            locations = result.body();
-                            Logger.d("result.body"+jobs);
-
-                            getNavigator().updateLocations();
-
-                        }, onError -> getNavigator().handleError(onError))
-        );
-
     }
 
 }

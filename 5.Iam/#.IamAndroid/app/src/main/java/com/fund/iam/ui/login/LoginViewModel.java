@@ -65,7 +65,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
         mFirebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        getCompositeDisposable().add(getDataManager().postLogin(new User(acct.getEmail(), acct.getDisplayName(), acct.getIdToken(), acct.getPhotoUrl().toString(), SNSType.GOOGLE.getSnsType()))
+                        getCompositeDisposable().add(getDataManager().postLogin(new User(acct.getEmail(), acct.getDisplayName(), getDataManager().getPushToken(), acct.getPhotoUrl().toString(), SNSType.GOOGLE.getSnsType()))
                                 .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                                 .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                                 .observeOn(getSchedulerProvider().ui())
@@ -99,7 +99,7 @@ public class LoginViewModel extends BaseViewModel<LoginNavigator> implements ISe
                                 Logger.d("facebook profile token " + acct.getToken());
 
 
-                                getCompositeDisposable().add(getDataManager().postLogin(new User(response.getJSONObject().getString("email"), Profile.getCurrentProfile().getName(), acct.getToken(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString(), SNSType.FACEBOOK.getSnsType()))
+                                getCompositeDisposable().add(getDataManager().postLogin(new User(response.getJSONObject().getString("email"), Profile.getCurrentProfile().getName(), getDataManager().getPushToken(), Profile.getCurrentProfile().getProfilePictureUri(100, 100).toString(), SNSType.FACEBOOK.getSnsType()))
                                         .doOnSuccess(userInfo -> getDataManager().setMyInfo(userInfo.body().get(0)))
                                         .flatMap(userInfo -> getDataManager().postPortfolios(userInfo.body().get(0).getId()))
                                         .observeOn(getSchedulerProvider().ui())
