@@ -49,7 +49,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         mContext = parent.getContext();
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_list, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_user_list,parent,false);
 
         return new SearchListUserAdapter.ViewHolder(v);
     }
@@ -64,6 +64,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
                 .into(holder.imageView);
 
         holder.tv_jobList.setText("");
+        holder.iv_jobList.setVisibility(View.INVISIBLE);
 
         for (int i = 0; i < jobsModel.size(); i++) {
 
@@ -71,6 +72,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
                 if (Integer.parseInt(usersModel_filterKeyword.get(position).getJobList()) == jobsModel.get(i).getId()) {
                     holder.tv_jobList.setText(jobsModel.get(i).getName());
                     holder.iv_jobList.setColorFilter(Color.parseColor(jobsModel.get(i).getColor()), PorterDuff.Mode.SRC_IN);
+                    holder.iv_jobList.setVisibility(View.VISIBLE);
                 }
             }
         }
@@ -81,8 +83,7 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(holder.itemView.getContext(), position + "", Toast.LENGTH_SHORT).show();
-                Logger.i("클릭" + position);
+                Logger.i("클릭"+position);
 
                 User userInfo = usersModel_filterKeyword.get(position);
                 String email = userInfo.getEmail();
@@ -192,11 +193,13 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     }
 
 
+
+
     public void setKeyWord(String keyWord) {
         this.KeyWord = keyWord;
         usersModel_filterKeyword.removeAll(usersModel_filterKeyword);
-        for (int i = 0; i < usersModel_filter.size(); i++) {
-            if (usersModel_filter.get(i).getUserName().toUpperCase().contains(keyWord.toUpperCase())) {
+        for (int i=0; i<usersModel_filter.size(); i++) {
+            if(usersModel_filter.get(i).getUserName().toUpperCase().contains(keyWord.toUpperCase())) {
                 usersModel_filterKeyword.add(usersModel_filter.get(i));
             }
         }

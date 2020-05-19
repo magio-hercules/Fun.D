@@ -16,65 +16,87 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            app:imgUrl="@{viewModel.imageUrl}"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:imgUrl="@{viewModel.imageUrl}" />
+
+        <ImageView
+            android:id="@+id/iv_label"
+            android:layout_width="75dp"
+            android:layout_height="0dp"
+            android:src="@drawable/label_blue"
+            app:layout_constraintBottom_toBottomOf="@id/label"
+            app:layout_constraintEnd_toEndOf="@id/label"
+            app:layout_constraintStart_toStartOf="@id/label"
+            app:layout_constraintTop_toTopOf="@id/label" />
 
         <TextView
             android:id="@+id/label"
-            android:layout_width="50dp"
-            android:layout_height="11dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
-            android:background="@drawable/label_blue"
+            android:layout_marginTop="16dp"
             android:gravity="center"
+            android:paddingStart="4dp"
+            android:paddingTop="2dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="2dp"
             android:text="@{viewModel.job}"
             android:textColor="@color/black"
-            android:textSize="7sp"
-            app:layout_constraintBottom_toTopOf="@id/email"
+            android:textSize="10sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/profile_image"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="브랜딩 디자이너" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:text="@{viewModel.name}"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/label"
-            app:layout_constraintStart_toEndOf="@id/label"
-            app:layout_constraintTop_toTopOf="@id/label" />
+            app:layout_constraintStart_toEndOf="@+id/profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/iv_label"
+            tools:text="김진흥" />
+
+
+
+
 
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:text="@{viewModel.email}"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/profile_image"
-            app:layout_constraintTop_toBottomOf="@id/label" />
+            app:layout_constraintTop_toBottomOf="@id/name"
+            tools:text="jinhungkim@hanmail.net" />
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="22dp"
             android:src="@drawable/letter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

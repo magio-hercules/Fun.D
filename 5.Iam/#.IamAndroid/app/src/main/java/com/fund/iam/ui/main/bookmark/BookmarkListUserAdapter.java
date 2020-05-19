@@ -57,6 +57,7 @@ public class BookmarkListUserAdapter extends RecyclerView.Adapter<BookmarkListUs
                 .into(holder.imageView);
 
         holder.tv_jobList.setText("");
+        holder.iv_jobList.setVisibility(View.INVISIBLE);
 
         for (int i=0; i< jobsModel.size(); i++) {
 
@@ -64,6 +65,7 @@ public class BookmarkListUserAdapter extends RecyclerView.Adapter<BookmarkListUs
                 if (Integer.parseInt(usersModel.get(position).getJobList()) == jobsModel.get(i).getId()) {
                     holder.tv_jobList.setText(jobsModel.get(i).getName());
                     holder.iv_jobList.setColorFilter(Color.parseColor(jobsModel.get(i).getColor()), PorterDuff.Mode.SRC_IN);
+                    holder.iv_jobList.setVisibility(View.VISIBLE);
                 }
             }
         }

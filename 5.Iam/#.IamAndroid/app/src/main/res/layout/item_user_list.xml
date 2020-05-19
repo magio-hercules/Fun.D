@@ -15,18 +15,18 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user"
-            android:layout_width="46dp"
-            android:layout_height="46dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_jobList"
-            android:layout_width="95dp"
+            android:layout_width="75dp"
             android:layout_height="0dp"
             android:src="@drawable/label_blue"
             app:layout_constraintBottom_toBottomOf="@id/tv_jobList"
@@ -39,49 +39,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:minWidth="80dp"
             android:paddingStart="4dp"
             android:paddingTop="2dp"
             android:paddingEnd="4dp"
             android:paddingBottom="2dp"
-            android:text="test"
             android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@id/tv_email"
+            android:textSize="10sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/iv_user"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed" />
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="브랜딩 디자이너" />
 
 
         <TextView
             android:id="@+id/tv_userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/tv_jobList"
-            app:layout_constraintStart_toEndOf="@id/tv_jobList"
-            app:layout_constraintTop_toTopOf="@id/tv_jobList" />
+            app:layout_constraintStart_toEndOf="@+id/iv_user"
+            app:layout_constraintTop_toBottomOf="@+id/iv_jobList"
+            tools:text="김진흥" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="13dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/iv_user"
-            app:layout_constraintTop_toBottomOf="@id/tv_jobList" />
+            app:layout_constraintTop_toBottomOf="@id/tv_userName"
+            tools:text="jinhungkim@hanmail.net" />
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="30dp"
-            android:layout_height="24dp"
+            android:layout_width="40dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="22dp"
             android:src="@drawable/letter"
             app:layout_constraintBottom_toBottomOf="parent"
