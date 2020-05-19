@@ -15,11 +15,11 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,11 +28,11 @@
             android:id="@+id/iv_jobList"
             android:layout_width="80dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="3dp"
             android:src="@drawable/label_blue"
-            app:layout_constraintStart_toEndOf="@id/iv_user"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/tv_userName"
+            app:layout_constraintStart_toEndOf="@id/iv_user" />
 
         <TextView
             android:id="@+id/tv_jobList"
@@ -46,11 +46,10 @@
             android:textColor="@color/black"
             android:textSize="10sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="@id/iv_jobList"
             app:layout_constraintBottom_toBottomOf="@id/iv_jobList"
             app:layout_constraintEnd_toEndOf="@id/iv_jobList"
             app:layout_constraintStart_toStartOf="@id/iv_jobList"
-
+            app:layout_constraintTop_toTopOf="@+id/iv_jobList"
             tools:text="브랜딩 디자이너" />
 
 
@@ -58,33 +57,33 @@
             android:id="@+id/tv_userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_user"
             app:layout_constraintStart_toEndOf="@+id/iv_user"
-            app:layout_constraintTop_toBottomOf="@+id/iv_jobList"
+            app:layout_constraintTop_toTopOf="@+id/iv_user"
             tools:text="김진흥" />
 
         <TextView
             android:id="@+id/tv_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@id/iv_user"
-            app:layout_constraintTop_toBottomOf="@id/tv_userName"
+            app:layout_constraintTop_toBottomOf="@+id/tv_userName"
             tools:text="jinhungkim@hanmail.net" />
 
         <ImageView
             android:id="@+id/imageView5"
             android:layout_width="40dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="22dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/letter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

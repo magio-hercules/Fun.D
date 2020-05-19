@@ -16,25 +16,25 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_image"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:imgUrl="@{viewModel.imageUrl}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:imgUrl="@{viewModel.imageUrl}" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/iv_label"
             android:layout_width="80dp"
             android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="3dp"
             android:src="@drawable/label_blue"
-            app:layout_constraintStart_toEndOf="@id/profile_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toTopOf="@+id/name"
+            app:layout_constraintStart_toEndOf="@id/profile_image" />
 
         <TextView
             android:id="@+id/label"
@@ -52,34 +52,29 @@
             app:layout_constraintEnd_toEndOf="@id/iv_label"
             app:layout_constraintStart_toStartOf="@id/iv_label"
             app:layout_constraintTop_toTopOf="@id/iv_label"
-
-
             tools:text="브랜딩 디자이너" />
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
             android:text="@{viewModel.name}"
             android:textColor="@color/black"
             android:textSize="12sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/profile_image"
             app:layout_constraintStart_toEndOf="@+id/profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/iv_label"
+            app:layout_constraintTop_toTopOf="@+id/profile_image"
             tools:text="김진흥" />
-
-
-
 
 
         <TextView
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="3dp"
             android:text="@{viewModel.email}"
             android:textColor="@color/black"
             android:textSize="12sp"
@@ -91,7 +86,7 @@
         <ImageView
             android:layout_width="40dp"
             android:layout_height="32dp"
-            android:layout_marginEnd="22dp"
+            android:layout_marginEnd="16dp"
             android:src="@drawable/letter"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
