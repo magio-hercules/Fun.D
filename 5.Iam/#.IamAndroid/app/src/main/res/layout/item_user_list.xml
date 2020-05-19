@@ -26,20 +26,18 @@
 
         <ImageView
             android:id="@+id/iv_jobList"
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/label_blue"
-            app:layout_constraintBottom_toBottomOf="@id/tv_jobList"
-            app:layout_constraintEnd_toEndOf="@id/tv_jobList"
-            app:layout_constraintStart_toStartOf="@id/tv_jobList"
-            app:layout_constraintTop_toTopOf="@id/tv_jobList" />
+            app:layout_constraintStart_toEndOf="@id/iv_user"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_jobList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="16dp"
             android:gravity="center"
             android:paddingStart="4dp"
             android:paddingTop="2dp"
@@ -48,9 +46,11 @@
             android:textColor="@color/black"
             android:textSize="10sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/iv_user"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="@id/iv_jobList"
+            app:layout_constraintBottom_toBottomOf="@id/iv_jobList"
+            app:layout_constraintEnd_toEndOf="@id/iv_jobList"
+            app:layout_constraintStart_toStartOf="@id/iv_jobList"
+
             tools:text="브랜딩 디자이너" />
 
 

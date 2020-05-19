@@ -28,21 +28,18 @@
 
         <ImageView
             android:id="@+id/iv_label"
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:src="@drawable/label_blue"
-            app:layout_constraintBottom_toBottomOf="@id/label"
-            app:layout_constraintEnd_toEndOf="@id/label"
-            app:layout_constraintStart_toStartOf="@id/label"
-            app:layout_constraintTop_toTopOf="@id/label" />
+            app:layout_constraintStart_toEndOf="@id/profile_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
             android:paddingStart="4dp"
             android:paddingTop="2dp"
             android:paddingEnd="4dp"
@@ -51,9 +48,12 @@
             android:textColor="@color/black"
             android:textSize="10sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/profile_image"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toBottomOf="@id/iv_label"
+            app:layout_constraintEnd_toEndOf="@id/iv_label"
+            app:layout_constraintStart_toStartOf="@id/iv_label"
+            app:layout_constraintTop_toTopOf="@id/iv_label"
+
+
             tools:text="브랜딩 디자이너" />
 
         <TextView
