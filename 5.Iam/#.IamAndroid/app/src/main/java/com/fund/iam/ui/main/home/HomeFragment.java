@@ -401,9 +401,9 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //        layout.addView(linearLayout);
 
         // inflate 이후에 버튼을 가져올수 있음
-        TextView imageTitle = (TextView) newLayout.findViewById(R.id.portfolioImage_title);
-        imageTitle.setId(PORTFOLIPO_TITLE_ID + portfolidIndex);
-        imageTitle.setText("#" + portfolidIndex);
+//        TextView imageTitle = (TextView) newLayout.findViewById(R.id.portfolioImage_title);
+//        imageTitle.setId(PORTFOLIPO_TITLE_ID + portfolidIndex);
+//        imageTitle.setText("#" + portfolidIndex);
 
         ImageView imageImage = (ImageView) newLayout.findViewById(R.id.portfolioImage_image);
 //        imageImage.setImageResource(R.drawable.profile_default);  // imageView에 내용 추가
@@ -417,6 +417,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
 //                .apply(RequestOptions.centerCropTransform())
                 .centerInside()
                 .into(imageImage);
+
 
         // for edit 모드
 //        Button textButton = (Button) newLayout.findViewById(R.id.portfolioImage_delete);

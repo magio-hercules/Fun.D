@@ -5,38 +5,35 @@
     android:layout_height="wrap_content"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
+    android:layout_gravity="center"
     android:orientation="horizontal">
 
-    <TextView
-        android:visibility="gone"
-        android:id="@+id/portfolioImage_title"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:textSize="24dp" />
-
-<!--    <ImageView-->
-<!--        android:id="@+id/portfolioImage_image"-->
-<!--        android:layout_width="match_parent"-->
+<!--    <TextView-->
+<!--        android:visibility="gone"-->
+<!--        android:id="@+id/portfolioImage_title"-->
+<!--        android:layout_width="50dp"-->
 <!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_weight="1"-->
-<!--        android:scaleType="fitCenter"-->
-<!--        android:src="@drawable/profile_default_picture"/>-->
+<!--        android:textSize="24dp" />-->
 
-    <com.fund.iam.ui.main.home.FixedCenterCrop
-        android:id="@+id/portfolioImage_image"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/profile_default_picture"/>
-
-<!--    <com.fund.iam.ui.main.home.FixedCenterCrop-->
-<!--        android:id="@+id/imgLoginBackground"-->
-<!--        android:src="@drawable/profile_default_picture"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:scaleType="centerCrop" />-->
+        android:layout_gravity="center"
+        app:cardUseCompatPadding="true"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="16dp"
+        android:layout_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+            <com.fund.iam.ui.main.home.FixedCenterCrop
+                android:id="@+id/portfolioImage_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_centerInParent="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/profile_default_picture"/>
+    </androidx.cardview.widget.CardView>
 
 </LinearLayout>

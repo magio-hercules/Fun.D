@@ -753,6 +753,16 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     watingCount++;
                     changeCount++;
                 }
+            } else {
+                User updateUserInfo = new User(userInfo.getId(), userInfo.getSnsType(), _imageUrl,
+                        _userName, _nickName, _email, _phone,
+                        _location, _job, _gender, _age);
+                Logger.d("업데이트 될 유저정보 : " + updateUserInfo);
+
+                watingCount++;
+                changeCount++;
+
+                getViewModel().handleUserUpdate(updateUserInfo);
             }
 
 
