@@ -2,6 +2,8 @@ package com.fund.iam.data.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class User {
+public class User implements Serializable {
 
     private int id;
 
@@ -68,5 +70,19 @@ public class User {
         this.email = email;
         this.token = token;
         this.snsType = snsType;
+    }
+
+    public User(int id, String userName, String token) {
+        this.id = id;
+        this.userName = userName;
+        this.token = token;
+    }
+
+
+    public User(int userId, String userName, String imageUrl, String token) {
+        this.id = userId;
+        this.userName = userName;
+        this.imageUrl = imageUrl;
+        this.token = token;
     }
 }

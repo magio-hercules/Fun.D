@@ -2,6 +2,7 @@ package com.fund.iam.ui.main.letterbox;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -92,7 +93,7 @@ public class LetterBoxAdapter extends RecyclerView.Adapter<BaseViewHolder> {
     }
 
 
-    public class LetterBoxViewHolder extends BaseViewHolder {
+    public class LetterBoxViewHolder extends BaseViewHolder implements ItemLetterBoxViewModel.LetterBoxListener {
 
         private ItemLetterboxBinding letterLocalBinding;
 
@@ -105,7 +106,8 @@ public class LetterBoxAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         @Override
         public void onBind(int position) {
             final LetterBox letterBox = letterBoxes.get(position);
-            ItemLetterBoxViewModel letterBoxViewModel = new ItemLetterBoxViewModel(context, letterBox);
+            letterLocalBinding.badge.setVisibility(letterBox.isBadge() ? View.VISIBLE : View.GONE);
+            ItemLetterBoxViewModel letterBoxViewModel = new ItemLetterBoxViewModel(context, letterBox, this);
             switch (getItemViewType()) {
                 case VIEW_TYPE_NORMAL:
                     letterLocalBinding.setViewModel(letterBoxViewModel);
@@ -116,6 +118,12 @@ public class LetterBoxAdapter extends RecyclerView.Adapter<BaseViewHolder> {
             }
 
         }
+
+        @Override
+        public void onRead() {
+            letterLocalBinding.badge.setVisibility(View.GONE);
+        }
+
     }
 
     public class ItemEmptyViewHolder extends BaseViewHolder {

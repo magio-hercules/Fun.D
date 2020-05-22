@@ -1,28 +1,18 @@
 package com.fund.iam.ui.main.letterbox;
 
-
-import android.content.Context;
-
 import com.annimon.stream.Stream;
 import com.fund.iam.data.DataManager;
-import com.fund.iam.data.bus.LetterBoxBus;
-import com.fund.iam.data.model.Job;
-import com.fund.iam.data.model.Letter;
+import com.fund.iam.data.bus.LetterBus;
 import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.di.provider.ResourceProvider;
 import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
 import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import io.reactivex.Maybe;
-
 public class LetterBoxViewModel extends BaseViewModel<LetterBoxNavigator> {
-
+    private List<LetterBox> updatedLetterBoxes;
 
     public LetterBoxViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
@@ -36,7 +26,7 @@ public class LetterBoxViewModel extends BaseViewModel<LetterBoxNavigator> {
                 .subscribeOn(getSchedulerProvider().io())
                 .subscribe(letterBoxes -> {
                     if (letterBoxes.isSuccessful()) {
-                        List<LetterBox> updatedLetterBoxes = Stream.of(letterBoxes.body()).map(letterBox -> {
+                        updatedLetterBoxes = Stream.of(letterBoxes.body()).map(letterBox -> {
                             if (letterBox.getJob() == null) {
                                 letterBox.setJobTitle("직업 없음");
                                 letterBox.setJobColor("#ff00ff");
@@ -50,6 +40,16 @@ public class LetterBoxViewModel extends BaseViewModel<LetterBoxNavigator> {
                         getNavigator().onRepositoriesChanged(updatedLetterBoxes);
                     }
                 }));
+
+        getCompositeDisposable().add(LetterBus.getInstance().getBadge()
+                .observeOn(getSchedulerProvider().ui())
+                .subscribe(userId -> {
+                    if (updatedLetterBoxes != null) {
+                        Stream.of(updatedLetterBoxes).filter(letterBox -> letterBox.getFriendId() == userId).findFirst().ifPresent(letterBox -> letterBox.setBadge(true));
+                        getNavigator().onRepositoriesChanged(updatedLetterBoxes);
+                    }
+                }, onError -> Logger.e("test " + onError)));
+
     }
 
 

@@ -70,7 +70,8 @@ public class ChannelUserListAdapter extends RecyclerView.Adapter<ChannelUserList
         }
 
         holder.iv_letter.setOnClickListener(v -> {
-            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel.get(position).getId(),usersModel.get(position).getUserName(),usersModel.get(position).getImageUrl(),usersModel.get(position).getToken()));
+//            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel.get(position).getId(),usersModel.get(position).getUserName(),usersModel.get(position).getImageUrl(),usersModel.get(position).getToken()));
+            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(new User(usersModel.get(position).getEmail(),usersModel.get(position).getToken(),usersModel.get(position).getSnsType())));
             LetterActivity.start(mContext);
         });
 

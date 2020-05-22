@@ -1,12 +1,10 @@
 package com.fund.iam.ui.main.letterbox;
 
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -15,7 +13,6 @@ import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
 import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.databinding.FragmentLetterboxBinding;
-import com.fund.iam.databinding.FragmentSettingBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.orhanobut.logger.Logger;
@@ -62,7 +59,8 @@ public class LetterBoxFragment extends BaseFragment<FragmentLetterboxBinding, Le
 
     @Override
     public void onRepositoriesChanged(List<LetterBox> letterBoxes) {
-        Logger.d("onRepositoriesChanged " + letterBoxes.size());
+        Logger.d("onRepositoriesChanged " + letterBoxes.get(0));
+        letterBoxAdapter.clearItems();
         letterBoxAdapter.addItems(letterBoxes);
     }
 

@@ -94,7 +94,8 @@ public class BookmarkListUserAdapter extends RecyclerView.Adapter<BookmarkListUs
         holder.iv_letter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel.get(position).getId(),usersModel.get(position).getUserName(),usersModel.get(position).getImageUrl(),usersModel.get(position).getToken()));
+//                LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel.get(position).getId(),usersModel.get(position).getUserName(),usersModel.get(position).getImageUrl(),usersModel.get(position).getToken()));
+                LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel.get(position)));
                 LetterActivity.start(mContext);
             }
         });

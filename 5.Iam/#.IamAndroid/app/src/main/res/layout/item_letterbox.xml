@@ -9,9 +9,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:onClick="@{() -> viewModel.onItemClick()}"
         android:layout_marginBottom="5dp"
         android:background="@color/white"
+        android:onClick="@{() -> viewModel.onItemClick()}"
         tools:context=".HomeActivity">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -92,10 +92,26 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <TextView
+            android:id="@+id/badge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="11dp"
+            android:background="@drawable/badge_chat"
+            android:gravity="center"
+            android:text="N"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"

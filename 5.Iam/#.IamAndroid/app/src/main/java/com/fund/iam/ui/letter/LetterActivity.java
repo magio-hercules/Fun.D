@@ -3,8 +3,6 @@ package com.fund.iam.ui.letter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -14,24 +12,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.bus.LetterBoxBus;
 import com.fund.iam.data.model.Letter;
+import com.fund.iam.data.model.LetterBox;
+import com.fund.iam.data.model.User;
 import com.fund.iam.databinding.ActivityLetterBinding;
-import com.fund.iam.databinding.ActivityLoginBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseActivity;
 import com.fund.iam.ui.main.MainActivity;
 import com.fund.iam.utils.CommentKeyBoardFix;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
+
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
 import javax.inject.Inject;
-
-import static com.fund.iam.core.AppConstants.RC_GOOGLE_SIGN_IN;
 
 public class LetterActivity extends BaseActivity<ActivityLetterBinding, LetterViewModel> implements LetterNavigator {
 
@@ -40,6 +36,9 @@ public class LetterActivity extends BaseActivity<ActivityLetterBinding, LetterVi
 
     @Inject
     LetterAdapter letterAdapter;
+
+    @Inject
+    DataManager dataManager;
 
     @Override
     public int getBindingVariable() {
@@ -61,12 +60,24 @@ public class LetterActivity extends BaseActivity<ActivityLetterBinding, LetterVi
         context.startActivity(intent);
     }
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         getViewModel().setNavigator(this);
         initViews();
+        if (getIntent().getExtras() != null) {
+            User user = new Gson().fromJson(getIntent().getExtras().get("friend").toString(), User.class);
+            User friend = new Gson().fromJson(getIntent().getExtras().get("user").toString(), User.class);
+            if (dataManager.getMyInfo() == null) {
+                getViewModel().getInitialData();
+            }
+            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(friend));
+            getViewModel().postMessage(user.getId());
+        } else {
+            getViewModel().postMessage(dataManager.getMyInfo().getId());
+        }
+
     }
 
     private void initViews() {
@@ -97,5 +108,13 @@ public class LetterActivity extends BaseActivity<ActivityLetterBinding, LetterVi
     public void handleError(Throwable throwable) {
         Logger.e("handleError " + throwable.getMessage());
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getIntent().getExtras() != null) {
+            MainActivity.start(this);
+        }
+        super.onBackPressed();
     }
 }

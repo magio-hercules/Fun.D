@@ -1,5 +1,6 @@
 package com.fund.iam.core;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 
@@ -31,9 +32,19 @@ public class IamApplication extends Application implements HasAndroidInjector {
         return dispatchingAndroidInjector;
     }
 
+    private Activity mCurrentActivity = null;
+    public Activity getCurrentActivity(){
+        return mCurrentActivity;
+    }
+    public void setCurrentActivity(Activity mCurrentActivity){
+        this.mCurrentActivity = mCurrentActivity;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+
+
 
         DaggerAppComponent.builder()
                 .application(this)

@@ -1,8 +1,8 @@
 package com.fund.iam.data.model.request;
 
 import com.fund.iam.data.model.Letter;
+import com.fund.iam.data.model.Notification;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 public class PushBody {
 
     private String to;
+    private Notification notification;
     private String priority;
     private Letter data;
 }

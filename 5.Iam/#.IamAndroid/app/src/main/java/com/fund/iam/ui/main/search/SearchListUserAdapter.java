@@ -98,7 +98,8 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
         });
 
         holder.iv_letter.setOnClickListener(v -> {
-            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel_filterKeyword.get(position).getId(), usersModel_filterKeyword.get(position).getUserName(), usersModel_filterKeyword.get(position).getImageUrl(), usersModel_filterKeyword.get(position).getToken()));
+//            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel_filterKeyword.get(position).getId(), usersModel_filterKeyword.get(position).getUserName(), usersModel_filterKeyword.get(position).getImageUrl(), usersModel_filterKeyword.get(position).getToken()));
+            LetterBoxBus.getInstance().sendLetterBox(new LetterBox(usersModel_filterKeyword.get(position)));
             LetterActivity.start(mContext);
         });
 

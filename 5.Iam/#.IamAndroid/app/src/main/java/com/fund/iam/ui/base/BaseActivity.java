@@ -1,5 +1,6 @@
 package com.fund.iam.ui.base;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,8 +12,11 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
-import androidx.databinding.ViewDataBinding;import androidx.fragment.app.Fragment;
+import androidx.databinding.ViewDataBinding;
+import androidx.fragment.app.Fragment;
 
+
+import com.fund.iam.core.IamApplication;
 
 import dagger.android.AndroidInjection;
 
@@ -52,6 +56,21 @@ public abstract class BaseActivity<T extends ViewDataBinding, V extends BaseView
         performDependencyInjection();
         super.onCreate(savedInstanceState);
         performDataBinding();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ((IamApplication) getApplicationContext()).setCurrentActivity(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Activity currActivity = ((IamApplication) getApplicationContext()).getCurrentActivity();
+        if (this.equals(currActivity))
+            ((IamApplication) getApplicationContext()).setCurrentActivity(null);
     }
 
     public T getViewDataBinding() {

@@ -43,7 +43,7 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
                 }
             }
 
-            return Observable.combineLatest(getDataManager().postJobs().toObservable(), getDataManager().postLocations().toObservable(), Observable.timer(3, TimeUnit.SECONDS), (jobs, locations, timeSet) -> {
+            return Observable.combineLatest(getDataManager().postJobs().toObservable(), getDataManager().postLocations().toObservable(), Observable.timer(2, TimeUnit.SECONDS), (jobs, locations, timeSet) -> {
                 getDataManager().setJobs(jobs.body());
                 getDataManager().setLocations(locations.body());
                 return timeSet;
@@ -51,8 +51,6 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
         } else {
             return Observable.error(new Exception("version error"));
         }
-
-
     }
 
     private void checkAuth() {

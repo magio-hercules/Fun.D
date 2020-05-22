@@ -31,18 +31,17 @@
         <activity android:name=".ui.login.LoginActivity" />
 
         <activity
-            android:name=".ui.main.MainActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
+            android:name=".ui.main.MainActivity"/>
 
         <activity
             android:name=".ui.letter.LetterActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
-            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"/>
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize">
+            <intent-filter>
+                <action android:name="OPEN_ACTIVITY"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.kakao.sdk.AppKey"
@@ -85,13 +84,6 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_path" />
         </provider>
-
-        <receiver android:name=".YourBrodcastReceiverClass"  android:exported="true">
-            <intent-filter>
-                <!-- The actions you wish to listen to, below is an example -->
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
-        </receiver>
 
     </application>
 

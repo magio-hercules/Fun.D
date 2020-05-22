@@ -1,13 +1,11 @@
 package com.fund.iam.data.model;
 
-import androidx.room.Ignore;
 
 import com.google.gson.annotations.SerializedName;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 @Data
@@ -16,11 +14,11 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = false)
 public class Letter {
 
-    @SerializedName("user_id")
-    private int id;
+    @SerializedName("user")
+    private User user;
 
-    @SerializedName("friend_id")
-    private int friendId;
+    @SerializedName("friend")
+    private User friend;
 
     @SerializedName("message_owner")
     private int messageOwner;
@@ -30,6 +28,9 @@ public class Letter {
     private String message;
 
     private String imageUrl;
+
+    @SerializedName("user_token")
+    private String userToken;
 
     public Letter(int type, String message) {
         this.type = type;
