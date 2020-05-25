@@ -2,6 +2,7 @@ package com.fund.iam.ui.main.bookmark;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -12,12 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.fund.iam.BR;
 import com.fund.iam.R;
 import com.fund.iam.data.DataManager;
+import com.fund.iam.data.model.User;
 import com.fund.iam.databinding.FragmentBookmarkBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
 import com.orhanobut.logger.Logger;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -121,9 +121,13 @@ public class BookmarkFragment extends BaseFragment<FragmentBookmarkBinding, Book
         adapter_users = new BookmarkListUserAdapter();
         getViewDataBinding().recyclerViewUsers.setAdapter(adapter_users);
 
+        User info = dataManager.getMyInfo();
+        int userId = info.getId();
+        Log.d(TAG, "initViews userId : " + userId);
+
         getViewModel().getJobsInfo();
-        getViewModel().getBookmarkChannelsInfo(31);
-        getViewModel().getBookmarkUsersInfo(1);
+        getViewModel().getBookmarkChannelsInfo(userId);
+        getViewModel().getBookmarkUsersInfo(userId);
     }
 
     public void setChannelData() {
