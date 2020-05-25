@@ -70,7 +70,7 @@ public class BookmarkFragment extends BaseFragment<FragmentBookmarkBinding, Book
 
     @Override
     public void updateUsers() {
-        Logger.d("jobs Size" + getViewModel().jobs.size());
+        //Logger.d("jobs Size" + getViewModel().jobs.size());
         adapter_users.setModel_Users(getViewModel().users, getViewModel().jobs);
     }
 
@@ -122,7 +122,7 @@ public class BookmarkFragment extends BaseFragment<FragmentBookmarkBinding, Book
         getViewDataBinding().recyclerViewUsers.setAdapter(adapter_users);
 
         getViewModel().getJobsInfo();
-        getViewModel().getBookmarkChannelsInfo(1);
+        getViewModel().getBookmarkChannelsInfo(31);
         getViewModel().getBookmarkUsersInfo(1);
     }
 
