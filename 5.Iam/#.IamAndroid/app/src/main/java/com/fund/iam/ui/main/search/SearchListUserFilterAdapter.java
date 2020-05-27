@@ -41,7 +41,7 @@ public class SearchListUserFilterAdapter extends RecyclerView.Adapter<SearchList
     @Override
     public void onBindViewHolder(@NonNull ViewHoder holder, int position) {
 
-        for (int i = ItemCount; i < user_filters_view.size();i++) {
+        for (int i = ItemCount; i < user_filters.size() ;i++) {
             if(user_filters.get(i) != 0) {
                 switch (ItemCount) {
                     // 지역
@@ -102,6 +102,7 @@ public class SearchListUserFilterAdapter extends RecyclerView.Adapter<SearchList
         this.spinner_str_user_gender = spinner_str_user_gender;
         this.spinner_str_user_age = spinner_str_user_age;
         this.user_filters = user_filters;
+
         user_filters_view.removeAll(user_filters_view);
         for(int i = 0 ; i<user_filters.size(); i++ ) {
             if(user_filters.get(i) != 0) {

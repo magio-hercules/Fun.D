@@ -24,7 +24,7 @@ import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.data.model.Location;
 import com.fund.iam.data.model.User;
 import com.fund.iam.ui.letter.LetterActivity;
-import com.kakao.util.helper.log.Logger;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,62 +134,59 @@ public class SearchListUserAdapter extends RecyclerView.Adapter<SearchListUserAd
     public void setModel_Users(List<User> usersModel, List<Job> jobsModel) {
         this.usersModel = usersModel;
         this.jobsModel = jobsModel;
-        this.usersModel_filter = usersModel;
+        this.usersModel_filter.addAll(usersModel);
         notifyDataSetChanged();
     }
 
     public void setUserFilter(List<Location> locationsModel, List<Integer> user_filters) {
         this.locationsModel = locationsModel;
         this.user_filters = user_filters;
+
+
+
+//        Toast.makeText(mContext,"성공",Toast.LENGTH_SHORT).show();
         usersModel_filter.removeAll(usersModel_filter);
         usersModel_filter_result.removeAll(usersModel_filter_result);
 
-        // 지역
-        for (int i = 0; i < usersModel.size(); i++) {
+        String location;
+        String job;
+        int gender;
+        int age;
 
-            if (usersModel.get(i).getLocationList() != null) {
-                if (user_filters.get(0) == 0 || Integer.parseInt(usersModel.get(i).getLocationList()) == user_filters.get(0) - 1) {
-                    usersModel_filter.add(usersModel.get(i));
+        for (int i = 0; i < this.usersModel.size(); i++) {
+            if (user_filters.get(0) != 0) {
+                location = this.usersModel.get(i).getLocationList();
+                if (location == null || Integer.parseInt(location) != user_filters.get(0)) {
+                    Log.d("test" , "location : " + location + ", user_filters.get(0) : " + user_filters.get(0));
+                    continue;
+                }
+            }
+            if (user_filters.get(1) != 0) {
+                job = usersModel.get(i).getJobList();
+                if (job == null || Integer.parseInt(job) != user_filters.get(1)) {
+                    Log.d("test" , "job : " + job + ", user_filters.get(1) : " + user_filters.get(1));
+                    continue;
+                }
+            }
+            if (user_filters.get(2) != 0) {
+                gender = usersModel.get(i).getGender();
+                if (gender == -1 || gender != user_filters.get(2) - 1) {
+                    Log.d("test" , "gender : " + gender + ", user_filters.get(2) : " + user_filters.get(2));
+                    continue;
+                }
+            }
+            if (user_filters.get(3) != 0) {
+                age = usersModel.get(i).getAge();
+                if (age == -1 || age != user_filters.get(3) - 1) {
+                    Log.d("test" , "age : " + age + ", user_filters.get(3) : " + user_filters.get(3));
+                    continue;
                 }
             }
 
+            usersModel_filter.add(usersModel.get(i));
+            usersModel_filter_result.add(usersModel.get(i));
         }
-//        // 직종
-//        for (int i=0; i<usersModel_filter.size(); i++) {
-//
-//            if(usersModel_filter.get(i).getJobList() != null) {
-//                if (user_filters.get(1) == 0 || Integer.parseInt(usersModel_filter.get(i).getJobList()) == user_filters.get(1)-1) {
-//                    usersModel_filter_result.add(usersModel_filter.get(i));
-//                }
-//            }
-//        }
-//        usersModel_filter.removeAll(usersModel_filter);
-//        usersModel_filter.addAll(usersModel_filter_result);
-//        usersModel_filter_result.removeAll(usersModel_filter_result);
-//
-//        // 성별
-//
-//        for (int i=0; i<usersModel_filter.size(); i++) {
-//
-//            if (user_filters.get(2) == 0 || usersModel_filter.get(i).getGender() == user_filters.get(2)-1) {
-//                usersModel_filter_result.add(usersModel_filter.get(i));
-//            }
-//        }
-//        usersModel_filter.removeAll(usersModel_filter);
-//        usersModel_filter.addAll(usersModel_filter_result);
-//        usersModel_filter_result.removeAll(usersModel_filter_result);
-//
-//        // 나이대
-//
-//        for (int i=0; i<usersModel_filter.size(); i++) {
-//
-//            if (user_filters.get(3) == 0 || usersModel_filter.get(i).getAge() == user_filters.get(3)-1) {
-//                usersModel_filter_result.add(usersModel_filter.get(i));
-//            }
-//        }
-//        usersModel_filter.removeAll(usersModel_filter);
-//        usersModel_filter.addAll(usersModel_filter_result);
-//        usersModel_filter_result.removeAll(usersModel_filter_result);
+
 
     }
 

@@ -1,18 +1,33 @@
 package com.fund.iam.ui.main.channel;
 
+import androidx.annotation.RequiresApi;
+import androidx.core.content.FileProvider;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.navigation.Navigation;
 
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +42,29 @@ import com.fund.iam.data.model.Channel;
 import com.fund.iam.databinding.FragmentCreateChannelBinding;
 import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseFragment;
+import com.fund.iam.utils.RealPathUtil;
 import com.orhanobut.logger.Logger;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.inject.Inject;
+
+import static android.app.Activity.RESULT_OK;
 
 public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBinding, CreateChannelViewModel> implements CreateChannelNavigator, View.OnClickListener {
 
     public static final String TAG = CreateChannelFragment.class.getSimpleName();
+    private static final int REQUEST_TAKE_PHOTO = 2222;
+    private static final int REQUEST_TAKE_ALBUM = 3333;
+    private static final int REQUEST_IMAGE_CROP = 4444;
+    private static final int REQUEST_IMAGE_CROP_AFTER = 5555;
+    String mCurrentPhotoPath;
+    Uri imageUri;
+    Uri photoURI;
 
     @Inject
     ViewModelProviderFactory viewModelProviderFactory;
@@ -95,8 +126,18 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
 
     private void initView(View view) {
 
+
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         assert imm != null;
+
+
+        // 채널 이미지 생성 로직
+        getViewDataBinding().ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         getViewDataBinding().btCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -315,6 +356,7 @@ public class CreateChannelFragment extends BaseFragment<FragmentCreateChannelBin
         });
 
     }
+
 
     @Override
     public void onClick(View view) {
