@@ -786,8 +786,8 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
         String editText = "";
         String prevText = "";
 
-        // 포트폴리오 layout에 남아있는 view 정보
-        for(int i=0; i<count; i++) {
+        // 포트폴리오 layout에 남아있는 view 정보, i=남아있는 정보, j=db정보
+        for(int i=0, j=0; i<count; ) {
             innerLayout = (LinearLayout)layout.getChildAt(i);
             v = innerLayout.getChildAt(1);
 
@@ -795,22 +795,30 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                 imageView = (ImageView) v;
                 Log.d(TAG, i + "번째 imageView url : " + imageView);
 
-                if (i < listPortfolio.size()) {
-                    prevUrl = listPortfolio.get(i).getImageUrl();
-                    Log.d(TAG, i + "번째 prevUrl : " + prevUrl);
+                if (j < listPortfolio.size()) {
+                    prevUrl = listPortfolio.get(j).getImageUrl();
+                    Log.d(TAG, j + "번째 prevUrl : " + prevUrl);
                 }
             } else if (v instanceof EditText) {
                 editView = (EditText) v;
                 editText = editView.getText().toString();
                 Log.d(TAG, i + "번째 editView editText : " + editText);
 
-                if (i < listPortfolio.size()) {
-                    prevText = listPortfolio.get(i).getText();
-                    Log.d(TAG, i + "번째 prevText : " + prevText);
+                if (j < listPortfolio.size()) {
+                    prevText = listPortfolio.get(j).getText();
+                    Log.d(TAG, j + "번째 prevText : " + prevText);
+
+                    int _id = listPortfolio.get(j).getId();
+
+                    // 삭제 항목인지 체크
+                    if (arrDeletePortfolio.contains(_id)) {
+                        Log.d(TAG, "삭제 항목 id : " + _id);
+                        j++;
+                        continue;
+                    }
 
                     // 기존 포트폴리오 text 수정사항 체크
                     if (!editText.equals(prevText)) {
-                        int _id = listPortfolio.get(i).getId();
                         Log.d(TAG, "기존 아이템 수정 id : " + _id
                                 + ", 변경 전 : " + prevText + ", 변경 후 : " + editText);
                         Map<Integer, String> map = new HashMap<Integer, String>();
@@ -819,6 +827,9 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     }
                 }
             }
+
+            i++;
+            j++;
         }
 
         Log.d(TAG, "arrAddPortfolioText : " + arrAddPortfolioText.toString());
@@ -1257,6 +1268,7 @@ public class HomeEditFragment extends BaseFragment<FragmentHomeEditBinding, Home
                     if (!bFind) {
                         Log.d(TAG, "신규 아이템 추가 editId : " + PORTFOLIPO_EDIT_ID + portfolidIndex);
                         map.put(PORTFOLIPO_EDIT_ID + portfolidIndex, value);
+                        // id를 -1로 지정해야할듯?
                         arrAddPortfolioText.add(map);
                     }
                 } else {
