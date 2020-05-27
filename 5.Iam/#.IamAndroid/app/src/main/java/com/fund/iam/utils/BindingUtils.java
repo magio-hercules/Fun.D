@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.fund.iam.R;
 import com.google.android.gms.common.SignInButton;
 import com.orhanobut.logger.Logger;
 
@@ -31,6 +32,7 @@ public final class BindingUtils {
     public static void setImageResource(ImageView imageView, String imageUrl) {
         Glide.with(imageView.getContext())
                 .load(imageUrl)
+                .placeholder(R.drawable.profile_default_2)
                 .apply(RequestOptions.centerCropTransform())
                 .into(imageView);
     }

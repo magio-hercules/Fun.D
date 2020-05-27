@@ -2,18 +2,16 @@ package com.fund.iam.ui.main.letterbox;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 
-import androidx.databinding.ObservableBoolean;
 import androidx.databinding.ObservableField;
+import androidx.navigation.Navigation;
 
-import com.annimon.stream.Stream;
-import com.bumptech.glide.Glide;
 import com.fund.iam.data.bus.LetterBoxBus;
-import com.fund.iam.data.bus.LetterBus;
-import com.fund.iam.data.model.Job;
 import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.data.model.User;
 import com.fund.iam.ui.letter.LetterActivity;
+import com.fund.iam.ui.main.bookmark.BookmarkFragmentDirections;
 import com.orhanobut.logger.Logger;
 
 public class ItemLetterBoxViewModel {
@@ -25,6 +23,7 @@ public class ItemLetterBoxViewModel {
     public ObservableField<String> imageUrl = new ObservableField<>();
     private LetterBox letterBox;
     private Context context;
+    private View view;
 
     private LetterBoxListener mListener;
 
@@ -32,9 +31,10 @@ public class ItemLetterBoxViewModel {
         void onRead();
     }
 
-    public ItemLetterBoxViewModel(Context context, LetterBox letterBox, LetterBoxListener listener) {
+    public ItemLetterBoxViewModel(View view, Context context, LetterBox letterBox, LetterBoxListener listener) {
         Logger.d("ItemLetterBoxViewModel " + letterBox);
         this.context = context;
+        this.view = view;
         this.letterBox = letterBox;
         mListener = listener;
         imageUrl.set(letterBox.getImageUrl());
@@ -46,8 +46,16 @@ public class ItemLetterBoxViewModel {
     }
 
     public void onItemClick() {
+        BookmarkFragmentDirections.ActionNavigationBookmarkToNavigationHome action = BookmarkFragmentDirections.actionNavigationBookmarkToNavigationHome();
+        action.setArgProfileEmail(letterBox.getEmail());
+//        action.setArgProfileType(letterBox.get);
+        Navigation.findNavController(view).navigate(action);
+    }
+
+    public void onLetterClick() {
         mListener.onRead();
-        LetterBoxBus.getInstance().sendLetterBox(new LetterBox(new User(letterBox.getFriendId(),letterBox.getName(), letterBox.getImageUrl(), letterBox.getToken())));
+        LetterBoxBus.getInstance().sendLetterBox(new LetterBox(new User(letterBox.getFriendId(), letterBox.getName(), letterBox.getImageUrl(), letterBox.getToken())));
         LetterActivity.start(context);
     }
+
 }

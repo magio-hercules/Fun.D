@@ -8,22 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fund.iam.data.enums.LetterType;
-import com.fund.iam.data.model.Letter;
 import com.fund.iam.data.model.LetterBox;
 import com.fund.iam.databinding.ItemEmptyBinding;
-import com.fund.iam.databinding.ItemLetterLocalBinding;
-import com.fund.iam.databinding.ItemLetterRemoteBinding;
 import com.fund.iam.databinding.ItemLetterboxBinding;
 import com.fund.iam.ui.base.BaseViewHolder;
-import com.fund.iam.ui.letter.ItemLetterViewModel;
 import com.orhanobut.logger.Logger;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static android.telecom.DisconnectCause.LOCAL;
-import static android.telecom.DisconnectCause.REMOTE;
 import static com.fund.iam.ui.base.BaseViewHolder.VIEW_TYPE_EMPTY;
 import static com.fund.iam.ui.base.BaseViewHolder.VIEW_TYPE_NORMAL;
 
@@ -107,7 +99,7 @@ public class LetterBoxAdapter extends RecyclerView.Adapter<BaseViewHolder> {
         public void onBind(int position) {
             final LetterBox letterBox = letterBoxes.get(position);
             letterLocalBinding.badge.setVisibility(letterBox.isBadge() ? View.VISIBLE : View.GONE);
-            ItemLetterBoxViewModel letterBoxViewModel = new ItemLetterBoxViewModel(context, letterBox, this);
+            ItemLetterBoxViewModel letterBoxViewModel = new ItemLetterBoxViewModel(letterLocalBinding.getRoot(), context, letterBox, this);
             switch (getItemViewType()) {
                 case VIEW_TYPE_NORMAL:
                     letterLocalBinding.setViewModel(letterBoxViewModel);

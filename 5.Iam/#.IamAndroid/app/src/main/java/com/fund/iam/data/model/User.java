@@ -85,4 +85,13 @@ public class User implements Serializable {
         this.imageUrl = imageUrl;
         this.token = token;
     }
+
+
+    // contact us
+    public User(String userName, String imageUrl, String email, String jobList) {
+        this.userName = userName;
+        this.imageUrl = imageUrl;
+        this.email = email;
+        this.jobList = jobList;
+    }
 }

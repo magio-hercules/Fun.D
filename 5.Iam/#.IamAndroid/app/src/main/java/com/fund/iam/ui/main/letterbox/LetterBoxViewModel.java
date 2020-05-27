@@ -9,10 +9,11 @@ import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
 import com.orhanobut.logger.Logger;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LetterBoxViewModel extends BaseViewModel<LetterBoxNavigator> {
-    private List<LetterBox> updatedLetterBoxes;
+    private List<LetterBox> updatedLetterBoxes = new ArrayList<>();
 
     public LetterBoxViewModel(DataManager dataManager, SchedulerProvider schedulerProvider, ResourceProvider resourceProvider) {
         super(dataManager, schedulerProvider, resourceProvider);
@@ -39,7 +40,7 @@ public class LetterBoxViewModel extends BaseViewModel<LetterBoxNavigator> {
 
                         getNavigator().onRepositoriesChanged(updatedLetterBoxes);
                     }
-                }));
+                }, onError -> getNavigator().handleError(onError)));
 
         getCompositeDisposable().add(LetterBus.getInstance().getBadge()
                 .observeOn(getSchedulerProvider().ui())
