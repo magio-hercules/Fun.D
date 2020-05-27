@@ -15,8 +15,9 @@
         android:textSize="24dp" />
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         app:cardUseCompatPadding="true"
         app:cardCornerRadius="8dp"
         app:cardElevation="16dp"
@@ -26,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:scaleType="centerCrop"
             android:src="@drawable/profile_default_picture"/>
     </androidx.cardview.widget.CardView>
@@ -34,7 +36,6 @@
         android:id="@+id/portfolioImage_delete"
         android:layout_width="14dp"
         android:layout_height="17dp"
-        android:layout_marginLeft="10dp"
         android:layout_gravity="center"
         app:layout_constraintEnd_toStartOf="parent"
         android:background="?attr/selectableItemBackgroundBorderless"
