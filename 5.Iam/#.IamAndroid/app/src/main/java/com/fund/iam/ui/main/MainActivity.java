@@ -26,6 +26,7 @@ import com.fund.iam.di.ViewModelProviderFactory;
 import com.fund.iam.ui.base.BaseActivity;
 import com.fund.iam.ui.letter.LetterActivity;
 import com.fund.iam.ui.main.more.notice.NoticeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.orhanobut.logger.Logger;
 
 import javax.inject.Inject;
@@ -88,9 +89,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     private void initViews() {
         mNavController = Navigation.findNavController(this, R.id.fragment_container);
+
 //        NavigationUI.setupWithNavController(getViewDataBinding().toolbar, mNavController);
         NavigationUI.setupWithNavController(getViewDataBinding().navigationBottom, mNavController);
-//        mNavController.addOnDestinationChangedListener(this);
+        getViewDataBinding().navigationBottom.setOnNavigationItemReselectedListener(item -> Logger.d("test " + item.getItemId()));
+        mNavController.addOnDestinationChangedListener(this);
     }
 
     public void actionNavigate(View view) {
@@ -119,6 +122,9 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
 
     @Override
     public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
+
+//        getViewDataBinding().navigationBottom.getMenu().findItem(destination.getId()).setEnabled(false);
+
 //        switch (destination.getId()) {
 //            case R.id.navigation_home:
 //            case R.id.navigation_more:

@@ -20,6 +20,7 @@ import com.fund.iam.ui.letter.LetterAdapter;
 import com.fund.iam.ui.main.letterbox.LetterBoxAdapter;
 import com.fund.iam.ui.main.more.MoreAdapter;
 import com.fund.iam.ui.main.more.notice.NoticeAdapter;
+import com.fund.iam.ui.main.more.setting.contact_us.ContactAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -94,6 +95,11 @@ public class AppModule {
     @Provides
     LetterBoxAdapter provideLetterBoxAdapter() {
         return new LetterBoxAdapter(new ArrayList<>());
+    }
+
+    @Provides
+    ContactAdapter provideContactAdapter() {
+        return new ContactAdapter(new ArrayList<>());
     }
 
     @Provides

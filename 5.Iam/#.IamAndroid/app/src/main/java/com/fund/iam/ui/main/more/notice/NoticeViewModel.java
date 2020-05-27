@@ -9,8 +9,6 @@ import com.fund.iam.di.provider.SchedulerProvider;
 import com.fund.iam.ui.base.BaseViewModel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 import io.reactivex.Maybe;
 

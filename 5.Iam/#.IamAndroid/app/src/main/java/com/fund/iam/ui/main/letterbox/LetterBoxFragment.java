@@ -59,7 +59,6 @@ public class LetterBoxFragment extends BaseFragment<FragmentLetterboxBinding, Le
 
     @Override
     public void onRepositoriesChanged(List<LetterBox> letterBoxes) {
-        Logger.d("onRepositoriesChanged " + letterBoxes.get(0));
         letterBoxAdapter.clearItems();
         letterBoxAdapter.addItems(letterBoxes);
     }
