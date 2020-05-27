@@ -85,7 +85,7 @@ public class ChannelUserListFragment extends BaseFragment<FragmentChannelUserLis
 
 
         getViewDataBinding().rvChannelUserList.setHasFixedSize(true);
-        getViewDataBinding().rvChannelUserList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        getViewDataBinding().rvChannelUserList.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         adapter_channelusers = new ChannelUserListAdapter();
         getViewDataBinding().rvChannelUserList.setAdapter(adapter_channelusers);
 
