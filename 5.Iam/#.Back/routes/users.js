@@ -20,6 +20,20 @@ function postUser(param) {
   });
 }
 
+function TEST(param) {
+  console.log(`call postUserInfo`);
+  let queryString = `SELECT * FROM ${DB_TABLE_USERPORTFOLIO}`;
+
+  return new Promise(function (resolve, reject) {
+    db.query(queryString, param, function (err, result) {
+      if (err) {
+        reject(err);
+      }
+      resolve(result);
+    });
+  });
+}
+
 function postUserInfo(email, sns_type) {
   console.log(`call postUserInfo`);
   let queryString = `SELECT * FROM ${DB_TABLE_USERINFO} WHERE email = ? AND sns_type = ?`;
@@ -214,6 +228,19 @@ router.post(`/userUpdate`, function (req, res, next) {
     })
     .catch(function (err) {
       console.log(`[userUpdate] error : ${err}`);
+      res.end(`NOK`);
+    });
+});
+
+router.post("/test", function (req, res, next) {
+  console.log(`API = /`);
+
+  TEST()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch(function (err) {
+      console.log(`[postUser] error : ${err}`);
       res.end(`NOK`);
     });
 });

@@ -8,7 +8,7 @@ const DB_TABLE_USERINFO = `user_info`;
 
 function postLetterBoxInfo(param) {
   console.log(`call postLetterBoxInfo`);
-  let queryString = `SELECT A.id, A.user_id, A.friend_id, B.token, B.image_url, B.user_name, B.email, B.job_list
+  let queryString = `SELECT A.id, A.user_id, A.friend_id, B.token, B.image_url, B.user_name, B.email, B.job_list, B.sns_type
   FROM ${DB_TABLE_LETTERBOXINFO} AS A 
   JOIN ${DB_TABLE_USERINFO} AS B 
   ON A.friend_id = B.id
