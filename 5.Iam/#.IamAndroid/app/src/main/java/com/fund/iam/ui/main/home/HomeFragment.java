@@ -140,7 +140,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding, HomeViewMode
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initViews() {
         Log.d(TAG, "initViews");
-
+//        boolean email = HomeFragmentArgs.fromBundle(getArguments()).getIsSelectedUser();
         String email = HomeFragmentArgs.fromBundle(getArguments()).getArgProfileEmail();
         String type = HomeFragmentArgs.fromBundle(getArguments()).getArgProfileType();
 

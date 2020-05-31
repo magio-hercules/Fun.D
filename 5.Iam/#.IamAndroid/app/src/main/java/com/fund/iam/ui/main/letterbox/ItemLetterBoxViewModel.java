@@ -46,10 +46,10 @@ public class ItemLetterBoxViewModel {
     }
 
     public void onItemClick() {
-        BookmarkFragmentDirections.ActionNavigationBookmarkToNavigationHome action = BookmarkFragmentDirections.actionNavigationBookmarkToNavigationHome();
-        action.setArgProfileEmail(letterBox.getEmail());
+//        BookmarkFragmentDirections.ActionNavigationBookmarkToNavigationHome action = BookmarkFragmentDirections.actionNavigationBookmarkToNavigationHome();
+//        action.setArgProfileEmail(letterBox.getEmail());
 //        action.setArgProfileType(letterBox.get);
-        Navigation.findNavController(view).navigate(action);
+//        Navigation.findNavController(view).navigate(action);
     }
 
     public void onLetterClick() {
