@@ -25,7 +25,7 @@ allprojects {
 ext {
     androidCompileSdkVersion = 29
     androidMinSdkVersion = 23
-    androidTargetSdkVersion = 26
+    androidTargetSdkVersion = 28
 }
 
 task clean(type: Delete) {

@@ -8,9 +8,9 @@ android {
         applicationId "com.fund.iam"
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
-        versionCode 1
+        versionCode 5
 //        versionName "1.0.0"//최종 릴리즈 부터 [major].[minor].[patch] 형태
-        versionName "1.0"//테스트 용으로 오프섯다 버전으로 함
+        versionName "1.0.0"//테스트 용으로 오프섯다 버전으로 함
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // SVG 세팅...

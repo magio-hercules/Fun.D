@@ -27,7 +27,7 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
         super(dataManager, schedulerProvider, resourceProvider);
         this.context = context;
         getCompositeDisposable().add(
-                getDataManager().getVersion(/*context.getPackageName()*/"com.fundroid.offstand")
+                getDataManager().getVersion(context.getPackageName())
                         .flatMapObservable(this::getInitialData)
                         .subscribe(timeSet -> checkAuth(), onError -> Logger.e("initialData Error")));
 

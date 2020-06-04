@@ -82,8 +82,8 @@ public class ContactUsFragment extends BaseFragment<FragmentContactUsBinding, Co
         getViewDataBinding().contacts.setAdapter(contactAdapter);
         ArrayList<User> contacts = new ArrayList<>();
         contacts.add(new User("김종민","https://lh3.googleusercontent.com/a-/AOh14GjtOXolIFGJn9t7Oc1OWPN3LzW96rAA3JcNd5sgy7M=s96-c","kjmhercules@gmail.com","PO ∙ 개발"));
-        contacts.add(new User("마지연","","wlwlbebe@naver.com","PM ∙ 디자인"));
-        contacts.add(new User("문형두","https://fund7bucket.s3.ap-northeast-2.amazonaws.com/iam_bucket/newfirenergy%40gmail.com_GOOGLE_profile.jpg","newfirenergy@gmail.com","기획"));
+        contacts.add(new User("마지연","https://fund7bucket.s3.ap-northeast-2.amazonaws.com/iam_bucket/jiyeon.png","wlwlbebe@naver.com","PM ∙ 디자인"));
+        contacts.add(new User("문형두","https://fund7bucket.s3.ap-northeast-2.amazonaws.com/iam_bucket/mrmoon.png","newfirenergy@gmail.com","기획"));
         contacts.add(new User("김유진","","collor02@gmail.com","기획"));
         contacts.add(new User("황교욱","https://fund7bucket.s3.ap-northeast-2.amazonaws.com/iam_bucket/ghkdroqkf%40gmail.com_GOOGLE_profile.jpg","hkw0101@hotmail.com","디자인"));
         contacts.add(new User("신상호","","sangho8216@gmail.com","디자인"));
