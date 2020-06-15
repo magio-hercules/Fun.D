@@ -38,6 +38,9 @@ import javax.inject.Inject;
 import static com.fund.iam.core.AppConstants.RC_FACEBOOK_SIGN_IN;
 import static com.fund.iam.core.AppConstants.RC_GOOGLE_SIGN_IN;
 import static com.fund.iam.core.AppConstants.RC_KAKAO_SIGN_IN;
+import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.SIGN_IN_CANCELLED;
+import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.SIGN_IN_CURRENTLY_IN_PROGRESS;
+import static com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes.SIGN_IN_FAILED;
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> implements LoginNavigator, FacebookCallback<LoginResult> {
 
@@ -100,7 +103,21 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
                     Logger.d("LoginActivity account " + account);
                     getViewModel().firebaseAuthWithGoogle(account);
                 } catch (ApiException e) {
-                    handleError(e);
+                    switch (e.getStatusCode()) {
+                        case SIGN_IN_FAILED:
+                            showToast("구글 로그인 도중 실패하었습니다. 다시 시도해주세요.");
+                            break;
+
+                        case SIGN_IN_CANCELLED:
+                            showToast("구글 로그인 도중 취소되었습니다. 다시 시도해주세요.");
+                            break;
+
+                        case SIGN_IN_CURRENTLY_IN_PROGRESS:
+                            showToast("구글 로그인 도중 중지되었습니다. 다시 시도해주세요.");
+                            break;
+                        default:
+                            handleError(e);
+                    }
                 }
                 break;
 
@@ -158,5 +175,24 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
     public void handleError(Throwable throwable) {
         Logger.e("handleError " + throwable.getMessage());
         Toast.makeText(this, throwable.getMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Logger.d("onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Logger.d("onStop");
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Logger.d("onDestroy");
     }
 }
