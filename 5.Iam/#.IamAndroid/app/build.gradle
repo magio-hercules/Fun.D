@@ -8,8 +8,8 @@ android {
         applicationId "com.fund.iam"
         minSdkVersion androidMinSdkVersion
         targetSdkVersion androidTargetSdkVersion
-        versionCode 6
-        versionName "1.0.1"
+        versionCode 7
+        versionName "1.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // SVG 세팅...

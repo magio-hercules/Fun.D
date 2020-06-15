@@ -37,8 +37,10 @@ public class IntroViewModel extends BaseViewModel<IntroNavigator> {
 
         if (version.isSuccessful()) {
             for (String v : version.body().getVersions()) {
-//                    if (Pattern.matches("^[0-9]{1}.[0-9]{1}.[0-9]{1}$", version)) {     // [major].[minor].[patch] 형태
-                if (Pattern.matches("^[0-9]{1}.[0-9]{1}$", v)) {
+                Logger.d("version before  " + version.body().getVersions().size() + ", " + v);
+                if (Pattern.matches("^[0-9]{1}.[0-9]{1}.[0-9]{1}$", v)) {     // [major].[minor].[patch] 형태
+//                if (Pattern.matches("^[0-9]{1}.[0-9]{1}$", v)) {
+                    Logger.d("version " + v);
                     getDataManager().setMarketVersion(v);
                 }
             }

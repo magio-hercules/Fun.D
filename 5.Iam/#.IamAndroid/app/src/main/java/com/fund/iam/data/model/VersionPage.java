@@ -12,7 +12,7 @@ import pl.droidsonroids.jspoon.annotation.Selector;
 @Data
 public class VersionPage {
 
-    @Selector(".IQ1z0d")
+    @Selector(".htlgb")
     public List<String> versions;
 
 }
