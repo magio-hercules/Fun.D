@@ -1,0 +1,721 @@
+/*
+  Theme Name: eBusiness
+  Theme URL: https://bootstrapmade.com/ebusiness-bootstrap-corporate-template/
+  Author: BootstrapMade.com
+  License: https://bootstrapmade.com/license/
+*/
+
+
+/*-----------------------------------------------------------------------------------
+   CSS INDEX
+  ===================
+
+  1. Theme Default CSS (body, link color, section etc)
+  2. Header Area
+   2.1 Stick menu Area
+  3. About Area
+  4.Services Area
+  5.Skill Area
+  6.Faq Area
+  7.Wellcome Area
+  8.Team Area
+  9.Review Area
+  10.Portfolio Area
+  11. Pricing Table
+  12. Testimonials area
+  13. Review Area
+  14. Quote area
+  15.Footer Area
+  16.Home Page-2 Area
+  17.Home Page 3  CSS
+  18.Blog CSS
+  17.Blog Details CSS
+
+-----------------------------------------------------------------------------------*/
+
+
+/*----------------------------------------*/
+
+
+/*  1.  Theme default CSS
+/*----------------------------------------*/
+
+@import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background: #000000;
+    height: 100%;
+}
+
+.floatleft {
+    float: left;
+}
+
+.floatright {
+    float: right;
+}
+
+.alignleft {
+    float: left;
+    margin-right: 15px;
+    margin-bottom: 15px;
+}
+
+.alignright {
+    float: right;
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+
+.aligncenter {
+    display: block;
+    margin: 0 auto 15px;
+}
+
+a:focus {
+    outline: 0px solid;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.fix {
+    overflow: hidden;
+}
+
+p {
+    margin: 0 0 15px;
+    color: #444;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Raleway", sans-serif;
+    margin: 0 0 15px;
+    color: #444;
+    font-weight: 500;
+}
+
+h1 {
+    font-size: 48px;
+    line-height: 50px;
+}
+
+h2 {
+    font-size: 38px;
+    line-height: 40px;
+}
+
+h3 {
+    font-size: 30px;
+    line-height: 32px;
+}
+
+h4 {
+    font-size: 24px;
+    line-height: 26px;
+}
+
+h5 {
+    font-size: 20px;
+    line-height: 22px;
+}
+
+h6 {
+    font-size: 16px;
+    line-height: 20px;
+}
+
+a {
+    transition: all 0.3s ease 0s;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #3ec1d5;
+    text-decoration: none;
+}
+
+a:active,
+a:hover {
+    outline: 0 none;
+}
+
+body {
+    background: #000 none repeat scroll 0 0;
+    color: #fff;
+    font-family: "Open Sans", sans-serif;
+    font-size: 14px;
+    text-align: left;
+    overflow-x: hidden;
+    line-height: 22px;
+}
+
+
+/* Back to top button */
+
+.back-to-top {
+    position: fixed;
+    /* display: none; */
+    width: 102px;
+    height: 102px;
+    /* background: #3ec1d5; */
+    color: #fff;
+    /* padding: 6px 12px 9px 12px; */
+    font-size: 16px;
+    border-radius: 2px;
+    right: 15px;
+    bottom: 15px;
+    transition: background 0.5s;
+    background: transparent url("../img/fund/icon_top.png") center top no-repeat;
+    background-size: contain;
+}
+
+@media (max-width: 768px) {
+    .back-to-top {
+        bottom: 15px;
+    }
+}
+
+.back-to-top:focus {
+    /* background: #3ec1d5;
+  color: #fff;
+  outline: none; */
+}
+
+.back-to-top:hover {
+    /* background: #3cd6ed;
+  color: #fff; */
+}
+
+.clear {
+    clear: both;
+}
+
+ul {
+    list-style: outside none none;
+    margin: 0;
+    padding: 0;
+}
+
+input,
+select,
+textarea,
+input[type="text"],
+input[type="date"],
+input[type="url"],
+input[type="email"],
+input[type="password"],
+input[type="tel"],
+button,
+button[type="submit"] {
+    -moz-appearance: none;
+    box-shadow: none !important;
+}
+
+div#preloader {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    background: #fff url("../img/preloader.gif") no-repeat center center;
+}
+
+::-moz-selection {
+    background: #3ec1d5;
+    text-shadow: none;
+}
+
+::selection {
+    background: #3ec1d5;
+    text-shadow: none;
+}
+
+.area-padding {
+    padding: 70px 0px 80px;
+}
+
+.area-padding-2 {
+    padding: 70px 0px 50px;
+}
+
+.padding-2 {
+    padding-bottom: 90px;
+}
+
+.section-headline h2 {
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 70px;
+    position: relative;
+    text-transform: capitalize;
+}
+
+.section-headline h2::after {
+    border: 1px solid #333;
+    bottom: -20px;
+    content: "";
+    left: 0;
+    margin: 0 auto;
+    position: absolute;
+    right: 0;
+    width: 40%;
+}
+
+.project-header {
+    display: inline-flex;
+}
+
+.project-header .project-title {
+    display: inline-flex;
+    position: relative;
+    left: 0px;
+    top: 0px;
+    font-family: SpoqaHanSans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 53px;
+    /* GrayScale/0 */
+    color: #ffffff;
+}
+
+.project-header a {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.project-header img {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.sec-head {
+    display: inline-block;
+    font-size: 17px;
+    font-weight: 600;
+    margin-bottom: 0;
+    padding: 0 0 10px;
+    text-transform: uppercase;
+    transition: all 0.4s ease 0s;
+}
+
+.project-team {
+    width: 330px;
+    height: 41px;
+    transition: background 0.5s;
+    background: transparent url("../img/fund/project_button.png") center top no-repeat;
+    background-size: contain;
+}
+
+
+/*--------------------------------*/
+
+
+/*  2. Header top Area
+/*--------------------------------*/
+
+.catalog-btn {
+    height: 30px;
+    border: 1px solid #3cd6ed;
+}
+
+.header-contact {
+    width: 100%;
+    height: 45px;
+    line-height: 45px;
+    /* border-bottom: 1px solid #eee; */
+    padding-left: 10px;
+    /* background-color: #fbfbfb; */
+    text-align: -webkit-center;
+}
+
+.header-contact-inner {
+    /* border-bottom: 1px solid #eee; */
+    width: 60%;
+    /* background-color: #fbfbfb; */
+    text-align: left;
+    color: #fff;
+}
+
+.header-contact i {
+    margin-right: 10px;
+    color: #32742d;
+}
+
+.header-contact a {
+    color: #fff;
+    font-size: 13.2px;
+    font-weight: 600;
+    /* font-family: "Noto Sans KR", sans-serif; */
+    font-family: "Archivo", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.header-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: auto;
+    /* background: rgba(0, 0, 0, 1); */
+    z-index: 9;
+}
+
+.navbar-header a.navbar-brand {
+    display: inline-block;
+    height: 90px;
+    padding: 22px 0;
+}
+
+.main-menu ul.navbar-nav li {
+    display: inline-block;
+    padding: 0px 13px;
+}
+
+.main-menu ul.navbar-nav li a {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    color: #fff;
+    padding: 34px 0px;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+    height: 90px;
+    /* font-family: 'Noto Sans KR', sans-serif; */
+    font-family: "Archivo", sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 20px;
+    /* identical to box height */
+    text-align: right;
+    letter-spacing: 0.0125em;
+    -webkit-font-smoothing: antialiased;
+}
+
+.main-menu ul.navbar-nav li.active>a::after {
+    border: 1px solid #343434;
+    bottom: 0px;
+    content: "";
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.main-menu ul.navbar-nav li.active a:hover {
+    background: none;
+    color: #343434;
+}
+
+.main-menu ul.navbar-nav li.active a:focus {
+    color: #343434;
+}
+
+.main-menu ul.navbar-nav li.active a {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    color: #343434;
+    position: relative;
+}
+
+.main-menu ul.navbar-nav li a:hover {
+    color: #3ec1d5;
+}
+
+.navbar {
+    border: medium none;
+    margin-bottom: 0;
+}
+
+.navbar-default {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+}
+
+.main-menu ul.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:hover,
+.navbar-default .navbar-nav>.active>a:focus {
+    background: none;
+    color: #333;
+}
+
+.navbar-default .navbar-toggle {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: medium none;
+    border-radius: 0;
+    padding: 25px 0px;
+}
+
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>li>a:focus {
+    background-color: transparent;
+    color: #fff;
+}
+
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+    background: none;
+}
+
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #343434;
+    width: 30px;
+    height: 2px;
+}
+
+.top-right.text-right {
+    float: right;
+    position: relative;
+    top: 24px;
+    margin-left: 20px;
+}
+
+.top-right.text-right>li {
+    float: right;
+    margin: 0px 8px;
+}
+
+.top-right.text-right li a {
+    color: #fff;
+}
+
+.main-menu .dropdown ul {
+    background: #000;
+}
+
+.main-menu .dropdown ul li {
+    display: block;
+}
+
+
+/*--------------------------------*/
+
+
+/* 2.1. Stick menu
+/*--------------------------------*/
+
+.header-area.stick {
+    /* background-color: rgba(255, 255, 255, 1); */
+    background-color: rgba(0, 0, 0, 1);
+    height: 135px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+}
+
+.stick .navbar-header a.navbar-brand {
+    display: inline-block;
+    height: 90px;
+}
+
+.stick .navbar-brand>img {
+    display: none;
+}
+
+.stick .navbar-brand.sticky-logo>img {
+    display: block;
+}
+
+.sticky-logo h1 {
+    color: #343434;
+    padding: 0;
+    margin: 0;
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.sticky-logo h1 span {
+    color: #343434;
+}
+
+.stick .main-menu ul.navbar-nav li.active>a::after {
+    border: 1px solid #343434;
+    bottom: 0px;
+    content: "";
+    left: 0;
+    position: absolute;
+    width: 100%;
+}
+
+.stick .main-menu ul.nav>li>a:hover {
+    color: #343434;
+}
+
+.stick .main-menu ul.navbar-nav li.active a {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    color: #fff;
+    position: relative;
+}
+
+.stick .mainmenu ul#nav>li:hover>a,
+.stick .mainmenu ul#nav li .mega-menu,
+.stick .mainmenu ul#nav li ul.sub-menu {
+    background-color: #f5f5f5;
+    color: #fff;
+    outline: medium none;
+}
+
+.stick .mainmenu ul#nav li:hover ul.sub-menu li a:hover,
+.mainmenu ul#nav li .mega-menu span>a:hover,
+.stick .mainmenu ul#nav li .mega-menu-shop a.mega-menu-title:hover {
+    color: #fff;
+}
+
+.stick .logo {
+    height: 20px;
+}
+
+.stick .logo a {
+    margin-top: 0px;
+}
+
+.stick .main-menu ul.nav>li>a {
+    color: #343434;
+    line-height: 22px;
+    padding: 34px 0px;
+    text-transform: capitalize;
+    letter-spacing: 1px;
+}
+
+.stick .navbar-default .navbar-toggle .icon-bar {
+    background-color: #343434;
+    width: 30px;
+    height: 2px;
+}
+
+.stick .navbar-default .navbar-toggle {
+    padding: 10px 0px;
+}
+
+
+/*---------------------------------------
+  3. About Area
+  ---------------------------------------*/
+
+.img_team {
+    position: relative;
+    background: url(../img/fund/image_team.png) no-repeat;
+    margin-top: 135px;
+    height: 80vh;
+    background-size: cover;
+}
+
+
+/* .img-cover {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1;
+} */
+
+.img_team .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100rem;
+    color: white;
+    z-index: 2;
+    text-align: center;
+}
+
+
+/*운영진 12345 나열*/
+
+.tx_Managementstaff_Title {
+    color: white
+}
+
+.parent_Managerment {
+    margin: 600px auto 0;
+}
+
+.btn_Management_1th {
+    align-items: center;
+    display: inline-block;
+    padding: 10px 40px;
+    margin: 0px 30px;
+    color: #ffffff;
+    text-align: center;
+    background-color: transparent;
+}
+
+.btn_Management_1th:hover {
+    background-color: #C4FF04;
+    color: black;
+}
+
+.btn_Management_2th {
+    align-items: center;
+    display: inline-block;
+    padding: 10px 40px;
+    margin: 0px 30px;
+    color: #ffffff;
+    text-align: center;
+    background-color: transparent;
+}
+
+.btn_Management_2th:hover {
+    background-color: #C4FF04;
+    color: black;
+}
+
+.btn_Management_3th {
+    align-items: center;
+    display: inline-block;
+    padding: 10px 40px;
+    margin: 0px 30px;
+    color: #ffffff;
+    text-align: center;
+    background-color: transparent;
+}
+
+.btn_Management_3th:hover {
+    background-color: #C4FF04;
+    color: black;
+}
+
+.btn_Management_4th {
+    align-items: center;
+    display: inline-block;
+    padding: 10px 40px;
+    margin: 0px 30px;
+    color: #ffffff;
+    text-align: center;
+    background-color: transparent;
+}
+
+.btn_Management_4th:hover {
+    background-color: #C4FF04;
+    color: black;
+}
+
+.btn_Management_5th {
+    align-items: center;
+    display: inline-block;
+    padding: 10px 40px;
+    margin: 0px 30px;
+    color: #ffffff;
+    text-align: center;
+    background-color: transparent;
+}
+
+.btn_Management_5th:hover {
+    background-color: #C4FF04;
+    color: black;
+}
