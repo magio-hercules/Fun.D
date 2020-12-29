@@ -153,11 +153,11 @@
   ------------------------------ */
   // portfolio start
   $(window).on("load", function () {
-    // var $container = $(".awesome-project-content");
-    var $container = $(".horizontal-gallery");
+    var $container = $(".awesome-project-content");
+    // var $container = $(".horizontal-gallery");
     $container.isotope({
       filter: "*",
-      itemSelector: ".work-modals",
+      // itemSelector: ".work-modals",
       // layoutMode: "horiz",
       // cellsByRow: {
       //   columnWidth: 300,

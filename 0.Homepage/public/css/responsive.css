@@ -52,7 +52,7 @@
   .suscribe-input button {
     width: 40%;
   }
-  .team-content.text-center>h4 {
+  .team-content.text-center > h4 {
     font-size: 20px;
   }
   .sus-btn {
@@ -111,7 +111,7 @@
   .single-add-itms {
     width: 50%;
   }
-  .left-sidebar-title>h4 {
+  .left-sidebar-title > h4 {
     font-size: 18px;
   }
   .contact-form {
@@ -128,61 +128,69 @@
 /* small mobile :320px. */
 
 @media (max-width: 767px) {
-
   #about-title-pc {
     display: none;
   }
-  
+
   #about-title-mobile {
     display: block;
   }
 
   .header-area {
     height: 135px !important;
-    background: #FFF;
+    /* background: #fff; */
+    background-color: transparent;
   }
 
   .header-contact-inner {
     width: 100%;
   }
 
-  .navbar-header a.navbar-brand, .stick .navbar-header a.navbar-brand {
+  .navbar-header a.navbar-brand,
+  .stick .navbar-header a.navbar-brand {
     display: inline-block;
-    height: 90px  !important;
-    padding-top: 26px;
+    height: 90px !important;
+    padding-top: 30px;
     padding-left: 0px;
   }
   #logo-brand {
     padding-left: 0px;
-    padding-right: 0PX;
+    padding-right: 0px;
   }
-  
+
   .navbar-brand img {
-    width: 170px; 
-    height: 38px;
+    /* width: 170px;
+    height: 38px; */
+    width: 90px;
+    height: 30px;
     margin-left: 6px;
   }
 
-  .navbar-default .navbar-toggle, .stick .navbar-default .navbar-toggle {
+  .navbar-default .navbar-toggle,
+  .stick .navbar-default .navbar-toggle {
     padding: 26px 0;
   }
-  .nav.navbar-nav.navbar-right, .stick .nav.navbar-nav.navbar-right {
+  .nav.navbar-nav.navbar-right,
+  .stick .nav.navbar-nav.navbar-right {
     background-color: rgba(255, 255, 255, 1);
     margin-top: 0;
-    border-bottom: 2px solid #35801B;
+    border-bottom: 2px solid #35801b;
     box-shadow: 0px 6px 9px 0px rgba(0, 0, 0, 0.06);
   }
   .main-menu ul.navbar-nav li a {
     height: 60px;
   }
-  .main-menu ul.navbar-nav li, .stick .main-menu ul.navbar-nav li {
+  .main-menu ul.navbar-nav li,
+  .stick .main-menu ul.navbar-nav li {
     display: block;
   }
-  .main-menu ul.navbar-nav li a, .stick .main-menu ul.navbar-nav li a {
+  .main-menu ul.navbar-nav li a,
+  .stick .main-menu ul.navbar-nav li a {
     padding: 10px 2px;
     font-weight: 500;
   }
-  .main-menu ul.navbar-nav li.active a::after, .stick .main-menu ul.navbar-nav li.active a::after {
+  .main-menu ul.navbar-nav li.active a::after,
+  .stick .main-menu ul.navbar-nav li.active a::after {
     border: 0px solid #fff;
   }
   .logo {
@@ -251,7 +259,7 @@
   .section-headline h3 {
     font-size: 25px;
   }
-  .well-text>h2 {
+  .well-text > h2 {
     font-size: 18px;
   }
   .well-text p {
@@ -276,7 +284,8 @@
   .pri_table_list {
     margin-bottom: 30px;
   }
-  .single-awesome-project, .portfolio-2 .single-awesome-project {
+  .single-awesome-project,
+  .portfolio-2 .single-awesome-project {
     width: 100%;
     float: none;
   }
