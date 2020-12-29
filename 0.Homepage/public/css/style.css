@@ -2819,17 +2819,34 @@ span.email-notes {
   margin-bottom: 156px;
 }
 
-.contact-left {
-  width: 50%;
-  height: 600px;
-  padding-left: calc(50% - 500px);
-  padding-right: 78px;
-  text-align: center;
+@media (min-width: 1000px) {
+  .contact-right {
+    width: 50%;
+    height: 100%;
+  }
+
+  .contact-left {
+    width: 50%;
+    height: 600px;
+    padding-left: calc(50% - 500px);
+    padding-right: 78px;
+    text-align: center;
+  }
 }
 
-.contact-right {
-  width: 50%;
-  height: 100%;
+@media only screen and (min-width: 360px) and (max-width: 999px) {
+  .contact-right {
+    /* width: 50%;
+    height: 100%; */
+    display: none;
+  }
+  .contact-left {
+    width: 90%;
+    height: 600px;
+    margin-left: 5%;
+    padding-top: 5%;
+    text-align: center;
+  }
 }
 
 /*----------------------------------------
