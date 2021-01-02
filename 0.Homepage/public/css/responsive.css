@@ -137,7 +137,8 @@
   }
 
   .header-area {
-    height: 135px !important;
+    /* height: 135px !important; */
+    height: 90px !important;
     /* background: #fff; */
     background-color: transparent;
   }
