@@ -41,6 +41,10 @@
 /*----------------------------------------*/
 
 @import url(http://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/*open close collapsed*/
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,600');
 html,
 body {
     margin: 0;
@@ -637,10 +641,6 @@ div#preloader {
 
 /*운영진 12345 나열*/
 
-.tx_Managementstaff_Title {
-    color: white
-}
-
 .parent_Managerment {
     margin: 600px auto 0;
 }
@@ -719,3 +719,306 @@ div#preloader {
     background-color: #C4FF04;
     color: black;
 }
+
+.container-fluid {
+    color: #000000;
+}
+
+
+/*  Managerment Introduce Area
+/*--------------------------------*/
+
+.profile {
+    background-color: #ffffff;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.tx_Managementstaff_Title {
+    color: white;
+    padding-top: 30px;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.subheading {
+    font-size: 1em;
+    margin-top: 0;
+    text-transform: uppercase;
+}
+
+.Management {
+    align-items: center;
+    padding-right: 100px;
+    margin: 30px auto 60px;
+    max-width: 1000px;
+}
+
+.row {
+    text-align: center;
+    margin-top: 5px;
+}
+
+.dt-start {
+    border-top-left-radius: 10px 15px;
+    border-top-right-radius: 20px 30px;
+}
+
+.dt-end {
+    border-bottom-left-radius: 10px 15px;
+    border-bottom-right-radius: 20px 30px;
+}
+
+dt {
+    background: #505662;
+    color: #B6BCCC;
+    font-weight: 600;
+    padding: 15px;
+    position: relative;
+    text-align: left;
+    text-transform: uppercase;
+    transition: all .5s;
+}
+
+dt:after,
+dt:before {
+    content: "\f078";
+    font-family: fontAwesome;
+    position: absolute;
+    right: 15px;
+    height: 28px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    transition: all .7s ease-in-out;
+}
+
+dt:before {
+    opacity: 0;
+    transition: all .4s ease-in-out;
+}
+
+dt:hover {
+    cursor: pointer;
+}
+
+dt+dd {
+    max-height: 0;
+}
+
+dd {
+    background: #1C1C1C;
+    color: #edeff3;
+    margin: 0;
+    overflow: hidden;
+    padding: 1px 15px;
+    transition: all .5s;
+}
+
+dt.open {
+    background: #0E0C0D;
+    border-color: #0E0C0D;
+    color: #edeff3;
+    margin: -5px;
+}
+
+dt.close {
+    background: #0E0C0D;
+    border-color: #0E0C0D;
+    color: #edeff3;
+    margin: -5px;
+}
+
+dt.open:after {
+    transform: rotate(180deg) translateY(-2px);
+}
+
+dt.open:before {
+    opacity: 0;
+    transform: rotate(-360deg) translateY(-3px);
+}
+
+dt.open+dd {
+    padding: 15px 15px 30px;
+    margin: 0 -5px;
+    max-height: 300px;
+}
+
+
+/*--------------------------------*/
+
+
+/*  14.Contact Area
+/*--------------------------------*/
+
+.contact-container {
+    display: inline-flex;
+    /* height: 767px; */
+    width: 100%;
+    /* padding-top: 90px; */
+    background-color: #212224;
+}
+
+.contact-title {
+    font-family: SpoqaHanSans;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 36px;
+    line-height: 53px;
+    /* GrayScale/0 */
+    color: #ffffff;
+}
+
+.contact-subtitle {
+    margin-top: 12px;
+    font-family: SpoqaHanSans;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 18px;
+    line-height: 27px;
+    /* GrayScale/0 */
+    color: #ffffff;
+}
+
+.contact-form {
+    margin-top: 42px;
+    margin-bottom: 156px;
+}
+
+.contact-left {
+    width: 50%;
+    height: 600px;
+    padding-left: calc(50% - 500px);
+    padding-right: 78px;
+    text-align: center;
+}
+
+.contact-right {
+    width: 50%;
+    height: 100%;
+}
+
+.contact-area {
+    height: auto;
+    width: 100%;
+    padding-top: 90px;
+}
+
+.contact-content {
+    padding: 100px;
+    background: #000 none repeat scroll 0 0;
+}
+
+.contact-content-right {
+    padding: 100px;
+}
+
+.contact-form input[type="text"],
+.contact-form input[type="email"] {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    color: #444;
+    height: 40px;
+    margin-bottom: 16px;
+    padding-left: 20px;
+    width: 100%;
+}
+
+.contact-form textarea {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    color: #444;
+    height: 140px;
+    padding: 20px;
+    width: 100%;
+}
+
+.contact-form button[type="submit"] {
+    background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
+    border: 1px solid #ccc;
+    color: #444;
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 8px;
+    padding: 12px 30px;
+    text-transform: uppercase;
+    transition: all 0.3s ease 0s;
+    border-radius: 30px;
+}
+
+.contact-form button[type="submit"]:hover {
+    color: #fff;
+    border: 1px solid #3ec1d5;
+    background: #3ec1d5;
+}
+
+.contact-form #sendmessage {
+    color: #3ec1d5;
+    border: 1px solid #3ec1d5;
+    display: none;
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.contact-form #errormessage {
+    color: red;
+    display: none;
+    border: 1px solid red;
+    text-align: center;
+    padding: 15px;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.contact-form #sendmessage.show,
+.contact-form #errormessage.show,
+.contact-form .show {
+    display: block;
+}
+
+#contact .form .validation {
+    color: red;
+    display: none;
+    margin: 0 0 20px;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.single-icon i {
+    font-size: 24px;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #444;
+    line-height: 46px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.single-icon p {
+    font-size: 16px;
+    line-height: 30px;
+    font-weight: 600;
+    color: #444;
+    /* font-family: "Noto Sans KR", sans-serif; */
+    font-family: "Archivo", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+.contact-icon {
+    margin-bottom: 40px;
+}
+
+#google-map {
+    height: 370px;
+    margin-bottom: 20px;
+}
+
+
+/*----------------------------------------*/
