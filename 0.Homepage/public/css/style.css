@@ -1349,6 +1349,10 @@ div#preloader {
   display: inline-flex;
 }
 
+.logo-section > img {
+  height: 120px;
+}
+
 .logo-title {
   display: flex;
   height: 120px;
